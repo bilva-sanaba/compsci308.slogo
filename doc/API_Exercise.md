@@ -34,4 +34,4 @@ SLogo Architecture Design
 	Commands know the input state of the turtle, and whatever parameters they require. They get these through their parameters, and when they are called to 'execute', they return their changes to the turtle state trajectory.
 5. **How is the GUI updated after a command has completed execution?**
 
-   The final turtle trajectory is output to the GUI via a list of turtle states. The GUI iterates through the trajectory of turtle states and updates its javaFX object accordingly in each iteration.
+    The final turtle trajectory is output to the GUI via a list of turtle states. The GUI iterates through the trajectory of turtle states and updates its javaFX object accordingly in each iteration.
