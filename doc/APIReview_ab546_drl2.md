@@ -1,3 +1,4 @@
+Worked With Daniel Li
 ##Part 1
 	What about your API/design is intended to be flexible?
 Our API is designed to be easily extendable to allow for multiple turtles to be added to the functionality.  It also is trying to easily allow for additional design customization to the user (upload an image for turtle, upload a background, etc) by ensuring that the visuals exist solely in the GUI and are never seen by the backend.
