@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 public class SlogoParser {
 	private static SlogoNode head;
 	private static SlogoNode parentNode;
-	private static String command = "repeat 9 [ repeat 180 [ fd 3 rt 2] rt 40 ]";
+	//private static String command = "repeat 9 [ repeat 180 [ fd 3 rt 2 ] rt 40 ]";
 	private static ResourceBundle languageResourceBundle;
 	private static ResourceBundle syntaxResourceBundle;
 	
@@ -86,6 +86,7 @@ public class SlogoParser {
 		
 		return head;
 	}
+	
 }
 
 
