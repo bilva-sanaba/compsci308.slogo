@@ -4,7 +4,7 @@ import javafx.scene.image.ImageView;
 public class Turtle {
 	private ImageView Turtle_Image;
 	public Turtle(){
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream("ball.gif"));
+		Image image = new Image(getClass().getClassLoader().getResourceAsStream("Turtle.gif"));
 		Turtle_Image = new ImageView(image);
 	}
 	public ImageView getImage(){

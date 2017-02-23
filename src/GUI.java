@@ -42,6 +42,8 @@ public class GUI {
         BorderPane bp = new BorderPane();
         bp.setBottom(initInputPanel());
         bp.setCenter(background);
+        bp.setRight(new Rectangle(200,500,Color.BLACK));
+        bp.setLeft(new Rectangle(200,500,Color.BLACK));
         return bp;
     }
 	 private Node initInputPanel() {
@@ -51,13 +53,16 @@ public class GUI {
 	        inputPanel.getChildren().add(t);
 	        inputPanel.getChildren().addAll(otherButtons);
 	        
+	        
 	        return inputPanel;
 	 }
 	 private void createButtons(){
 		    Button play = createButton("Run", e -> setTurtle());
 	        Button pause = createButton("Clear", e -> background.setFill(Color.PURPLE));
-	        Button step = createButton("StepButton", e -> setTurtle());
-	        otherButtons = Arrays.asList(play, pause, step);
+	        Button language = createButton("Choose Language", e -> background.setFill(Color.PURPLE));
+	        Button help = createButton("Help", e -> background.setFill(Color.PURPLE));
+	        
+	        otherButtons = Arrays.asList(play, pause,language,help);
 	 }
 	 private Button createButton(String label, EventHandler<ActionEvent> e) {
 	        Button b = new Button();
