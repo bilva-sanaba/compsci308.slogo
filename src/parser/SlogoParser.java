@@ -34,27 +34,24 @@ public class SlogoParser {
 		while(resourceKeys.hasMoreElements()){
 			String key = resourceKeys.nextElement();
 			String value = resourceBundle.getString(key);
-			System.out.println(value);
-			ArrayList<String> valueList = new ArrayList<String>(Arrays.asList(value.split("|")));
+			ArrayList<String> valueList = new ArrayList<String>(Arrays.asList(value.split("\\|")));
 			for(String v: valueList){
 				possibleCommands.add(v);
-				System.out.println(v);
 			}
 		}
 	}
 	
-	private SlogoNode createTree(String command){
+	private static SlogoNode createTree(String command){
 		
 		SlogoNode root = new SlogoNode(null, "group");
 		head=root;
-	
-		//String command1 = "repeat 9 [ repeat 180 [ fd 3 rt 2 ] rt 40";
 	
 		ArrayList<String> commandList = new ArrayList<String>(Arrays.asList(command.split(" ")));
 	
 		for(String word: commandList){
 			SlogoNode slogoNode;
 			if(possibleCommands.contains(word)){//word is in resources
+				System.out.println(1);
 				slogoNode = new SlogoNode(word, "command");
 			}
 			else if(word.equals("[")){
