@@ -17,4 +17,3 @@ Five use cases:
 3. xcor y- parameter error is checked when the tree is handled
 4. fd- no parameter is used so default 0 is added to coordinate according to heading
 5. sum 1- missing a parameter so default 0 is summed with 1
-
