@@ -8,7 +8,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        GUI gui = new GUI(stage);
+        Controller myController = new Controller(stage);
        
     }
     

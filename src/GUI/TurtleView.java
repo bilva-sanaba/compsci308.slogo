@@ -1,9 +1,10 @@
+package GUI;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Turtle {
+public class TurtleView {
 	private ImageView Turtle_Image;
-	public Turtle(){
+	public TurtleView(){
 		Image image = new Image(getClass().getClassLoader().getResourceAsStream("Turtle.gif"));
 		Turtle_Image = new ImageView(image);
 	}
