@@ -89,7 +89,7 @@ public class SlogoParser {
 	
 	public CommandConfig parse(String command){
 		createValueList();
-		return new CommandConfig(command, head);
+		return new CommandConfig(command, createTree(command));
 	}
 }
 
