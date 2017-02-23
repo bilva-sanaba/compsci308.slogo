@@ -3,12 +3,10 @@ package parser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.ResourceBundle;
 
-import org.w3c.dom.Node;
+
 
 /**
  * The parser for user SLogo commands. We read the command and convert it into a tree
@@ -19,7 +17,7 @@ import org.w3c.dom.Node;
 public class SlogoParser {
 	private static SlogoNode head;
 	private static SlogoNode parentNode;
-	private static String command = "repeat 9 [ repeat 180 [ fd 3 rt 2] rt 40";
+	private static String command = "repeat 9 [ repeat 180 [ fd 3 rt 2] rt 40 ]";
 	private static ResourceBundle languageResourceBundle;
 	private static ResourceBundle syntaxResourceBundle;
 	
@@ -33,7 +31,7 @@ public class SlogoParser {
 	public SlogoParser(){
 	}
 	
-	private void createValueList(){
+	private static void createValueList(){
 		//may need try and catch
 		syntaxResourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCES_PACKAGE + SYNTAX);
 		languageResourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCES_PACKAGE + LANGUAGE);
@@ -48,7 +46,9 @@ public class SlogoParser {
 		}
 	}
 	
-	private SlogoNode createTree(String command){
+	public static SlogoNode parse(String command){
+		
+		createValueList();
 		
 		SlogoNode root = new SlogoNode(null, "group");
 		head=root;
@@ -61,10 +61,10 @@ public class SlogoParser {
 				System.out.println(1);
 				slogoNode = new SlogoNode(word, "command");
 			}
-			else if(word.equals(syntaxResourceBundle.getString("ListStart"))){
+			else if(word.equals("[")){
 				slogoNode = new SlogoNode(null, "group");
 			}
-			else if(word.equals(syntaxResourceBundle.getString("ListEnd"))){
+			else if(word.equals("]")){
 				slogoNode = new SlogoNode(null, "endgroup");
 			}
 			else{
@@ -85,11 +85,6 @@ public class SlogoParser {
 		}
 		
 		return head;
-	}
-	
-	public CommandConfig parse(String command){
-		createValueList();
-		return new CommandConfig(command, createTree(command));
 	}
 }
 

@@ -25,4 +25,8 @@ public class SlogoNode {
 	public String getType(){
 		return type;
 	}
+	
+	public List<SlogoNode> getChildren(){
+		return children;
+	}
 }
