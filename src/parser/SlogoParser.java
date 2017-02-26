@@ -50,7 +50,7 @@ public class SlogoParser {
 		
 		createValueList();
 		
-		SlogoNode root = new SlogoNode(null, "group");
+		SlogoNode root = new SlogoNode(null, "head");
 		head=root;
 	
 		ArrayList<String> commandList = new ArrayList<String>(Arrays.asList(command.split(" ")));
@@ -85,6 +85,10 @@ public class SlogoParser {
 		}
 		
 		return head;
+	}
+	
+	private void traverse(SlogoNode head){
+		
 	}
 	
 }
