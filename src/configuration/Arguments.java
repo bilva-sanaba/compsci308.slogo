@@ -1,9 +1,12 @@
 package configuration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import model.Token;
+import model.TokenType;
 import model.commands.CommandException;
 
 /**
@@ -16,8 +19,7 @@ import model.commands.CommandException;
  */
 public class Arguments {
 	
-	private LinkedHashMap<Object, Class<?>> args; // Hashmap is linked to preserve insertion order
-	private List<Object> argOrder;
+	private List<Token> arguments;
 	
 	/**
 	 * Constructs a new argument list
@@ -25,45 +27,35 @@ public class Arguments {
 	 * The command is also stored, so that ID
 	 * can be retrieved on invalid parameter error.
 	 */
+	public Arguments(Token[] args){
+		arguments = new ArrayList<Token>(Arrays.asList(args));
+	}
+	
 	public Arguments(){
-		args = new LinkedHashMap<Object, Class<?>>();
-		argOrder = new ArrayList<Object>();
+		this(null);
 	}
 	
 	/**
 	 * Adds argument to end of list
 	 */
-	public <T> void add(T arg){
-		Object o = (Object)arg;
-		argOrder.add(o);
-		args.put(o, arg.getClass());
+	public void add(Token arg){
+		arguments.add(arg);
 	}
 	
 	/**
-	 * Gets argument Object from list
+	 * Gets argument from list index
+	 * @return 
 	 */
-	public Object getObject(int index){
-		Object returnObject = args.get(index);
-		return args.get(returnObject).getClass().cast(returnObject);
-	}
-	
-	/**
-	 * Get's class of Object from list
-	 * 
-	 * I'm unsure how to infer a generic type dynamically without specifying 
-	 * the type of object in the client. To get around this right now, I give 
-	 * the client the option to obtain the object's previous class and cast
-	 * object itself.
-	 */
-	public Class<?> getClass(Object o){
-		return args.get(o);
+	public Token get(int index){
+		Token t = arguments.get(index); // This is two lines to prepare for extension
+		return t;
 	}
 	
 	/**
 	 * Get number of arguments
 	 */
 	public int numArgs(){
-		return args.size();
+		return arguments.size();
 	}
 	
 	/**
@@ -71,13 +63,12 @@ public class Arguments {
 	 * 
 	 * To return true, set must have same length, and all
 	 * corresponding arguments must have same type.
-	 * @throws CommandException 
 	 */
 	public boolean hasSameFormat(Arguments input){
 		if(input.numArgs() != numArgs()) return false;
 		
 		for(int i = 0; i < numArgs(); i++){
-			if(!getClass(getObject(i)).equals(input.getClass(input.getObject(i)))) return false;
+			if(!this.get(i).getType().equals(input.get(i).getType())) return false;
 		}
 		return true;
 	}
