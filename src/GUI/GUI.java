@@ -3,10 +3,12 @@ package GUI;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-
 import java.util.Arrays;
 import java.util.List;
-
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -25,7 +27,7 @@ public class GUI {
 	private Canvas canvas = new Canvas(500,500);
 	private GraphicsContext gc = canvas.getGraphicsContext2D();
 	private Pane wrapperPane = new Pane();
-	private Color backgroundColor = Color.WHITE;
+	private ColorButton cb = new ColorRandomButton(wrapperPane);
 	private TurtleView t = new TurtleView();
 	private List<Button> otherButtons;
 	private Stage myStage;
@@ -53,6 +55,7 @@ public class GUI {
         Scene scene = new Scene(myRoot, SCENE_WIDTH, SCENE_HEIGHT);
         return scene;
     }
+	
 	private BorderPane createRoot() {
         BorderPane bp = new BorderPane();
         bp.setBottom(initInputPanel());
@@ -68,8 +71,7 @@ public class GUI {
 	        TextArea t = new TextArea("Enter code here");
 	        inputPanel.getChildren().add(t);
 	        inputPanel.getChildren().addAll(otherButtons);
-	        
-	        
+	        inputPanel.getChildren().add(cb.getButton());
 	        return inputPanel;
 	 }
 	 private void createButtons(){
@@ -88,6 +90,24 @@ public class GUI {
 	        b.setText(label);
 	        b.setOnAction(e);
 	        return b;
+	 }
+
+	 private Label createLabel(String text) {
+	        Label label = new Label(text);
+	        label.setTextFill(Color.WHITE);
+	        return label;
+	        
+	    }
+	    
+	    private ChoiceBox<String> createChoiceBox(List<String> items, ChangeListener<? super Number> listener) {
+	        ChoiceBox<String> cb = createChoiceBox(items);
+	        cb.getSelectionModel().selectedIndexProperty().addListener(listener);
+	        return cb;
+	    }
+	    private ChoiceBox<String> createChoiceBox(List<String> items) {
+	        ChoiceBox<String> cb = new ChoiceBox<String>(FXCollections.observableArrayList(items));
+	        cb.getSelectionModel().selectFirst();
+	        return cb;
 	    }
 	private void show(){
 		myStage.show();

@@ -1,5 +1,9 @@
 package parser;
 
+/**
+ * Tree node
+ * @author jwei528
+ */
 import java.util.ArrayList;
 import java.util.List;
 

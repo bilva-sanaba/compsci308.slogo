@@ -71,17 +71,22 @@ public class SlogoParser {
 				slogoNode = new SlogoNode(word, "param");
 			}
 		
-			if(slogoNode.getType().equals("endgroup")){
+			/*if(slogoNode.getType().equals("endgroup")){
 				root=parentNode;
 			}
 			else{
 				root.addChild(slogoNode);
-			}
-		
-			if(slogoNode.getType().equals("command") || slogoNode.getType().equals("group")){
+				if(slogoNode.getType().equals("command") || slogoNode.getType().equals("group")){
+					parentNode=root;
+					root=slogoNode;
+				}
+			}*/
+			root.addChild(slogoNode);
+			if(!slogoNode.getType().equals("param")){
 				parentNode=root;
 				root=slogoNode;
 			}
+		
 		}
 		
 		return head;
