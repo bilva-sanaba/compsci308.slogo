@@ -12,7 +12,7 @@ import java.util.HashMap;
  */
 public class CommandFactory {
 	private static CommandFactory instance = new CommandFactory();
-	HashMap<String, Class<Command>> registeredCommands  = new HashMap<String, Class<Command>>();
+	HashMap<String, Class<? extends Command>> registeredCommands  = new HashMap<String, Class<? extends Command>>();
 	
 	/**
 	 * Constructs an empty command factory.
@@ -27,7 +27,7 @@ public class CommandFactory {
 	 * Adds command class to registry, paired with
 	 * command's String ID.
 	 */
-	public void registerCommand(String commandID, Class<Command> clazz){
+	public void registerCommand(String commandID, Class<? extends Command> clazz){
 		registeredCommands.put(commandID, clazz);
 	}
 	
@@ -40,15 +40,16 @@ public class CommandFactory {
 	 * @throws CommandException 
 	 */
 	public Command constructCommand(String commandID) throws CommandException{
-		Class<Command> clazz = (Class<Command>) registeredCommands.get(commandID);
-		Constructor<Command> commandConstructor;
+		Class<? extends Command> clazz = registeredCommands.get(commandID);
+//		Constructor<? extends Command> commandConstructor;
 		
 		if(clazz == null) throw new CommandException(String.format("Command not found: %s", commandID));
 
 		try {
-			commandConstructor = clazz.getDeclaredConstructor(new Class[] { String.class });
-			return (Command) commandConstructor.newInstance(new Object[] { });
+//			commandConstructor = clazz.getDeclaredConstructor(registeredCommands.get(commandID));
+			return registeredCommands.get(commandID).newInstance();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new CommandException(String.format("Command class is broken: %s", commandID));
 		}
 	}
@@ -60,5 +61,14 @@ public class CommandFactory {
 	 */
 	public static CommandFactory getInstance(){
 		return instance;
+	}
+
+	/**
+	 * Prints current commands listed for debugging
+	 */
+	public String toString(){
+		String s = "Command Factory:\n";
+		for(String cmd : registeredCommands.keySet()) s += String.format("\t %s: \"%s\"\n", cmd, registeredCommands.get(cmd).getName());
+		return s;
 	}
 }

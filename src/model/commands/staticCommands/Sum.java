@@ -1,21 +1,31 @@
 package model.commands.staticCommands;
 
+import configuration.Arguments;
+import model.commands.Command;
+import model.commands.CommandFactory;
+
 public class Sum extends StaticCommand {
 
+	static{
+		CommandFactory.getInstance().registerCommand("SUM", Sum.class.asSubclass(Command.class));
+	}
+	
 	@Override
-	public int execute() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int doLogic(Arguments args) {
+		
 	}
 
 	@Override
-	public int getNumArgs() {
-		// TODO Auto-generated method stub
-		return 0;
+	public Arguments getDefaultArgs() {
+		Arguments args = new Arguments();
+		args.add(0);
+		args.add(0);
+		return args;
 	}
-	
-	public Object[] getdefaultArgs(){
-		return new Object[] {0, 0};
+
+	@Override
+	public String getID() {
+		return "SUM";
 	}
 
 }

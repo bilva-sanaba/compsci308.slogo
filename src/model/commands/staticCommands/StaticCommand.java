@@ -1,7 +1,7 @@
 package model.commands.staticCommands;
 
-import model.commands.Command;
+import model.commands.AbstractCommand;
 
-public abstract class StaticCommand implements Command {
-
+public abstract class StaticCommand extends AbstractCommand {
+	
 }
