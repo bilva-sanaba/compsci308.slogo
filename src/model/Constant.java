@@ -1,6 +1,7 @@
 package model;
 
 /**
+ * Token: Constant
  * This class is basically an Integer.
  * It is used to define an integer as a 
  * Token in arguments.

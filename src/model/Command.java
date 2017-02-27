@@ -4,6 +4,7 @@ import configuration.Arguments;
 import model.commands.CommandException;
 
 /**
+ * Token: Command
  * @author Dhruv K Patel
  * @author Jacob Weiss
  *

@@ -15,18 +15,11 @@ public interface SlogoNode {
 	public void addChild(SlogoNode child);
 	
 	/**
-	 * returns the specific String associated with node 
-	 * (e.g. fd, 50, repeat)
-	 * 
-	 */
-	public String getWord();
-	
-	/**
 	 * returns the type of String
 	 * (e.g. command, param)
 	 * 
 	 */
-	public String getType();
+	public String getToken();
 	
 	/**
 	 * returns the children of a given node
