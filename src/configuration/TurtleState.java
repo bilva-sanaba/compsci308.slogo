@@ -11,8 +11,7 @@ package configuration;
  */
 public class TurtleState implements UnmodifiableTurtleState{
 	
-	private int x, y;
-	private double heading;
+	private double x, y, heading;
 	private boolean penDown, showing;
 	
 	/**
@@ -23,7 +22,7 @@ public class TurtleState implements UnmodifiableTurtleState{
 	 * @param penDown
 	 * @param showing
 	 */
-	public TurtleState(int x, int y, double heading, boolean penDown, boolean showing){
+	public TurtleState(double x, double y, double heading, boolean penDown, boolean showing){
 		this.x = x;
 		this.y = y;
 		this.heading = heading;
@@ -43,7 +42,7 @@ public class TurtleState implements UnmodifiableTurtleState{
 	 * Turtle x coordinate
 	 * @return
 	 */
-	public int getX(){
+	public double getX(){
 		return x;
 	}
 	
@@ -51,7 +50,7 @@ public class TurtleState implements UnmodifiableTurtleState{
 	 * Turtle y coordinate
 	 * @return
 	 */
-	public int getY(){
+	public double getY(){
 		return y;
 	}
 	
@@ -82,7 +81,7 @@ public class TurtleState implements UnmodifiableTurtleState{
 	/**
 	 * Returns a modifiable copy of turtle state
 	 */
-	public TurtleState getCopy(){
+	public TurtleState getModifiableCopy(){
 		return new TurtleState(x, y, heading, penDown, showing);
 	}
 	
@@ -91,14 +90,14 @@ public class TurtleState implements UnmodifiableTurtleState{
 	/**
 	 * Sets X coordinate
 	 */
-	public int setX(int newX) {
+	public double setX(double newX) {
 		return x = newX;
 	}
 	
 	/**
 	 * Sets Y coordinate
 	 */
-	public int setY(int newY) {
+	public double setY(double newY) {
 		return y = newY;
 	}
 	
@@ -127,9 +126,9 @@ public class TurtleState implements UnmodifiableTurtleState{
 	 * Moves turtle coordinates forward given heading
 	 * @return
 	 */
-	public int moveForward(int distance){
-		setX((int) (getX() + distance * Math.sin(Math.toRadians(getHeading()))));
-		setY((int) (getY() + distance * Math.cos(Math.toRadians(getHeading()))));
+	public double moveForward(double distance){
+		setX((getX() + distance * Math.sin(Math.toRadians(getHeading()))));
+		setY((getY() + distance * Math.cos(Math.toRadians(getHeading()))));
 		return distance;
 	}
 	
@@ -148,6 +147,6 @@ public class TurtleState implements UnmodifiableTurtleState{
 	 * Useful for printing states
 	 */
 	public String toString(){
-		return String.format("TurtleState:\n\tpos: (%d, %d)\n\theading: %f\n\tpen down:%b\n\tshowing: %b\n" , x, y, heading, penDown, showing);
+		return String.format("TurtleState:\n\tpos: (%f, %f)\n\theading: %f\n\tpen down:%b\n\tshowing: %b\n" , x, y, heading, penDown, showing);
 	}
 }
