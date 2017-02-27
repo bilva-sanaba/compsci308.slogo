@@ -6,6 +6,9 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import model.Token;
+import model.Variable;
+
 public class SlogoNodeFactory {
 	
 
@@ -42,7 +45,7 @@ public class SlogoNodeFactory {
 		createValueList();
 		SlogoNode slogoNode;
 		if(possibleCommands.contains(word)){//word is in resources
-			slogoNode = new CommandNode(word);
+			//create command node
 		}
 		else if(word.equals("[")){
 			slogoNode = new GroupNode(word);
@@ -51,8 +54,10 @@ public class SlogoNodeFactory {
 			slogoNode = new EndGroupNode(word);
 		}
 		else{
-			slogoNode = new ParamNode(word);
+			slogoNode = new TokenNode(new Variable(word));
 		}
 		return slogoNode;
 	}
 }
+
+
