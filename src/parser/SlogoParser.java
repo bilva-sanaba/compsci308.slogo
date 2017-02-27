@@ -3,10 +3,7 @@ package parser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.ResourceBundle;
 
 
@@ -20,6 +17,7 @@ import java.util.ResourceBundle;
 public class SlogoParser {
 	private static ArrayList<SlogoNode> nodeList = new ArrayList<SlogoNode>();
 	private static SlogoNode parentNode;
+
 	private static SlogoNode currNode;
 	private static String command = "repeat 9 [ repeat 180 [ fd 3 rt 2 ] rt 40 ]";
 	private static ArrayList<String> commandList = new ArrayList<String>();
@@ -34,11 +32,12 @@ public class SlogoParser {
 	
 	private static List<String> possibleCommands = new ArrayList<String>();
 
+
 	
 	public SlogoParser(){
 	}
 	
-	
+
 	private static void createValueList(){
 		//may need try and catch
 		syntaxResourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCES_PACKAGE + SYNTAX);
@@ -53,16 +52,19 @@ public class SlogoParser {
 			}
 		}
 	}
+
 	
 	public static void parse(SlogoNode head, ArrayList<String> commandList){
 		
 		createValueList();
 		SlogoNode root = new GroupNode(null);
+
 		head=root;
 		nodeList.add(head);
 	
 		
 		for(String word: commandList){
+
 			/*SlogoNodeFactory factory = new SlogoNodeFactory();
 			SlogoNode slogoNode = factory.genSlogoNode(word);*/
 			//commandQueue.poll();
@@ -111,6 +113,11 @@ public class SlogoParser {
 			System.out.println(1);
 			for(SlogoNode sn: slogoNode.getChildren()){
 				traverse(sn);
+			SlogoNode slogoNode = SlogoNodeFactory.makeSlogoNode(word);
+			
+			if(slogoNode.getType().equals("endgroup")){
+				root=parentNode;
+
 			}
 		}
 		else if(slogoNode.getType().equals("head")){
@@ -148,6 +155,7 @@ public class SlogoParser {
 		commandList = new ArrayList<String>(Arrays.asList(command.split(" ")));
 	}
 	
+
 	/*public static void main(String[] args){
 		SlogoNode head = new SlogoNode(null, "head");
 		fillList(command);
@@ -158,6 +166,7 @@ public class SlogoParser {
 		}
 		System.out.println(count);
 	}*/
+
 	
 }
 

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class SlogoNodeFactory {
+	
+
 	private static ResourceBundle languageResourceBundle;
 	private static ResourceBundle syntaxResourceBundle;
 	
@@ -20,7 +22,7 @@ public class SlogoNodeFactory {
 	public SlogoNodeFactory(){
 	}
 	
-	private void createValueList(){
+	private static void createValueList(){
 		//may need try and catch
 		syntaxResourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCES_PACKAGE + SYNTAX);
 		languageResourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCES_PACKAGE + LANGUAGE);
@@ -35,6 +37,7 @@ public class SlogoNodeFactory {
 		}
 	}
 	
+
 	public SlogoNode genSlogoNode(String word){
 		createValueList();
 		SlogoNode slogoNode;
@@ -52,5 +55,4 @@ public class SlogoNodeFactory {
 		}
 		return slogoNode;
 	}
-	
 }
