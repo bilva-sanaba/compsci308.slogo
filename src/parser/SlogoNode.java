@@ -1,36 +1,37 @@
 package parser;
 
-/**
- * Tree node
- * @author jwei528
- */
-import java.util.ArrayList;
 import java.util.List;
+/**
+ * 
+ * @author jwei528
+ *
+ */
+public interface SlogoNode {
 
-public class SlogoNode {
-	private List<SlogoNode> children = null;
-	private String word;
-	private String type;
+	/**
+	 * adds a node to the tree
+	 * @param child
+	 */
+	public void addChild(SlogoNode child);
 	
-	public SlogoNode(String word, String type){
-		this.children = new ArrayList<>();
-		this.word=word;
-		this.type=type;
-	}
+	/**
+	 * returns the specific String associated with node 
+	 * (e.g. fd, 50, repeat)
+	 * 
+	 */
+	public String getWord();
 	
-	public void addChild(SlogoNode child){
-		children.add(child);
-	}
+	/**
+	 * returns the type of String
+	 * (e.g. command, param)
+	 * 
+	 */
+	public String getType();
 	
-	public String getWord(){
-		return word;
-	}
-	
-	public String getType(){
-		return type;
-	}
-	
-	public List<SlogoNode> getChildren(){
-		return children;
-	}
+	/**
+	 * returns the children of a given node
+	 * (its parameters)
+	 * 
+	 */
+	public List<SlogoNode> getChildren();
 }
