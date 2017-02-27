@@ -20,7 +20,7 @@ import model.Token;
 public class SlogoParser {
 	private static ArrayList<SlogoNode> nodeList = new ArrayList<SlogoNode>();
 	
-	private static SlogoNode head;
+	private static SlogoNode head = new TokenNode(null);
 	private static SlogoNode parentNode;
 	private static SlogoNode currNode;
 	private static String command = "repeat 9 [ repeat 180 [ fd 3 rt 2 ] rt 40 ]";
@@ -59,7 +59,7 @@ public class SlogoParser {
 	}
 
 	
-	public static void parse(String command){
+	public static SlogoNode parse(String command){
 		
 		createValueList();
 		ArrayList<String> commandList = fillList(command);
@@ -70,30 +70,25 @@ public class SlogoParser {
 		
 		for(String word: commandList){
 			SlogoNode slogoNode;
-			if(possibleCommands.contains(word)){//word is in resources
-				slogoNode = new CommandNode(word);
-			}
-			else if(word.equals("[")){
-				slogoNode = new GroupNode(word);
+			SlogoNodeFactory factory = new SlogoNodeFactory();
+			slogoNode = factory.genSlogoNode(word);
+			if(word.equals("[")){
 				//currNode=parentNode;
 				parse(command.substring(command.indexOf("[")+1));
 			}
 			else if(word.equals("]")){
 				//evaluate up until null node
-				parse(command.substring(command.indexOf("]")+1));
-			}
-			else{
-				slogoNode = new ParamNode(word);
+				slogoNode = parse(command.substring(command.indexOf("]")+1));
 			}
 			
 			root.addChild(slogoNode);
-			if(!slogoNode.getType().equals("param")){
+			if(slogoNode is a command){
 				parentNode=root;
 				root=slogoNode;
 			}
 			
-		
 		}
+		return head;
 	}
 	
 	/*private static void traverse(SlogoNode slogoNode){
