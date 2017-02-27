@@ -6,6 +6,9 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import configuration.Arguments;
+import model.Token;
+
 
 
 /**
@@ -16,11 +19,13 @@ import java.util.ResourceBundle;
 
 public class SlogoParser {
 	private static ArrayList<SlogoNode> nodeList = new ArrayList<SlogoNode>();
+	
+	private static SlogoNode head;
 	private static SlogoNode parentNode;
-
 	private static SlogoNode currNode;
 	private static String command = "repeat 9 [ repeat 180 [ fd 3 rt 2 ] rt 40 ]";
-	private static ArrayList<String> commandList = new ArrayList<String>();
+	//private static ArrayList<String> commandList = new ArrayList<String>();
+	//private static ArrayList<Token> tokenList = new ArrayList<Token>();
 	
 	private static ResourceBundle languageResourceBundle;
 	private static ResourceBundle syntaxResourceBundle;
@@ -54,44 +59,28 @@ public class SlogoParser {
 	}
 
 	
-	public static void parse(SlogoNode head, ArrayList<String> commandList){
+	public static void parse(String command){
 		
 		createValueList();
-		SlogoNode root = new GroupNode(null);
-
-		head=root;
-		nodeList.add(head);
+		ArrayList<String> commandList = fillList(command);
+		Arguments tokenList = makeTokenList(commandList);
+		SlogoNode root = new TokenNode(null);
+		//root.addChild(tokenList); //update
 	
 		
 		for(String word: commandList){
-
-			/*SlogoNodeFactory factory = new SlogoNodeFactory();
-			SlogoNode slogoNode = factory.genSlogoNode(word);*/
-			//commandQueue.poll();
 			SlogoNode slogoNode;
 			if(possibleCommands.contains(word)){//word is in resources
 				slogoNode = new CommandNode(word);
 			}
 			else if(word.equals("[")){
 				slogoNode = new GroupNode(word);
-				currNode=parentNode;
-				ArrayList<String> newCommandList = new ArrayList<String>();
-				for(String w: commandList){
-					newCommandList.add(w);
-				}
-				newCommandList.remove(word); //MUST EDIT TO REMOVE ALL HIT WORDS
-				//String newCommand = join(commandList);
-				parse(slogoNode, newCommandList);
+				//currNode=parentNode;
+				parse(command.substring(command.indexOf("[")+1));
 			}
 			else if(word.equals("]")){
-				slogoNode = new EndGroupNode(word);
-				ArrayList<String> newCommandList = new ArrayList<String>();
-				for(String w: commandList){
-					newCommandList.add(w);
-				}
-				newCommandList.remove(word);
-				//String newCommand = join(commandList);
-				parse(currNode, newCommandList);
+				//evaluate up until null node
+				parse(command.substring(command.indexOf("]")+1));
 			}
 			else{
 				slogoNode = new ParamNode(word);
@@ -151,10 +140,18 @@ public class SlogoParser {
 		return result;
 	}*/
 	
-	private static void fillList(String command){
-		commandList = new ArrayList<String>(Arrays.asList(command.split(" ")));
+	private static ArrayList<String> fillList(String command){
+		return new ArrayList<String>(Arrays.asList(command.split(" ")));
 	}
 	
+	private static Arguments makeTokenList(ArrayList<String> commandList){
+		SlogoNodeFactory factory = new SlogoNodeFactory();
+		Arguments tokenList = new Arguments();
+		for(String c: commandList){
+			tokenList.add(factory.genSlogoNode(c));
+		}
+		return tokenList;
+	}
 
 	/*public static void main(String[] args){
 		SlogoNode head = new SlogoNode(null, "head");
@@ -169,6 +166,4 @@ public class SlogoParser {
 
 	
 }
-
-
 
