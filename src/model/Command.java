@@ -1,7 +1,7 @@
-package model.commands;
+package model;
 
 import configuration.Arguments;
-import model.Token;
+import model.commands.CommandException;
 
 /**
  * @author Dhruv K Patel
@@ -16,12 +16,18 @@ public interface Command extends Token {
 	 * type and quantity
 	 * @throws CommandException 
 	 */
-	public int execute(Arguments args) throws CommandException;
+	public double execute(Arguments args) throws CommandException;
 	
 	/**
-	 * Returns number of arguments that the Command should have
-	 * (Does not include trajectory)
+	 * Gets number of arguments required by the command
 	 */
 	public int getNumArgs();
+	
+	/**
+	 * Returns true if Command needs the turtle's trajectory,
+	 * false if not.
+	 */
+	public boolean needsTurtleTrajectory();
+	
 }
 

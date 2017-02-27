@@ -1,26 +1,41 @@
 package model.commands;
 
-import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.ResourceBundle;
+
+import model.Command;
 
 /**
  * Creates commands from a Command ID.
  * Will automatically register initialize all
  * commands from resource file.
  * 
+ * This class is based on the "factory" design pattern:
+ * http://www.oodesign.com/factory-pattern.html
+ * 
  * @author DhruvKPatel
  */
 public class CommandFactory {
-	private static CommandFactory instance = new CommandFactory();
+	private final ResourceBundle DEFAULT_COMMANDS = ResourceBundle.getBundle("resources/Commands");
 	HashMap<String, Class<? extends Command>> registeredCommands  = new HashMap<String, Class<? extends Command>>();
 	
 	/**
 	 * Constructs an empty command factory.
 	 * Next, fills the factory automatically with 
 	 * Default Commands (the ones given in the resource files)
+	 * @throws CommandException 
 	 */
-	public CommandFactory(){
-		
+	public CommandFactory() throws CommandException{
+		for(String commandID: DEFAULT_COMMANDS.keySet()){
+			Class<?> key;
+			try {
+				key = Class.forName(DEFAULT_COMMANDS.getString(commandID).trim());
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				throw new CommandException(String.format("Command not found: %s", commandID));
+			}
+			registerCommand(commandID, key.asSubclass(Command.class));
+		}
 	}
 	
 	/**
@@ -39,28 +54,16 @@ public class CommandFactory {
 	 * Reflection is utilized to simplify instantiation
 	 * @throws CommandException 
 	 */
-	public Command constructCommand(String commandID) throws CommandException{
+	public Command getCommand(String commandID) throws CommandException{
 		Class<? extends Command> clazz = registeredCommands.get(commandID);
-//		Constructor<? extends Command> commandConstructor;
 		
 		if(clazz == null) throw new CommandException(String.format("Command not found: %s", commandID));
 
 		try {
-//			commandConstructor = clazz.getDeclaredConstructor(registeredCommands.get(commandID));
 			return registeredCommands.get(commandID).newInstance();
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new CommandException(String.format("Command class is broken: %s", commandID));
+			throw new CommandException(String.format("Command could not initialize: %s", commandID));
 		}
-	}
-	
-	/**
-	 * Returns singleton instance for factory
-	 * (this singleton may not be the best method for this, but it's what the example said)
-	 * @return
-	 */
-	public static CommandFactory getInstance(){
-		return instance;
 	}
 
 	/**

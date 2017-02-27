@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import model.Constant;
 import model.Token;
 import model.TokenType;
 import model.commands.CommandException;
@@ -32,7 +33,7 @@ public class Arguments {
 	}
 	
 	public Arguments(){
-		this(null);
+		this(new Token[0]);
 	}
 	
 	/**
@@ -63,13 +64,43 @@ public class Arguments {
 	 * 
 	 * To return true, set must have same length, and all
 	 * corresponding arguments must have same type.
+	 * @throws CommandException 
 	 */
-	public boolean hasSameFormat(Arguments input){
-		if(input.numArgs() != numArgs()) return false;
+	public void checkForTypeDifferences(Arguments input) throws CommandException{
+		if(input.numArgs() != numArgs()) throw new CommandException(String.format("Expected %d arguments, got %d", numArgs(), input.numArgs()));
 		
 		for(int i = 0; i < numArgs(); i++){
-			if(!this.get(i).getType().equals(input.get(i).getType())) return false;
+			TokenType myType = this.get(i).getType();
+			TokenType inputType = input.get(i).getType();
+			if(!myType.equals(inputType)) throw new CommandException(String.format("Argument #%d: expected %s, got %s", i+1, myType, inputType));
 		}
-		return true;
+	}
+	
+	/*
+	 * The methods below are helpers to reduce repetitive casting
+	 * in commands. I spent a lot of time trying to figure out how
+	 * to dynamically return a generic type argument, but I could
+	 * not figure it out.
+	 * 
+	 * Note: There is not "instanceof" error checking in this section.
+	 * This is because runtime errors are already checked for. If 
+	 * something goes wrong here, it is because of a faulty Command
+	 * class, in which case the error should trace back here.
+	 */
+	
+	/**
+	 * Returns double from certain index.
+	 * 
+	 * If Token at index is not a Constant,
+	 * this will return null.
+	 * 
+	 * Likewise, if an index doesn't exist,
+	 * it will return null.
+	 * @param index
+	 * @return argument (double)
+	 */
+	public double getDouble(int index){
+		Token t = this.get(index);
+		return ((Constant)t).getVal();
 	}
 }
