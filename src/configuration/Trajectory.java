@@ -39,7 +39,7 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	 */
 	public void addLast(TurtleState nextState){
 		if(!nextState.equals(getLast()))
-			trajectory.add((UnmodifiableTurtleState) nextState.getCopy());	
+			trajectory.add((UnmodifiableTurtleState)nextState.getModifiableCopy());	
 	}
 	
 	/**
@@ -49,6 +49,13 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	public UnmodifiableTurtleState getLast(){
 		if(trajectory.size() == 0) return null;
 		return trajectory.get(trajectory.size() - 1);
+	}
+	
+	/**
+	 * Clears entire trajectory
+	 */
+	public void clear(){
+		trajectory = new ArrayList<UnmodifiableTurtleState>();
 	}
 	
 	/**

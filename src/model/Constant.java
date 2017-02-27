@@ -10,13 +10,13 @@ package model;
  */
 public class Constant implements Token {
 	
-	private int i;
+	private double i;
 	
-	public Constant(int i){
+	public Constant(double i){
 		this.i = i;
 	}
 	
-	public int getVal(){
+	public double getVal(){
 		return i;
 	}
 	

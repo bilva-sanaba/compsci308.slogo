@@ -6,10 +6,10 @@ package model;
  * @author DhruvKPatel
  */
 public enum TokenType {
-//	VARIABLE
+	VARIABLE("model.Variable"),
 //	LIST
-	COMMAND("model.Command.java"),
-	CONSTANT("model.Constant.java");
+	COMMAND("model.Command"),
+	CONSTANT("model.Constant");
 
 	
 	private Class<? extends Token> enclosingClass;

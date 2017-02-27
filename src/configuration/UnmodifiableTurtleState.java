@@ -11,13 +11,13 @@ public interface UnmodifiableTurtleState {
 	 * Turtle x coordinate
 	 * @return
 	 */
-	public int getX();
+	public double getX();
 	
 	/**
 	 * Turtle y coordinate
 	 * @return
 	 */
-	public int getY();
+	public double getY();
 	
 	/**
 	 * Turtle heading (degrees) [0 points up, clockwise is positive]
@@ -36,4 +36,9 @@ public interface UnmodifiableTurtleState {
 	 * @return
 	 */
 	public boolean isShowing();
+	
+	/**
+	 * Returns modifiable copy of turtle state
+	 */
+	public TurtleState getModifiableCopy();
 }
