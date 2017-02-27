@@ -15,9 +15,13 @@ import java.util.ResourceBundle;
  */
 
 public class SlogoParser {
-	private static SlogoNode head;
+	private static ArrayList<SlogoNode> nodeList = new ArrayList<SlogoNode>();
 	private static SlogoNode parentNode;
-	private static String command = "repeat 9 [ repeat 180 [ fd 3 rt 2] rt 40 ]";
+
+	private static SlogoNode currNode;
+	private static String command = "repeat 9 [ repeat 180 [ fd 3 rt 2 ] rt 40 ]";
+	private static ArrayList<String> commandList = new ArrayList<String>();
+	
 	private static ResourceBundle languageResourceBundle;
 	private static ResourceBundle syntaxResourceBundle;
 	
@@ -27,10 +31,13 @@ public class SlogoParser {
 	public static final String SYNTAX = "Syntax";
 	
 	private static List<String> possibleCommands = new ArrayList<String>();
+
+
 	
 	public SlogoParser(){
 	}
 	
+
 	private static void createValueList(){
 		//may need try and catch
 		syntaxResourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCES_PACKAGE + SYNTAX);
@@ -45,47 +52,122 @@ public class SlogoParser {
 			}
 		}
 	}
+
 	
-	public static SlogoNode parse(String command){
+	public static void parse(SlogoNode head, ArrayList<String> commandList){
 		
 		createValueList();
-		
-		SlogoNode root = new SlogoNode(null, "group");
+		SlogoNode root = new GroupNode(null);
+
 		head=root;
+		nodeList.add(head);
 	
-		ArrayList<String> commandList = new ArrayList<String>(Arrays.asList(command.split(" ")));
-	
+		
 		for(String word: commandList){
+
+			/*SlogoNodeFactory factory = new SlogoNodeFactory();
+			SlogoNode slogoNode = factory.genSlogoNode(word);*/
+			//commandQueue.poll();
 			SlogoNode slogoNode;
 			if(possibleCommands.contains(word)){//word is in resources
-				System.out.println(1);
-				slogoNode = new SlogoNode(word, "command");
+				slogoNode = new CommandNode(word);
 			}
 			else if(word.equals("[")){
-				slogoNode = new SlogoNode(null, "group");
+				slogoNode = new GroupNode(word);
+				currNode=parentNode;
+				ArrayList<String> newCommandList = new ArrayList<String>();
+				for(String w: commandList){
+					newCommandList.add(w);
+				}
+				newCommandList.remove(word); //MUST EDIT TO REMOVE ALL HIT WORDS
+				//String newCommand = join(commandList);
+				parse(slogoNode, newCommandList);
 			}
 			else if(word.equals("]")){
-				slogoNode = new SlogoNode(null, "endgroup");
+				slogoNode = new EndGroupNode(word);
+				ArrayList<String> newCommandList = new ArrayList<String>();
+				for(String w: commandList){
+					newCommandList.add(w);
+				}
+				newCommandList.remove(word);
+				//String newCommand = join(commandList);
+				parse(currNode, newCommandList);
 			}
 			else{
-				slogoNode = new SlogoNode(word, "param");
+				slogoNode = new ParamNode(word);
 			}
-		
-			if(slogoNode.getType().equals("endgroup")){
-				root=parentNode;
-			}
-			else{
-				root.addChild(slogoNode);
-			}
-		
-			if(slogoNode.getType().equals("command") || slogoNode.getType().equals("group")){
+			
+			root.addChild(slogoNode);
+			if(!slogoNode.getType().equals("param")){
 				parentNode=root;
 				root=slogoNode;
 			}
-		}
+			
 		
-		return head;
+		}
 	}
+	
+	/*private static void traverse(SlogoNode slogoNode){
+		if(slogoNode.getType().equals("command")){
+			//create new command object
+			System.out.println(1);
+			for(SlogoNode sn: slogoNode.getChildren()){
+				traverse(sn);
+			SlogoNode slogoNode = SlogoNodeFactory.makeSlogoNode(word);
+			
+			if(slogoNode.getType().equals("endgroup")){
+				root=parentNode;
+
+			}
+		}
+		else if(slogoNode.getType().equals("head")){
+			for(SlogoNode sn: slogoNode.getChildren()){
+				traverse(sn);
+			}
+		}
+		else if(slogoNode.getType().equals("param")){
+			System.out.println(0);
+			//create parameter object
+		}
+		else if(slogoNode.getType().equals("group")){
+			System.out.println(2);
+			for(SlogoNode sn: slogoNode.getChildren()){
+				traverse(sn);
+			}	
+		}
+		else if(slogoNode.getType().equals("endgroup")){
+			System.out.println(3);
+			for(SlogoNode sn: slogoNode.getChildren()){
+				traverse(sn);
+			}
+		}
+	}*/
+	
+	/*private static String join(ArrayList<String> commandList){
+		String result="";
+		for(String c: commandList){
+			result=result + c + " ";
+		}
+		return result;
+	}*/
+	
+	private static void fillList(String command){
+		commandList = new ArrayList<String>(Arrays.asList(command.split(" ")));
+	}
+	
+
+	/*public static void main(String[] args){
+		SlogoNode head = new SlogoNode(null, "head");
+		fillList(command);
+		parse(head, commandList);
+		int count = 0;
+		for(SlogoNode s: nodeList){
+			count++;
+		}
+		System.out.println(count);
+	}*/
+
+	
 }
 
 
