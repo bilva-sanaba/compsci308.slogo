@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Stack;
 
 import model.Arguments;
 import model.Constant;
@@ -20,42 +21,60 @@ import model.commands.CommandException;
  */
 
 public class SlogoParser {
-	private static ArrayList<SlogoNode> nodeList = new ArrayList<SlogoNode>();
+	//private static ArrayList<TokenNode> nodeList = new ArrayList<TokenNode>();
 	
 	public SlogoParser(){
 	}
 	
-	public static SlogoNode parse(String command) throws CommandException{
+	public TokenNode parse(String command) throws CommandException{
 		
 		ArrayList<String> commandList = fillList(command);
 		
-		SlogoNode root = new TokenNode(null);
-		SlogoNode head=root;
+		TokenNode root = new TokenNode(new List()));
+		TokenNode head=root;
 	
 		
-		for(String word: commandList){
-			SlogoNode slogoNode;
-			SlogoNodeFactory factory = new SlogoNodeFactory();
-			slogoNode = factory.genSlogoNode(word);
+		for(int i=0; i<commandList.size(); i++){
+			String word = commandList.get(i);
+			TokenNode tokenNode;
+			TokenNodeFactory factory = new TokenNodeFactory();
+			tokenNode = factory.genTokenNode(word);
+			
 			if(word.equals("[")){
-				slogoNode = parse(command.substring(command.indexOf("[")+1));
-			}
-			else if(word.equals("]")){
-				//evaluate from head
-				//slogoNode = parse(command.substring(command.indexOf("]")+1));
-				break;
+				int startIndex = commandList.indexOf(("["));
+				int endIndex = getEndIndex(commandList, startIndex);
+				i = endIndex;
+				tokenNode = parse(command.substring(startIndex, endIndex));
 			}
 			
-			root.addChild(slogoNode);
-			if(slogoNode.getToken().getType().equals("COMMAND")){ 
-				root=slogoNode;
+			root.addChild(tokenNode);
+			if(tokenNode.getToken().getType().equals("COMMAND")){ 
+				root=tokenNode;
 			}
 			
 		}
 		return head;
 	}
+	
+	private int getEndIndex(ArrayList<String> commandList, int startIndex) throws CommandException{
+		Stack<String> stack = new Stack<String>();
+		stack.push("[");
+		
+		for(int i = startIndex + 1; i < commandList.size(); i++){
+			if(commandList.get(i).equals("[")){
+				stack.push(commandList.get(i));
+			}
+			else if(commandList.get(i).equals("]")){
+				stack.pop();
+			}
+			else if(stack.isEmpty()){
+				return i;
+			}
+		}
+		throw new CommandException("List never closes");
+	}
 
-	private static ArrayList<String> fillList(String command){
+	private ArrayList<String> fillList(String command){
 		return new ArrayList<String>(Arrays.asList(command.split(" ")));
 	}
 	

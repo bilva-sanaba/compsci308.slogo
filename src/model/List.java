@@ -6,6 +6,10 @@ public class List implements Token {
 	
 	private Arguments contents;
 	
+	public List(){
+		
+	}
+	
 	@Override
 	public TokenType getType() {
 		return TokenType.LIST;

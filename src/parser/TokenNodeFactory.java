@@ -12,7 +12,7 @@ import model.Variable;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
 
-public class SlogoNodeFactory {
+public class TokenNodeFactory {
 	
 
 	private static ResourceBundle languageResourceBundle;
@@ -25,7 +25,7 @@ public class SlogoNodeFactory {
 	
 	private static List<String> possibleCommands = new ArrayList<String>();
 	
-	public SlogoNodeFactory(){
+	public TokenNodeFactory(){
 	}
 	
 	private static void createValueList(){
@@ -44,29 +44,29 @@ public class SlogoNodeFactory {
 	}
 	
 
-	public SlogoNode genSlogoNode(String word) throws CommandException{
+	public TokenNode genTokenNode(String word) throws CommandException{
 		createValueList();
-		SlogoNode slogoNode;
+		TokenNode tokenNode;
 		if(possibleCommands.contains(word)){//word is in resources
 			CommandFactory cFactory = new CommandFactory();
 			String wordID = findWordID(word);
 			//find ID
 			Token t = cFactory.getCommand(wordID);//use other key
-			slogoNode = new TokenNode(t);
+			tokenNode = new TokenNode(t);
 		}
 		else if(word.equals("[")){
-			slogoNode = new TokenNode(null);
+			tokenNode = new TokenNode(null);
 		}
 		else if(word.equals("]")){
-			slogoNode = new TokenNode(null);
+			tokenNode = new TokenNode(null);
 		}
 		else if(Double.valueOf(word)!=null){
-			slogoNode = new TokenNode(new Constant(Double.parseDouble(word)));
+			tokenNode = new TokenNode(new Constant(Double.parseDouble(word)));
 		}
 		else{
-			slogoNode = new TokenNode(new Variable(word));
+			tokenNode = new TokenNode(new Variable(word));
 		}
-		return slogoNode;
+		return tokenNode;
 	}
 	
 	private String findWordID(String word){
