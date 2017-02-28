@@ -17,7 +17,7 @@ import model.Command;
  */
 public class CommandFactory {
 	private final ResourceBundle DEFAULT_COMMANDS = ResourceBundle.getBundle("resources/Commands");
-	HashMap<String, Class<? extends Command>> registeredCommands  = new HashMap<String, Class<? extends Command>>();
+	private HashMap<String, Class<? extends Command>> registeredCommands  = new HashMap<String, Class<? extends Command>>();
 	
 	/**
 	 * Constructs an empty command factory.
@@ -36,6 +36,16 @@ public class CommandFactory {
 			}
 			registerCommand(commandID, key.asSubclass(Command.class));
 		}
+	}
+	
+	/**
+	 * Constructs a command factory copy
+	 * @param original
+	 * @throws CommandException 
+	 */
+	public CommandFactory(CommandFactory original) throws CommandException{
+		this();
+		registeredCommands = new HashMap<String, Class<? extends Command>>(original.registeredCommands);
 	}
 	
 	/**

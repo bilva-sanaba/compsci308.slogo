@@ -1,7 +1,9 @@
 package model.commands;
 
-import configuration.Arguments;
+import model.Arguments;
 import model.Command;
+import model.Constant;
+import model.Token;
 import model.TokenType;
 
 public abstract class AbstractCommand implements Command{
@@ -20,13 +22,13 @@ public abstract class AbstractCommand implements Command{
 	 * then calls on subclass to complete execution.
 	 * @throws CommandException 
 	 */
-	public double execute(Arguments args) throws CommandException{
+	public Token evaluate(Arguments args) throws CommandException{
 		try{
 			getDefaultArgs().checkForTypeDifferences(args);
 		} catch(CommandException e){
 			throw new CommandException(String.format("Incorrect arguments for Command: %s (%s)", getID(), e.getMessage()));
 		}
-		return doLogic(args);
+		return new Constant(execute(args));
 	}
 	
 	/**
@@ -49,7 +51,7 @@ public abstract class AbstractCommand implements Command{
 	 * the argument follows the default type.
 	 * @throws CommandException 
 	 */
-	public abstract double doLogic(Arguments args) throws CommandException;
+	public abstract double execute(Arguments args) throws CommandException;
 	
 	/**
 	 * Each subclass must have this to be able to test validity of arguments.
@@ -74,4 +76,11 @@ public abstract class AbstractCommand implements Command{
 	 * (States whether command modifies turtle trajectory)
 	 */
 	public abstract boolean needsTurtleTrajectory();	
+	
+	/**
+	 * Describes command for error messages
+	 */
+	public String toString(){
+		return getID();
+	}
 }

@@ -3,7 +3,7 @@ package parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import configuration.Arguments;
+import model.Arguments;
 import model.Token;
 import model.TokenType;
 /**
@@ -25,7 +25,7 @@ public interface SlogoNode extends Token{
 	public void addList(ArrayList<String> params);
 	
 	/**
-	 * returns the type of String
+	 * Returns the token
 	 * (e.g. command, param)
 	 * 
 	 */
