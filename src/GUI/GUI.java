@@ -3,8 +3,13 @@ package GUI;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import GUI_BackgroundColorChooser.ColorButton;
+import GUI_BackgroundColorChooser.ColorPickDefault;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.beans.value.ChangeListener;
@@ -27,12 +32,14 @@ public class GUI {
 	private Canvas canvas = new Canvas(500,500);
 	private GraphicsContext gc = canvas.getGraphicsContext2D();
 	private Pane wrapperPane = new Pane();
-	private ColorButton cb = new ColorRandomButton(wrapperPane);
+	private ColorButton cb = new ColorPickDefault(wrapperPane);
 	private TurtleView t = new TurtleView();
 	private List<Button> otherButtons;
 	private Stage myStage;
+	private String currentLanguage = "English";
 	public static final int SCENE_WIDTH = 1200; 
 	public static final int SCENE_HEIGHT = 680;
+	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
 	public GUI(Stage stage){
 		wrapperPane.setStyle("-fx-background-color: black;");
 		myRoot=createRoot();
@@ -46,8 +53,6 @@ public class GUI {
 	}
 	
 	private void createCanvas(){
-		
-		
 		wrapperPane.getChildren().add(canvas);
 	}
 	
@@ -65,6 +70,18 @@ public class GUI {
         createCanvas();
         return bp;
     }
+	private ChoiceBox<String> createLanguageBox() {
+		ChoiceBox<String> language = createChoiceBox(Languages, (observable, oldValue, newValue) -> {
+            setLanguage(newValue.toString());
+            });
+		return language;
+	}
+	private void setLanguage(String language){
+		currentLanguage=language;
+	}
+	public String getCurrentLanguage(){
+		return currentLanguage;
+	}
 	 private Node initInputPanel() {
 	        createButtons();
 	        HBox inputPanel = new HBox();
@@ -72,6 +89,7 @@ public class GUI {
 	        inputPanel.getChildren().add(t);
 	        inputPanel.getChildren().addAll(otherButtons);
 	        inputPanel.getChildren().add(cb.getButton());
+	        inputPanel.getChildren().add(createLanguageBox());
 	        return inputPanel;
 	 }
 	 private void createButtons(){
@@ -80,10 +98,10 @@ public class GUI {
 	        	gc.setFill(Color.CYAN);
 	        	wrapperPane.setStyle("-fx-background-color: blue;");
 	        });
-	        Button language = createButton("Choose Language", e -> wrapperPane.setStyle("-fx-background-color: blue;"));
+	        
 	        Button help = createButton("Help", e -> gc.setFill(Color.BLUE));
 	        
-	        otherButtons = Arrays.asList(play, clear,language,help);
+	        otherButtons = Arrays.asList(play, clear,help);
 	 }
 	 private Button createButton(String label, EventHandler<ActionEvent> e) {
 	        Button b = new Button();
