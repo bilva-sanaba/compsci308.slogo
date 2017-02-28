@@ -49,7 +49,9 @@ public class SlogoNodeFactory {
 		SlogoNode slogoNode;
 		if(possibleCommands.contains(word)){//word is in resources
 			CommandFactory cFactory = new CommandFactory();
-			Token t = cFactory.getCommand(word);
+			String wordID = findWordID(word);
+			//find ID
+			Token t = cFactory.getCommand(wordID);//use other key
 			slogoNode = new TokenNode(t);
 		}
 		else if(word.equals("[")){
@@ -65,6 +67,18 @@ public class SlogoNodeFactory {
 			slogoNode = new TokenNode(new Variable(word));
 		}
 		return slogoNode;
+	}
+	
+	private String findWordID(String word){
+		Enumeration<String> resourceKeys = languageResourceBundle.getKeys();
+		while(resourceKeys.hasMoreElements()){
+			String key = resourceKeys.nextElement();
+			String value = languageResourceBundle.getString(key);
+			if(value.equals(word)){
+				return key;
+			}
+		}
+		return "";
 	}
 }
 
