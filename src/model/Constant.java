@@ -11,14 +11,14 @@ package model;
  */
 public class Constant implements Token {
 	
-	private double i;
+	private double value;
 	
-	public Constant(double i){
-		this.i = i;
+	public Constant(double value){
+		this.value = value;
 	}
 	
 	public double getVal(){
-		return i;
+		return value;
 	}
 	
 	/**
@@ -27,5 +27,14 @@ public class Constant implements Token {
 	@Override
 	public TokenType getType() {
 		return TokenType.CONSTANT;
+	}
+
+	@Override
+	public Token evaluate(Arguments args) {
+		return this;
+	}
+	
+	public String toString(){
+		return String.valueOf(value);
 	}
 }

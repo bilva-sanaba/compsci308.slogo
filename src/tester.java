@@ -1,6 +1,6 @@
-import configuration.Arguments;
 import configuration.Trajectory;
 import configuration.TurtleState;
+import model.Arguments;
 import model.Command;
 import model.Constant;
 import model.Token;

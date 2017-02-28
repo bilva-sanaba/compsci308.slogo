@@ -3,41 +3,32 @@ package parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import configuration.Arguments;
 import model.Token;
-import model.TokenType;
 
-public class TokenNode implements SlogoNode {
-	private Arguments children;
+public class TokenNode {
 	private Token token;
-	private List<String> params = null;
-	//params not needed
+	private List<TokenNode> children;
+
 	public TokenNode(Token token){
-		this.children = new Arguments();
-		this.params = new ArrayList<>();
-		this.token=token;
+		this.children = new ArrayList<TokenNode>();
+		this.token = token;
 	}
 	
-	public void addChild(Token arg){
-		children.add(arg);;
+	public void addChild(TokenNode child){
+		children.add(child);
+	}
+	
+	public void addChild(Token childVal){
+		children.add(new TokenNode(childVal));
 	}	
-	
-	public void addList(ArrayList<String> params){
-		this.params=params;
-	}
 	
 	public Token getToken(){
 		return token;
 	}
 	
-	public Arguments getChildren(){
+	public List<TokenNode> getChildren(){
 		return children;
 	}
 
-	@Override
-	public TokenType getType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
 

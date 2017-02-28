@@ -3,7 +3,7 @@ package parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import configuration.Arguments;
+import model.Arguments;
 import model.Token;
 import model.TokenType;
 /**

@@ -1,13 +1,10 @@
-package configuration;
+package model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
+import java.util.Iterator;
 import java.util.List;
 
-import model.Constant;
-import model.Token;
-import model.TokenType;
 import model.commands.CommandException;
 
 /**
@@ -18,7 +15,7 @@ import model.commands.CommandException;
  *
  * @author DhruvKPatel
  */
-public class Arguments {
+public class Arguments implements Iterable<Token>{
 	
 	private List<Token> arguments;
 	
@@ -36,6 +33,10 @@ public class Arguments {
 		this(new Token[0]);
 	}
 	
+	public Arguments(Token t){
+		this();
+		add(t);
+	}
 	/**
 	 * Adds argument to end of list
 	 */
@@ -102,5 +103,14 @@ public class Arguments {
 	public double getDouble(int index){
 		Token t = this.get(index);
 		return ((Constant)t).getVal();
+	}
+
+	/**
+	 * Allows to be iterable
+	 * @return
+	 */
+	@Override
+	public Iterator<Token> iterator() {
+		return arguments.iterator();
 	}
 }
