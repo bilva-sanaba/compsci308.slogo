@@ -1,8 +1,8 @@
 package model.commands.dynamicTurtle.turtleCommands;
 
-import configuration.Arguments;
 import configuration.Trajectory;
 import configuration.TurtleState;
+import model.Arguments;
 import model.Constant;
 import model.Token;
 import model.commands.CommandException;
@@ -19,7 +19,7 @@ import model.commands.DynamicTurtleCommand;
 public class SetTowards extends DynamicTurtleCommand {
 
 	@Override
-	public double doLogic(Arguments args) throws CommandException {
+	public double execute(Arguments args) throws CommandException {
 		Trajectory trajectory = getTrajectory();
 		TurtleState current = trajectory.getLast().getModifiableCopy();
 		double currentX = trajectory.getLast().getX();

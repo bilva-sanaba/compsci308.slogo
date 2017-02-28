@@ -7,9 +7,10 @@ package model;
  */
 public enum TokenType {
 	VARIABLE("model.Variable"),
-//	LIST
+	LIST("model.List"),
 	COMMAND("model.Command"),
 	CONSTANT("model.Constant");
+	// COMMENT (not included because no functionality is needed)
 
 	
 	private Class<? extends Token> enclosingClass;
