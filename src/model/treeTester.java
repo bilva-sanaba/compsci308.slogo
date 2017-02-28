@@ -1,13 +1,17 @@
 package model;
 
+import configuration.Trajectory;
+import configuration.TurtleState;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
+import model.commands.DynamicTurtleCommand;
 import parser.TokenNode;
 
 public class treeTester {
 
 	public static void main(String[] args) throws CommandException {
 		CommandFactory f = new CommandFactory();
+		Trajectory traj = new Trajectory();
 		
 		TokenNode s1 = new TokenNode(f.getCommand("Sum"));
 		s1.addChild(new Constant(1));
@@ -21,10 +25,25 @@ public class treeTester {
 		s.addChild(s1);
 		s.addChild(s2);
 
-		Interpreter i = new Interpreter();
-		Token result = i.evaluateTree(s);
+		TokenNode n = new TokenNode(f.getCommand("Not"));
+		n.addChild(s);
 		
-		System.out.println(result);
+		TokenNode q = new TokenNode(f.getCommand("Not"));
+		q.addChild(n);
+		
+		
+		
+		DynamicTurtleCommand twd = (DynamicTurtleCommand) f.getCommand("SetTowards");
+		traj.addLast(new TurtleState(100, 100, 0, false, false));
+		twd.setTrajectory(traj);
+		TokenNode t = new TokenNode(twd);
+		t.addChild(q);
+		t.addChild(new Constant(1));
+	
+		Interpreter i = new Interpreter();
+		System.out.println(i.evaluateTree(t));
+		
+		System.out.println(traj);
 	}
 
 }
