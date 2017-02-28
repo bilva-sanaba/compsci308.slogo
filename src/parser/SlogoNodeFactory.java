@@ -6,6 +6,12 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import model.Constant;
+import model.Token;
+import model.Variable;
+import model.commands.CommandException;
+import model.commands.CommandFactory;
+
 public class SlogoNodeFactory {
 	
 
@@ -38,21 +44,28 @@ public class SlogoNodeFactory {
 	}
 	
 
-	public SlogoNode genSlogoNode(String word){
+	public SlogoNode genSlogoNode(String word) throws CommandException{
 		createValueList();
 		SlogoNode slogoNode;
 		if(possibleCommands.contains(word)){//word is in resources
-			slogoNode = new CommandNode(word);
+			CommandFactory cFactory = new CommandFactory();
+			Token t = cFactory.getCommand(word);
+			slogoNode = new TokenNode(t);
 		}
 		else if(word.equals("[")){
-			slogoNode = new GroupNode(word);
+			slogoNode = new TokenNode(null);
 		}
 		else if(word.equals("]")){
-			slogoNode = new EndGroupNode(word);
+			slogoNode = new TokenNode(null);
+		}
+		else if(Double.valueOf(word)!=null){
+			slogoNode = new TokenNode(new Constant(Double.parseDouble(word)));
 		}
 		else{
-			slogoNode = new ParamNode(word);
+			slogoNode = new TokenNode(new Variable(word));
 		}
 		return slogoNode;
 	}
 }
+
+

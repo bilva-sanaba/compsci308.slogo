@@ -6,6 +6,11 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import configuration.Arguments;
+import model.Constant;
+import model.Token;
+import model.commands.CommandException;
+
 
 
 /**
@@ -16,11 +21,13 @@ import java.util.ResourceBundle;
 
 public class SlogoParser {
 	private static ArrayList<SlogoNode> nodeList = new ArrayList<SlogoNode>();
+	
+	private static SlogoNode head;
 	private static SlogoNode parentNode;
-
 	private static SlogoNode currNode;
 	private static String command = "repeat 9 [ repeat 180 [ fd 3 rt 2 ] rt 40 ]";
-	private static ArrayList<String> commandList = new ArrayList<String>();
+	//private static ArrayList<String> commandList = new ArrayList<String>();
+	//private static ArrayList<Token> tokenList = new ArrayList<Token>();
 	
 	private static ResourceBundle languageResourceBundle;
 	private static ResourceBundle syntaxResourceBundle;
@@ -54,57 +61,38 @@ public class SlogoParser {
 	}
 
 	
-	public static void parse(SlogoNode head, ArrayList<String> commandList){
+	public static SlogoNode parse(String command) throws CommandException{
 		
 		createValueList();
-		SlogoNode root = new GroupNode(null);
-
+		ArrayList<String> commandList = fillList(command);
+		
+		SlogoNode root = new TokenNode(null);
 		head=root;
-		nodeList.add(head);
+		//root.addChild(tokenList); //update
 	
 		
 		for(String word: commandList){
-
-			/*SlogoNodeFactory factory = new SlogoNodeFactory();
-			SlogoNode slogoNode = factory.genSlogoNode(word);*/
-			//commandQueue.poll();
 			SlogoNode slogoNode;
-			if(possibleCommands.contains(word)){//word is in resources
-				slogoNode = new CommandNode(word);
-			}
-			else if(word.equals("[")){
-				slogoNode = new GroupNode(word);
-				currNode=parentNode;
-				ArrayList<String> newCommandList = new ArrayList<String>();
-				for(String w: commandList){
-					newCommandList.add(w);
-				}
-				newCommandList.remove(word); //MUST EDIT TO REMOVE ALL HIT WORDS
-				//String newCommand = join(commandList);
-				parse(slogoNode, newCommandList);
+			SlogoNodeFactory factory = new SlogoNodeFactory();
+			slogoNode = factory.genSlogoNode(word);
+			root.addChild(slogoNode);
+			if(word.equals("[")){
+				//currNode=parentNode;
+				parse(command.substring(command.indexOf("[")+1));
 			}
 			else if(word.equals("]")){
-				slogoNode = new EndGroupNode(word);
-				ArrayList<String> newCommandList = new ArrayList<String>();
-				for(String w: commandList){
-					newCommandList.add(w);
-				}
-				newCommandList.remove(word);
-				//String newCommand = join(commandList);
-				parse(currNode, newCommandList);
-			}
-			else{
-				slogoNode = new ParamNode(word);
+				//evaluate up until null node
+				slogoNode = parse(command.substring(command.indexOf("]")+1));
 			}
 			
-			root.addChild(slogoNode);
-			if(!slogoNode.getType().equals("param")){
+			//root.addChild(slogoNode);
+			if(slogoNode.getToken().getType().equals("command")){ //edit this line
 				parentNode=root;
 				root=slogoNode;
 			}
 			
-		
 		}
+		return head;
 	}
 	
 	/*private static void traverse(SlogoNode slogoNode){
@@ -151,10 +139,18 @@ public class SlogoParser {
 		return result;
 	}*/
 	
-	private static void fillList(String command){
-		commandList = new ArrayList<String>(Arrays.asList(command.split(" ")));
+	private static ArrayList<String> fillList(String command){
+		return new ArrayList<String>(Arrays.asList(command.split(" ")));
 	}
 	
+	/*private static Arguments makeTokenList(ArrayList<String> commandList) throws CommandException{
+		SlogoNodeFactory factory = new SlogoNodeFactory();
+		Arguments tokenList = new Arguments();
+		for(String c: commandList){
+			tokenList.add((TokenNode)factory.genSlogoNode(c));
+		}
+		return tokenList;
+	}*/
 
 	/*public static void main(String[] args){
 		SlogoNode head = new SlogoNode(null, "head");
@@ -166,9 +162,10 @@ public class SlogoParser {
 		}
 		System.out.println(count);
 	}*/
-
+	public static void main(String[] args){
+		SlogoNode slogoNode = new TokenNode(new Constant(3.1));
+		System.out.println(slogoNode.getToken());
+	}
 	
 }
-
-
 
