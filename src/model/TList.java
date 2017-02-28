@@ -2,13 +2,9 @@ package model;
 
 import model.commands.CommandException;
 
-public class List implements Token {
+public class TList implements Token {
 	
 	private Arguments contents;
-	
-	public List(){
-		
-	}
 	
 	@Override
 	public TokenType getType() {

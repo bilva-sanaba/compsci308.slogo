@@ -11,7 +11,11 @@ import model.Token;
 import model.Variable;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
-
+/**
+ * 
+ * @author Jacob Weiss
+ *
+ */
 public class TokenNodeFactory {
 	
 
@@ -46,24 +50,23 @@ public class TokenNodeFactory {
 
 	public TokenNode genTokenNode(String word) throws CommandException{
 		createValueList();
-		TokenNode tokenNode;
+		TokenNode tokenNode = new TokenNode(null);
 		if(possibleCommands.contains(word)){//word is in resources
 			CommandFactory cFactory = new CommandFactory();
 			String wordID = findWordID(word);
-			//find ID
-			Token t = cFactory.getCommand(wordID);//use other key
+			Token t = cFactory.getCommand(wordID);
 			tokenNode = new TokenNode(t);
 		}
-		else if(word.equals("[")){
+		/*else if(word.equals("[")){
 			tokenNode = new TokenNode(null);
 		}
 		else if(word.equals("]")){
 			tokenNode = new TokenNode(null);
-		}
+		}*/
 		else if(Double.valueOf(word)!=null){
 			tokenNode = new TokenNode(new Constant(Double.parseDouble(word)));
 		}
-		else{
+		else if(word.substring(0,1)==":"){ //include : check
 			tokenNode = new TokenNode(new Variable(word));
 		}
 		return tokenNode;

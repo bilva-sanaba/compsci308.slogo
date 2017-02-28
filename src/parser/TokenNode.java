@@ -7,7 +7,11 @@ import model.Arguments;
 import model.Token;
 import model.TokenType;
 import model.commands.CommandException;
-
+/**
+ * 
+ * @author Jacob Weiss
+ *
+ */
 public class TokenNode{
 	private Token token;
 	private List<TokenNode> children;
