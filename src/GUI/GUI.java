@@ -2,9 +2,6 @@ package GUI;
 
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,12 +9,10 @@ import GUI_BackgroundColorChooser.ColorButton;
 import GUI_BackgroundColorChooser.ColorPickDefault;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,22 +20,18 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class GUI {
 	private BorderPane myRoot = new BorderPane();
 	private TextArea textArea=new TextArea();
-	private Canvas canvas = new Canvas(500,500);
+	private Canvas canvas;
 	private CommandScrollPane commandScrollPane=new CommandScrollPane(textArea);
-	private GraphicsContext gc = canvas.getGraphicsContext2D();
 	private Pane wrapperPane = new Pane();
 	private ColorButton cb = new ColorPickDefault(wrapperPane);
-	private TurtleView t = new TurtleView();
-	private TurtleViewManager tvm = new TurtleViewManager(t);
+	private TurtleViewManager tvm = new TurtleViewManager(new TurtleView());
 	private List<Button> otherButtons;
 	private Stage myStage;
 	private String currentLanguage = "English";
@@ -51,22 +42,21 @@ public class GUI {
 	public GUI(Stage stage){
 		wrapperPane.setStyle("-fx-background-color: black;");
 		myRoot=createRoot();
-		initializeTurtle();
 		myStage = stage;
 		myStage.setScene(createScene());
 		show();
+		initializeTurtle();
 	}
 	
 	
 	private void initializeTurtle(){
-		t.getImage().setX(wrapperPane.getBoundsInLocal().getWidth()/2);
-		t.getImage().setY(wrapperPane.getBoundsInLocal().getHeight()/2);
-		wrapperPane.getChildren().add(t.getImage());
-		System.out.println(wrapperPane.getBoundsInLocal().getWidth()/2);
-		System.out.println(wrapperPane.getBoundsInLocal().getHeight()/2);
+		tvm.setX(wrapperPane.getBoundsInLocal().getWidth()/2);
+		tvm.setY(wrapperPane.getBoundsInLocal().getHeight()/2);
+		wrapperPane.getChildren().add(tvm.getImage());
 	}
 	
 	private void createCanvas(){
+		canvas = new Canvas(wrapperPane.getBoundsInLocal().getWidth(),wrapperPane.getBoundsInLocal().getHeight());
 		wrapperPane.getChildren().add(canvas);
 	}
 	
@@ -118,18 +108,14 @@ public class GUI {
 	 }
 	 private void handleRunButton(){
 		commandScrollPane.addText();
-		textArea.clear();
-		
+		textArea.clear();		
 	 }
 	 private void createButtons(){
 		    Button play = createButton("Run", e -> handleRunButton());
 	        Button clear = createButton("Clear", e -> {
 	        	textArea.clear();
-	        });
-	        
-	        Button help = createButton("Help", e -> gc.setFill(Color.BLUE));
-	        
-	        otherButtons = Arrays.asList(play, clear,help);
+	        });       
+	        otherButtons = Arrays.asList(play, clear);
 	 }
 	 private Button createButton(String label, EventHandler<ActionEvent> e) {
 	        Button b = new Button();

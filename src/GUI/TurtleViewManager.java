@@ -17,4 +17,13 @@ public void moveTurtle(Trajectory T){
 		double newHeading=uts.getHeading();
 	}
 }
+public void setX(double xLoc){
+	myTurtleView.getImage().setX(xLoc);
+}
+public void setY(double yLoc){
+	myTurtleView.getImage().setY(yLoc);
+}
+public ImageView getImage(){
+	return myTurtleView.getImage();
+}
 }

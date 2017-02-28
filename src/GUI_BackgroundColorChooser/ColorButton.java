@@ -13,6 +13,7 @@ public abstract class ColorButton {
 	
 	public ColorButton(Pane canvas){
 		myPane=canvas;
+		
 	}
 	protected abstract String getStringColor();
 	
