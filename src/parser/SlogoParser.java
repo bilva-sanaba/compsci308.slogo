@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import configuration.Arguments;
+import model.Constant;
 import model.Token;
+import model.commands.CommandException;
 
 
 
@@ -59,41 +61,38 @@ public class SlogoParser {
 	}
 
 	
-	public static void parse(String command){
+	public static SlogoNode parse(String command) throws CommandException{
 		
 		createValueList();
 		ArrayList<String> commandList = fillList(command);
-		Arguments tokenList = makeTokenList(commandList);
+		
 		SlogoNode root = new TokenNode(null);
+		head=root;
 		//root.addChild(tokenList); //update
 	
 		
 		for(String word: commandList){
 			SlogoNode slogoNode;
-			if(possibleCommands.contains(word)){//word is in resources
-				slogoNode = new CommandNode(word);
-			}
-			else if(word.equals("[")){
-				slogoNode = new GroupNode(word);
+			SlogoNodeFactory factory = new SlogoNodeFactory();
+			slogoNode = factory.genSlogoNode(word);
+			root.addChild(slogoNode);
+			if(word.equals("[")){
 				//currNode=parentNode;
 				parse(command.substring(command.indexOf("[")+1));
 			}
 			else if(word.equals("]")){
 				//evaluate up until null node
-				parse(command.substring(command.indexOf("]")+1));
-			}
-			else{
-				slogoNode = new ParamNode(word);
+				slogoNode = parse(command.substring(command.indexOf("]")+1));
 			}
 			
-			root.addChild(slogoNode);
-			if(!slogoNode.getType().equals("param")){
+			//root.addChild(slogoNode);
+			if(slogoNode.getToken().getType().equals("command")){ //edit this line
 				parentNode=root;
 				root=slogoNode;
 			}
 			
-		
 		}
+		return head;
 	}
 	
 	/*private static void traverse(SlogoNode slogoNode){
@@ -144,14 +143,14 @@ public class SlogoParser {
 		return new ArrayList<String>(Arrays.asList(command.split(" ")));
 	}
 	
-	private static Arguments makeTokenList(ArrayList<String> commandList){
+	/*private static Arguments makeTokenList(ArrayList<String> commandList) throws CommandException{
 		SlogoNodeFactory factory = new SlogoNodeFactory();
 		Arguments tokenList = new Arguments();
 		for(String c: commandList){
-			tokenList.add(factory.genSlogoNode(c));
+			tokenList.add((TokenNode)factory.genSlogoNode(c));
 		}
 		return tokenList;
-	}
+	}*/
 
 	/*public static void main(String[] args){
 		SlogoNode head = new SlogoNode(null, "head");
@@ -163,7 +162,10 @@ public class SlogoParser {
 		}
 		System.out.println(count);
 	}*/
-
+	public static void main(String[] args){
+		SlogoNode slogoNode = new TokenNode(new Constant(3.1));
+		System.out.println(slogoNode.getToken());
+	}
 	
 }
 

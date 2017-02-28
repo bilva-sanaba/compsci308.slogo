@@ -26,12 +26,18 @@ public class TokenNode implements SlogoNode {
 		this.params=params;
 	}
 	
-	public TokenType getType(){
-		return token.getType();
+	public Token getToken(){
+		return token;
 	}
 	
 	public Arguments getChildren(){
 		return children;
+	}
+
+	@Override
+	public TokenType getType() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 

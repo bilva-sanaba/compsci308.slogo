@@ -1,30 +1,41 @@
 package parser;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import configuration.Arguments;
+import model.Token;
+import model.TokenType;
 /**
  * 
  * @author jwei528
  *
  */
-public interface SlogoNode {
+public interface SlogoNode extends Token{
 
 	/**
 	 * adds a node to the tree
 	 * @param child
 	 */
-	public void addChild(SlogoNode child);
+	public void addChild(Token arg);
 	
 	/**
-	 * returns the type of String
+	 * adds list to node
+	 */
+	public void addList(ArrayList<String> params);
+	
+	/**
+	 * Returns the token
 	 * (e.g. command, param)
 	 * 
 	 */
-	public String getToken();
+	public Token getToken();
 	
 	/**
 	 * returns the children of a given node
 	 * (its parameters)
 	 * 
 	 */
-	public List<SlogoNode> getChildren();
+	public Arguments getChildren();
 }
+
