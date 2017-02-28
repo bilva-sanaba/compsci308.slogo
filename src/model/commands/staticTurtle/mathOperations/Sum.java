@@ -1,6 +1,6 @@
 package model.commands.staticTurtle.mathOperations;
 
-import configuration.Arguments;
+import model.Arguments;
 import model.Constant;
 import model.Token;
 
@@ -14,7 +14,7 @@ public class Sum extends MathOperation {
 	 * Adds two arguments
 	 */
 	@Override
-	public double doLogic(Arguments args) {
+	public double execute(Arguments args) {
 		return args.getDouble(0) + args.getDouble(1);
 	}
 

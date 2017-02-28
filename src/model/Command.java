@@ -1,9 +1,9 @@
 package model;
 
-import configuration.Arguments;
 import model.commands.CommandException;
 
 /**
+ * Token: Command
  * @author Dhruv K Patel
  * @author Jacob Weiss
  *
@@ -16,7 +16,7 @@ public interface Command extends Token {
 	 * type and quantity
 	 * @throws CommandException 
 	 */
-	public double execute(Arguments args) throws CommandException;
+	public Token evaluate(Arguments args) throws CommandException;
 	
 	/**
 	 * Gets number of arguments required by the command

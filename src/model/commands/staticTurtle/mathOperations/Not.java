@@ -1,6 +1,6 @@
 package model.commands.staticTurtle.mathOperations;
 
-import configuration.Arguments;
+import model.Arguments;
 import model.Constant;
 import model.Token;
 
@@ -14,7 +14,7 @@ import model.Token;
 public class Not extends MathOperation {
 
 	@Override
-	public double doLogic(Arguments args) {
+	public double execute(Arguments args) {
 		if(args.getDouble(0) != 0) return 0;
 		else return 1;
 	}
