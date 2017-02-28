@@ -50,6 +50,6 @@ public class SetTowards extends DynamicTurtleCommand {
 
 	@Override
 	public String getID() {
-		return "SetTowardss";
+		return "SetTowards";
 	}
 }

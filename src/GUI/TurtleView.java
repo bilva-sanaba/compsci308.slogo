@@ -26,7 +26,7 @@ public class TurtleView {
 		Turtle_Image.setRotate(heading);
 	}
 	public void setPenDown(){
-	penDown=true;
+		penDown=true;
 	}
 	public void setPenUp(){
 		penDown=false;

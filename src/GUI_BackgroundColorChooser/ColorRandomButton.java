@@ -1,4 +1,4 @@
-package GUI;
+package GUI_BackgroundColorChooser;
 
 import java.util.Random;
 

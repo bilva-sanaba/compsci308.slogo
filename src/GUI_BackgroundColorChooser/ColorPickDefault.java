@@ -1,4 +1,4 @@
-package GUI;
+package GUI_BackgroundColorChooser;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
