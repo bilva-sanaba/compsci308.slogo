@@ -12,10 +12,12 @@ import GUI_BackgroundColorChooser.ColorButton;
 import GUI_BackgroundColorChooser.ColorPickDefault;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,33 +25,45 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class GUI {
 	private BorderPane myRoot = new BorderPane();
+	private TextArea textArea=new TextArea();
 	private Canvas canvas = new Canvas(500,500);
+	private CommandScrollPane commandScrollPane=new CommandScrollPane(textArea);
 	private GraphicsContext gc = canvas.getGraphicsContext2D();
 	private Pane wrapperPane = new Pane();
 	private ColorButton cb = new ColorPickDefault(wrapperPane);
 	private TurtleView t = new TurtleView();
+	private TurtleViewManager tvm = new TurtleViewManager(t);
 	private List<Button> otherButtons;
 	private Stage myStage;
 	private String currentLanguage = "English";
 	public static final int SCENE_WIDTH = 1200; 
 	public static final int SCENE_HEIGHT = 680;
 	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
+	
 	public GUI(Stage stage){
 		wrapperPane.setStyle("-fx-background-color: black;");
 		myRoot=createRoot();
+		initializeTurtle();
 		myStage = stage;
 		myStage.setScene(createScene());
 		show();
 	}
 	
-	private void setTurtle(){
+	
+	private void initializeTurtle(){
+		t.getImage().setX(wrapperPane.getBoundsInLocal().getWidth()/2);
+		t.getImage().setY(wrapperPane.getBoundsInLocal().getHeight()/2);
 		wrapperPane.getChildren().add(t.getImage());
+		System.out.println(wrapperPane.getBoundsInLocal().getWidth()/2);
+		System.out.println(wrapperPane.getBoundsInLocal().getHeight()/2);
 	}
 	
 	private void createCanvas(){
@@ -65,11 +79,13 @@ public class GUI {
         BorderPane bp = new BorderPane();
         bp.setBottom(initInputPanel());
         bp.setLeft(new Rectangle(100,100,Color.RED));
-        bp.setRight(new Rectangle(100,100,Color.BLUE));
+        createScrollPane();
+        bp.setRight(commandScrollPane.getScrollPane());
         bp.setCenter(wrapperPane);
         createCanvas();
         return bp;
     }
+	
 	private ChoiceBox<String> createLanguageBox() {
 		ChoiceBox<String> language = createChoiceBox(Languages, (observable, oldValue, newValue) -> {
             setLanguage(newValue.toString());
@@ -82,21 +98,33 @@ public class GUI {
 	public String getCurrentLanguage(){
 		return currentLanguage;
 	}
+	
+	private void createScrollPane(){
+		commandScrollPane=new CommandScrollPane(textArea);
+		commandScrollPane.getScrollPane().setPrefSize(SCENE_WIDTH/4,SCENE_HEIGHT);
+		commandScrollPane.getScrollPane().setLayoutX(SCENE_WIDTH*3/4);
+		commandScrollPane.getScrollPane().setLayoutY(0);
+	}
+	
 	 private Node initInputPanel() {
-	        createButtons();
+		 	createButtons();
 	        HBox inputPanel = new HBox();
-	        TextArea t = new TextArea("Enter code here");
-	        inputPanel.getChildren().add(t);
+	        textArea = new TextArea("Enter code here");
+	        inputPanel.getChildren().add(textArea);
 	        inputPanel.getChildren().addAll(otherButtons);
 	        inputPanel.getChildren().add(cb.getButton());
 	        inputPanel.getChildren().add(createLanguageBox());
 	        return inputPanel;
 	 }
+	 private void handleRunButton(){
+		commandScrollPane.addText();
+		textArea.clear();
+		
+	 }
 	 private void createButtons(){
-		    Button play = createButton("Run", e -> setTurtle());
+		    Button play = createButton("Run", e -> handleRunButton());
 	        Button clear = createButton("Clear", e -> {
-	        	gc.setFill(Color.CYAN);
-	        	wrapperPane.setStyle("-fx-background-color: blue;");
+	        	textArea.clear();
 	        });
 	        
 	        Button help = createButton("Help", e -> gc.setFill(Color.BLUE));
