@@ -1,4 +1,5 @@
 package GUI;
+import configuration.Trajectory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -35,5 +36,7 @@ public class TurtleView {
 	}
 	public void setInvisible(){
 		visible=false;
+	}
+	public void move(Trajectory T){
 	}
 }

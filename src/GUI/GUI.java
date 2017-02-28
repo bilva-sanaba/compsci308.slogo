@@ -30,7 +30,7 @@ public class GUI {
 	private BorderPane myRoot = new BorderPane();
 	private TextArea textArea=new TextArea();
 	private Canvas canvas = new Canvas(500,500);
-	private CommandScrollPane sp=new CommandScrollPane(textArea);
+	private CommandScrollPane commandScrollPane=new CommandScrollPane(textArea);
 	
 	private GraphicsContext gc = canvas.getGraphicsContext2D();
 	private Pane wrapperPane = new Pane();
@@ -70,16 +70,16 @@ public class GUI {
         bp.setBottom(initInputPanel());
         bp.setLeft(new Rectangle(100,100,Color.RED));
         createScrollPane();
-        bp.setRight(sp.getScrollPane());
+        bp.setRight(commandScrollPane.getScrollPane());
         bp.setCenter(wrapperPane);
         createCanvas();
         return bp;
     }
 	private void createScrollPane(){
-		  sp=new CommandScrollPane(textArea);
-		sp.getScrollPane().setPrefSize(SCENE_WIDTH/4,SCENE_HEIGHT);
-		sp.getScrollPane().setLayoutX(SCENE_WIDTH*3/4);
-		sp.getScrollPane().setLayoutY(0);
+		  commandScrollPane=new CommandScrollPane(textArea);
+		commandScrollPane.getScrollPane().setPrefSize(SCENE_WIDTH/4,SCENE_HEIGHT);
+		commandScrollPane.getScrollPane().setLayoutX(SCENE_WIDTH*3/4);
+		commandScrollPane.getScrollPane().setLayoutY(0);
 		
 		
 	}
@@ -92,11 +92,11 @@ public class GUI {
 	        inputPanel.getChildren().add(textArea);
 	        inputPanel.getChildren().addAll(otherButtons);
 	        inputPanel.getChildren().add(cb.getButton());
-	        //inputPanel.getChildren().add(sp);
+	        //inputPanel.getChildren().add(commandScrollPane);
 	        return inputPanel;
 	 }
 	 private void handleRunButton(){
-		sp.addText();
+		commandScrollPane.addText();
 		
 	 }
 	 private void createButtons(){
