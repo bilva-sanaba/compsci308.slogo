@@ -8,7 +8,7 @@ public class TurtleView {
 	private boolean penDown;
 	private boolean visible;
 	public TurtleView(){
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream("ball.gif"));
+		Image image = new Image(getClass().getClassLoader().getResourceAsStream("turtle2.gif"));
 		Turtle_Image = new ImageView(image);
 		penDown=true;
 		visible=true;

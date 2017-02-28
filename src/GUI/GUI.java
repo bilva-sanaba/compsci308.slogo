@@ -6,6 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import java.util.Arrays;
 import java.util.List;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.beans.value.ChangeListener;
@@ -17,6 +18,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -34,7 +37,7 @@ public class GUI {
 	
 	private GraphicsContext gc = canvas.getGraphicsContext2D();
 	private Pane wrapperPane = new Pane();
-	private ColorButton cb = new ColorRandomButton(wrapperPane);
+	private ColorButton cb = new ColorPickDefault(wrapperPane);
 	private TurtleView t = new TurtleView();
 	private List<Button> otherButtons;
 	private Stage myStage;
@@ -49,9 +52,16 @@ public class GUI {
 		show();
 	}
 	
-	
+	private ComboBox<ImageView> selectTurtle(TurtleViewManager){
+		ComboBox<ImageView> turtleChoice=new ComboBox<ImageView>();
+		turtleChoice.getItems().add(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.gif"))));
+		turtleChoice.getItems().add(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle2.gif"))));
+		return turtleChoice;
+	}
 	private void setTurtle(){
 		wrapperPane.getChildren().add(t.getImage());
+		t.getImage().setX(wrapperPane.getBoundsInLocal().getWidth()/2-t.getImage().getBoundsInLocal().getWidth()/2);
+		t.getImage().setY(wrapperPane.getBoundsInLocal().getHeight()/2-t.getImage().getBoundsInLocal().getHeight()/2);
 	}
 	
 	private void createCanvas(){
@@ -92,12 +102,12 @@ public class GUI {
 	        inputPanel.getChildren().add(textArea);
 	        inputPanel.getChildren().addAll(otherButtons);
 	        inputPanel.getChildren().add(cb.getButton());
-	        //inputPanel.getChildren().add(commandScrollPane);
+	       ComboBox<ImageView>turtleChoice=selectTurtle();
 	        return inputPanel;
 	 }
 	 private void handleRunButton(){
 		commandScrollPane.addText();
-		
+		setTurtle();
 	 }
 	 private void createButtons(){
 		    Button play = createButton("Run", e -> handleRunButton());
