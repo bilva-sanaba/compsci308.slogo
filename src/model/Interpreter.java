@@ -15,15 +15,10 @@ public class Interpreter {
 		
 		Arguments returnArgs = new Arguments();
 		
+	
 		for(TokenNode node : root.getChildren()){
 			
-			if(node.getToken().getType() == TokenType.LIST){
-				TList list = (TList)node.getToken();
-				list.setChildren(node.getChildren());
-				returnArgs.add(list);
-			}
-			
-			else if(node.getChildren().isEmpty()){
+			if(node.getChildren().isEmpty()){
 				returnArgs.add(node.getToken().evaluate(new Arguments()));
 			}
 			
@@ -32,6 +27,12 @@ public class Interpreter {
 			}
 			
 		}
+	
+		if(root.getToken().getType() == TokenType.LIST){
+			TList list = (TList)root.getToken();
+			list.setChildren(root.getChildren());
+		}
+		
 		return root.getToken().evaluate(returnArgs);
 		
 	}
