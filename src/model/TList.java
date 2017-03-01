@@ -1,10 +1,13 @@
 package model;
 
+import java.util.List;
+
 import model.commands.CommandException;
+import parser.TokenNode;
 
 public class TList implements Token {
 	
-	private Arguments contents;
+	private List<TokenNode> children;
 	
 	@Override
 	public TokenType getType() {
@@ -13,22 +16,25 @@ public class TList implements Token {
 
 	@Override
 	public Token evaluate(Arguments args) throws CommandException {
-		contents = args;
+		if(children == null) throw new CommandException("List is empty");
 		return this;
-	}
-	
-	public Arguments getContents() throws CommandException{
-		if(contents == null) throw new CommandException("Trying to access contents of an empty List");
-		return contents;
 	}
 	
 	public String toString(){
 		String s = "[ ";
-		for(Token t: contents){
-			s += t.toString() + " ";
+		for(TokenNode t: children){
+			s += t.getToken().toString() + " ";
 		}
 		s += " ]";
 		return s;
+	}
+
+	public void setChildren(List<TokenNode> children) {
+		this.children = children;
+	}
+	
+	public List<TokenNode> getChildren(){
+		return children;
 	}
 
 }

@@ -29,5 +29,11 @@ public interface Command extends Token {
 	 */
 	public boolean needsTurtleTrajectory();
 	
+	/**
+	 * Sets scope of command (what information it needs about current state)
+	 */
+	public void setScope(Scope scope);
+	
+	
 }
 

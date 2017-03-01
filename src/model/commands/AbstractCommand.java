@@ -3,10 +3,12 @@ package model.commands;
 import model.Arguments;
 import model.Command;
 import model.Constant;
+import model.Scope;
 import model.Token;
 import model.TokenType;
 
 public abstract class AbstractCommand implements Command{
+	Scope scope;
 	
 	/**
 	 * Returns number of arguments command requires
@@ -82,5 +84,19 @@ public abstract class AbstractCommand implements Command{
 	 */
 	public String toString(){
 		return getID();
+	}
+	
+	/**
+	 * Sets scope of command
+	 */
+	public void setScope(Scope scope){
+		this.scope = scope;
+	}
+	
+	/**
+	 * Returns scope of command
+	 */
+	public Scope getScope(){
+		return scope;
 	}
 }

@@ -60,5 +60,13 @@ public class Variable implements Token {
 	public String toString(){
 		return String.format(":%s(%f)", getName(), getValue());
 	}
+	
+	/**
+	 * Variables with same name are equal in a set.
+	 */
+	@Override
+	public int hashCode(){
+		return this.name.hashCode();
+	}
 
 }

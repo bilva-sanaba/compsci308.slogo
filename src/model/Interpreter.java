@@ -17,9 +17,16 @@ public class Interpreter {
 		
 		for(TokenNode node : root.getChildren()){
 			
-			if(node.getChildren().isEmpty()){
+			if(node.getToken().getType() == TokenType.LIST){
+				TList list = (TList)node.getToken();
+				list.setChildren(node.getChildren());
+				returnArgs.add(list);
+			}
+			
+			else if(node.getChildren().isEmpty()){
 				returnArgs.add(node.getToken().evaluate(new Arguments()));
 			}
+			
 			else{
 				returnArgs.add(evaluateTree(node));
 			}
