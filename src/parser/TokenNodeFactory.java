@@ -48,14 +48,14 @@ public class TokenNodeFactory {
 	}
 	
 
-	public TokenNode genTokenNode(String word) throws CommandException{
+	public TokenNode genTokenNode(TokenNode parentNode, String word) throws CommandException{
 		createValueList();
-		TokenNode tokenNode = new TokenNode(null);
+		TokenNode tokenNode = new TokenNode(parentNode, null);
 		if(possibleCommands.contains(word)){//word is in resources
 			CommandFactory cFactory = new CommandFactory();
 			String wordID = findWordID(word);
 			Token t = cFactory.getCommand(wordID);
-			tokenNode = new TokenNode(t);
+			tokenNode = new TokenNode(parentNode, t);
 		}
 		/*else if(word.equals("[")){
 			tokenNode = new TokenNode(null);
@@ -64,10 +64,10 @@ public class TokenNodeFactory {
 			tokenNode = new TokenNode(null);
 		}*/
 		else if(Double.valueOf(word)!=null){
-			tokenNode = new TokenNode(new Constant(Double.parseDouble(word)));
+			tokenNode = new TokenNode(parentNode, new Constant(Double.parseDouble(word)));
 		}
 		else if(word.substring(0,1)==":"){ //include : check
-			tokenNode = new TokenNode(new Variable(word));
+			tokenNode = new TokenNode(parentNode, new Variable(word));
 		}
 		return tokenNode;
 	}

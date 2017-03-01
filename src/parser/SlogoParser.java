@@ -35,6 +35,7 @@ public class SlogoParser {
 		ArrayList<String> commandList = fillList(command);
 		
 		TokenNode root = tNode;
+		TokenNode parentNode = null;
 		TokenNode head=root;
 	
 		
@@ -46,23 +47,29 @@ public class SlogoParser {
 				int startIndex = commandList.indexOf(("["));
 				int endIndex = getEndIndex(commandList, startIndex);
 				i = endIndex;
-				tokenNode = parse(new TokenNode(new TList()), command.substring(startIndex, endIndex));
+				tokenNode = parse(new TokenNode(root, new TList()), command.substring(startIndex, endIndex));
 			}
 			
 			TokenNodeFactory factory = new TokenNodeFactory();
-			tokenNode = factory.genTokenNode(word);
+			tokenNode = factory.genTokenNode(parentNode, word);
+			root.addChild(tokenNode);
+			
 			
 			if(tokenNode.getToken().getType() == TokenType.COMMAND){
 				//check for parameters
-				int numArgs = ((Command)tokenNode.getToken()).getNumArgs();
-				String newCommand="";
-				for(int m=1; m<numArgs+1; m++){
-					newCommand=newCommand+commandList.get(i+m)+" ";
-				}
-				tokenNode = parse(tokenNode, newCommand);
+				//int numArgs = ((Command)tokenNode.getToken()).getNumArgs();
+				parentNode=root;
+				root=tokenNode;
+				//now you add to command
+				//MUST INCLUDE CHECK FOR FILLED PARAMETERS
 			}
 			
-			root.addChild(tokenNode);			
+			if(root.getChildren().size()==((Command)root.getToken()).getNumArgs()){
+				root=parentNode;
+				parentNode=root.getParent();
+			}
+			
+			//root.addChild(tokenNode);			
 		}
 		return head;
 	}
