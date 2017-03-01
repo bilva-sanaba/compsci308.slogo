@@ -11,7 +11,7 @@ import parser.TokenNode;
  */
 public class Interpreter {
 	
-	public Token evaluateTree(TokenNode root) throws CommandException{
+	public Token evaluateTree(TokenNode root, Scope scope) throws CommandException{
 		
 		Arguments returnArgs = new Arguments();
 		
@@ -28,7 +28,7 @@ public class Interpreter {
 			}
 			
 			else{
-				returnArgs.add(evaluateTree(node));
+				returnArgs.add(evaluateTree(node, scope));
 			}
 			
 		}

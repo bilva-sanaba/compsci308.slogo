@@ -28,6 +28,14 @@ public interface Command extends Token {
 	 */
 	public void setScope(Scope scope);
 	
+	/**
+	 * Gets scope request of command (what information the command will need)
+	 */
+	public Scope getScopeRequest();
 	
+	/**
+	 * Gets String ID of command name
+	 */
+	public String getID();
 }
 

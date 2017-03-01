@@ -6,7 +6,7 @@ package model;
  * @author DhruvKPatel
  */
 public class Variable implements Token {
-
+	private VariableContainer myContainer;
 	private final String name;
 	private Constant value;
 	
@@ -38,7 +38,17 @@ public class Variable implements Token {
 	 * Returns variable value
 	 */
 	public Constant getValue(){
+		if(myContainer != null) {
+			value = myContainer.getValue(name);
+		}
 		return value;
+	}
+	
+	/**
+	 * Sets variable value
+	 */
+	public void setValue(Constant v){
+		value = v;
 	}
 	
 	/**
@@ -67,6 +77,11 @@ public class Variable implements Token {
 	@Override
 	public int hashCode(){
 		return this.name.hashCode();
+	}
+
+	@Override
+	public void setScope(Scope s) {
+		myContainer = s.getVariables();
 	}
 
 }

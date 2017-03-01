@@ -4,7 +4,6 @@ import configuration.Trajectory;
 import configuration.TurtleState;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
-import model.commands.DynamicTurtleCommand;
 import parser.TokenNode;
 
 public class treeTester {
@@ -33,9 +32,9 @@ public class treeTester {
 		
 		
 		
-		DynamicTurtleCommand twd = (DynamicTurtleCommand) f.getCommand("SetTowards");
+		Command twd = f.getCommand("SetTowards");
 		traj.addLast(new TurtleState(100, 100, 0, false, false));
-		twd.setTrajectory(traj);
+		twd.setScope(new Scope(f, new VariableContainer(), traj, twd.getScopeRequest()));
 		TokenNode t = new TokenNode(twd);
 		t.addChild(q);
 		t.addChild(new Constant(1));

@@ -1,5 +1,6 @@
 package model.commands.mathOperations;
 
+import model.Scope;
 import model.commands.AbstractCommand;
 
 /**
@@ -13,5 +14,7 @@ import model.commands.AbstractCommand;
  *
  */
 public abstract class MathOperation extends AbstractCommand {
-	
+	public Scope getScopeRequest(){
+		return new Scope(false, false, false);
+	}
 }

@@ -6,6 +6,7 @@ import model.commands.CommandException;
 import parser.TokenNode;
 
 public class TList implements Token {
+	Scope myScope;
 	
 	private List<TokenNode> children;
 	
@@ -35,6 +36,11 @@ public class TList implements Token {
 	
 	public List<TokenNode> getChildren(){
 		return children;
+	}
+
+	@Override
+	public void setScope(Scope s) {
+		myScope = s; 
 	}
 
 }
