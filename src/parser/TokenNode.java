@@ -15,10 +15,12 @@ import model.commands.CommandException;
 public class TokenNode{
 	private Token token;
 	private List<TokenNode> children;
+	private TokenNode parentNode;
 
-	public TokenNode(Token token){
+	public TokenNode(TokenNode parentNode, Token token){
 		this.children = new ArrayList<TokenNode>();
 		this.token = token;
+		this.parentNode = parentNode;
 	}
 	
 	public void addChild(TokenNode child){
@@ -26,7 +28,7 @@ public class TokenNode{
 	}
 	
 	public void addChild(Token childVal){
-		children.add(new TokenNode(childVal));
+		children.add(new TokenNode(this, childVal));
 	}	
 	
 	public Token getToken(){
@@ -35,6 +37,10 @@ public class TokenNode{
 	
 	public List<TokenNode> getChildren(){
 		return children;
+	}
+	
+	public TokenNode getParent(){
+		return parentNode;
 	}
 
 }
