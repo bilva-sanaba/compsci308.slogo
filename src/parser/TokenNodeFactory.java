@@ -3,7 +3,9 @@ package parser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import model.Constant;
@@ -28,6 +30,7 @@ public class TokenNodeFactory {
 	public static final String SYNTAX = "Syntax";
 	
 	private static List<String> possibleCommands = new ArrayList<String>();
+	private static Map<String, ArrayList<String>> keyMap = new HashMap<String, ArrayList<String>>();
 	
 	public TokenNodeFactory(){
 	}
@@ -41,6 +44,7 @@ public class TokenNodeFactory {
 			String key = resourceKeys.nextElement();
 			String value = languageResourceBundle.getString(key);
 			ArrayList<String> valueList = new ArrayList<String>(Arrays.asList(value.split("\\|")));
+			keyMap.put(key, valueList);
 			for(String v: valueList){
 				possibleCommands.add(v);
 			}
@@ -52,17 +56,11 @@ public class TokenNodeFactory {
 		createValueList();
 		TokenNode tokenNode = new TokenNode(parentNode, null);
 		if(possibleCommands.contains(word)){//word is in resources
-			CommandFactory cFactory = new CommandFactory();
 			String wordID = findWordID(word);
+			CommandFactory cFactory = new CommandFactory();
 			Token t = cFactory.getCommand(wordID);
 			tokenNode = new TokenNode(parentNode, t);
 		}
-		/*else if(word.equals("[")){
-			tokenNode = new TokenNode(null);
-		}
-		else if(word.equals("]")){
-			tokenNode = new TokenNode(null);
-		}*/
 		else if(Double.valueOf(word)!=null){
 			tokenNode = new TokenNode(parentNode, new Constant(Double.parseDouble(word)));
 		}
@@ -73,11 +71,8 @@ public class TokenNodeFactory {
 	}
 	
 	private String findWordID(String word){
-		Enumeration<String> resourceKeys = languageResourceBundle.getKeys();
-		while(resourceKeys.hasMoreElements()){
-			String key = resourceKeys.nextElement();
-			String value = languageResourceBundle.getString(key);
-			if(value.equals(word)){
+		for(String key: keyMap.keySet()){
+			if(keyMap.get(key).contains(word)){
 				return key;
 			}
 		}

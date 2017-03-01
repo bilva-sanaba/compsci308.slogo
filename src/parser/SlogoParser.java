@@ -24,8 +24,6 @@ import model.commands.CommandException;
  */
 
 public class SlogoParser {
-	//private static ArrayList<TokenNode> nodeList = new ArrayList<TokenNode>();
-	private static TokenNode parentNode;
 	
 	public SlogoParser(){
 	}
@@ -49,27 +47,20 @@ public class SlogoParser {
 				i = endIndex;
 				tokenNode = parse(new TokenNode(root, new TList()), command.substring(startIndex, endIndex));
 			}
-			
 			TokenNodeFactory factory = new TokenNodeFactory();
-			tokenNode = factory.genTokenNode(parentNode, word);
+			tokenNode = factory.genTokenNode(parentNode, word); //will be global
 			root.addChild(tokenNode);
 			
 			
 			if(tokenNode.getToken().getType() == TokenType.COMMAND){
-				//check for parameters
-				//int numArgs = ((Command)tokenNode.getToken()).getNumArgs();
 				parentNode=root;
 				root=tokenNode;
-				//now you add to command
-				//MUST INCLUDE CHECK FOR FILLED PARAMETERS
 			}
 			
 			if(root.getChildren().size()==((Command)root.getToken()).getNumArgs()){
 				root=parentNode;
 				parentNode=root.getParent();
-			}
-			
-			//root.addChild(tokenNode);			
+			}		
 		}
 		return head;
 	}
