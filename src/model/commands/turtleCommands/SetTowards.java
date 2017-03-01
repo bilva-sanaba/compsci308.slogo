@@ -1,4 +1,4 @@
-package model.commands.dynamicTurtle.turtleCommands;
+package model.commands.turtleCommands;
 
 import configuration.Trajectory;
 import configuration.TurtleState;

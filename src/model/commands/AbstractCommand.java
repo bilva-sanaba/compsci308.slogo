@@ -72,12 +72,6 @@ public abstract class AbstractCommand implements Command{
 	 */
 	public abstract String getID();
 	
-	/**
-	 * Returns Command's action type
-	 * 
-	 * (States whether command modifies turtle trajectory)
-	 */
-	public abstract boolean needsTurtleTrajectory();	
 	
 	/**
 	 * Describes command for error messages
@@ -95,8 +89,10 @@ public abstract class AbstractCommand implements Command{
 	
 	/**
 	 * Returns scope of command
+	 * @throws CommandException 
 	 */
-	public Scope getScope(){
+	public Scope getScope() throws CommandException{
+		if(scope == null) throw new CommandException(String.format("Command not sent scope: %s", this.getID()));
 		return scope;
 	}
 }

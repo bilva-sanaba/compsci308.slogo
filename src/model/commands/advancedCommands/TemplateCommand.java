@@ -1,4 +1,4 @@
-package model.commands.dynamicTurtle.advancedCommands;
+package model.commands.advancedCommands;
 
 import model.Arguments;
 import model.commands.AbstractCommand;
@@ -8,12 +8,10 @@ public class TemplateCommand extends AbstractCommand {
 	
 	private Arguments defaultArgs;
 	private String id;
-	private boolean needsTurtleTrajectory;
 	
 	public TemplateCommand(){
 		defaultArgs = new Arguments();
 		id = "TemplateCommand";
-		needsTurtleTrajectory = false;
 	}
 	
 	@Override
@@ -39,14 +37,4 @@ public class TemplateCommand extends AbstractCommand {
 	public void setID(String id){
 		this.id = id;
 	}
-
-	@Override
-	public boolean needsTurtleTrajectory() {
-		return needsTurtleTrajectory;
-	}
-	
-	public void setNeedsTurtleTrajectory(boolean needsTurtleTrajectory){
-		this.needsTurtleTrajectory = needsTurtleTrajectory;
-	}
-
 }

@@ -1,4 +1,4 @@
-package model.commands.dynamicTurtle.advancedCommands;
+package model.commands.advancedCommands;
 
 import model.Arguments;
 import model.TList;
@@ -38,12 +38,6 @@ public class To extends AbstractCommand {
 	@Override
 	public String getID() {
 		return "To";
-	}
-
-	@Override
-	public boolean needsTurtleTrajectory() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

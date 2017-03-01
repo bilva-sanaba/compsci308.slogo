@@ -1,6 +1,6 @@
-package model.commands.staticTurtle.mathOperations;
+package model.commands.mathOperations;
 
-import model.commands.StaticTurtleCommand;
+import model.commands.AbstractCommand;
 
 /**
  * Class for all Math Operation Commands.
@@ -12,6 +12,6 @@ import model.commands.StaticTurtleCommand;
  * @author DhruvKPatel
  *
  */
-public abstract class MathOperation extends StaticTurtleCommand {
+public abstract class MathOperation extends AbstractCommand {
 	
 }
