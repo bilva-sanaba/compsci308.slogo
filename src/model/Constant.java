@@ -37,4 +37,11 @@ public class Constant implements Token {
 	public String toString(){
 		return String.valueOf(value);
 	}
+
+	@Override
+	public void setScope(Scope s) {
+		// Constants don't need scope
+	}
+	
+	
 }
