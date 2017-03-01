@@ -6,7 +6,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import configuration.Arguments;
+import model.Arguments;
 import model.Constant;
 import model.Token;
 import model.commands.CommandException;

@@ -49,4 +49,16 @@ public class Variable implements Token {
 		return TokenType.VARIABLE;
 	}
 
+	@Override
+	public Token evaluate(Arguments args) {
+		return this.value;
+	}
+	
+	/**
+	 * Returns variable for error messages
+	 */
+	public String toString(){
+		return String.format(":%s(%f)", getName(), getValue());
+	}
+
 }

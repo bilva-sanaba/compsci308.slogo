@@ -1,4 +1,4 @@
-package GUI;
+package GUI_BackgroundColorChooser;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -13,6 +13,7 @@ public abstract class ColorButton {
 	
 	public ColorButton(Pane canvas){
 		myPane=canvas;
+		
 	}
 	protected abstract String getStringColor();
 	
