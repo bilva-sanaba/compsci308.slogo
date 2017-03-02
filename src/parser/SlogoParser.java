@@ -5,166 +5,86 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Stack;
 
 import model.Arguments;
+import model.Command;
 import model.Constant;
+import model.TList;
 import model.Token;
+import model.TokenType;
 import model.commands.CommandException;
 
 
 
 /**
  * The parser for user SLogo commands. We read the command and convert it into a tree
- * @author jwei528
+ * @author Jacob Weiss
  *
  */
 
 public class SlogoParser {
-	private static ArrayList<SlogoNode> nodeList = new ArrayList<SlogoNode>();
-	
-	private static SlogoNode head;
-	private static SlogoNode parentNode;
-	private static SlogoNode currNode;
-	private static String command = "repeat 9 [ repeat 180 [ fd 3 rt 2 ] rt 40 ]";
-	//private static ArrayList<String> commandList = new ArrayList<String>();
-	//private static ArrayList<Token> tokenList = new ArrayList<Token>();
-	
-	private static ResourceBundle languageResourceBundle;
-	private static ResourceBundle syntaxResourceBundle;
-	
-	public static final String DEFAULT_RESOURCES_PACKAGE = "resources.languages/";
-	
-	public static final String LANGUAGE = "English";
-	public static final String SYNTAX = "Syntax";
-	
-	private static List<String> possibleCommands = new ArrayList<String>();
-
-
 	
 	public SlogoParser(){
 	}
 	
-
-	private static void createValueList(){
-		//may need try and catch
-		syntaxResourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCES_PACKAGE + SYNTAX);
-		languageResourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCES_PACKAGE + LANGUAGE);
-		Enumeration<String> resourceKeys = languageResourceBundle.getKeys();
-		while(resourceKeys.hasMoreElements()){
-			String key = resourceKeys.nextElement();
-			String value = languageResourceBundle.getString(key);
-			ArrayList<String> valueList = new ArrayList<String>(Arrays.asList(value.split("\\|")));
-			for(String v: valueList){
-				possibleCommands.add(v);
-			}
-		}
-	}
-
-	
-	public static SlogoNode parse(String command) throws CommandException{
+	public TokenNode parse(TokenNode tNode, String command) throws CommandException{
 		
-		createValueList();
 		ArrayList<String> commandList = fillList(command);
 		
-		SlogoNode root = new TokenNode(null);
-		head=root;
-		//root.addChild(tokenList); //update
+		TokenNode root = tNode;
+		TokenNode parentNode = null;
+		TokenNode head=root;
 	
 		
-		for(String word: commandList){
-			SlogoNode slogoNode;
-			SlogoNodeFactory factory = new SlogoNodeFactory();
-			slogoNode = factory.genSlogoNode(word);
-			root.addChild(slogoNode);
+		for(int i=0; i<commandList.size(); i++){
+			String word = commandList.get(i);
+			TokenNode tokenNode;
+			
 			if(word.equals("[")){
-				//currNode=parentNode;
-				parse(command.substring(command.indexOf("[")+1));
+				int startIndex = commandList.indexOf(("["));
+				int endIndex = getEndIndex(commandList, startIndex);
+				i = endIndex;
+				tokenNode = parse(new TokenNode(root, new TList()), command.substring(startIndex, endIndex));
 			}
-			else if(word.equals("]")){
-				//evaluate up until null node
-				slogoNode = parse(command.substring(command.indexOf("]")+1));
-			}
+			TokenNodeFactory factory = new TokenNodeFactory();
+			tokenNode = factory.genTokenNode(parentNode, word); //will be global
+			root.addChild(tokenNode);
 			
-			//root.addChild(slogoNode);
-			if(slogoNode.getToken().getType().equals("command")){ //edit this line
+			
+			if(tokenNode.getToken().getType() == TokenType.COMMAND){
 				parentNode=root;
-				root=slogoNode;
+				root=tokenNode;
 			}
 			
+			if(root.getChildren().size()==((Command)root.getToken()).getNumArgs()){
+				root=parentNode;
+				parentNode=root.getParent();
+			}		
 		}
 		return head;
 	}
 	
-	/*private static void traverse(SlogoNode slogoNode){
-		if(slogoNode.getType().equals("command")){
-			//create new command object
-			System.out.println(1);
-			for(SlogoNode sn: slogoNode.getChildren()){
-				traverse(sn);
-			SlogoNode slogoNode = SlogoNodeFactory.makeSlogoNode(word);
-			
-			if(slogoNode.getType().equals("endgroup")){
-				root=parentNode;
-
+	private int getEndIndex(ArrayList<String> commandList, int startIndex) throws CommandException{
+		Stack<String> stack = new Stack<String>();
+		stack.push("[");
+		
+		for(int i = startIndex + 1; i < commandList.size(); i++){
+			if(commandList.get(i).equals("[")){
+				stack.push(commandList.get(i));
+			}
+			else if(commandList.get(i).equals("]")){
+				stack.pop();
+			}
+			else if(stack.isEmpty()){
+				return i;
 			}
 		}
-		else if(slogoNode.getType().equals("head")){
-			for(SlogoNode sn: slogoNode.getChildren()){
-				traverse(sn);
-			}
-		}
-		else if(slogoNode.getType().equals("param")){
-			System.out.println(0);
-			//create parameter object
-		}
-		else if(slogoNode.getType().equals("group")){
-			System.out.println(2);
-			for(SlogoNode sn: slogoNode.getChildren()){
-				traverse(sn);
-			}	
-		}
-		else if(slogoNode.getType().equals("endgroup")){
-			System.out.println(3);
-			for(SlogoNode sn: slogoNode.getChildren()){
-				traverse(sn);
-			}
-		}
-	}*/
-	
-	/*private static String join(ArrayList<String> commandList){
-		String result="";
-		for(String c: commandList){
-			result=result + c + " ";
-		}
-		return result;
-	}*/
-	
-	private static ArrayList<String> fillList(String command){
-		return new ArrayList<String>(Arrays.asList(command.split(" ")));
+		throw new CommandException("List never closes");
 	}
-	
-	/*private static Arguments makeTokenList(ArrayList<String> commandList) throws CommandException{
-		SlogoNodeFactory factory = new SlogoNodeFactory();
-		Arguments tokenList = new Arguments();
-		for(String c: commandList){
-			tokenList.add((TokenNode)factory.genSlogoNode(c));
-		}
-		return tokenList;
-	}*/
 
-	/*public static void main(String[] args){
-		SlogoNode head = new SlogoNode(null, "head");
-		fillList(command);
-		parse(head, commandList);
-		int count = 0;
-		for(SlogoNode s: nodeList){
-			count++;
-		}
-		System.out.println(count);
-	}*/
-	public static void main(String[] args){
-		SlogoNode slogoNode = new TokenNode(new Constant(3.1));
-		System.out.println(slogoNode.getToken());
+	private ArrayList<String> fillList(String command){
+		return new ArrayList<String>(Arrays.asList(command.split(" ")));
 	}
 	
 }

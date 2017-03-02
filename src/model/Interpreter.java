@@ -10,26 +10,30 @@ import parser.TokenNode;
  *
  */
 public class Interpreter {
-
-	public Token evaluateTree(TokenNode root) throws CommandException{
-		Arguments returnTokens = new Arguments();
-		System.out.print(root.getToken() + "(");
-		for(TokenNode node: root.getChildren()){
+	
+	public Token evaluateTree(TokenNode root, Scope scope) throws CommandException{
+		
+		Arguments returnArgs = new Arguments();
+		
+	
+		for(TokenNode node : root.getChildren()){
 			
 			if(node.getChildren().isEmpty()){
-				System.out.print(node.getToken() + ",");
-				Token ans = node.getToken().evaluate(new Arguments());
-				returnTokens.add(ans);
+				returnArgs.add(node.getToken().evaluate(new Arguments()));
 			}
+			
 			else{
-				returnTokens.add(evaluateTree(node));
+				returnArgs.add(evaluateTree(node, scope));
 			}
+			
 		}
-		System.out.print(")");
+	
+		if(root.getToken().getType() == TokenType.LIST){
+			TList list = (TList)root.getToken();
+			list.setChildren(root.getChildren());
+		}
 		
-//		System.out.println("\n\n");
-//		if(returnTokens.numArgs() > 1) throw new CommandException(String.format("Too many arguments: %s unused", returnTokens.get(1).toString()));
-		return returnTokens.get(0);
+		return root.getToken().evaluate(returnArgs);
+		
 	}
-
 }

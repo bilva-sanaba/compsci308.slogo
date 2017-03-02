@@ -1,4 +1,4 @@
-package model.commands.staticTurtle.mathOperations;
+package model.commands.mathOperations;
 
 import model.Arguments;
 import model.Constant;

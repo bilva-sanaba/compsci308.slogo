@@ -3,7 +3,9 @@ package parser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import model.Constant;
@@ -11,8 +13,12 @@ import model.Token;
 import model.Variable;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
-
-public class SlogoNodeFactory {
+/**
+ * 
+ * @author Jacob Weiss
+ *
+ */
+public class TokenNodeFactory {
 	
 
 	private static ResourceBundle languageResourceBundle;
@@ -24,8 +30,9 @@ public class SlogoNodeFactory {
 	public static final String SYNTAX = "Syntax";
 	
 	private static List<String> possibleCommands = new ArrayList<String>();
+	private static Map<String, ArrayList<String>> keyMap = new HashMap<String, ArrayList<String>>();
 	
-	public SlogoNodeFactory(){
+	public TokenNodeFactory(){
 	}
 	
 	private static void createValueList(){
@@ -37,6 +44,7 @@ public class SlogoNodeFactory {
 			String key = resourceKeys.nextElement();
 			String value = languageResourceBundle.getString(key);
 			ArrayList<String> valueList = new ArrayList<String>(Arrays.asList(value.split("\\|")));
+			keyMap.put(key, valueList);
 			for(String v: valueList){
 				possibleCommands.add(v);
 			}
@@ -44,27 +52,31 @@ public class SlogoNodeFactory {
 	}
 	
 
-	public SlogoNode genSlogoNode(String word) throws CommandException{
+	public TokenNode genTokenNode(TokenNode parentNode, String word) throws CommandException{
 		createValueList();
-		SlogoNode slogoNode;
+		TokenNode tokenNode = new TokenNode(parentNode, null);
 		if(possibleCommands.contains(word)){//word is in resources
+			String wordID = findWordID(word);
 			CommandFactory cFactory = new CommandFactory();
-			Token t = cFactory.getCommand(word);
-			slogoNode = new TokenNode(t);
-		}
-		else if(word.equals("[")){
-			slogoNode = new TokenNode(null);
-		}
-		else if(word.equals("]")){
-			slogoNode = new TokenNode(null);
+			Token t = cFactory.getCommand(wordID);
+			tokenNode = new TokenNode(parentNode, t);
 		}
 		else if(Double.valueOf(word)!=null){
-			slogoNode = new TokenNode(new Constant(Double.parseDouble(word)));
+			tokenNode = new TokenNode(parentNode, new Constant(Double.parseDouble(word)));
 		}
-		else{
-			slogoNode = new TokenNode(new Variable(word));
+		else if(word.substring(0,1)==":"){ //include : check
+			tokenNode = new TokenNode(parentNode, new Variable(word));
 		}
-		return slogoNode;
+		return tokenNode;
+	}
+	
+	private String findWordID(String word){
+		for(String key: keyMap.keySet()){
+			if(keyMap.get(key).contains(word)){
+				return key;
+			}
+		}
+		return "";
 	}
 }
 

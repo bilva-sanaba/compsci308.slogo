@@ -31,7 +31,6 @@ public class CommandFactory {
 			try {
 				key = Class.forName(DEFAULT_COMMANDS.getString(commandID).trim());
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
 				throw new CommandException(String.format("Command not found: %s", commandID));
 			}
 			registerCommand(commandID, key.asSubclass(Command.class));

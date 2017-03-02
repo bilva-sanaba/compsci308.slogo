@@ -3,10 +3,12 @@ package model.commands;
 import model.Arguments;
 import model.Command;
 import model.Constant;
+import model.Scope;
 import model.Token;
 import model.TokenType;
 
 public abstract class AbstractCommand implements Command{
+	Scope scope;
 	
 	/**
 	 * Returns number of arguments command requires
@@ -70,17 +72,27 @@ public abstract class AbstractCommand implements Command{
 	 */
 	public abstract String getID();
 	
-	/**
-	 * Returns Command's action type
-	 * 
-	 * (States whether command modifies turtle trajectory)
-	 */
-	public abstract boolean needsTurtleTrajectory();	
 	
 	/**
 	 * Describes command for error messages
 	 */
 	public String toString(){
 		return getID();
+	}
+	
+	/**
+	 * Sets scope of command
+	 */
+	public void setScope(Scope scope){
+		this.scope = scope;
+	}
+	
+	/**
+	 * Returns scope of command
+	 * @throws CommandException 
+	 */
+	public Scope getScope() throws CommandException{
+		if(scope == null) throw new CommandException(String.format("Command not sent scope: %s", this.getID()));
+		return scope;
 	}
 }

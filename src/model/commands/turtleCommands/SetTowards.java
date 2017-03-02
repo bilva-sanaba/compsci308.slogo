@@ -1,4 +1,4 @@
-package model.commands.dynamicTurtle.turtleCommands;
+package model.commands.turtleCommands;
 
 import configuration.Trajectory;
 import configuration.TurtleState;
@@ -6,7 +6,6 @@ import model.Arguments;
 import model.Constant;
 import model.Token;
 import model.commands.CommandException;
-import model.commands.DynamicTurtleCommand;
 
 /**
  * Set turtle heading to point towards (x,y),
@@ -16,11 +15,11 @@ import model.commands.DynamicTurtleCommand;
  * @author DhruvKPatel
  *
  */
-public class SetTowards extends DynamicTurtleCommand {
+public class SetTowards extends TurtleCommand {
 
 	@Override
 	public double execute(Arguments args) throws CommandException {
-		Trajectory trajectory = getTrajectory();
+		Trajectory trajectory = getScope().getTrajectory();
 		TurtleState current = trajectory.getLast().getModifiableCopy();
 		double currentX = trajectory.getLast().getX();
 		double currentY = trajectory.getLast().getY();
@@ -50,6 +49,6 @@ public class SetTowards extends DynamicTurtleCommand {
 
 	@Override
 	public String getID() {
-		return "SetTowardss";
+		return "SetTowards";
 	}
 }
