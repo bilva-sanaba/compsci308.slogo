@@ -166,6 +166,8 @@ public class GUI {
 		    Button play = runButton;
 	        Button clear = createButton("Clear", e -> {
 	        	textArea.clear();
+	        	textArea.setText("clear");
+	        	play.fire();
 	        });       
 	        otherButtons = Arrays.asList(play, clear);
 	 }
