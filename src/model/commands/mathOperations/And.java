@@ -5,22 +5,22 @@ import model.Constant;
 import model.Token;
 
 /**
- * "Not" operator
+ * "And" operator
  * 
- * returns 1 if arg is 0 and 0 if arg is non-zero
+ * returns 1 if arg1 and arg2 are non-zero, otherwise 0
  * @author DhruvKPatel
  *
  */
-public class Not extends OneParamOperation {
+public class And extends OneParamOperation {
 
 	@Override
 	public double execute(Arguments args) {
-		return args.getDouble(0) == 0? 1:0;
+		return (args.getDouble(0) != 0 ) && (args.getDouble(1) != 0)? 1:0;
 	}
 
 	@Override
 	public String getID() {
-		return "Not";
+		return "And";
 	}
 
 }
