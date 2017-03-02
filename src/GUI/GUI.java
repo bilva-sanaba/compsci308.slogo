@@ -177,10 +177,18 @@ public class GUI {
 		    Button play = runButton;
 	        Button clear = createButton("Clear", e -> {
 	        	textArea.clear();
+
 	        	commandScrollPane.clearScrollPane();
-	        });
+	       
+	       
+
+	        	textArea.setText("clear");
+	        	play.fire();
+	        });     
 	        Button help=createButton("Help",e -> handleHelpButton());
 	        otherButtons = Arrays.asList(play, clear,help);
+	        
+
 	 }
 	 private Button createButton(String label, EventHandler<ActionEvent> e) {
 	        Button b = new Button();

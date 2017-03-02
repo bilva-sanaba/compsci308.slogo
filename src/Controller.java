@@ -24,7 +24,10 @@ public class Controller {
 		try {
 			gui.handleRunButton(model.getTrajectory(text));
 		} catch (CommandException e){
-			alert= new Alert(AlertType.ERROR,e.getMessage());
+			alert= new Alert(AlertType.ERROR);
+			alert.setTitle("Learn to Code: https://www.codeschool.com/");
+			alert.setContentText(e.getMessage()); 
+			alert.showAndWait();
 		}
 	}
 	
