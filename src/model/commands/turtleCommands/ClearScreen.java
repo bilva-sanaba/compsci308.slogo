@@ -4,9 +4,10 @@ import configuration.Trajectory;
 import configuration.TurtleState;
 import model.Arguments;
 import model.Scope;
+import model.commands.AbstractCommand;
 import model.commands.CommandException;
 
-public class ClearScreen{
+public class ClearScreen extends AbstractCommand{
 
 	public double execute(Arguments args) throws CommandException {
 		Trajectory trajectory = getScope().getTrajectory();

@@ -23,6 +23,9 @@ public CommandScrollPane(TextArea t){
 public ScrollPane getScrollPane(){
 	return myScrollPane;
 }
+public void clearScrollPane(){
+	root.getChildren().clear();
+}
 public void addText(){
 	String myString=textArea.getText();
 	Text t=new Text(myString);

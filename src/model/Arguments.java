@@ -104,7 +104,39 @@ public class Arguments implements Iterable<Token>{
 		Token t = this.get(index);
 		return ((Constant)t).getVal();
 	}
-
+	
+	/**
+	 * Returns variable from certain index.
+	 * 
+	 * If Token at index is not a Variable,
+	 * this will return null.
+	 * 
+	 * Likewise, if an index doesn't exist,
+	 * it will return null.
+	 * @param index
+	 * @return argument (variable)
+	 */
+	public Variable getVariable(int index){
+		Token t = this.get(index);
+		return ((Variable)t);
+	}
+	
+	/**
+	 * Returns Constant from certain index.
+	 * 
+	 * If Token at index is not a Constant,
+	 * this will return null.
+	 * 
+	 * Likewise, if an index doesn't exist,
+	 * it will return null.
+	 * @param index
+	 * @return argument (constant)
+	 */
+	public Constant getConstant(int index){
+		Token t = this.get(index);
+		return ((Constant)t);
+	}
+	
 	/**
 	 * Allows to be iterable
 	 * @return

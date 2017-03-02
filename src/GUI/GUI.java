@@ -2,10 +2,16 @@ package GUI;
 
 
 import javafx.scene.canvas.Canvas;
+
+
+import java.net.URL;
+
 import javafx.scene.canvas.GraphicsContext;
+
 
 import java.util.Arrays;
 import java.util.List;
+
 
 import GUI_BackgroundColorChooser.ColorButton;
 import GUI_BackgroundColorChooser.ColorPickDefault;
@@ -21,6 +27,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -34,6 +41,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 public class GUI {
@@ -55,7 +63,10 @@ public class GUI {
 	public static final int SCENE_HEIGHT = 680;
 	private Pane inputPanel;
 	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
-	
+
+	private static final String HELP_WINDOW_TITLE="Syntax";
+	private static final String HELP_URL="help.html";
+
 	public GUI(Stage stage,Button b){
 		wrapperPane.setStyle("-fx-background-color: white;");
 		runButton = b;
@@ -166,8 +177,18 @@ public class GUI {
 		    Button play = runButton;
 	        Button clear = createButton("Clear", e -> {
 	        	textArea.clear();
-	        });       
-	        otherButtons = Arrays.asList(play, clear);
+
+	        	commandScrollPane.clearScrollPane();
+	       
+	       
+
+	        	textArea.setText("clear");
+	        	play.fire();
+	        });     
+	        Button help=createButton("Help",e -> handleHelpButton());
+	        otherButtons = Arrays.asList(play, clear,help);
+	        
+
 	 }
 	 private Button createButton(String label, EventHandler<ActionEvent> e) {
 	        Button b = new Button();
@@ -175,7 +196,21 @@ public class GUI {
 	        b.setOnAction(e);
 	        return b;
 	 }
-
+	 private void handleHelpButton(){
+		
+		 
+         Group root = new Group();
+         WebView browser = new WebView();
+         Scene helpScene = new Scene(root);
+         Stage helpStage = new Stage();
+         helpStage.setTitle("Help Menu");
+         helpStage.setScene(helpScene);
+         URL url = getClass().getResource(HELP_URL);
+         browser.getEngine().load(url.toExternalForm());
+         root.getChildren().add(browser);
+         helpStage.show();
+	 }
+	
 	 private Label createLabel(String text) {
 	        Label label = new Label(text);
 	        label.setTextFill(Color.BLACK);
