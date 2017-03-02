@@ -1,38 +1,25 @@
 package model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
 
 public class VariableContainer {
-	private Set<Variable> variables;
+	private HashMap<String, Constant> variables;
 	
 	public VariableContainer(){
-		variables = new HashSet<>();
+		variables = new HashMap<>();
 	}
 	
-	public VariableContainer(VariableContainer v){
-		this();
-		variables = new HashSet<Variable>(v.variables);
+	public void set(Variable v, Constant c){
+		variables.put(v.getName(), c);
+		System.out.println(variables.size());
 	}
 	
-	/**
-	 * Searches variables for certain name.
-	 * Returns value if variable exists,
-	 * null if variable does not exist.
-	 */
-	public Constant getValue(String name){
-		for(Variable v: variables){
-			if(v.getName().equals(name)) return v.getValue();
-		}
-		return null;
+	public Constant get(Variable v){
+		if(!variables.containsKey(v.getName())) return new Constant(0);
+		return variables.get(v.getName());
 	}
 	
-	/**
-	 * Adds variable to container.
-	 * If variable already exists, overwrites.
-	 * @param v
-	 */
-	public void addVariable(Variable v){
-		variables.add(v);
+	public boolean contains(Variable v){
+		return variables.containsKey(v.getName());
 	}
 }
