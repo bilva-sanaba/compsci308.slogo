@@ -36,6 +36,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
@@ -45,7 +46,7 @@ public class GUI {
 	private Canvas canvas;
 	private GraphicsContext gc;
 	private CommandScrollPane commandScrollPane;
-	private Rectangle background;
+	private Shape background;
 	private Button runButton;
 	private Pane wrapperPane = new Pane();
 	private ColorChooser cb;
