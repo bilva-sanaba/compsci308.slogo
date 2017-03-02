@@ -96,9 +96,13 @@ public class GUI {
 	
 	private void initializeTurtle(){
 		tvm = new TurtleViewManager(new TurtleView(), gc);
-		tvm.setX(wrapperPane.getBoundsInLocal().getWidth()/2);
-		tvm.setY(wrapperPane.getBoundsInLocal().getHeight()/2);
+		redrawTurtle();
 		wrapperPane.getChildren().add(tvm.getImage());
+	}
+	private void redrawTurtle(){
+		tvm.getImage().setRotate(0.0);
+		tvm.setX(wrapperPane.getBoundsInLocal().getWidth()/2-tvm.getImage().getBoundsInLocal().getWidth()/2);
+		tvm.setY(wrapperPane.getBoundsInLocal().getHeight()/2-tvm.getImage().getBoundsInLocal().getHeight()/2);
 	}
 	
 	private void createCanvas(){
@@ -170,6 +174,8 @@ public class GUI {
 	 }
 	 public void handleRunButton(Trajectory T){
 		commandScrollPane.addText();
+		gc.clearRect(0, 0, wrapperPane.getWidth(), wrapperPane.getHeight());
+		redrawTurtle();
 		tvm.moveTurtle(T,wrapperPane.getBoundsInLocal().getWidth(),wrapperPane.getBoundsInLocal().getHeight());
 		textArea.clear();		
 	 }
