@@ -2,11 +2,18 @@ package GUI;
 
 
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+
 import java.util.Arrays;
 import java.util.List;
 
 import GUI_BackgroundColorChooser.ColorButton;
 import GUI_BackgroundColorChooser.ColorPickDefault;
+import GUI_PenColorButton.PenColorButton;
+import GUI_PenColorButton.PenColorWheel;
+import GUI_PenColorButton.RandomPenColorButton;
+import configuration.Trajectory;
+import configuration.TurtleState;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -21,9 +28,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -31,27 +40,34 @@ public class GUI {
 	private BorderPane myRoot = new BorderPane();
 	private TextArea textArea=new TextArea();
 	private Canvas canvas;
+	private GraphicsContext gc;
 	private CommandScrollPane commandScrollPane=new CommandScrollPane(textArea);
+	private Rectangle background;
+	private Button runButton;
 	private Pane wrapperPane = new Pane();
 	private ColorButton cb = new ColorPickDefault(wrapperPane);
-
-
-	private TurtleViewManager tvm = new TurtleViewManager(new TurtleView());
-
+	private TurtleViewManager tvm;
+	private PenColorButton pb;
 	private List<Button> otherButtons;
 	private Stage myStage;
 	private String currentLanguage = "English";
 	public static final int SCENE_WIDTH = 1200; 
 	public static final int SCENE_HEIGHT = 680;
+	private Pane inputPanel;
 	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
 	
-	public GUI(Stage stage){
-		wrapperPane.setStyle("-fx-background-color: black;");
+	public GUI(Stage stage,Button b){
+		wrapperPane.setStyle("-fx-background-color: white;");
+		runButton = b;
 		myRoot=createRoot();
 		myStage = stage;
 		myStage.setScene(createScene());
 		show();
+		createCanvas();
 		initializeTurtle();
+		addPenButton();
+		addOtherBoxes();
+	
 	}
 	
 
@@ -60,6 +76,7 @@ public class GUI {
 		turtleChoice.getItems().add(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.gif"))));
 		turtleChoice.getItems().add(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle2.gif"))));
 		turtleChoice.valueProperty().addListener((x, y, newValue) -> {
+			
 			tvm.getImage().setImage(newValue.getImage());
 		});
 		return turtleChoice;
@@ -67,17 +84,18 @@ public class GUI {
 	
 	
 	private void initializeTurtle(){
+		tvm = new TurtleViewManager(new TurtleView(), gc);
 		tvm.setX(wrapperPane.getBoundsInLocal().getWidth()/2);
 		tvm.setY(wrapperPane.getBoundsInLocal().getHeight()/2);
 		wrapperPane.getChildren().add(tvm.getImage());
-
 	}
 	
 	private void createCanvas(){
-		canvas = new Canvas(wrapperPane.getBoundsInLocal().getWidth(),wrapperPane.getBoundsInLocal().getHeight());
-		wrapperPane.getChildren().add(canvas);
+		canvas = new Canvas(SCENE_WIDTH-commandScrollPane.getScrollPane().getWidth()-100,SCENE_HEIGHT-inputPanel.getHeight());
+		gc = canvas.getGraphicsContext2D();
+		wrapperPane.getChildren().add(canvas);	
 	}
-	
+
 	private Scene createScene() {
         Scene scene = new Scene(myRoot, SCENE_WIDTH, SCENE_HEIGHT);
         return scene;
@@ -90,7 +108,6 @@ public class GUI {
         createScrollPane();
         bp.setRight(commandScrollPane.getScrollPane());
         bp.setCenter(wrapperPane);
-        createCanvas();
         return bp;
     }
 	
@@ -106,6 +123,10 @@ public class GUI {
 	public String getCurrentLanguage(){
 		return currentLanguage;
 	}
+	public String getText(){
+		System.out.println(textArea.getText());
+		return textArea.getText();
+	}
 	
 	private void createScrollPane(){
 		commandScrollPane=new CommandScrollPane(textArea);
@@ -113,29 +134,36 @@ public class GUI {
 		commandScrollPane.getScrollPane().setLayoutX(SCENE_WIDTH*3/4);
 		commandScrollPane.getScrollPane().setLayoutY(0);
 	}
-	
+	private void addPenButton(){
+		pb = new PenColorWheel(tvm);
+        inputPanel.getChildren().add(createLabel("Pick Pen Color: "));
+		inputPanel.getChildren().add(pb.getButton());
+	}
 	 private Node initInputPanel() {
 		 	createButtons();
-	        HBox inputPanel = new HBox();
+		 	BorderPane bottomPanel = new BorderPane();
+	        inputPanel = new FlowPane();
 	        textArea = new TextArea("Enter code here");
-	        inputPanel.getChildren().add(textArea);
+	        bottomPanel.setCenter(inputPanel);
+	        bottomPanel.setLeft(textArea);
+	   
 	        inputPanel.getChildren().addAll(otherButtons);
+	        inputPanel.getChildren().add(createLabel("Pick Background Color: "));
 	        inputPanel.getChildren().add(cb.getButton());
-
-	       ComboBox<ImageView>turtleChoice=selectTurtle();
-	       inputPanel.getChildren().add(turtleChoice);
-	        inputPanel.getChildren().add(createLanguageBox());
-
-	        return inputPanel;
+	        return bottomPanel;
 	 }
-	 private void handleRunButton(){
+	 private void addOtherBoxes(){
+		 ComboBox<ImageView>turtleChoice=selectTurtle();
+	       inputPanel.getChildren().add(turtleChoice);
+	       inputPanel.getChildren().add(createLanguageBox());
+	 }
+	 public void handleRunButton(Trajectory T){
 		commandScrollPane.addText();
-
+		tvm.moveTurtle(T,wrapperPane.getBoundsInLocal().getWidth(),wrapperPane.getBoundsInLocal().getHeight());
 		textArea.clear();		
-
 	 }
 	 private void createButtons(){
-		    Button play = createButton("Run", e -> handleRunButton());
+		    Button play = runButton;
 	        Button clear = createButton("Clear", e -> {
 	        	textArea.clear();
 	        });       
@@ -150,7 +178,7 @@ public class GUI {
 
 	 private Label createLabel(String text) {
 	        Label label = new Label(text);
-	        label.setTextFill(Color.WHITE);
+	        label.setTextFill(Color.BLACK);
 	        return label;
 	        
 	    }

@@ -138,7 +138,7 @@ public class TurtleState implements UnmodifiableTurtleState{
 	public boolean equals(Object t){
 		if (t instanceof TurtleState){
 			UnmodifiableTurtleState t1 = (UnmodifiableTurtleState) t;
-			return(x == t1.getX() && y == t1.getY() && heading == t1.getHeading() && penDown == t1.penDown() && showing == t1.isShowing());
+			return(x == t1.getX() && y == t1.getY() && heading == t1.getHeading() && penDown == t1.isPenDown() && showing == t1.isShowing());
 		}
 		return false;
 	}
@@ -148,5 +148,10 @@ public class TurtleState implements UnmodifiableTurtleState{
 	 */
 	public String toString(){
 		return String.format("TurtleState:\n\tpos: (%f, %f)\n\theading: %f\n\tpen down:%b\n\tshowing: %b\n" , x, y, heading, penDown, showing);
+	}
+
+	@Override
+	public boolean isPenDown() {
+		return penDown;
 	}
 }
