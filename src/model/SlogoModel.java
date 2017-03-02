@@ -35,7 +35,6 @@ public class SlogoModel implements Model {
 			i.evaluateTree(cmd, scope);
 		}
 		
-		System.out.println(turtleTrajectory);
 		return turtleTrajectory;
 	}
 

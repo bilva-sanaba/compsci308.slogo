@@ -15,7 +15,7 @@ import model.commands.CommandException;
  *
  */
 public class MakeVariable extends AbstractCommand{
-
+	
 	@Override
 	public Scope getScopeRequest() {
 		return new Scope(false, true, false);
@@ -25,10 +25,8 @@ public class MakeVariable extends AbstractCommand{
 	public double execute(Arguments args) throws CommandException {
 		VariableContainer vars = getScope().getVariables();
 		
-		Variable newAddition = args.getVariable(0);
-		newAddition.setValue(args.getConstant(1));
-		vars.addVariable(newAddition);
-		
+		vars.set(args.getVariable(0), args.getConstant(1));
+	
 		return args.getDouble(1);
 	}
 

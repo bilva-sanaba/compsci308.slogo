@@ -1,30 +1,21 @@
 package model;
 
+import model.commands.CommandException;
+
 /**
  * This class is for variables, to keep track of names/values.
  * 
  * @author DhruvKPatel
  */
 public class Variable implements Token {
-	private VariableContainer myContainer;
-	private final String name;
-	private Constant value;
-	
-	/**
-	 * Constructs a variable with a name and value
-	 * @param name 
-	 * @param value
-	 */
-	public Variable(String name, Constant value){
-		this.name = name;
-		this.value = value;
-	}
-	
+	private String name;
+	private VariableContainer vars;
+
 	/**
 	 * Constructs a variable with no value (Defaults to 0)
 	 */
 	public Variable(String name){
-		this(name, new Constant(0));
+		this.name = name;
 	}
 	
 	/**
@@ -32,23 +23,6 @@ public class Variable implements Token {
 	 */
 	public String getName(){
 		return name;
-	}
-	
-	/**
-	 * Returns variable value
-	 */
-	public Constant getValue(){
-		if(myContainer != null && myContainer.contains(this)){
-			value = myContainer.getValue(name);
-		}
-		return value;
-	}
-	
-	/**
-	 * Sets variable value
-	 */
-	public void setValue(Constant v){
-		value = v;
 	}
 	
 	/**
@@ -64,24 +38,31 @@ public class Variable implements Token {
 		return this;
 	}
 	
+	public Constant getValue(){
+
+		System.out.println(vars.get(this) + "---");
+		return vars.get(this);
+
+	}
+	
 	/**
 	 * Returns variable for error messages
 	 */
 	public String toString(){
-		return String.format(":%s(%f)", getName(), getValue().getVal());
+		return String.format(":%s", getName());
 	}
 	
-	/**
-	 * Variables with same name are equal in a set.
-	 */
-	@Override
-	public int hashCode(){
-		return this.name.hashCode();
-	}
+//	/**
+//	 * Variables with same name are equal in a set.
+//	 */
+//	@Override
+//	public int hashCode(){
+//		return this.name.hashCode();
+//	}
 
 	@Override
 	public void setScope(Scope s) {
-		myContainer = s.getVariables();
+		vars = s.getVariables();
 	}
 	
 	@Override

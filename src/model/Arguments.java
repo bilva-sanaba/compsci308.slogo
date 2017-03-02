@@ -77,15 +77,11 @@ public class Arguments implements Iterable<Token>{
 		
 		for(int i = 0; i < numArgs(); i++){
 			TokenType myType = this.get(i).getType();
-			System.out.println(input.get(i));
 			TokenType inputType = input.get(i).getType();
-			if(!myType.equals(inputType)){
-				if(!(myType == TokenType.CONSTANT && inputType == TokenType.VARIABLE)){ // This is a bad excpetion, fix later
-					input.set(i, input.getVariable(i).getValue());
-				}
-				else{
-					throw new CommandException(String.format("Argument #%d: expected %s, got %s", i+1, myType, inputType));
-				}
+			
+			if((myType == TokenType.VARIABLE || myType == TokenType.CONSTANT) && (inputType == TokenType.VARIABLE || inputType == TokenType.CONSTANT));
+			else if(!myType.equals(inputType)){
+				throw new CommandException(String.format("Argument #%d: expected %s, got %s", i+1, myType, inputType));
 			}
 		}
 	}
