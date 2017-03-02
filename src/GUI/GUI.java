@@ -10,6 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import ColorChoosers.ColorChooser;
@@ -17,6 +18,7 @@ import GUI_BackgroundColorChooser.BackgroundColorPicker;
 import GUI_BackgroundColorChooser.RainbowBackgroundColorButton;
 import GUI_PenColorButton.PenColorPicker;
 import GUI_RetrievableCode.CommandScrollPane;
+import GUI_RetrievableCode.VariableScrollPane;
 import configuration.Trajectory;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
@@ -37,6 +39,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
@@ -47,6 +50,7 @@ public class GUI {
 	private GraphicsContext gc;
 	private CommandScrollPane commandScrollPane;
 	private Shape background;
+	private VariableScrollPane variableScrollPane;
 	private Button runButton;
 	private Pane wrapperPane = new Pane();
 	private ColorChooser cb;
@@ -77,7 +81,12 @@ public class GUI {
 		initializeTurtle();
 		addPenButton();
 		addOtherBoxes();
+
+	
 	}
+	
+
+	
 	
 	
 	private void initializeTurtle(){
@@ -103,11 +112,16 @@ public class GUI {
 	
 	private BorderPane createRoot() {
         BorderPane bp = new BorderPane();
+        
+        
+        
+        createVariableScroller();
+      
+       bp.setLeft(variableScrollPane.getScrollPane());
+        bp.setCenter(wrapperPane);
         bp.setBottom(initInputPanel());
-        bp.setLeft(new Rectangle(100,100,Color.RED));
         createScrollPane();
         bp.setRight(commandScrollPane.getScrollPane());
-        bp.setCenter(wrapperPane);
         return bp;
     }
 	
@@ -128,11 +142,29 @@ public class GUI {
 		return textArea.getText();
 	}
 	
+
 	private void createScrollPane(){
 		commandScrollPane=new CommandScrollPane(textArea,otherButtons.get(0));
+
 		commandScrollPane.getScrollPane().setPrefSize(SCENE_WIDTH/4,SCENE_HEIGHT);
 		commandScrollPane.getScrollPane().setLayoutX(SCENE_WIDTH*3/4);
 		commandScrollPane.getScrollPane().setLayoutY(0);
+	}
+	private void createVariableScroller(){
+		HashMap<String,Integer>map=new HashMap<String,Integer>();
+		map.put("variable",1);
+		map.put("new_number", 2);
+		map.put("a",1);
+		map.put("v", 2);
+		map.put("n",1);
+		map.put("2", 2);
+		map.put("3",1);
+		map.put("7", 2);
+		variableScrollPane=new VariableScrollPane();
+		variableScrollPane.getScrollPane().setPrefSize(SCENE_WIDTH/8,SCENE_HEIGHT);
+		variableScrollPane.getScrollPane().setLayoutX(0);
+		variableScrollPane.getScrollPane().setLayoutY(0);
+		variableScrollPane.add(map);
 	}
 	private void addPenButton(){
 		pb = new PenColorPicker(tvm);
