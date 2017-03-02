@@ -6,7 +6,11 @@ import model.Arguments;
 import model.Scope;
 import model.commands.AbstractCommand;
 import model.commands.CommandException;
-
+/**
+ * 
+ * @author Jacob Weiss
+ *
+ */
 public class ClearScreen extends AbstractCommand{
 
 	public double execute(Arguments args) throws CommandException {
@@ -40,6 +44,13 @@ public class ClearScreen extends AbstractCommand{
 	
 	public Scope getScope(){
 		return new Scope(true, true, true);
+	}
+
+
+	@Override
+	public Scope getScopeRequest() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

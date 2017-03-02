@@ -87,6 +87,7 @@ public class SlogoParser {
 	}
 
 	private ArrayList<String> fillList(String command){
+		command=command.trim();
 		return new ArrayList<String>(Arrays.asList(command.split(" ")));
 	}
 	
