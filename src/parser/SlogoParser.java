@@ -75,7 +75,6 @@ public class SlogoParser {
 	private int getEndIndex(String command, int startIndex) throws CommandException{
 		Stack<String> stack = new Stack<String>();
 		stack.push("[");
-		//System.out.println(command);
 		for(int i = 1; i < command.length(); i++){
 			if(command.substring(i, i+1).equals("[")){
 				stack.push(command.substring(i, i+1));
@@ -87,7 +86,6 @@ public class SlogoParser {
 			if(stack.isEmpty()){
 				return i;
 			}
-			System.out.println(i);
 		}
 		throw new CommandException("List never closes");
 	}

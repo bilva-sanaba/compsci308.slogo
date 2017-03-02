@@ -21,7 +21,7 @@ import parser.TokenNode;
  * @author Jacob Weiss
  *
  */
-public class Repeat extends AbstractCommand {
+public class IfElse extends AbstractCommand {
 
 	@Override
 	public Scope getScopeRequest() {
@@ -31,18 +31,19 @@ public class Repeat extends AbstractCommand {
 	@Override
 	public double execute(Arguments args) throws CommandException {
 		Trajectory trajectory = getScope().getTrajectory();
-		VariableContainer vars = new VariableContainer();
 		
-		int times = (int) args.getDouble(0);
-		TList tList= args.getTList(1);
+		int check = (int) args.getDouble(0);
+		TList trueList= args.getTList(1);
+		TList falseList = args.getTList(2);
 		double result = 0;
-		int repcount=1;
 		
-		for(int i=times; i>1; i--){
-			Constant r = (Constant)tList.executeChildren();
+		if(check!=0){
+			Constant r = (Constant)trueList.executeChildren();
 			result = r.getVal();
-			vars.set(new Variable("repcount"), new Constant(repcount));
-			repcount++;
+		}
+		else{
+			Constant r = (Constant)falseList.executeChildren();
+			result = r.getVal();
 		}
 		
 		return result;
@@ -57,7 +58,8 @@ public class Repeat extends AbstractCommand {
 	@Override
 	public String getID() {
 		// TODO Auto-generated method stub
-		return "Repeat";
+		return "If";
 	}
 
 }
+
