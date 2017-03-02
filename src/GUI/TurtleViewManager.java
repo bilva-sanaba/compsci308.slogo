@@ -34,7 +34,9 @@ public void moveTurtle(Trajectory T,double screenWidth, double screenHeight){
 		boolean newVisibility = uts.isShowing();
 		if (newPen == true){
 			graphics.setStroke(myTurtleView.getPenColor());
-			graphics.strokeLine(oldX, oldY, penX, penY);
+
+		graphics.strokeLine(oldX, oldY, penX, penY);
+
 		}
 		
 		myTurtleView.setX(newX);
