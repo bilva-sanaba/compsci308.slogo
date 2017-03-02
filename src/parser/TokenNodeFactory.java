@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 import model.Constant;
+import model.TList;
 import model.Token;
 import model.Variable;
 import model.commands.CommandException;
@@ -70,6 +71,7 @@ public class TokenNodeFactory {
 			tokenNode = new TokenNode(parentNode, t);
 		}
 		else if(word.substring(0,1).equals(":")){ //include : check
+
 			tokenNode = new TokenNode(parentNode, new Variable(word.substring(1)));
 		}
 		else if(Double.valueOf(word)!=null){

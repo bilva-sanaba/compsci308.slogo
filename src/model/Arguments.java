@@ -151,6 +151,14 @@ public class Arguments implements Iterable<Token>{
 	}
 	
 	/**
+	 * Returns TList from certain index
+	 */
+	public TList getTList(int index){
+		Token t = this.get(index);
+		return ((TList)t);
+	}
+	
+	/**
 	 * Allows to be iterable
 	 * @return
 	 */
