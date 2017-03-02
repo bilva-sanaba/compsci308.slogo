@@ -16,7 +16,6 @@ public class TurtleComboBox {
 			ComboBox<ImageView>ne=new ComboBox<ImageView>();
 			ne.getItems().addAll(turtleChoice.getItems());
 			turtleChoice.getItems().clear();
-			System.out.println(turtleChoice.getItems());
 			turtleChoice.getItems().addAll(ne.getItems());
 		});
 }

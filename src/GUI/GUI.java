@@ -15,6 +15,7 @@ import java.util.List;
 
 import ColorChoosers.ColorChooser;
 import GUI_BackgroundColorChooser.BackgroundColorPicker;
+import GUI_BackgroundColorChooser.BackgroundColorWriteBox;
 import GUI_BackgroundColorChooser.RainbowBackgroundColorButton;
 import GUI_PenColorButton.PenColorPicker;
 import GUI_RetrievableCode.CommandScrollPane;
@@ -58,7 +59,7 @@ public class GUI {
 	private PenColorPicker pb;
 	private List<Button> otherButtons;
 	private Stage myStage;
-	private String currentLanguage = "English";
+	private String currentLanguage ="English";
 	public static final int SCENE_WIDTH = 1200; 
 	public static final int SCENE_HEIGHT = 680;
 	private Pane inputPanel;
@@ -74,7 +75,7 @@ public class GUI {
 		show();
 		background = new Rectangle(SCENE_WIDTH-commandScrollPane.getScrollPane().getWidth()-100,SCENE_HEIGHT-inputPanel.getHeight(),Color.WHITE);
 		wrapperPane.getChildren().add(background);
-		cb = new RainbowBackgroundColorButton(background);
+		cb = new BackgroundColorPicker(background);
 		inputPanel.getChildren().add(createLabel("Pick Background Color: "));
         inputPanel.getChildren().add(cb.getChooser());
 		createCanvas();
