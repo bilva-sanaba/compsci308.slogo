@@ -37,6 +37,8 @@ public class TList implements Token {
 	public List<TokenNode> getChildren(){
 		return children;
 	}
+	
+	
 
 	@Override
 	public void setScope(Scope s) {
