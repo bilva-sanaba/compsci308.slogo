@@ -2,11 +2,18 @@ package GUI;
 
 
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+
 import java.util.Arrays;
 import java.util.List;
 
 import GUI_BackgroundColorChooser.ColorButton;
 import GUI_BackgroundColorChooser.ColorPickDefault;
+import GUI_PenColorButton.PenColorButton;
+import GUI_PenColorButton.PenColorWheel;
+import GUI_PenColorButton.RandomPenColorButton;
+import configuration.Trajectory;
+import configuration.TurtleState;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.beans.value.ChangeListener;
@@ -21,6 +28,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -28,38 +36,68 @@ public class GUI {
 	private BorderPane myRoot = new BorderPane();
 	private TextArea textArea=new TextArea();
 	private Canvas canvas;
+	private GraphicsContext gc;
 	private CommandScrollPane commandScrollPane=new CommandScrollPane(textArea);
+	private Rectangle background;
 	private Pane wrapperPane = new Pane();
 	private ColorButton cb = new ColorPickDefault(wrapperPane);
-	private TurtleViewManager tvm = new TurtleViewManager(new TurtleView());
+	private TurtleViewManager tvm;
+	private PenColorButton pb;
 	private List<Button> otherButtons;
 	private Stage myStage;
 	private String currentLanguage = "English";
 	public static final int SCENE_WIDTH = 1200; 
 	public static final int SCENE_HEIGHT = 680;
+	private HBox inputPanel;
 	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
 	
 	public GUI(Stage stage){
-		wrapperPane.setStyle("-fx-background-color: black;");
+		wrapperPane.setStyle("-fx-background-color: white;");
 		myRoot=createRoot();
 		myStage = stage;
 		myStage.setScene(createScene());
 		show();
+		createCanvas();
 		initializeTurtle();
+		pb = new PenColorWheel(tvm);
+		addPenButton();
+	
 	}
 	
 	
 	private void initializeTurtle(){
+		tvm = new TurtleViewManager(new TurtleView(), gc);
+		System.out.println(wrapperPane.getBoundsInLocal().getHeight()/2);
+		
 		tvm.setX(wrapperPane.getBoundsInLocal().getWidth()/2);
 		tvm.setY(wrapperPane.getBoundsInLocal().getHeight()/2);
 		wrapperPane.getChildren().add(tvm.getImage());
+//		System.out.println(wrapperPane.getBoundsInLocal().getHeight()/2);
 	}
 	
 	private void createCanvas(){
-		canvas = new Canvas(wrapperPane.getBoundsInLocal().getWidth(),wrapperPane.getBoundsInLocal().getHeight());
+//		canvas = new Canvas(wrapperPane.getBoundsInLocal().getWidth(),wrapperPane.getBoundsInLocal().getHeight());
+//		
+//		GraphicsContext gc = canvas.getGraphicsContext2D();
+//		testDraw(gc);
+//		background = new Rectangle(SCENE_WIDTH-commandScrollPane.getScrollPane().getWidth()-100,SCENE_HEIGHT-inputPanel.getHeight(),Color.PURPLE);
+		canvas = new Canvas(SCENE_WIDTH-commandScrollPane.getScrollPane().getWidth()-100,SCENE_HEIGHT-inputPanel.getHeight());
+//		wrapperPane.getChildren().add(background);
 		wrapperPane.getChildren().add(canvas);
+
+		gc = canvas.getGraphicsContext2D();
+		 
+		gc.setStroke(Color.BLUE);
+		gc.setFill(Color.BLUE);
+		 gc.strokeLine(40, 10, 10, 40);
+		
+//		System.out.println(wrapperPane.getBoundsInLocal().getHeight()/2);
+		
 	}
-	
+	private void testDraw(GraphicsContext gc){
+		gc.setFill(Color.BLUE);
+		gc.fillRect(wrapperPane.getBoundsInLocal().getWidth()/2,wrapperPane.getBoundsInLocal().getHeight()/2,100,100);
+	}
 	private Scene createScene() {
         Scene scene = new Scene(myRoot, SCENE_WIDTH, SCENE_HEIGHT);
         return scene;
@@ -71,8 +109,11 @@ public class GUI {
         bp.setLeft(new Rectangle(100,100,Color.RED));
         createScrollPane();
         bp.setRight(commandScrollPane.getScrollPane());
+        
+//        System.out.println(wrapperPane.getBoundsInLocal().getHeight()/2);
         bp.setCenter(wrapperPane);
-        createCanvas();
+        
+//        System.out.println(wrapperPane.getBoundsInLocal().getHeight()/2);
         return bp;
     }
 	
@@ -95,20 +136,28 @@ public class GUI {
 		commandScrollPane.getScrollPane().setLayoutX(SCENE_WIDTH*3/4);
 		commandScrollPane.getScrollPane().setLayoutY(0);
 	}
-	
+	private void addPenButton(){
+        inputPanel.getChildren().add(createLabel("Pick Pen Color: "));
+		inputPanel.getChildren().add(pb.getButton());
+	}
 	 private Node initInputPanel() {
 		 	createButtons();
-	        HBox inputPanel = new HBox();
+	        inputPanel = new HBox();
 	        textArea = new TextArea("Enter code here");
 	        inputPanel.getChildren().add(textArea);
 	        inputPanel.getChildren().addAll(otherButtons);
+	        inputPanel.getChildren().add(createLabel("Pick Background Color: "));
 	        inputPanel.getChildren().add(cb.getButton());
 	        inputPanel.getChildren().add(createLanguageBox());
 	        return inputPanel;
 	 }
 	 private void handleRunButton(){
 		commandScrollPane.addText();
-		textArea.clear();		
+		textArea.clear();
+		Trajectory T= new Trajectory();
+		TurtleState nextState= new TurtleState(0,0,90,true,true);
+		T.addLast(nextState);
+		tvm.moveTurtle(T);
 	 }
 	 private void createButtons(){
 		    Button play = createButton("Run", e -> handleRunButton());
@@ -126,7 +175,7 @@ public class GUI {
 
 	 private Label createLabel(String text) {
 	        Label label = new Label(text);
-	        label.setTextFill(Color.WHITE);
+	        label.setTextFill(Color.BLACK);
 	        return label;
 	        
 	    }
