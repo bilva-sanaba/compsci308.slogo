@@ -39,10 +39,7 @@ public class Variable implements Token {
 	}
 	
 	public Constant getValue(){
-
-		System.out.println(vars.get(this) + "---");
 		return vars.get(this);
-
 	}
 	
 	/**
