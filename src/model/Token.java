@@ -28,4 +28,9 @@ public interface Token {
 	 * Describes token for error messages
 	 */
 	public String toString();
+	
+	/**
+	 * Passes information to token
+	 */
+	void setScope(Scope s);
 }

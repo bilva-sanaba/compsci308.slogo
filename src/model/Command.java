@@ -24,10 +24,18 @@ public interface Command extends Token {
 	public int getNumArgs();
 	
 	/**
-	 * Returns true if Command needs the turtle's trajectory,
-	 * false if not.
+	 * Sets scope of command (what information it needs about current state)
 	 */
-	public boolean needsTurtleTrajectory();
+	public void setScope(Scope scope);
 	
+	/**
+	 * Gets scope request of command (what information the command will need)
+	 */
+	public Scope getScopeRequest();
+	
+	/**
+	 * Gets String ID of command name
+	 */
+	public String getID();
 }
 

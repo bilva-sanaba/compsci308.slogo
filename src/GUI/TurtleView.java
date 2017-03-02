@@ -11,7 +11,7 @@ public class TurtleView {
 	private boolean visible;
 	private Paint penColor; 
 	public TurtleView(){
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream("ball.gif"));
+		Image image = new Image(getClass().getClassLoader().getResourceAsStream("turtle2.gif"));
 		Turtle_Image = new ImageView(image);
 		penDown=true;
 		visible=true;
@@ -19,9 +19,6 @@ public class TurtleView {
 	}
 	public Paint getPenColor(){
 		return penColor;
-	}
-	public void setPenColor(Paint p){
-		penColor=p;
 	}
 	public ImageView getImage(){
 		return Turtle_Image;
@@ -46,5 +43,8 @@ public class TurtleView {
 	}
 
 	public void move(Trajectory T){
+	}
+	public void setPenColor(Paint p){
+		penColor=p;
 	}
 }

@@ -15,6 +15,7 @@ import GUI_PenColorButton.RandomPenColorButton;
 import configuration.Trajectory;
 import configuration.TurtleState;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -24,7 +25,10 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -39,6 +43,7 @@ public class GUI {
 	private GraphicsContext gc;
 	private CommandScrollPane commandScrollPane=new CommandScrollPane(textArea);
 	private Rectangle background;
+	private Button runButton;
 	private Pane wrapperPane = new Pane();
 	private ColorButton cb = new ColorPickDefault(wrapperPane);
 	private TurtleViewManager tvm;
@@ -48,56 +53,48 @@ public class GUI {
 	private String currentLanguage = "English";
 	public static final int SCENE_WIDTH = 1200; 
 	public static final int SCENE_HEIGHT = 680;
-	private HBox inputPanel;
+	private Pane inputPanel;
 	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
 	
-	public GUI(Stage stage){
+	public GUI(Stage stage,Button b){
 		wrapperPane.setStyle("-fx-background-color: white;");
+		runButton = b;
 		myRoot=createRoot();
 		myStage = stage;
 		myStage.setScene(createScene());
 		show();
 		createCanvas();
 		initializeTurtle();
-		pb = new PenColorWheel(tvm);
 		addPenButton();
+		addOtherBoxes();
 	
+	}
+	
+
+	private ComboBox<ImageView> selectTurtle(){
+		ComboBox<ImageView> turtleChoice=new ComboBox<ImageView>();
+		turtleChoice.getItems().add(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.gif"))));
+		turtleChoice.getItems().add(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle2.gif"))));
+		turtleChoice.valueProperty().addListener((x, y, newValue) -> {
+			
+			tvm.getImage().setImage(newValue.getImage());
+		});
+		return turtleChoice;
 	}
 	
 	
 	private void initializeTurtle(){
 		tvm = new TurtleViewManager(new TurtleView(), gc);
-		System.out.println(wrapperPane.getBoundsInLocal().getHeight()/2);
-		
 		tvm.setX(wrapperPane.getBoundsInLocal().getWidth()/2);
 		tvm.setY(wrapperPane.getBoundsInLocal().getHeight()/2);
 		wrapperPane.getChildren().add(tvm.getImage());
-//		System.out.println(wrapperPane.getBoundsInLocal().getHeight()/2);
 	}
 	
 	private void createCanvas(){
-//		canvas = new Canvas(wrapperPane.getBoundsInLocal().getWidth(),wrapperPane.getBoundsInLocal().getHeight());
-//		
-//		GraphicsContext gc = canvas.getGraphicsContext2D();
-//		testDraw(gc);
-//		background = new Rectangle(SCENE_WIDTH-commandScrollPane.getScrollPane().getWidth()-100,SCENE_HEIGHT-inputPanel.getHeight(),Color.PURPLE);
 		canvas = new Canvas(SCENE_WIDTH-commandScrollPane.getScrollPane().getWidth()-100,SCENE_HEIGHT-inputPanel.getHeight());
-//		wrapperPane.getChildren().add(background);
-		wrapperPane.getChildren().add(canvas);
+		wrapperPane.getChildren().add(canvas);	
+	}
 
-		gc = canvas.getGraphicsContext2D();
-		 
-		gc.setStroke(Color.BLUE);
-		gc.setFill(Color.BLUE);
-		 gc.strokeLine(40, 10, 10, 40);
-		
-//		System.out.println(wrapperPane.getBoundsInLocal().getHeight()/2);
-		
-	}
-	private void testDraw(GraphicsContext gc){
-		gc.setFill(Color.BLUE);
-		gc.fillRect(wrapperPane.getBoundsInLocal().getWidth()/2,wrapperPane.getBoundsInLocal().getHeight()/2,100,100);
-	}
 	private Scene createScene() {
         Scene scene = new Scene(myRoot, SCENE_WIDTH, SCENE_HEIGHT);
         return scene;
@@ -109,11 +106,7 @@ public class GUI {
         bp.setLeft(new Rectangle(100,100,Color.RED));
         createScrollPane();
         bp.setRight(commandScrollPane.getScrollPane());
-        
-//        System.out.println(wrapperPane.getBoundsInLocal().getHeight()/2);
         bp.setCenter(wrapperPane);
-        
-//        System.out.println(wrapperPane.getBoundsInLocal().getHeight()/2);
         return bp;
     }
 	
@@ -129,6 +122,9 @@ public class GUI {
 	public String getCurrentLanguage(){
 		return currentLanguage;
 	}
+	public String getText(){
+		return textArea.getText();
+	}
 	
 	private void createScrollPane(){
 		commandScrollPane=new CommandScrollPane(textArea);
@@ -137,30 +133,39 @@ public class GUI {
 		commandScrollPane.getScrollPane().setLayoutY(0);
 	}
 	private void addPenButton(){
+		pb = new PenColorWheel(tvm);
         inputPanel.getChildren().add(createLabel("Pick Pen Color: "));
 		inputPanel.getChildren().add(pb.getButton());
 	}
 	 private Node initInputPanel() {
 		 	createButtons();
-	        inputPanel = new HBox();
+		 	BorderPane bottomPanel = new BorderPane();
+	        inputPanel = new FlowPane();
+	        
+	        bottomPanel.setCenter(inputPanel);
+	        bottomPanel.setLeft(textArea);
 	        textArea = new TextArea("Enter code here");
-	        inputPanel.getChildren().add(textArea);
 	        inputPanel.getChildren().addAll(otherButtons);
 	        inputPanel.getChildren().add(createLabel("Pick Background Color: "));
 	        inputPanel.getChildren().add(cb.getButton());
-	        inputPanel.getChildren().add(createLanguageBox());
-	        return inputPanel;
+	        return bottomPanel;
 	 }
-	 private void handleRunButton(){
+	 private void addOtherBoxes(){
+		 ComboBox<ImageView>turtleChoice=selectTurtle();
+	       inputPanel.getChildren().add(turtleChoice);
+	       inputPanel.getChildren().add(createLanguageBox());
+	 }
+	 public void handleRunButton(){
 		commandScrollPane.addText();
 		textArea.clear();
 		Trajectory T= new Trajectory();
 		TurtleState nextState= new TurtleState(0,0,90,true,true);
 		T.addLast(nextState);
 		tvm.moveTurtle(T);
+		textArea.clear();		
 	 }
 	 private void createButtons(){
-		    Button play = createButton("Run", e -> handleRunButton());
+		    Button play = runButton;
 	        Button clear = createButton("Clear", e -> {
 	        	textArea.clear();
 	        });       
