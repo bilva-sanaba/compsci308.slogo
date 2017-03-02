@@ -35,13 +35,14 @@ public class If extends AbstractCommand {
 		int check = (int) args.getDouble(0);
 		TList tList= args.getTList(1);
 		double result = 0;
-		
-		if(check!=0){
+		if(check==0){
+			return result;
+		}
+		else{
 			Constant r = (Constant)tList.executeChildren();
 			result = r.getVal();
+			return result;
 		}
-		
-		return result;
 	}
 
 	@Override

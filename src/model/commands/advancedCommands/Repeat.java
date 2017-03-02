@@ -38,7 +38,7 @@ public class Repeat extends AbstractCommand {
 		double result = 0;
 		int repcount=1;
 		
-		for(int i=times; i>1; i--){
+		for(int i=times; i>0; i--){
 			Constant r = (Constant)tList.executeChildren();
 			result = r.getVal();
 			vars.set(new Variable("repcount"), new Constant(repcount));
