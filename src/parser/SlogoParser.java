@@ -38,13 +38,12 @@ public class SlogoParser {
 		TokenNode head=root;
 	
 		
-		
 		for(int i=0; i<commandList.size(); i++){
 			String word = commandList.get(i).trim();
 			TokenNode tokenNode;
 			
 			if(word.equals("[")){
-				int startIndex = command.indexOf(("["));
+				int startIndex = word.indexOf("[");  //FIX THIS BUG
 				//System.out.println(startIndex);
 				//System.out.println(command.substring(startIndex, command.length()));
 				int endIndex = getEndIndex(command.substring(startIndex), startIndex);
