@@ -31,9 +31,8 @@ public class SlogoParser {
 	}
 	
 	public TokenNode parse(TokenNode tNode, String command) throws CommandException{
-		
 		ArrayList<String> commandList = fillList(command);
-		
+		//System.out.println(commandList);
 		TokenNode root = tNode;
 		TokenNode parentNode = null;
 		TokenNode head=root;
@@ -41,18 +40,23 @@ public class SlogoParser {
 		
 		
 		for(int i=0; i<commandList.size(); i++){
-			String word = commandList.get(i);
+			String word = commandList.get(i).trim();
 			TokenNode tokenNode;
 			
 			if(word.equals("[")){
-				int startIndex = commandList.indexOf(("["));
-				int endIndex = getEndIndex(commandList, startIndex);
-				i = endIndex;
-				tokenNode = parse(new TokenNode(root, new TList()), command.substring(startIndex, endIndex));
+				int startIndex = command.indexOf(("["));
+				//System.out.println(startIndex);
+				//System.out.println(command.substring(startIndex, command.length()));
+				int endIndex = getEndIndex(command.substring(startIndex), startIndex);
+				i = startIndex + endIndex;
+				
+				tokenNode = parse(new TokenNode(root, new TList()), command.substring(startIndex + 1, i));
 			}
-			
-			tokenNode = factory.genTokenNode(parentNode, word); //will be global
+			else{
+				tokenNode = factory.genTokenNode(parentNode, word); //will be global
+			}
 			root.addChild(tokenNode);
+			
 			
 			
 			if(tokenNode.getToken().getType() == TokenType.COMMAND){
@@ -68,20 +72,22 @@ public class SlogoParser {
 		return head;
 	}
 	
-	private int getEndIndex(ArrayList<String> commandList, int startIndex) throws CommandException{
+	private int getEndIndex(String command, int startIndex) throws CommandException{
 		Stack<String> stack = new Stack<String>();
 		stack.push("[");
-		
-		for(int i = startIndex + 1; i < commandList.size(); i++){
-			if(commandList.get(i).equals("[")){
-				stack.push(commandList.get(i));
+		//System.out.println(command);
+		for(int i = 1; i < command.length(); i++){
+			if(command.substring(i, i+1).equals("[")){
+				stack.push(command.substring(i, i+1));
 			}
-			else if(commandList.get(i).equals("]")){
+			else if(command.substring(i, i+1).equals("]")){
 				stack.pop();
+				//System.out.println("x");
 			}
-			else if(stack.isEmpty()){
+			if(stack.isEmpty()){
 				return i;
 			}
+			System.out.println(i);
 		}
 		throw new CommandException("List never closes");
 	}

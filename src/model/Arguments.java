@@ -53,6 +53,11 @@ public class Arguments implements Iterable<Token>{
 		return t;
 	}
 	
+	
+	public void set(int index, Token t){
+		arguments.set(index, t);
+	}
+	
 	/**
 	 * Get number of arguments
 	 */
@@ -73,7 +78,11 @@ public class Arguments implements Iterable<Token>{
 		for(int i = 0; i < numArgs(); i++){
 			TokenType myType = this.get(i).getType();
 			TokenType inputType = input.get(i).getType();
-			if(!myType.equals(inputType)) throw new CommandException(String.format("Argument #%d: expected %s, got %s", i+1, myType, inputType));
+			
+			if((myType == TokenType.VARIABLE || myType == TokenType.CONSTANT) && (inputType == TokenType.VARIABLE || inputType == TokenType.CONSTANT));
+			else if(!myType.equals(inputType)){
+				throw new CommandException(String.format("Argument #%d: expected %s, got %s", i+1, myType, inputType));
+			}
 		}
 	}
 	
@@ -101,8 +110,7 @@ public class Arguments implements Iterable<Token>{
 	 * @return argument (double)
 	 */
 	public double getDouble(int index){
-		Token t = this.get(index);
-		return ((Constant)t).getVal();
+		return getConstant(index).getVal();
 	}
 	
 	/**
@@ -134,7 +142,20 @@ public class Arguments implements Iterable<Token>{
 	 */
 	public Constant getConstant(int index){
 		Token t = this.get(index);
+		
+		if(t.getType() == TokenType.VARIABLE){
+			return ((Variable)t).getValue();
+		}
 		return ((Constant)t);
+		
+	}
+	
+	/**
+	 * Returns TList from certain index
+	 */
+	public TList getTList(int index){
+		Token t = this.get(index);
+		return ((TList)t);
 	}
 	
 	/**
@@ -144,5 +165,17 @@ public class Arguments implements Iterable<Token>{
 	@Override
 	public Iterator<Token> iterator() {
 		return arguments.iterator();
+	}
+	
+	/**
+	 * for debugging
+	 */
+	public String toString(){
+		String s = "-----------\nArguments: ";
+		for(Token t: this){
+			s += t.toString() + "\n";
+		}
+		s += "-----------";
+		return s;
 	}
 }

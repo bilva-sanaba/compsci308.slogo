@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 import model.Constant;
+import model.TList;
 import model.Token;
 import model.Variable;
 import model.commands.CommandException;
@@ -62,8 +63,7 @@ public class TokenNodeFactory {
 	public TokenNode genTokenNode(TokenNode parentNode, String word) throws CommandException{
 		createValueList();
 		TokenNode tokenNode = new TokenNode(parentNode, null);
-		//System.out.println(word);
-		System.out.println(word.substring(0,1));
+
 		if(possibleCommands.contains(word)){//word is in resources
 			String wordID = findWordID(word);
 			CommandFactory cFactory = new CommandFactory();
@@ -71,7 +71,7 @@ public class TokenNodeFactory {
 			tokenNode = new TokenNode(parentNode, t);
 		}
 		else if(word.substring(0,1).equals(":")){ //include : check
-			System.out.println(1);
+
 			tokenNode = new TokenNode(parentNode, new Variable(word.substring(1)));
 		}
 		else if(Double.valueOf(word)!=null){
