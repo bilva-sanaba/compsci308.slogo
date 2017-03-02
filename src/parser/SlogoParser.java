@@ -64,7 +64,7 @@ public class SlogoParser {
 				root=tokenNode;
 			}
 			
-			if(root.getChildren().size()==((Command)root.getToken()).getNumArgs()){
+			if((root.getToken().getType() == TokenType.COMMAND) && (root.getChildren().size()==((Command)root.getToken()).getNumArgs())){
 				root=parentNode;
 				parentNode=root.getParent();
 			}		
