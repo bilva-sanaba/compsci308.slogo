@@ -96,9 +96,12 @@ public class GUI {
 	
 	private void initializeTurtle(){
 		tvm = new TurtleViewManager(new TurtleView(), gc);
+		drawTurtle();
+		wrapperPane.getChildren().add(tvm.getImage());
+	}
+	private void drawTurtle(){
 		tvm.setX(wrapperPane.getBoundsInLocal().getWidth()/2);
 		tvm.setY(wrapperPane.getBoundsInLocal().getHeight()/2);
-		wrapperPane.getChildren().add(tvm.getImage());
 	}
 	
 	private void createCanvas(){
@@ -154,10 +157,9 @@ public class GUI {
 		 	createButtons();
 		 	BorderPane bottomPanel = new BorderPane();
 	        inputPanel = new FlowPane();
-	        textArea = new TextArea("Enter code here");
+	        textArea = new TextArea();
 	        bottomPanel.setCenter(inputPanel);
 	        bottomPanel.setLeft(textArea);
-	   
 	        inputPanel.getChildren().addAll(otherButtons);
 	        inputPanel.getChildren().add(createLabel("Pick Background Color: "));
 	        inputPanel.getChildren().add(cb.getButton());
@@ -170,8 +172,13 @@ public class GUI {
 	 }
 	 public void handleRunButton(Trajectory T){
 		commandScrollPane.addText();
+		gc.clearRect(0, 0, wrapperPane.getWidth(), wrapperPane.getHeight());
+		drawTurtle();
 		tvm.moveTurtle(T,wrapperPane.getBoundsInLocal().getWidth(),wrapperPane.getBoundsInLocal().getHeight());
-		textArea.clear();		
+		textArea.clear();
+		
+		
+		
 	 }
 	 private void createButtons(){
 		    Button play = runButton;
