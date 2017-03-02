@@ -35,4 +35,8 @@ public class VariableContainer {
 	public void addVariable(Variable v){
 		variables.add(v);
 	}
+
+	public boolean contains(Variable v) {
+		return variables.contains(v);
+	}
 }

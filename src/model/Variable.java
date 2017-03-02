@@ -38,7 +38,7 @@ public class Variable implements Token {
 	 * Returns variable value
 	 */
 	public Constant getValue(){
-		if(myContainer != null) {
+		if(myContainer != null && myContainer.contains(this)){
 			value = myContainer.getValue(name);
 		}
 		return value;
@@ -61,14 +61,14 @@ public class Variable implements Token {
 
 	@Override
 	public Token evaluate(Arguments args) {
-		return this.getValue();
+		return this;
 	}
 	
 	/**
 	 * Returns variable for error messages
 	 */
 	public String toString(){
-		return String.format(":%s(%f)", getName(), getValue());
+		return String.format(":%s(%f)", getName(), getValue().getVal());
 	}
 	
 	/**
