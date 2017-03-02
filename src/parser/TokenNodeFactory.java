@@ -26,19 +26,22 @@ public class TokenNodeFactory {
 	
 	public static final String DEFAULT_RESOURCES_PACKAGE = "resources.languages/";
 	
-	public static final String LANGUAGE = "English";
 	public static final String SYNTAX = "Syntax";
+	private String language = "English";
+
 	
 	private static List<String> possibleCommands = new ArrayList<String>();
 	private static Map<String, ArrayList<String>> keyMap = new HashMap<String, ArrayList<String>>();
 	
+	
+	
 	public TokenNodeFactory(){
 	}
 	
-	private static void createValueList(){
+	private void createValueList(){
 		//may need try and catch
 		syntaxResourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCES_PACKAGE + SYNTAX);
-		languageResourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCES_PACKAGE + LANGUAGE);
+		languageResourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCES_PACKAGE + language);
 		Enumeration<String> resourceKeys = languageResourceBundle.getKeys();
 		while(resourceKeys.hasMoreElements()){
 			String key = resourceKeys.nextElement();
@@ -77,6 +80,10 @@ public class TokenNodeFactory {
 			}
 		}
 		return "";
+	}
+	
+	public void setLanguage(String language){
+		this.language = language;
 	}
 }
 

@@ -33,4 +33,10 @@ public interface Token {
 	 * Passes information to token
 	 */
 	void setScope(Scope s);
+	
+	/**
+	 * Asks which information it will need
+	 */
+	public Scope getScopeRequest();
 }
+

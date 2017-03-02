@@ -5,23 +5,20 @@ import model.Constant;
 import model.Token;
 
 /**
- * "Not" operator
- * 
- * returns 1 if arg is 0 and 0 if arg is non-zero
+ * Sine Function
  * @author DhruvKPatel
  *
  */
-public class Not extends OneParamOperation {
+public class Sine extends OneParamOperation {
 
 	@Override
 	public double execute(Arguments args) {
-		if(args.getDouble(0) != 0) return 0;
-		else return 1;
+		return Math.sin(Math.toRadians(args.getDouble(0)));
 	}
 
 	@Override
 	public String getID() {
-		return "Not";
+		return "Sine";
 	}
 
 }
