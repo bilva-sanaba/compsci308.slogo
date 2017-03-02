@@ -6,7 +6,11 @@ import model.Arguments;
 import model.Constant;
 import model.Token;
 import model.commands.CommandException;
-
+/**
+ * 
+ * @author Jacob Weiss
+ *
+ */
 public class Right extends TurtleCommand {
 	@Override
 	public double execute(Arguments args) throws CommandException {
@@ -16,7 +20,7 @@ public class Right extends TurtleCommand {
 				
 		double angleChange = args.getDouble(0);
 
-		current.setHeading(heading-angleChange);
+		current.setHeading(heading+angleChange);
 		trajectory.addLast(current);
 		return angleChange;
 	}

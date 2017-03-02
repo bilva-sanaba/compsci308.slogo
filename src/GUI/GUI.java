@@ -12,14 +12,12 @@ import javafx.scene.canvas.GraphicsContext;
 import java.util.Arrays;
 import java.util.List;
 
-
-import GUI_BackgroundColorChooser.ColorButton;
-import GUI_BackgroundColorChooser.ColorPickDefault;
-import GUI_PenColorButton.PenColorButton;
-import GUI_PenColorButton.PenColorWheel;
-import GUI_PenColorButton.RandomPenColorButton;
+import ColorChoosers.ColorChooser;
+import GUI_BackgroundColorChooser.BackgroundColorPicker;
+import GUI_BackgroundColorChooser.RainbowBackgroundColorButton;
+import GUI_PenColorButton.PenColorPicker;
+import GUI_RetrievableCode.CommandScrollPane;
 import configuration.Trajectory;
-import configuration.TurtleState;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -32,14 +30,11 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -49,13 +44,13 @@ public class GUI {
 	private TextArea textArea=new TextArea();
 	private Canvas canvas;
 	private GraphicsContext gc;
-	private CommandScrollPane commandScrollPane=new CommandScrollPane(textArea);
+	private CommandScrollPane commandScrollPane;
 	private Rectangle background;
 	private Button runButton;
 	private Pane wrapperPane = new Pane();
-	private ColorButton cb = new ColorPickDefault(wrapperPane);
+	private ColorChooser cb;
 	private TurtleViewManager tvm;
-	private PenColorButton pb;
+	private PenColorPicker pb;
 	private List<Button> otherButtons;
 	private Stage myStage;
 	private String currentLanguage = "English";
@@ -63,46 +58,35 @@ public class GUI {
 	public static final int SCENE_HEIGHT = 680;
 	private Pane inputPanel;
 	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
-
 	private static final String HELP_WINDOW_TITLE="Syntax";
 	private static final String HELP_URL="help.html";
 
 	public GUI(Stage stage,Button b){
-		wrapperPane.setStyle("-fx-background-color: white;");
 		runButton = b;
 		myRoot=createRoot();
 		myStage = stage;
 		myStage.setScene(createScene());
 		show();
+		background = new Rectangle(SCENE_WIDTH-commandScrollPane.getScrollPane().getWidth()-100,SCENE_HEIGHT-inputPanel.getHeight(),Color.WHITE);
+		wrapperPane.getChildren().add(background);
+		cb = new RainbowBackgroundColorButton(background);
+		inputPanel.getChildren().add(createLabel("Pick Background Color: "));
+        inputPanel.getChildren().add(cb.getChooser());
 		createCanvas();
 		initializeTurtle();
 		addPenButton();
 		addOtherBoxes();
-	
-	}
-	
-
-	private ComboBox<ImageView> selectTurtle(){
-		ComboBox<ImageView> turtleChoice=new ComboBox<ImageView>();
-		turtleChoice.getItems().add(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.gif"))));
-		turtleChoice.getItems().add(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle2.gif"))));
-		turtleChoice.valueProperty().addListener((x, y, newValue) -> {
-			
-			tvm.getImage().setImage(newValue.getImage());
-		});
-		return turtleChoice;
 	}
 	
 	
 	private void initializeTurtle(){
 		tvm = new TurtleViewManager(new TurtleView(), gc);
-		redrawTurtle();
+		drawTurtle();
 		wrapperPane.getChildren().add(tvm.getImage());
 	}
-	private void redrawTurtle(){
-		tvm.getImage().setRotate(0.0);
-		tvm.setX(wrapperPane.getBoundsInLocal().getWidth()/2-tvm.getImage().getBoundsInLocal().getWidth()/2);
-		tvm.setY(wrapperPane.getBoundsInLocal().getHeight()/2-tvm.getImage().getBoundsInLocal().getHeight()/2);
+	private void drawTurtle(){
+		tvm.setX(wrapperPane.getBoundsInLocal().getWidth()/2);
+		tvm.setY(wrapperPane.getBoundsInLocal().getHeight()/2);
 	}
 	
 	private void createCanvas(){
@@ -144,40 +128,41 @@ public class GUI {
 	}
 	
 	private void createScrollPane(){
-		commandScrollPane=new CommandScrollPane(textArea);
+		commandScrollPane=new CommandScrollPane(textArea,otherButtons.get(0));
 		commandScrollPane.getScrollPane().setPrefSize(SCENE_WIDTH/4,SCENE_HEIGHT);
 		commandScrollPane.getScrollPane().setLayoutX(SCENE_WIDTH*3/4);
 		commandScrollPane.getScrollPane().setLayoutY(0);
 	}
 	private void addPenButton(){
-		pb = new PenColorWheel(tvm);
+		pb = new PenColorPicker(tvm);
         inputPanel.getChildren().add(createLabel("Pick Pen Color: "));
-		inputPanel.getChildren().add(pb.getButton());
+		inputPanel.getChildren().add(pb.getChooser());
 	}
 	 private Node initInputPanel() {
 		 	createButtons();
 		 	BorderPane bottomPanel = new BorderPane();
 	        inputPanel = new FlowPane();
-	        textArea = new TextArea("Enter code here");
+	        textArea = new TextArea();
 	        bottomPanel.setCenter(inputPanel);
 	        bottomPanel.setLeft(textArea);
-	   
 	        inputPanel.getChildren().addAll(otherButtons);
-	        inputPanel.getChildren().add(createLabel("Pick Background Color: "));
-	        inputPanel.getChildren().add(cb.getButton());
 	        return bottomPanel;
 	 }
 	 private void addOtherBoxes(){
-		 ComboBox<ImageView>turtleChoice=selectTurtle();
+		 TurtleComboBox tcb = new TurtleComboBox(tvm);
+		 ComboBox<ImageView>turtleChoice=tcb.getTurtleChooser();
 	       inputPanel.getChildren().add(turtleChoice);
 	       inputPanel.getChildren().add(createLanguageBox());
 	 }
 	 public void handleRunButton(Trajectory T){
 		commandScrollPane.addText();
 		gc.clearRect(0, 0, wrapperPane.getWidth(), wrapperPane.getHeight());
-		redrawTurtle();
+		drawTurtle();
 		tvm.moveTurtle(T,wrapperPane.getBoundsInLocal().getWidth(),wrapperPane.getBoundsInLocal().getHeight());
-		textArea.clear();		
+		textArea.clear();
+		
+		
+		
 	 }
 	 private void createButtons(){
 		    Button play = runButton;
@@ -209,7 +194,7 @@ public class GUI {
          WebView browser = new WebView();
          Scene helpScene = new Scene(root);
          Stage helpStage = new Stage();
-         helpStage.setTitle("Help Menu");
+         helpStage.setTitle(HELP_WINDOW_TITLE);
          helpStage.setScene(helpScene);
          URL url = getClass().getResource(HELP_URL);
          browser.getEngine().load(url.toExternalForm());

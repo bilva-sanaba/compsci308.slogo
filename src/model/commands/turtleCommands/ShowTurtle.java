@@ -6,7 +6,11 @@ import model.Arguments;
 import model.Constant;
 import model.Token;
 import model.commands.CommandException;
-
+/**
+ * 
+ * @author Jacob Weiss
+ *
+ */
 public class ShowTurtle extends TurtleCommand {
 	@Override
 	public double execute(Arguments args) throws CommandException {

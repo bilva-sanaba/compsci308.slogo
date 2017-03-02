@@ -5,7 +5,11 @@ import configuration.TurtleState;
 import model.Arguments;
 import model.commands.CommandException;
 import model.commands.turtleCommands.TurtleCommand;
-
+/**
+ * 
+ * @author Jacob Weiss
+ *
+ */
 public class YCoordinate extends TurtleCommand {
 
 	@Override

@@ -7,7 +7,11 @@ import model.Constant;
 import model.Token;
 import model.commands.CommandException;
 import model.commands.turtleCommands.TurtleCommand;
-
+/**
+ * 
+ * @author Jacob Weiss
+ *
+ */
 public class IsShowing extends TurtleCommand {
 
 	@Override

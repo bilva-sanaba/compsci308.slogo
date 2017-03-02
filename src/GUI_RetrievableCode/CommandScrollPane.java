@@ -1,6 +1,7 @@
-package GUI;
+package GUI_RetrievableCode;
 
 import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.StackPane;
@@ -13,12 +14,14 @@ public class CommandScrollPane {
 private ScrollPane myScrollPane;
 private int startingHeight;
 private TextArea textArea;
-public CommandScrollPane(TextArea t){
+private Button run;
+public CommandScrollPane(TextArea t, Button play){
 	root=new Group();
 	 textArea=t; 
 	myScrollPane=new ScrollPane();
 	myScrollPane.setContent(root);
 	startingHeight=0;
+	run=play;
 }
 public ScrollPane getScrollPane(){
 	return myScrollPane;
@@ -41,10 +44,11 @@ public void addText(){
 	 entry.getStackPane().setLayoutY(startingHeight);
 	 entry.getStackPane().setOnMouseClicked( e-> reInputText(entry));
 	 startingHeight+=entry.getStackPane().getBoundsInLocal().getHeight();
-	root.getChildren().add(entry.getStackPane());
+	 root.getChildren().add(entry.getStackPane());
 }
 private void reInputText(RetrievableStackPane sp){
 	textArea.clear();
 	textArea.setText(sp.getString());
+	run.fire();
 }
 }
