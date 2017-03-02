@@ -12,13 +12,15 @@ import parser.TokenNode;
 public class Interpreter {
 	
 	public Token evaluateTree(TokenNode root, Scope scope) throws CommandException{
-		
+		root.getToken().setScope(new Scope(scope, root.getToken().getScopeRequest()));
+
 		Arguments returnArgs = new Arguments();
 		
 	
 		for(TokenNode node : root.getChildren()){
 			
 			if(node.getChildren().isEmpty()){
+				node.getToken().setScope(new Scope(scope, node.getToken().getScopeRequest()));
 				returnArgs.add(node.getToken().evaluate(new Arguments()));
 			}
 			

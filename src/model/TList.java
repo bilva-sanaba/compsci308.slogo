@@ -43,4 +43,9 @@ public class TList implements Token {
 		myScope = s; 
 	}
 
+	@Override
+	public Scope getScopeRequest() {
+		return new Scope(true, true, true);
+	}
+
 }

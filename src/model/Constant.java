@@ -42,6 +42,11 @@ public class Constant implements Token {
 	public void setScope(Scope s) {
 		// Constants don't need scope
 	}
+
+	@Override
+	public Scope getScopeRequest() {
+		return new Scope(false, false, false);
+	}
 	
 	
 }
