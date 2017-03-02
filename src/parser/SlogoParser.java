@@ -25,6 +25,8 @@ import model.commands.CommandException;
 
 public class SlogoParser {
 	
+	private TokenNodeFactory factory = new TokenNodeFactory();
+	
 	public SlogoParser(){
 	}
 	
@@ -37,6 +39,7 @@ public class SlogoParser {
 		TokenNode head=root;
 	
 		
+		
 		for(int i=0; i<commandList.size(); i++){
 			String word = commandList.get(i);
 			TokenNode tokenNode;
@@ -47,7 +50,7 @@ public class SlogoParser {
 				i = endIndex;
 				tokenNode = parse(new TokenNode(root, new TList()), command.substring(startIndex, endIndex));
 			}
-			TokenNodeFactory factory = new TokenNodeFactory();
+			
 			tokenNode = factory.genTokenNode(parentNode, word); //will be global
 			root.addChild(tokenNode);
 			
@@ -85,6 +88,10 @@ public class SlogoParser {
 
 	private ArrayList<String> fillList(String command){
 		return new ArrayList<String>(Arrays.asList(command.split(" ")));
+	}
+	
+	public void setLanguage(String language){
+		factory.setLanguage(language);
 	}
 	
 }

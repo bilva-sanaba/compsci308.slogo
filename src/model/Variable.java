@@ -61,7 +61,7 @@ public class Variable implements Token {
 
 	@Override
 	public Token evaluate(Arguments args) {
-		return this.value;
+		return this.getValue();
 	}
 	
 	/**
@@ -82,6 +82,11 @@ public class Variable implements Token {
 	@Override
 	public void setScope(Scope s) {
 		myContainer = s.getVariables();
+	}
+	
+	@Override
+	public Scope getScopeRequest() {
+		return new Scope(false, true, false);
 	}
 
 }

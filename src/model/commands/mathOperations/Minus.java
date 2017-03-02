@@ -5,22 +5,20 @@ import model.Constant;
 import model.Token;
 
 /**
- * "Not" operator
- * 
- * returns 1 if arg is 0 and 0 if arg is non-zero
+ * Returns opposite of argument
  * @author DhruvKPatel
  *
  */
-public class Not extends OneParamOperation {
+public class Minus extends OneParamOperation {
 
 	@Override
 	public double execute(Arguments args) {
-		return args.getDouble(0) == 0? 1:0;
+		return -args.getDouble(0);
 	}
 
 	@Override
 	public String getID() {
-		return "Not";
+		return "Minus";
 	}
 
 }

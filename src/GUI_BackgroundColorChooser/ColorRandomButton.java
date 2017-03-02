@@ -30,7 +30,6 @@ public class ColorRandomButton extends ColorButton{
 	private int randomInt(){
 		Random rand = new Random();
 		return rand.nextInt(256);
-		
 	}
 
 }

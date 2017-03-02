@@ -30,7 +30,7 @@ public class SetTowards extends TurtleCommand {
 		double dx = towardsX - currentX;
 		double dy = towardsY - currentY;
 
-		double newHeading = Math.toDegrees(Math.atan2(dy, dx));
+		double newHeading = 90 - Math.toDegrees(Math.atan2(dy, dx));
 		current.setHeading(newHeading);	
 		trajectory.addLast(current);
 		return newHeading;
