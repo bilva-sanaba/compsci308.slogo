@@ -3,13 +3,13 @@ package model.commands.turtleCommands;
 import configuration.Trajectory;
 import configuration.TurtleState;
 import model.Arguments;
-import model.Token;
+import model.Scope;
 import model.commands.CommandException;
-//EDIT WITH GUI PORTION
-public class ClearScreen extends TurtleCommand {
-	@Override
+
+public class ClearScreen{
+
 	public double execute(Arguments args) throws CommandException {
-		Trajectory trajectory = getScope().getTrajectory();
+		Trajectory trajectory = getScopeRequest().getTrajectory();
 		TurtleState current = trajectory.getLast().getModifiableCopy();
 		double xLoc = current.getX();
 		double yLoc = current.getY();
@@ -26,15 +26,19 @@ public class ClearScreen extends TurtleCommand {
 		return distanceTraveled;
 	}
 
-	@Override
+	
 	public Arguments getDefaultArgs() {
 		return new Arguments();
 	}
 
-	@Override
+
 	public String getID() {
 		// TODO Auto-generated method stub
 		return "ClearScreen";
+	}
+	
+	public Scope getScopeRequest(){
+		return new Scope(true, true, true);
 	}
 
 }
