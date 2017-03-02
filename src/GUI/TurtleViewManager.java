@@ -11,6 +11,8 @@ import javafx.scene.transform.Rotate;
 public class TurtleViewManager {
 	private TurtleView myTurtleView;
 	private GraphicsContext graphics;
+	private double currentX=0;
+	private double currentY=0;
     public static final int DEFAULT_FPS = 10;
     public static final double MILLIS_PER_SECOND = 1000;
     
@@ -32,8 +34,7 @@ public void moveTurtle(Trajectory T,double screenWidth, double screenHeight){
 		boolean newVisibility = uts.isShowing();
 		if (newPen == true){
 			graphics.setStroke(myTurtleView.getPenColor());
-			//graphics.strokeLine(myTurtleView.getImage().getX()+myTurtleView.getImage().getBoundsInParent().getWidth()/2, myTurtleView.getImage().getY()+myTurtleView.getImage().getBoundsInParent().getHeight()/2, newX+myTurtleView.getImage().getBoundsInParent().getWidth()/2, newY+myTurtleView.getImage().getBoundsInParent().getHeight()/2);
-		graphics.strokeLine(oldX, oldY, penX, penY);
+			graphics.strokeLine(oldX, oldY, penX, penY);
 		}
 		
 		myTurtleView.setX(newX);
@@ -42,7 +43,6 @@ public void moveTurtle(Trajectory T,double screenWidth, double screenHeight){
 		oldY=penY;
 		myTurtleView.setVisibility(newVisibility);
 		myTurtleView.getImage().setRotate(newHeading);
-		
 	}
 }
 
