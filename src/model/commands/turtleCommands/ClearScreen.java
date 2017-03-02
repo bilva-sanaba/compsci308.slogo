@@ -9,7 +9,7 @@ import model.commands.CommandException;
 public class ClearScreen{
 
 	public double execute(Arguments args) throws CommandException {
-		Trajectory trajectory = getScopeRequest().getTrajectory();
+		Trajectory trajectory = getScope().getTrajectory();
 		TurtleState current = trajectory.getLast().getModifiableCopy();
 		double xLoc = current.getX();
 		double yLoc = current.getY();
@@ -37,7 +37,7 @@ public class ClearScreen{
 		return "ClearScreen";
 	}
 	
-	public Scope getScopeRequest(){
+	public Scope getScope(){
 		return new Scope(true, true, true);
 	}
 
