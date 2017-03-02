@@ -29,7 +29,7 @@ public interface UnmodifiableTurtleState {
 	 * Returns true if pen is down (drawing activated)
 	 * @return
 	 */
-	public boolean penDown();
+	public boolean isPenDown();
 	
 	/**
 	 * Returns true if turtle is visible

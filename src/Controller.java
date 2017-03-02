@@ -1,20 +1,30 @@
 import GUI.GUI;
+import configuration.TurtleState;
+import configuration.UnmodifiableTurtleState;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import model.SlogoModel;
+import model.commands.CommandException;
 
 public class Controller {
 	private GUI gui;
-	public Controller(Stage stage){
-		SlogoModel backend = new SlogoModel();
-		RunButton r = new RunButton(e -> onRun());
+	private SlogoModel model;
+	private Alert alert;
+	public Controller(Stage stage) throws CommandException{
+		model = new SlogoModel();
+		Button r = new Button("Run");
+		r.setOnAction(e -> onRun());
 		gui = new GUI(stage, r);
-		gui.setTurtle(new Trajectory());
 	}
 	private void onRun(){
-		String text = GUI.getText();
+		String text = gui.getText();
+		model.setLanguage(gui.getCurrentLanguage());
 		try {
-			GUI.setTurtle(backend.getTrajectory(text,GUI.getCurrentLanguage()));
+			gui.handleRunButton(model.getTrajectory(text));
 		} catch (CommandException e){
-			alert (e.getmessage);
+			alert= new Alert(AlertType.ERROR,e.getMessage());
 		}
 	}
 	
