@@ -10,6 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -41,6 +42,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
@@ -49,7 +51,8 @@ public class GUI {
 	private TextArea textArea=new TextArea();
 	private Canvas canvas;
 	private GraphicsContext gc;
-	private CommandScrollPane commandScrollPane=new CommandScrollPane(textArea);
+	private CommandScrollPane commandScrollPane;
+	private VariableScrollPane variableScrollPane;
 	private Rectangle background;
 	private Button runButton;
 	private Pane wrapperPane = new Pane();
@@ -86,9 +89,16 @@ public class GUI {
 		ComboBox<ImageView> turtleChoice=new ComboBox<ImageView>();
 		turtleChoice.getItems().add(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.gif"))));
 		turtleChoice.getItems().add(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle2.gif"))));
+		turtleChoice.setPromptText("Choose Turtle");
 		turtleChoice.valueProperty().addListener((x, y, newValue) -> {
 			
+		System.out.println(newValue.getImage());
 			tvm.getImage().setImage(newValue.getImage());
+			ComboBox<ImageView>ne=new ComboBox<ImageView>();
+			ne.getItems().addAll(turtleChoice.getItems());
+			turtleChoice.getItems().clear();
+			System.out.println(turtleChoice.getItems());
+			turtleChoice.getItems().addAll(ne.getItems());
 		});
 		return turtleChoice;
 	}
@@ -117,11 +127,16 @@ public class GUI {
 	
 	private BorderPane createRoot() {
         BorderPane bp = new BorderPane();
-        bp.setBottom(initInputPanel());
-        bp.setLeft(new Rectangle(100,100,Color.RED));
-        createScrollPane();
-        bp.setRight(commandScrollPane.getScrollPane());
+        
+        
+        
+        createVariableScroller();
+      
+       bp.setLeft(variableScrollPane.getScrollPane());
         bp.setCenter(wrapperPane);
+        bp.setBottom(initInputPanel());
+        createCommandScroller();
+        bp.setRight(commandScrollPane.getScrollPane());
         return bp;
     }
 	
@@ -142,11 +157,27 @@ public class GUI {
 		return textArea.getText();
 	}
 	
-	private void createScrollPane(){
+	private void createCommandScroller(){
 		commandScrollPane=new CommandScrollPane(textArea);
 		commandScrollPane.getScrollPane().setPrefSize(SCENE_WIDTH/4,SCENE_HEIGHT);
 		commandScrollPane.getScrollPane().setLayoutX(SCENE_WIDTH*3/4);
 		commandScrollPane.getScrollPane().setLayoutY(0);
+	}
+	private void createVariableScroller(){
+		HashMap<String,Integer>map=new HashMap<String,Integer>();
+		map.put("variable",1);
+		map.put("new_number", 2);
+		map.put("a",1);
+		map.put("v", 2);
+		map.put("n",1);
+		map.put("2", 2);
+		map.put("3",1);
+		map.put("7", 2);
+		variableScrollPane=new VariableScrollPane();
+		variableScrollPane.getScrollPane().setPrefSize(SCENE_WIDTH/8,SCENE_HEIGHT);
+		variableScrollPane.getScrollPane().setLayoutX(0);
+		variableScrollPane.getScrollPane().setLayoutY(0);
+		variableScrollPane.add(map);
 	}
 	private void addPenButton(){
 		pb = new PenColorWheel(tvm);

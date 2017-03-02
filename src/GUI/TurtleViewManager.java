@@ -32,7 +32,6 @@ public void moveTurtle(Trajectory T,double screenWidth, double screenHeight){
 		boolean newVisibility = uts.isShowing();
 		if (newPen == true){
 			graphics.setStroke(myTurtleView.getPenColor());
-			//graphics.strokeLine(myTurtleView.getImage().getX()+myTurtleView.getImage().getBoundsInParent().getWidth()/2, myTurtleView.getImage().getY()+myTurtleView.getImage().getBoundsInParent().getHeight()/2, newX+myTurtleView.getImage().getBoundsInParent().getWidth()/2, newY+myTurtleView.getImage().getBoundsInParent().getHeight()/2);
 		graphics.strokeLine(oldX, oldY, penX, penY);
 		}
 		
