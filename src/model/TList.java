@@ -38,6 +38,21 @@ public class TList implements Token {
 		return children;
 	}
 	
+	/**
+	 * Executes the children of the list node
+	 *
+	 * @return Token
+	 * @throws CommandException 
+	 */
+	public Token executeChildren() throws CommandException{
+		Interpreter i = new Interpreter();
+		Token ans = new Constant(0);
+		for(TokenNode child: this.getChildren()){
+			ans = i.evaluateTree(child, myScope);
+		}
+		return ans;s
+	}
+	
 	
 
 	@Override
