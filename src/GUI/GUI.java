@@ -92,6 +92,7 @@ public class GUI {
 	
 	private void createCanvas(){
 		canvas = new Canvas(SCENE_WIDTH-commandScrollPane.getScrollPane().getWidth()-100,SCENE_HEIGHT-inputPanel.getHeight());
+		gc = canvas.getGraphicsContext2D();
 		wrapperPane.getChildren().add(canvas);	
 	}
 
@@ -123,6 +124,7 @@ public class GUI {
 		return currentLanguage;
 	}
 	public String getText(){
+		System.out.println(textArea.getText());
 		return textArea.getText();
 	}
 	
@@ -141,10 +143,10 @@ public class GUI {
 		 	createButtons();
 		 	BorderPane bottomPanel = new BorderPane();
 	        inputPanel = new FlowPane();
-	        
+	        textArea = new TextArea("Enter code here");
 	        bottomPanel.setCenter(inputPanel);
 	        bottomPanel.setLeft(textArea);
-	        textArea = new TextArea("Enter code here");
+	   
 	        inputPanel.getChildren().addAll(otherButtons);
 	        inputPanel.getChildren().add(createLabel("Pick Background Color: "));
 	        inputPanel.getChildren().add(cb.getButton());
@@ -155,13 +157,9 @@ public class GUI {
 	       inputPanel.getChildren().add(turtleChoice);
 	       inputPanel.getChildren().add(createLanguageBox());
 	 }
-	 public void handleRunButton(){
+	 public void handleRunButton(Trajectory T){
 		commandScrollPane.addText();
-		textArea.clear();
-		Trajectory T= new Trajectory();
-		TurtleState nextState= new TurtleState(0,0,90,true,true);
-		T.addLast(nextState);
-		tvm.moveTurtle(T);
+		tvm.moveTurtle(T,wrapperPane.getBoundsInLocal().getWidth(),wrapperPane.getBoundsInLocal().getHeight());
 		textArea.clear();		
 	 }
 	 private void createButtons(){
