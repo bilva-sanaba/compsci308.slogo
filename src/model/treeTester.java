@@ -9,6 +9,7 @@ public class treeTester {
 	public static void main(String[] args) throws CommandException {
 		
 		Model m = new SlogoModel();
+		System.out.println(Double.valueOf("3.2"));
 		System.out.println(m.getTrajectory("towards -100 0"));
 	}
 }
