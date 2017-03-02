@@ -7,7 +7,7 @@ import model.Constant;
 import model.Token;
 import model.commands.CommandException;
 
-public class Back extends TurtleCommand {
+public class Backward extends TurtleCommand {
 
 	@Override
 	public double execute(Arguments args) throws CommandException {
@@ -30,7 +30,7 @@ public class Back extends TurtleCommand {
 	@Override
 	public String getID() {
 		// TODO Auto-generated method stub
-		return "Back";
+		return "Backward";
 	}
 
 }

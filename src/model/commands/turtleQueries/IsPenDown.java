@@ -8,13 +8,13 @@ import model.Token;
 import model.commands.CommandException;
 import model.commands.turtleCommands.TurtleCommand;
 
-public class IsShowing extends TurtleCommand {
+public class IsPenDown extends TurtleCommand {
 
 	@Override
 	public double execute(Arguments args) throws CommandException {
 		Trajectory trajectory = getScope().getTrajectory();
 		TurtleState current = trajectory.getLast().getModifiableCopy();
-		if(current.isShowing()){
+		if(current.penDown()){
 			return 1;
 		}
 		else{
@@ -24,13 +24,14 @@ public class IsShowing extends TurtleCommand {
 
 	@Override
 	public Arguments getDefaultArgs() {
-		return new Arguments();
+		Token[] def = {new Constant(0)};
+		return new Arguments(def);
 	}
 
 	@Override
 	public String getID() {
 		// TODO Auto-generated method stub
-		return "IsShowing";
+		return "PenDown";
 	}
 
 }
