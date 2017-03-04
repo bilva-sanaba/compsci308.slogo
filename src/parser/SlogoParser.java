@@ -32,43 +32,44 @@ public class SlogoParser {
 	
 	public TokenNode parse(TokenNode tNode, String command) throws CommandException{
 		ArrayList<String> commandList = fillList(command);
-		//System.out.println(commandList);
 		TokenNode root = tNode;
 		TokenNode parentNode = null;
 		TokenNode head=root;
-		int tracker = 0;
+		int listCursor = 0;
+		int stringCursor = 0; //EDIT
 		
 		for(int i=0; i<commandList.size(); i++){
-			//System.out.println(commandList); //MAYBE NUMARGS??
 			String word = commandList.get(i).trim();
 			TokenNode tokenNode;
-			System.out.println(word);
+			System.out.println(word +", " + i);
 			if(word.equals("[")){
+				System.out.println("listCursor: " + listCursor);
+				System.out.println("stringCursor: " + stringCursor);
+				System.out.println("sub1: " + command.substring(0, stringCursor));
+				System.out.println("sub2: " + command.substring(stringCursor));
+				int startIndex = command.substring(0, stringCursor).length() + command.substring(stringCursor).indexOf("["); //puts to end of list //EDIT
+				int startListIndex = i; // modify commandList
+				System.out.println("si: " + startIndex);
+				//System.out.println("sI: " + command.substring(cursor));
+				//System.out.println("sListI: " + createSubList(cursor, commandList));
 				
-				int startIndex = command.indexOf("["); //puts to end of list
-				int cursor = commandList.indexOf("["); // modify commandList
-				//System.out.println(startIndex + "," + cursor);
+				int endIndex = getEndIndex(command.substring(startIndex)); //EDIT: startIndex
 				
+				System.out.println("endIndex: " + endIndex);
 				
-				int endIndex = getEndIndex(command.substring(startIndex), startIndex);
-				//System.out.println(endIndex);
+				ArrayList<String> subList = createSubList(startListIndex, commandList); //EDIT: list cursor
 				
-				ArrayList<String> subList = createSubList(cursor, commandList);
-				//System.out.println(subList);
-				System.out.println("clist: " + commandList);
-				System.out.println("slist: " + subList);
-				int endCursor = getEndCursor(subList, cursor);
-				System.out.println("ec: " + endCursor);
+				System.out.println("sublist: " + subList);
+				System.out.println("startListIndex: " + startListIndex);
+				int endListIndex = getEndCursor(subList);
+				
+				System.out.println("endListIndex: " + endListIndex);
+
 				i = startIndex + endIndex;
 				
-				System.out.println("slist:" + command.substring(startIndex+1, i));
-				tokenNode = parse(new TokenNode(root, new TList()), command.substring(startIndex + 1, i));
+				tokenNode = parse(new TokenNode(root, new TList()), command.substring(startIndex + 1, i)); //EDIT: i
 				
-				//System.out.println(endCursor);
-				//System.out.println("i: " + i);
-				i=endCursor + tracker; //EDIT: 2
-				System.out.println("i: " + i +", List: " + commandList);
-				System.out.println("cnew:" + commandList.get(i));
+				i=endListIndex + startListIndex;
 				
 			}
 			else{
@@ -87,25 +88,26 @@ public class SlogoParser {
 				root=parentNode;
 				parentNode=root.getParent();
 			}
-			tracker++;
+			listCursor++;
+			stringCursor+=commandList.get(i).length() + 1; //EDIT
 		}
 		return head;
 	}
 	
 	private ArrayList<String> createSubList(int cursor, ArrayList<String> commandList) {
 		ArrayList<String> ans = new ArrayList<String>();
-		for(int i = 0; i<commandList.size(); i++){
-			if(i>=cursor){
+		for(int i = 0; i<commandList.size(); i++){ 
+			if(i>=cursor){ //EDIT: i >= cursor
+				//System.out.println(commandList.get(i));
 				ans.add(commandList.get(i));
 			}
 		}
 		return ans;
 	}
 
-	private int getEndIndex(String command, int startIndex) throws CommandException{
+	private int getEndIndex(String command) throws CommandException{
 		Stack<String> stack = new Stack<String>();
 		stack.push("[");
-		//System.out.println(command);
 		for(int i = 1; i < command.length(); i++){
 			if(command.substring(i, i+1).equals("[")){
 				stack.push(command.substring(i, i+1));
@@ -120,17 +122,15 @@ public class SlogoParser {
 		throw new CommandException("List never closes");
 	}
 	
-	private int getEndCursor(ArrayList<String> commandList, int cursor) throws CommandException{
+	private int getEndCursor(ArrayList<String> commandList) throws CommandException{
 		Stack<String> stack = new Stack<String>();
 		stack.push("[");
-		//System.out.println(commandList);
 		for(int i = 1; i < commandList.size(); i++){
 			if(commandList.get(i).equals("[")){
 				stack.push(commandList.get(i));
 			}
 			else if(commandList.get(i).equals("]")){
 				stack.pop();
-				//System.out.println("x");
 			}
 			if(stack.isEmpty()){
 				return i;
