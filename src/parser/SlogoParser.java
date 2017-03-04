@@ -35,7 +35,6 @@ public class SlogoParser {
 		TokenNode root = tNode;
 		TokenNode parentNode = null;
 		TokenNode head=root;
-		int listCursor = 0;
 		int stringCursor = 0; //EDIT
 		
 		for(int i=0; i<commandList.size(); i++){
@@ -43,7 +42,7 @@ public class SlogoParser {
 			TokenNode tokenNode;
 			System.out.println(word +", " + i);
 			if(word.equals("[")){
-				System.out.println("listCursor: " + listCursor);
+				//System.out.println("listCursor: " + listCursor);
 				System.out.println("stringCursor: " + stringCursor);
 				System.out.println("sub1: " + command.substring(0, stringCursor));
 				System.out.println("sub2: " + command.substring(stringCursor));
@@ -88,7 +87,6 @@ public class SlogoParser {
 				root=parentNode;
 				parentNode=root.getParent();
 			}
-			listCursor++;
 			stringCursor+=commandList.get(i).length() + 1; //EDIT
 		}
 		return head;
