@@ -38,11 +38,11 @@ public class IfElse extends AbstractCommand {
 		double result = 0;
 		
 		if(check!=0){
-			Constant r = (Constant)trueList.executeChildren();
+			Constant r = (Constant)trueList.executeChildren().getLast();
 			result = r.getVal();
 		}
 		else{
-			Constant r = (Constant)falseList.executeChildren();
+			Constant r = (Constant)falseList.executeChildren().getLast();
 			result = r.getVal();
 		}
 		
