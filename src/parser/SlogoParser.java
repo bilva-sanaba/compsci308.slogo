@@ -42,6 +42,12 @@ public class SlogoParser {
 			TokenNode tokenNode;
 			System.out.println(word +", " + i);
 			if(word.equals("[")){
+<<<<<<< HEAD
+				int startIndex = i;
+				//System.out.println(startIndex);
+				//System.out.println(command.substring(startIndex, command.length()));
+				int endIndex = getEndIndex(command.substring(startIndex), startIndex);
+=======
 				//System.out.println("listCursor: " + listCursor);
 				System.out.println("stringCursor: " + stringCursor);
 				System.out.println("sub1: " + command.substring(0, stringCursor));
@@ -64,6 +70,7 @@ public class SlogoParser {
 				
 				System.out.println("endListIndex: " + endListIndex);
 
+>>>>>>> 83ad72d5726290f718e714ddb7cbde86ab2e4209
 				i = startIndex + endIndex;
 				
 				tokenNode = parse(new TokenNode(root, new TList()), command.substring(startIndex + 1, i)); //EDIT: i
