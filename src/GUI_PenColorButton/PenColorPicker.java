@@ -1,6 +1,7 @@
 package GUI_PenColorButton;
 
 import ColorChoosers.PenColorChooser;
+import GUI.TurtleRegularMover;
 import GUI.TurtleViewManager;
 import javafx.event.Event;
 import javafx.event.EventHandler;

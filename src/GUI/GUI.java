@@ -64,7 +64,7 @@ public class GUI {
 		wrapperPane.getChildren().add(tvm.getImage());
 	}
 	private void initializeTurtle(){
-		tvm = new TurtleViewManager(new TurtleView(), gc);
+		tvm = new TurtleAnimator(new TurtleView(), gc);
 	}
 	private void drawTurtle(){
 		tvm.setX(wrapperPane.getBoundsInLocal().getWidth()/2);

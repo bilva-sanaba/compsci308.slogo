@@ -1,5 +1,6 @@
 package ColorChoosers;
 
+import GUI.TurtleRegularMover;
 import GUI.TurtleViewManager;
 
 public abstract class PenColorChooser extends ColorChooser {
