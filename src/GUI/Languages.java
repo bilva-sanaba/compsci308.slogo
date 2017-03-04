@@ -14,10 +14,13 @@ public enum Languages {
 	SPANISH ("Spanish");
 	
 	private String language;
+	private ResourceBundle Translations;
 	public static final String DEFAULT_RESOURCES_PACKAGE = "resources.languages/";
 	Languages(String lang){
 		language = lang;
+		
 	}
+	
 	public ResourceBundle getResourceBundle(){
 		return ResourceBundle.getBundle(DEFAULT_RESOURCES_PACKAGE + language);
 	}

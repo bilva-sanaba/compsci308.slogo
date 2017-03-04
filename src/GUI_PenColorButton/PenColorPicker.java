@@ -14,6 +14,7 @@ public class PenColorPicker extends PenColorChooser{
 	public PenColorPicker(TurtleViewManager tvm){
 		super(tvm);
 		colorPicker = new ColorPicker(Color.BLACK);
+		displays.add(colorPicker);
 		((ComboBoxBase<Color>) colorPicker).setOnAction(new EventHandler() {
 			public void handle(Event t) {
 				setColor();               

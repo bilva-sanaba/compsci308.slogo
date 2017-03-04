@@ -11,6 +11,7 @@ public abstract class PenColorButton extends PenColorChooser{
 	public PenColorButton(TurtleViewManager tvm) {
 		super(tvm);
 		colorPicker = new Button("Randomize Pen Color");
+		displays.add(colorPicker);
 		((ButtonBase) colorPicker).setOnAction(new EventHandler() {
 			public void handle(Event t) {
 				setColor();               
