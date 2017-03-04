@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import configuration.Trajectory;
 import configuration.TurtleState;
 import model.commands.CommandException;
@@ -28,7 +31,8 @@ public class SlogoModel implements Model {
 	public Trajectory getTrajectory(String commands) throws CommandException {
 		Interpreter i = new Interpreter();
 		Scope scope = new Scope(defaultCommands, globalVariables, turtleTrajectory, new Scope(true, true, true));
-
+		//EDIT
+		ArrayList<String> commandList = fillList(commands);
 		TokenNode root = parser.parse(new TokenNode(null, new TList()), commands);
 		
 		for(TokenNode cmd: root.getChildren()){
@@ -41,6 +45,11 @@ public class SlogoModel implements Model {
 	@Override
 	public void setLanguage(String language) {
 		parser.setLanguage(language);		
+	}
+	
+	private ArrayList<String> fillList(String command){
+		command=command.trim();
+		return new ArrayList<String>(Arrays.asList(command.split(" ")));
 	}
 
 }
