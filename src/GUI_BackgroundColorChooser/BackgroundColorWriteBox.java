@@ -15,7 +15,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 public class BackgroundColorWriteBox extends BackgroundColorComboBox {
-	BackgroundColorWriteBox(Shape rect){
+	private Paint p;
+	public BackgroundColorWriteBox(Shape rect){
 		super(rect);
 		doStuff();
 	}
@@ -34,13 +35,16 @@ public class BackgroundColorWriteBox extends BackgroundColorComboBox {
         	catch(IllegalArgumentException y){
         		
         	}
+        	catch(NullPointerException i){}
         });
+        ((ComboBox<String>)colorPicker).valueProperty().addListener((x, y, newValue) -> {
+			p=Color.web(newValue);	
+		});
 	}
 	@Override
 	protected Paint generateColor() {
 		
-		// TODO Auto-generated method stub
-		return null;
+		return p;
 	}
 
 }
