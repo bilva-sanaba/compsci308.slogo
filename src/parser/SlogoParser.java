@@ -44,7 +44,7 @@ public class SlogoParser {
 			TokenNode tokenNode;
 			
 			if(word.equals("[")){
-				int startIndex = command.indexOf(("["));
+				int startIndex = i;
 				//System.out.println(startIndex);
 				//System.out.println(command.substring(startIndex, command.length()));
 				int endIndex = getEndIndex(command.substring(startIndex), startIndex);
