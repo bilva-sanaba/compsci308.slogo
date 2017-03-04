@@ -36,6 +36,7 @@ public class SlogoParser {
 		TokenNode root = tNode;
 		TokenNode parentNode = null;
 		TokenNode head=root;
+		int tracker = 0;
 		
 		for(int i=0; i<commandList.size(); i++){
 			//System.out.println(commandList); //MAYBE NUMARGS??
@@ -54,7 +55,8 @@ public class SlogoParser {
 				
 				ArrayList<String> subList = createSubList(cursor, commandList);
 				//System.out.println(subList);
-				
+				System.out.println("clist: " + commandList);
+				System.out.println("slist: " + subList);
 				int endCursor = getEndCursor(subList, cursor);
 				System.out.println("ec: " + endCursor);
 				i = startIndex + endIndex;
@@ -63,9 +65,9 @@ public class SlogoParser {
 				tokenNode = parse(new TokenNode(root, new TList()), command.substring(startIndex + 1, i));
 				
 				//System.out.println(endCursor);
-				System.out.println("i: " + i);
-				i=endCursor+2;
-				System.out.println("i: " + i);
+				//System.out.println("i: " + i);
+				i=endCursor + tracker; //EDIT: 2
+				System.out.println("i: " + i +", List: " + commandList);
 				System.out.println("cnew:" + commandList.get(i));
 				
 			}
@@ -84,7 +86,8 @@ public class SlogoParser {
 			if(root.getToken().getType() == TokenType.COMMAND && root.getChildren().size()==((Command)root.getToken()).getNumArgs()){
 				root=parentNode;
 				parentNode=root.getParent();
-			}		
+			}
+			tracker++;
 		}
 		return head;
 	}
