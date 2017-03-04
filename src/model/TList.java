@@ -51,7 +51,7 @@ public class TList implements Token {
 		for(TokenNode child: this.getChildren()){
 			returns.add(i.evaluateTree(child, myScope));
 		}
-		return returns;
+		return ans;
 	}
 	
 	
