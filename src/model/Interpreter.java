@@ -16,10 +16,15 @@ public class Interpreter {
 
 		Arguments returnArgs = new Arguments();
 		
-	
+		if(root.getToken().getType() == TokenType.LIST){
+			TList list = (TList)root.getToken();
+			list.setChildren(root.getChildren());
+			return list.evaluate(returnArgs);
+		}
+		
 		for(TokenNode node : root.getChildren()){
 			
-			if(node.getChildren().isEmpty()){
+			if(node.getChildren().isEmpty() && node.getToken().getType() != TokenType.LIST){
 				node.getToken().setScope(new Scope(scope, node.getToken().getScopeRequest()));
 				returnArgs.add(node.getToken().evaluate(new Arguments()));
 			}
@@ -30,10 +35,6 @@ public class Interpreter {
 			
 		}
 	
-		if(root.getToken().getType() == TokenType.LIST){
-			TList list = (TList)root.getToken();
-			list.setChildren(root.getChildren());
-		}
 		
 		return root.getToken().evaluate(returnArgs);
 		
