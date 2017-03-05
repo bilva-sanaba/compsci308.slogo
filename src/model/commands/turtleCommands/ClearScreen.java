@@ -11,7 +11,7 @@ import model.commands.CommandException;
  * @author Jacob Weiss
  *
  */
-public class ClearScreen extends AbstractCommand{
+public class ClearScreen extends NoParamCommand{
 
 	public double execute(Arguments args) throws CommandException {
 		Trajectory trajectory = getScope().getTrajectory();
@@ -30,12 +30,6 @@ public class ClearScreen extends AbstractCommand{
 		trajectory.addLast(current);
 		return distanceTraveled;
 	}
-
-	
-	public Arguments getDefaultArgs() {
-		return new Arguments();
-	}
-
 
 	public String getID() {
 		// TODO Auto-generated method stub

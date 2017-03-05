@@ -34,7 +34,7 @@ public class SlogoModel implements Model {
 	}
 	
 	@Override
-	public Trajectory getTrajectory(String commands) throws CommandException {
+	public Trajectory getTrajectory(String commands) throws CommandException{
 		Interpreter i = new Interpreter();
 		Scope scope = new Scope(defaultCommands, globalVariables, turtleTrajectory, new Scope(true, true, true));
 //		//EDIT

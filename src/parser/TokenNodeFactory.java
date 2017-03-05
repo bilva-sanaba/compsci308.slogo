@@ -64,20 +64,21 @@ public class TokenNodeFactory {
 		createValueList();
 		TokenNode tokenNode = new TokenNode(parentNode, null);
 
-		if(possibleCommands.contains(word)){//word is in resources
-			String wordID = findWordID(word);
-			CommandFactory cFactory = new CommandFactory();
-			Token t = cFactory.getCommand(wordID);
-			tokenNode = new TokenNode(parentNode, t);
-		}
-		else if(word.substring(0,1).equals(":")){ //include : check
+			if(possibleCommands.contains(word)){//word is in resources
+				String wordID = findWordID(word);
+				CommandFactory cFactory = new CommandFactory();
+				Token t = cFactory.getCommand(wordID);
+				tokenNode = new TokenNode(parentNode, t);
+			}
+			else if(word.substring(0,1).equals(":")){ //include : check
 
-			tokenNode = new TokenNode(parentNode, new Variable(word.substring(1)));
-		}
-		else if(Double.valueOf(word)!=null){
-			tokenNode = new TokenNode(parentNode, new Constant(Double.parseDouble(word)));
-		}
-		return tokenNode;
+				tokenNode = new TokenNode(parentNode, new Variable(word.substring(1)));
+			}
+			else if(Double.valueOf(word)!=null){
+				tokenNode = new TokenNode(parentNode, new Constant(Double.parseDouble(word)));
+			}
+			return tokenNode;
+		
 	}
 	
 	private String findWordID(String word){

@@ -11,7 +11,7 @@ import model.commands.CommandException;
  * @author Jacob Weiss
  *
  */
-public class SetPosition extends TurtleCommand {
+public class SetPosition extends TwoParamCommand {
 	@Override
 	public double execute(Arguments args) throws CommandException {
 		Trajectory trajectory = getScope().getTrajectory();
@@ -28,12 +28,6 @@ public class SetPosition extends TurtleCommand {
 		current.setY(newY);
 		trajectory.addLast(current);
 		return distanceTraveled; //distance turtle moved
-	}
-
-	@Override
-	public Arguments getDefaultArgs() {
-		Token[] def = {new Constant(0), new Constant(0)};
-		return new Arguments(def);
 	}
 
 	@Override
