@@ -37,7 +37,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 public class InputPanel {
-	private Node returnPanel;
+	private Pane returnPanel;
 	private GridPane inputPanel = new GridPane();
 	private String currentLanguage = "English";
 	private PenColorChooser pb;
@@ -45,18 +45,18 @@ public class InputPanel {
 	private static final String HELP_URL="help.html";
 	private static final int BUTTON_SPACING = 20;
 	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
-public InputPanel(TurtleViewManager tvm, List<Button> otherButtons,Shape background){
+public InputPanel(TurtleViewManager tvm, List<Button> otherButtons,Shape background, double width, double height){
 	returnPanel = initInputPanel(otherButtons);
+	returnPanel.setPrefSize(width, height/4);
 	addBackgroundButton(background);
 	addOtherBoxes(tvm);
 	addPenButton(tvm);
 	addExtraButtons(tvm);
 	}
-public Node getBottomPanel(){
+public Pane getBottomPanel(){
 	return returnPanel;
 }
-private Node initInputPanel(List<Button> otherButtons) {
- 	
+private Pane initInputPanel(List<Button> otherButtons) {
  	BorderPane bottomPanel = new BorderPane();
     Button help=createButton("Help",e -> handleHelpButton());
     bottomPanel.setCenter(inputPanel);

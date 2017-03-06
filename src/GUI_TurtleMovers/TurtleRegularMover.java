@@ -39,12 +39,5 @@ protected void rotate(UnmodifiableTurtleState uts,double width){
 }
 protected void changeVisibility(UnmodifiableTurtleState uts, double width){
 	myTurtleView.setVisibility(uts.isShowing());
-//	System.out.println(myTurtleView.getImage().getX());
-//	Rectangle2D viewportRect = new Rectangle2D(0, 0, 800, 800);
-//	myTurtleView.getImage().setViewport(viewportRect);
-//	System.out.println(width);
-//	if (myTurtleView.getImage().getX()<0 || myTurtleView.getImage().getX()>width-(myTurtleView.getImage().getBoundsInLocal().getWidth())){
-//		myTurtleView.setVisibility(false);
-//	}
 }
 }
