@@ -11,7 +11,7 @@ import model.Variable;
 import model.VariableContainer;
 import model.commands.AbstractCommand;
 import model.commands.CommandException;
-import parser.TokenNode;
+import parser.tokenNodes.TokenNode;
 
 public class TemplateCommand extends AbstractCommand {
 	

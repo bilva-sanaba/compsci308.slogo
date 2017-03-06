@@ -3,6 +3,7 @@ package model;
 import configuration.Trajectory;
 import model.commands.CommandException;
 
+
 public interface Model {
 	
 	/**
@@ -11,6 +12,7 @@ public interface Model {
 	 * give a string that represents commands entered
 	 * into GUI text box
 	 * @throws CommandException 
+	 * @throws SyntaxException 
 	 */
 	public Trajectory getTrajectory(String commands) throws CommandException;
 	

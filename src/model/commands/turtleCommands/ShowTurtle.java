@@ -11,7 +11,7 @@ import model.commands.CommandException;
  * @author Jacob Weiss
  *
  */
-public class ShowTurtle extends TurtleCommand {
+public class ShowTurtle extends NoParamCommand {
 	@Override
 	public double execute(Arguments args) throws CommandException {
 		Trajectory trajectory = getScope().getTrajectory();
@@ -20,12 +20,6 @@ public class ShowTurtle extends TurtleCommand {
 		current.setShowing(true);
 		trajectory.addLast(current);
 		return 1;
-	}
-
-	@Override
-	public Arguments getDefaultArgs() {
-		Token[] def = {};
-		return new Arguments(def);
 	}
 
 	@Override

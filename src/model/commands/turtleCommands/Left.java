@@ -11,7 +11,7 @@ import model.commands.CommandException;
  * @author Jacob Weiss
  *
  */
-public class Left extends TurtleCommand {
+public class Left extends OneParamCommand {
 
 	@Override
 	public double execute(Arguments args) throws CommandException {
@@ -24,12 +24,6 @@ public class Left extends TurtleCommand {
 		current.setHeading(heading-angleChange);
 		trajectory.addLast(current);
 		return angleChange;
-	}
-
-	@Override
-	public Arguments getDefaultArgs() {
-		Token[] def = {new Constant(0)};
-		return new Arguments(def);
 	}
 
 	@Override

@@ -15,7 +15,7 @@ import model.Variable;
 import model.VariableContainer;
 import model.commands.AbstractCommand;
 import model.commands.CommandException;
-import parser.TokenNode;
+import parser.tokenNodes.TokenNode;
 /**
  * 
  * @author Jacob Weiss
@@ -51,7 +51,7 @@ public class IfElse extends AbstractCommand {
 
 	@Override
 	public Arguments getDefaultArgs() {
-		Token[] def = {new Constant(0), new TList()};
+		Token[] def = {new Constant(0), new TList(), new TList()};
 		return new Arguments(def);
 	}
 

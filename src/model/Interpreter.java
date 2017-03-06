@@ -1,7 +1,7 @@
 package model;
 
 import model.commands.CommandException;
-import parser.TokenNode;
+import parser.tokenNodes.TokenNode;
 
 /**
  * Inteprets Token tree formed by parser

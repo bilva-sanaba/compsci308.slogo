@@ -13,7 +13,7 @@ import model.TokenType;
 import model.Variable;
 import model.commands.AbstractCommand;
 import model.commands.CommandException;
-import parser.TokenNode;
+import parser.tokenNodes.TokenNode;
 
 /**
  * Class for "TO" command
