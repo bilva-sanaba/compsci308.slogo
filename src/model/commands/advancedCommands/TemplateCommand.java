@@ -9,6 +9,10 @@ import model.Variable;
 import model.VariableContainer;
 import model.commands.AbstractCommand;
 import model.commands.CommandException;
+<<<<<<< HEAD
+=======
+import parser.tokenNodes.TokenNode;
+>>>>>>> 90dca5c3b8cfafb3fb75f3021fb75fac24e47524
 
 /**
  * This is a Template Command for all Commands Defined by the user.
