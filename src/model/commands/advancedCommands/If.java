@@ -39,7 +39,7 @@ public class If extends AbstractCommand {
 			return result;
 		}
 		else{
-			Constant r = (Constant)tList.executeChildren();
+			Constant r = (Constant)tList.executeChildren().getLast();
 			result = r.getVal();
 			return result;
 		}
