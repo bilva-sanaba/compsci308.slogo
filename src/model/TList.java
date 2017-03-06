@@ -3,7 +3,7 @@ package model;
 import java.util.List;
 
 import model.commands.CommandException;
-import parser.TokenNode;
+import parser.tokenNodes.TokenNode;
 
 public class TList implements Token {
 	Scope myScope;

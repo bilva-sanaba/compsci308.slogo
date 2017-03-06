@@ -14,6 +14,9 @@ import model.TList;
 import model.Token;
 import model.TokenType;
 import model.commands.CommandException;
+import parser.tokenNodes.TListNode;
+import parser.tokenNodes.TokenNode;
+import parser.tokenNodes.TokenNodeFactory;
 
 
 
@@ -52,7 +55,7 @@ public class SlogoParser {
 				
 				int endListIndex = getEndListIndex(subList);
 				
-				tokenNode = parse(new TokenNode(root, new TList()), command.substring(startIndex + 1, endIndex));
+				tokenNode = parse(new TListNode(root, new TList()), command.substring(startIndex + 1, endIndex));
 				
 				i=endListIndex + startListIndex;
 				

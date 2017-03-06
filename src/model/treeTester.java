@@ -4,7 +4,7 @@ import configuration.TurtleState;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
 import parser.SlogoParser;
-import parser.TokenNode;
+import parser.tokenNodes.TokenNode;
 public class treeTester {
 	public static void main(String[] args) throws CommandException {
 		
