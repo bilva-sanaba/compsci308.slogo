@@ -10,6 +10,7 @@ import model.commands.CommandException;
  * @author Jacob Weiss
  *
  */
+
 public class ClearScreen extends NoParamCommand{
 
 	public double execute(Arguments args, Scope scope) throws CommandException {

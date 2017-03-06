@@ -9,7 +9,6 @@ import model.Variable;
 import model.VariableContainer;
 import model.commands.AbstractCommand;
 import model.commands.CommandException;
-import parser.tokenNodes.TokenNode;
 
 /**
  * This is a Template Command for all Commands Defined by the user.

@@ -3,6 +3,7 @@ package model.commands.turtleQueries;
 import configuration.Trajectory;
 import configuration.TurtleState;
 import model.Arguments;
+import model.Scope;
 import model.commands.CommandException;
 import model.commands.turtleCommands.NoParamCommand;
 /**
