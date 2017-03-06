@@ -7,13 +7,14 @@ import model.Constant;
 import model.Scope;
 import model.Token;
 import model.commands.CommandException;
+import model.commands.turtleCommands.NoParamCommand;
 import model.commands.turtleCommands.TurtleCommand;
 /**
  * 
  * @author Jacob Weiss
  *
  */
-public class IsPenDown extends TurtleCommand {
+public class IsPenDown extends NoParamCommand {
 
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {
@@ -27,11 +28,6 @@ public class IsPenDown extends TurtleCommand {
 		}
 	}
 
-	@Override
-	public Arguments getDefaultArgs() {
-		Token[] def = {new Constant(0)};
-		return new Arguments(def);
-	}
 
 	@Override
 	public String getID() {

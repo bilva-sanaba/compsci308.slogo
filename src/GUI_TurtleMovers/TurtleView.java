@@ -1,4 +1,4 @@
-package GUI;
+package GUI_TurtleMovers;
 import configuration.Trajectory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

@@ -12,7 +12,7 @@ import model.commands.CommandException;
  * @author Jacob Weiss
  *
  */
-public class Backward extends TurtleCommand {
+public class Backward extends OneParamCommand {
 
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {
@@ -24,12 +24,6 @@ public class Backward extends TurtleCommand {
 		current.moveForward(distance);
 		trajectory.addLast(current);
 		return distance;
-	}
-
-	@Override
-	public Arguments getDefaultArgs() {
-		Token[] def = {new Constant(0)};
-		return new Arguments(def);
 	}
 
 	@Override
