@@ -1,6 +1,8 @@
 package model.commands.mathOperations;
 
 import model.Arguments;
+import model.Scope;
+import model.commands.CommandException;
 
 /**
  * Returns Power: (arg1)^(arg2)
@@ -10,7 +12,7 @@ import model.Arguments;
 public class Power extends Sum{
 	
 	@Override
-	public double execute(Arguments args) {
+	public double execute(Arguments args, Scope scope) throws CommandException {
 		return Math.pow(args.getDouble(0), args.getDouble(1));
 	}
 	

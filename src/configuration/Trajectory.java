@@ -35,6 +35,14 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	}
 	
 	/**
+	 * Copy constructor
+	 * @param original
+	 */
+	public Trajectory(Trajectory original){
+		this(original.fullTrajectory);
+	}
+	
+	/**
 	 * Constructs a Trajectory with no initial states.
 	 * Use methods to add to end of trajectory
 	 */

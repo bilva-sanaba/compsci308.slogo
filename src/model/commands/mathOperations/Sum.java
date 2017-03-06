@@ -1,8 +1,8 @@
 package model.commands.mathOperations;
 
 import model.Arguments;
-import model.Constant;
-import model.Token;
+import model.Scope;
+import model.commands.CommandException;
 
 /**
  * Sums two Constants together
@@ -12,9 +12,10 @@ public class Sum extends TwoParamOperation {
 
 	/**
 	 * Adds two arguments
+	 * @throws CommandException 
 	 */
 	@Override
-	public double execute(Arguments args) {
+	public double execute(Arguments args, Scope scope) throws CommandException {
 		return args.getDouble(0) + args.getDouble(1);
 	}
 

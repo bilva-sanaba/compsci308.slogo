@@ -29,8 +29,7 @@ public class Repeat extends AbstractCommand {
 	}
 
 	@Override
-	public double execute(Arguments args) throws CommandException {
-		Trajectory trajectory = getScope().getTrajectory();
+	public double execute(Arguments args, Scope scope) throws CommandException {
 		VariableContainer vars = new VariableContainer();
 		
 		int times = (int) args.getDouble(0);
@@ -39,7 +38,7 @@ public class Repeat extends AbstractCommand {
 		int repcount=1;
 		
 		for(int i=times; i>0; i--){
-			Constant r = (Constant) tList.executeChildren().getLast();
+			Constant r = (Constant) tList.executeChildren(scope).getLast();
 			result = r.getVal();
 			vars.set(new Variable("repcount"), new Constant(repcount));
 			repcount++;

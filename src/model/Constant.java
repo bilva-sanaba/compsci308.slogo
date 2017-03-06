@@ -1,4 +1,4 @@
-package model;
+ package model;
 
 /**
  * Token: Constant
@@ -30,17 +30,13 @@ public class Constant implements Token {
 	}
 
 	@Override
-	public Token evaluate(Arguments args) {
+	public Token evaluate(Arguments args, Scope scope) {
+		// Constants don't need scope
 		return this;
 	}
 	
 	public String toString(){
 		return String.valueOf(value);
-	}
-
-	@Override
-	public void setScope(Scope s) {
-		// Constants don't need scope
 	}
 
 	@Override

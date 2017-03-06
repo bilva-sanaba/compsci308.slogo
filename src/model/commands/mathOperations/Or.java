@@ -1,8 +1,8 @@
 package model.commands.mathOperations;
 
 import model.Arguments;
-import model.Constant;
-import model.Token;
+import model.Scope;
+import model.commands.CommandException;
 
 /**
  * "Or" operator
@@ -14,7 +14,7 @@ import model.Token;
 public class Or extends OneParamOperation {
 
 	@Override
-	public double execute(Arguments args) {
+	public double execute(Arguments args, Scope scope) throws CommandException {
 		return (args.getDouble(0) != 0 ) || (args.getDouble(1) != 0)? 1:0;
 	}
 

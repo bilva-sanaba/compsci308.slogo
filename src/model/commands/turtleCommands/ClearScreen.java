@@ -4,17 +4,16 @@ import configuration.Trajectory;
 import configuration.TurtleState;
 import model.Arguments;
 import model.Scope;
-import model.commands.AbstractCommand;
 import model.commands.CommandException;
 /**
  * 
  * @author Jacob Weiss
  *
  */
-public class ClearScreen extends AbstractCommand{
+public class ClearScreen extends TurtleCommand{
 
-	public double execute(Arguments args) throws CommandException {
-		Trajectory trajectory = getScope().getTrajectory();
+	public double execute(Arguments args, Scope scope) throws CommandException {
+		Trajectory trajectory = scope.getTrajectory();
 		TurtleState current = trajectory.getLast().getModifiableCopy();
 		double xLoc = current.getX();
 		double yLoc = current.getY();
@@ -41,16 +40,4 @@ public class ClearScreen extends AbstractCommand{
 		// TODO Auto-generated method stub
 		return "ClearScreen";
 	}
-	
-	public Scope getScope(){
-		return new Scope(true, true, true);
-	}
-
-
-	@Override
-	public Scope getScopeRequest() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
