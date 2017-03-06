@@ -5,6 +5,7 @@ import model.Scope;
 import model.TList;
 import model.Token;
 import model.TokenType;
+import model.Variable;
 import model.commands.AbstractCommand;
 import model.commands.CommandException;
 import parser.tokenNodes.TokenNode;
@@ -25,7 +26,7 @@ public class To extends AbstractCommand {
 
 		TemplateCommand newCommand = new TemplateCommand(commandName);
 		newCommand.setOnEvaluation(contents);
-		newCommand.setOrderedVariableArguments(getArgumentsFromList(parameters));
+		newCommand.setOrderedVariableArguments(getDefaultVariables(getArgumentsFromList(parameters)));
 		
 		scope.getCommands().registerCommand(commandName, newCommand);
 		return 1;
@@ -50,14 +51,14 @@ public class To extends AbstractCommand {
 	}
 	
 	
-//	private Arguments getDefaultVariables(Arguments variables) { // This code serves no purpose
-//		Arguments defaultVariables = new Arguments();
-//		for(int i = 0; i < variables.numArgs(); i++){
-//			Variable v = variables.getVariable(i);
-//			defaultVariables.add(v);
-//		}
-//		return defaultVariables;
-//	}
+	private Arguments getDefaultVariables(Arguments variables) { // This code serves no purpose
+		Arguments defaultVariables = new Arguments();
+		for(int i = 0; i < variables.numArgs(); i++){
+			Variable v = variables.getVariable(i);
+			defaultVariables.add(new Variable(v.getName()));
+		}
+		return defaultVariables;
+	}
 
 	/**
  	 * Expected Arguments:

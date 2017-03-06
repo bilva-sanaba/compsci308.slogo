@@ -36,7 +36,7 @@ public class SlogoParser {
 	public TokenNode parse(TokenNode tNode, String command) throws CommandException{
 		ArrayList<String> commandList = fillList(command);
 		TokenNode root = tNode;
-		TokenNode parentNode = null;
+		TokenNode parentNode = new TListNode(null, new TList());
 		TokenNode head=root;
 		int stringCursor = 0;
 		
