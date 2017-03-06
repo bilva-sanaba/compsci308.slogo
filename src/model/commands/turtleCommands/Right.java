@@ -12,7 +12,7 @@ import model.commands.CommandException;
  * @author Jacob Weiss
  *
  */
-public class Right extends TurtleCommand {
+public class Right extends OneParamCommand {
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {
 		Trajectory trajectory = scope.getTrajectory();
@@ -24,12 +24,6 @@ public class Right extends TurtleCommand {
 		current.setHeading(heading+angleChange);
 		trajectory.addLast(current);
 		return angleChange;
-	}
-
-	@Override
-	public Arguments getDefaultArgs() {
-		Token[] def = {new Constant(0)};
-		return new Arguments(def);
 	}
 
 	@Override

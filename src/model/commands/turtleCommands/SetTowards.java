@@ -16,7 +16,7 @@ import model.commands.CommandException;
  * @author DhruvKPatel
  *
  */
-public class SetTowards extends TurtleCommand {
+public class SetTowards extends TwoParamCommand {
 
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {
@@ -35,17 +35,6 @@ public class SetTowards extends TurtleCommand {
 		current.setHeading(newHeading);	
 		trajectory.addLast(current);
 		return newHeading;
-	}
-
-	/**
-	 * Expected Arguments:
-	 * 1: Constant (x coordinate)
-	 * 2: Constant (y coordinate)
-	 */
-	@Override
-	public Arguments getDefaultArgs() {
-		Token[] def = {new Constant(0), new Constant(0)};
-		return new Arguments(def);
 	}
 
 	@Override

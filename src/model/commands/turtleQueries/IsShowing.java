@@ -5,13 +5,14 @@ import configuration.TurtleState;
 import model.Arguments;
 import model.Scope;
 import model.commands.CommandException;
+import model.commands.turtleCommands.NoParamCommand;
 import model.commands.turtleCommands.TurtleCommand;
 /**
  * 
  * @author Jacob Weiss
  *
  */
-public class IsShowing extends TurtleCommand {
+public class IsShowing extends NoParamCommand {
 
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {
@@ -23,11 +24,6 @@ public class IsShowing extends TurtleCommand {
 		else{
 			return 0;
 		}
-	}
-
-	@Override
-	public Arguments getDefaultArgs() {
-		return new Arguments();
 	}
 
 	@Override

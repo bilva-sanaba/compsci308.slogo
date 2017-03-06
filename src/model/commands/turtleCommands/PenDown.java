@@ -11,7 +11,7 @@ import model.commands.CommandException;
  * @author Jacob Weiss
  *
  */
-public class PenDown extends TurtleCommand {
+public class PenDown extends NoParamCommand {
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {
 		Trajectory trajectory = scope.getTrajectory();
@@ -20,12 +20,6 @@ public class PenDown extends TurtleCommand {
 		current.setPenDown(true);
 		trajectory.addLast(current);
 		return 1;
-	}
-
-	@Override
-	public Arguments getDefaultArgs() {
-		Token[] def = {};
-		return new Arguments(def);
 	}
 
 	@Override

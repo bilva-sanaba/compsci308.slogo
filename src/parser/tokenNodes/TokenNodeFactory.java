@@ -1,4 +1,4 @@
-package parser;
+package parser.tokenNodes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
+import model.Command;
 import model.Constant;
 import model.TList;
 import model.Token;
@@ -30,9 +31,6 @@ public class TokenNodeFactory {
 	
 	public static final String SYNTAX = "Syntax";
 	private String language = "English";
-	
-	private String doubleRegex = ("[\\x00-\\x20]*" + "[+-]?(" + "NaN|" + "Infinity|" + 
-								")[pP][+-]?" + "(\\p{Digit}+)" + "))" + "[fFdD]?))" + "[\\x00-\\x20]*");
 
 	
 	private static List<String> possibleCommands = new ArrayList<String>();
@@ -64,20 +62,20 @@ public class TokenNodeFactory {
 		createValueList();
 		TokenNode tokenNode = new TokenNode(parentNode, null);
 
-		if(possibleCommands.contains(word)){//word is in resources
-			String wordID = findWordID(word);
-			CommandFactory cFactory = new CommandFactory();
-			Token t = cFactory.getCommand(wordID);
-			tokenNode = new TokenNode(parentNode, t);
-		}
-		else if(word.substring(0,1).equals(":")){ //include : check
-
-			tokenNode = new TokenNode(parentNode, new Variable(word.substring(1)));
-		}
-		else if(Double.valueOf(word)!=null){
-			tokenNode = new TokenNode(parentNode, new Constant(Double.parseDouble(word)));
-		}
-		return tokenNode;
+			if(possibleCommands.contains(word)){//word is in resources
+				String wordID = findWordID(word);
+				CommandFactory cFactory = new CommandFactory();
+				Command t = cFactory.getCommand(wordID);
+				tokenNode = new CommandNode(parentNode, t);
+			}
+			else if(word.substring(0,1).equals(":")){ //include : check
+				tokenNode = new VariableNode(parentNode, new Variable(word.substring(1)));
+			}
+			else if(Double.valueOf(word)!=null){
+				tokenNode = new ConstantNode(parentNode, new Constant(Double.parseDouble(word)));
+			}
+			return tokenNode;
+		
 	}
 	
 	private String findWordID(String word){

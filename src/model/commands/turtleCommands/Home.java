@@ -11,7 +11,7 @@ import model.commands.CommandException;
  * @author Jacob Weiss
  *
  */
-public class Home extends TurtleCommand {
+public class Home extends NoParamCommand {
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {
 		Trajectory trajectory = scope.getTrajectory();
@@ -28,12 +28,6 @@ public class Home extends TurtleCommand {
 		current.setY(newY);
 		trajectory.addLast(current);
 		return distanceTraveled;
-	}
-
-	@Override
-	public Arguments getDefaultArgs() {
-		Token[] def = {};
-		return new Arguments(def);
 	}
 
 	@Override
