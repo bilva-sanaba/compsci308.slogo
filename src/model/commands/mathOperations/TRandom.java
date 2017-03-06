@@ -3,8 +3,8 @@ package model.commands.mathOperations;
 import java.util.Random;
 
 import model.Arguments;
-import model.Constant;
-import model.Token;
+import model.Scope;
+import model.commands.CommandException;
 
 /**
  * Returns random non-negative number strictly less than argument
@@ -15,7 +15,7 @@ import model.Token;
 public class TRandom extends OneParamOperation {
 
 	@Override
-	public double execute(Arguments args) {
+	public double execute(Arguments args, Scope scope) throws CommandException {
 		Random r = new Random();
 		return r.nextDouble() * args.getDouble(0);
 	}

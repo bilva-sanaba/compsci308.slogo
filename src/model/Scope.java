@@ -41,9 +41,7 @@ public class Scope {
 	 * Copy request constructor
 	 */
 	public Scope(Scope old, Scope request){
-		if(request.getCommands() != null) this.commands = old.getCommands();
-		if(request.getVariables() != null) this.variables = old.getVariables();
-		if(request.getTrajectory() != null) this.trajectory = old.getTrajectory();
+		this(old.getCommands(), old.getVariables(), old.getTrajectory(), request);
 	}
 	
 	/**

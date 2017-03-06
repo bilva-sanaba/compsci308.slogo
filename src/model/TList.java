@@ -6,7 +6,6 @@ import model.commands.CommandException;
 import parser.tokenNodes.TokenNode;
 
 public class TList implements Token {
-	Scope myScope;
 	
 	private List<TokenNode> children;
 	
@@ -16,7 +15,7 @@ public class TList implements Token {
 	}
 
 	@Override
-	public Token evaluate(Arguments args) throws CommandException {
+	public Token evaluate(Arguments args, Scope scope) throws CommandException {
 		if(children == null) throw new CommandException("List is empty");
 		return this;
 	}
@@ -44,21 +43,14 @@ public class TList implements Token {
 	 * @return Token
 	 * @throws CommandException 
 	 */
-	public Arguments executeChildren() throws CommandException{
+	public Arguments executeChildren(Scope scope) throws CommandException{
 		Arguments returns = new Arguments();
 		
 		Interpreter i = new Interpreter();
 		for(TokenNode child: this.getChildren()){
-			returns.add(i.evaluateTree(child, myScope));
+			returns.add(i.evaluateTree(child, scope));
 		}
 		return returns;
-	}
-	
-	
-
-	@Override
-	public void setScope(Scope s) {
-		myScope = s; 
 	}
 
 	@Override

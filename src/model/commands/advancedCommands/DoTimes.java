@@ -23,10 +23,10 @@ public class DoTimes extends AbstractCommand {
 	}
 
 	@Override
-	public double execute(Arguments args) throws CommandException {
-		VariableContainer vars = getScope().getVariables();
+	public double execute(Arguments args, Scope scope) throws CommandException {
+		VariableContainer vars = scope.getVariables();
 		
-		Arguments myArgs = args.getTList(0).executeChildren();
+		Arguments myArgs = args.getTList(0).executeChildren(scope);
 		TList actions = args.getTList(1);
 
 		Variable var = myArgs.getVariable(0);
@@ -35,7 +35,7 @@ public class DoTimes extends AbstractCommand {
 		double returns = 0;
 		for(int i = 1; i <= limit; i++){
 			vars.set(var, new Constant(i));
-			Arguments returnArgs = actions.executeChildren();
+			Arguments returnArgs = actions.executeChildren(scope);
 			returns = returnArgs.getDouble(returnArgs.numArgs() - 1);
 		}
 		return returns;		

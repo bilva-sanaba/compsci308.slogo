@@ -12,21 +12,19 @@ import parser.tokenNodes.TokenNode;
 public class Interpreter {
 	
 	public Token evaluateTree(TokenNode root, Scope scope) throws CommandException{
-		root.getToken().setScope(new Scope(scope, root.getToken().getScopeRequest()));
 
 		Arguments returnArgs = new Arguments();
 		
 		if(root.getToken().getType() == TokenType.LIST){
 			TList list = (TList)root.getToken();
 			list.setChildren(root.getChildren());
-			return list.evaluate(returnArgs);
+			return list.evaluate(returnArgs, getScopeFromRequest(root, scope));
 		}
 		
 		for(TokenNode node : root.getChildren()){
 			
 			if(node.getChildren().isEmpty() && node.getToken().getType() != TokenType.LIST){
-				node.getToken().setScope(new Scope(scope, node.getToken().getScopeRequest()));
-				returnArgs.add(node.getToken().evaluate(new Arguments()));
+				returnArgs.add(node.getToken().evaluate(new Arguments(), getScopeFromRequest(node, scope)));
 			}
 			
 			else{
@@ -36,7 +34,11 @@ public class Interpreter {
 		}
 	
 		
-		return root.getToken().evaluate(returnArgs);
+		return root.getToken().evaluate(returnArgs, getScopeFromRequest(root, scope));
 		
+	}
+	
+	private Scope getScopeFromRequest(TokenNode node, Scope fullScope){
+		return new Scope(fullScope, node.getToken().getScopeRequest());
 	}
 }

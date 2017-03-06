@@ -3,20 +3,23 @@ package model.commands.advancedCommands;
 import java.util.List;
 
 import model.Arguments;
-import model.Constant;
-import model.Interpreter;
 import model.Scope;
-import model.Token;
+import model.TList;
 import model.Variable;
 import model.VariableContainer;
 import model.commands.AbstractCommand;
 import model.commands.CommandException;
 import parser.tokenNodes.TokenNode;
 
+/**
+ * This is a Template Command for all Commands Defined by the user.
+ * @author DhruvKPatel
+ *
+ */
 public class TemplateCommand extends AbstractCommand {
 	
 	private Arguments defaultArgs;
-	private List<TokenNode> subCommands;
+	private TList subCommands;
 	private List<Variable> argumentVariables;
 	private String id;
 	
@@ -26,31 +29,24 @@ public class TemplateCommand extends AbstractCommand {
 	}
 	
 	@Override
-	public double execute(Arguments args) throws CommandException {
-		Interpreter subInterpreter = new Interpreter();
-		
+	public double execute(Arguments args, Scope scope) throws CommandException {
 		if(subCommands == null) throw new CommandException(String.format("No commands defined in list: %s", getID()));
 		
-		VariableContainer myVariables = getScope().getVariables();
+		VariableContainer subVariables = new VariableContainer(scope.getVariables()); // COPIES scope variable, so that instance variables are not added to global set.
 		
-		for(int i = 0; i < argumentVariables.size(); i++){
-			myVariables.addVariable(new Variable(argumentVariables.get(i).getName(), ((Variable)args.get(i)).getValue()));
+		for(int i = 0; i < argumentVariables.size(); i++){	// Adds argument variables to sub-scope
+			subVariables.set(argumentVariables.get(i), args.getConstant(i));
 		}
+				
+		Scope subScope = new Scope(scope.getCommands(), subVariables, scope.getTrajectory(), getScopeRequest());
 		
-		Constant answer = new Constant(0);
-		for(TokenNode subCommand: subCommands){
-			answer = (Constant)subInterpreter.evaluateTree(subCommand, getScope());
-		}
-		return answer.getVal();
+		Arguments answer = subCommands.executeChildren(subScope);
+		return(answer.getDouble(answer.numArgs() - 1));
 	}
 
 	@Override
 	public Arguments getDefaultArgs() {
 		return defaultArgs;
-	}
-	
-	public void setDefaultArgs(Arguments defaultArgs){
-		this.defaultArgs = defaultArgs;
 	}
 
 	@Override
@@ -63,13 +59,26 @@ public class TemplateCommand extends AbstractCommand {
 		return new Scope(true, true, true);
 	}
 
-	public void setOnEvaluation(List<TokenNode> children) {
-		this.subCommands = children;		
+	/**
+	 * When command is evaluated, this TList's children will be evaluated
+	 * @param subCommands
+	 */
+	public void setOnEvaluation(TList subCommands) {
+		this.subCommands = subCommands;		
 	}
 
-	public void setOrderedVariableArguments(Arguments variables) {
-		for(Token t: variables){
-			argumentVariables.add(new Variable(((Variable)t).getName()));
+	/**
+	 * Sets expected variable names of command given Arguments of variable names.
+	 * Also infers default arguments as Constants with values of current variables
+	 * @param variables
+	 * @throws CommandException 
+	 */
+	public void setOrderedVariableArguments(Arguments variables) throws CommandException {
+		defaultArgs = new Arguments();
+		
+		for(int i = 0; i < variables.numArgs(); i++){
+			argumentVariables.add(new Variable((variables.getVariable(i)).getName()));
+			defaultArgs.add(variables.getVariable(i).getValue());	// Default variable
 		}
 	}
 }

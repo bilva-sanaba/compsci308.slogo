@@ -22,8 +22,8 @@ public class MakeVariable extends AbstractCommand{
 	}
 
 	@Override
-	public double execute(Arguments args) throws CommandException {
-		VariableContainer vars = getScope().getVariables();
+	public double execute(Arguments args, Scope scope) throws CommandException {
+		VariableContainer vars = scope.getVariables();
 		
 		vars.set(args.getVariable(0), args.getConstant(1));
 	
