@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import GUI_RetrievableCode.CommandScrollPane;
 import GUI_RetrievableCode.VariableScrollPane;
+import GUI_TurtleMovers.TurtleAnimator;
+import GUI_TurtleMovers.TurtleRegularMover;
+import GUI_TurtleMovers.TurtleView;
+import GUI_TurtleMovers.TurtleViewManager;
 import configuration.Trajectory;
 import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
@@ -29,6 +33,8 @@ public class GUI {
 	private Canvas canvas;
 	private InputPanel realInput;
 	private GraphicsContext gc;
+	private LeftPanel lp;
+	private RightPanel rp;
 	private CommandScrollPane commandScrollPane;
 	private Shape background;
 	private VariableScrollPane variableScrollPane;
@@ -47,16 +53,19 @@ public class GUI {
 		runButton = b;
 		createButtons();
 		createRoot();
-		System.out.println(textArea.getHeight());
 		myStage = stage;
 		myStage.setScene(createScene());
+	
+		myRoot.setLeft(lp.getPanel());
+		myRoot.setRight(rp.getPanel());
 		show();
-		background = new Rectangle(SCENE_WIDTH-commandScrollPane.getScrollPane().getWidth()-variableScrollPane.getScrollPane().getWidth(),SCENE_HEIGHT-bottomPanel.getHeight(),Color.WHITE);
+		background = new Rectangle(SCENE_WIDTH-lp.getPanel().getWidth()-rp.getPanel().getWidth(),SCENE_HEIGHT-bottomPanel.getBoundsInLocal().getHeight(),Color.WHITE);
 		wrapperPane.getChildren().add(background);
 		createCanvas();
 		initializeTurtle();
-		realInput = new InputPanel(tvm, otherButtons,background);
+		realInput = new InputPanel(tvm, otherButtons,background,SCENE_WIDTH,SCENE_HEIGHT);
 		bottomPanel.setCenter(realInput.getBottomPanel());
+		show();
 		placeTurtle();
 	}
 	private void placeTurtle(){
@@ -64,14 +73,15 @@ public class GUI {
 		wrapperPane.getChildren().add(tvm.getImage());
 	}
 	private void initializeTurtle(){
-		tvm = new TurtleViewManager(new TurtleView(), gc);
+		tvm = new TurtleAnimator(new TurtleView(), gc, SCENE_WIDTH-lp.getPanel().getWidth()-rp.getPanel().getWidth());
 	}
 	private void drawTurtle(){
-		tvm.setX(wrapperPane.getBoundsInLocal().getWidth()/2);
-		tvm.setY(wrapperPane.getBoundsInLocal().getHeight()/2);
+		System.out.println(lp.getPanel().getBoundsInLocal().getWidth());
+		tvm.setX((SCENE_WIDTH-lp.getPanel().getBoundsInLocal().getWidth()-rp.getPanel().getBoundsInLocal().getWidth())/2);
+		tvm.setY((SCENE_HEIGHT-bottomPanel.getBoundsInLocal().getHeight())/2);
 	}
 	private void createCanvas(){
-		canvas = new Canvas(SCENE_WIDTH-commandScrollPane.getScrollPane().getWidth()-variableScrollPane.getScrollPane().getWidth(),SCENE_HEIGHT-textArea.getHeight());
+		canvas = new Canvas(SCENE_WIDTH-rp.getPanel().getWidth()-lp.getPanel().getWidth(),SCENE_HEIGHT-bottomPanel.getBoundsInLocal().getHeight());
 		gc = canvas.getGraphicsContext2D();
 		wrapperPane.getChildren().add(canvas);	
 	}
@@ -87,10 +97,8 @@ public class GUI {
 	}
 	private void createRoot() {
 		createTextArea();
-		createVariableScroller();
-		myRoot.setLeft(variableScrollPane.getScrollPane());
-		createScrollPane();
-		myRoot.setRight(commandScrollPane.getScrollPane());	
+		lp = new LeftPanel(SCENE_WIDTH,SCENE_HEIGHT);
+		rp = new RightPanel(textArea, runButton, SCENE_WIDTH,SCENE_HEIGHT);	
 		myRoot.setCenter(wrapperPane);       
 	}
 	public String getCurrentLanguage(){
@@ -99,32 +107,9 @@ public class GUI {
 	public String getText(){
 		return textArea.getText();
 	}
-	private void createScrollPane(){
-		commandScrollPane=new CommandScrollPane(textArea,otherButtons.get(0));
-		commandScrollPane.getScrollPane().setPrefSize(SCENE_WIDTH/4,SCENE_HEIGHT);
-		commandScrollPane.getScrollPane().setLayoutX(SCENE_WIDTH*3/4);
-		commandScrollPane.getScrollPane().setLayoutY(0);
-	}
-	private void createVariableScroller(){
-		HashMap<String,Integer>map=new HashMap<String,Integer>();
-		map.put("variable",1);
-		map.put("new_number", 2);
-		map.put("a",1);
-		map.put("v", 2);
-		map.put("n",1);
-		map.put("2", 2);
-		map.put("3",1);
-		map.put("7", 2);
-		variableScrollPane=new VariableScrollPane();
-		variableScrollPane.getScrollPane().setPrefSize(SCENE_WIDTH/8,SCENE_HEIGHT);
-		variableScrollPane.getScrollPane().setLayoutX(0);
-		variableScrollPane.getScrollPane().setLayoutY(0);
-		variableScrollPane.add(map);
-	}
 	public void handleRunButton(Trajectory T){
-		commandScrollPane.addText();
-		gc.clearRect(0, 0, wrapperPane.getWidth(), wrapperPane.getHeight());
-		drawTurtle();
+		rp.getScrollPane().addText();
+//		gc.clearRect(0, 0, wrapperPane.getWidth(), wrapperPane.getHeight());
 		tvm.moveTurtle(T,wrapperPane.getBoundsInLocal().getWidth(),wrapperPane.getBoundsInLocal().getHeight());
 		textArea.clear();
 	}
