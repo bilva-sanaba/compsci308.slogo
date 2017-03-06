@@ -126,8 +126,7 @@ public class GUI {
 	}
 	public void handleRunButton(Trajectory T){
 		commandScrollPane.addText();
-		gc.clearRect(0, 0, wrapperPane.getWidth(), wrapperPane.getHeight());
-		drawTurtle();
+//		gc.clearRect(0, 0, wrapperPane.getWidth(), wrapperPane.getHeight());
 		tvm.moveTurtle(T,wrapperPane.getBoundsInLocal().getWidth(),wrapperPane.getBoundsInLocal().getHeight());
 		textArea.clear();
 	}
