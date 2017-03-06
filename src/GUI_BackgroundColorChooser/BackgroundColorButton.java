@@ -11,6 +11,7 @@ public abstract class BackgroundColorButton extends BackgroundColorChooser {
 	public BackgroundColorButton(Shape rect) {
 		super(rect);
 		colorPicker = new Button("Randomize Background Color");
+		displays.add(colorPicker);
 		((ButtonBase) colorPicker).setOnAction(new EventHandler() {
 			public void handle(Event t) {
 				setColor();               

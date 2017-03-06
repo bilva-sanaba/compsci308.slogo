@@ -15,6 +15,7 @@ public class BackgroundColorPicker extends BackgroundColorChooser{
 	public BackgroundColorPicker(Shape background){
 		super(background);
 		colorPicker = new ColorPicker(Color.WHITE);
+		displays.add(colorPicker);
 		((ComboBoxBase<Color>) colorPicker).setOnAction(new EventHandler() {
 			public void handle(Event t) {
 				setColor();               

@@ -16,34 +16,40 @@ import javafx.scene.shape.Shape;
 
 public class BackgroundColorWriteBox extends BackgroundColorComboBox {
 	private Paint p;
+	private TextField inputText;
 	public BackgroundColorWriteBox(Shape rect){
 		super(rect);
 		doStuff();
+		displays.add(1,inputText);
 	}
 	private void doStuff(){
 	SimpleObjectProperty<ObservableList<String>> words = 
-            new SimpleObjectProperty<>(FXCollections.observableArrayList());
-        colorPicker = new ComboBox<String>();
+        new SimpleObjectProperty<>(FXCollections.observableArrayList());
         ((ComboBox<String>) colorPicker).itemsProperty().bind(words);
-        TextField inputText = new TextField();
+        ((ComboBox<String>) colorPicker).setPromptText("Select Background Color");
+        inputText = new TextField();
+        inputText.setPromptText("Enter Background Color");
         inputText.setOnAction(e -> {
         	try{
-        		Color.web(inputText.getText());
+        		p = Color.web(inputText.getText());
+        		setColor();
+        		((ComboBox<String>) colorPicker).getOnAction();
         		words.getValue().add(inputText.getText());
-        		 inputText.setText("");
+        		inputText.setText("");
         	}
         	catch(IllegalArgumentException y){
         		
         	}
         	catch(NullPointerException i){}
         });
+   
         ((ComboBox<String>)colorPicker).valueProperty().addListener((x, y, newValue) -> {
 			p=Color.web(newValue);	
+			((ComboBox<String>) colorPicker).getOnAction();
 		});
 	}
 	@Override
 	protected Paint generateColor() {
-		
 		return p;
 	}
 

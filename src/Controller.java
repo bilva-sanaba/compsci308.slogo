@@ -20,6 +20,7 @@ public class Controller {
 	}
 	private void onRun(){
 		String text = gui.getText();
+		System.out.println(text);
 		model.setLanguage(gui.getCurrentLanguage());
 		try {
 			gui.handleRunButton(model.getTrajectory(text));
