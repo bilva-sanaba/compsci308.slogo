@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import GUI_RetrievableCode.CommandScrollPane;
 import GUI_RetrievableCode.VariableScrollPane;
+import GUI_TurtleMovers.TurtleAnimator;
+import GUI_TurtleMovers.TurtleRegularMover;
+import GUI_TurtleMovers.TurtleView;
+import GUI_TurtleMovers.TurtleViewManager;
 import configuration.Trajectory;
 import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
@@ -47,7 +51,6 @@ public class GUI {
 		runButton = b;
 		createButtons();
 		createRoot();
-		System.out.println(textArea.getHeight());
 		myStage = stage;
 		myStage.setScene(createScene());
 		show();
@@ -64,7 +67,7 @@ public class GUI {
 		wrapperPane.getChildren().add(tvm.getImage());
 	}
 	private void initializeTurtle(){
-		tvm = new TurtleAnimator(new TurtleView(), gc);
+		tvm = new TurtleAnimator(new TurtleView(), gc, SCENE_WIDTH-commandScrollPane.getScrollPane().getWidth()-variableScrollPane.getScrollPane().getWidth());
 	}
 	private void drawTurtle(){
 		tvm.setX(wrapperPane.getBoundsInLocal().getWidth()/2);

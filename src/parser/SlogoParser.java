@@ -40,7 +40,6 @@ public class SlogoParser {
 		for(int i=0; i<commandList.size(); i++){
 			String word = commandList.get(i).trim();
 			TokenNode tokenNode;
-			System.out.println(word +", " + i);
 			if(word.equals("[")){
 				//System.out.println("listCursor: " + listCursor);
 				System.out.println("stringCursor: " + stringCursor);

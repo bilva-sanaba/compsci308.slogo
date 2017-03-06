@@ -1,7 +1,7 @@
 package ColorChoosers;
 
-import GUI.TurtleRegularMover;
-import GUI.TurtleViewManager;
+import GUI_TurtleMovers.TurtleRegularMover;
+import GUI_TurtleMovers.TurtleViewManager;
 
 public abstract class PenColorChooser extends ColorChooser {
 		protected TurtleViewManager myTVM;

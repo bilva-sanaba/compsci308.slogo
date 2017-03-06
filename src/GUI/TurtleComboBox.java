@@ -1,5 +1,6 @@
 package GUI;
 
+import GUI_TurtleMovers.TurtleViewManager;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

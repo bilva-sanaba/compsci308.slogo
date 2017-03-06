@@ -1,6 +1,7 @@
-package GUI;
+package GUI_TurtleMovers;
 import configuration.Trajectory;
 import configuration.UnmodifiableTurtleState;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
@@ -10,8 +11,8 @@ public class TurtleRegularMover extends TurtleViewManager{
     public static final int DEFAULT_FPS = 10;
     public static final double MILLIS_PER_SECOND = 1000;
     
-	public TurtleRegularMover(TurtleView t,GraphicsContext gc){
-		super(t,gc);
+	public TurtleRegularMover(TurtleView t,GraphicsContext gc, double w){
+		super(t,gc,w);
 	}
 
 protected void moveLocation(UnmodifiableTurtleState uts,double screenWidth, double screenHeight){
@@ -32,11 +33,18 @@ protected void draw(UnmodifiableTurtleState uts,double screenWidth, double scree
 		graphics.strokeLine(oldX, oldY, penX, penY);
 	}
 }
-protected void rotate(UnmodifiableTurtleState uts){
+protected void rotate(UnmodifiableTurtleState uts,double width){
 	double newHeading=uts.getHeading();
 	myTurtleView.getImage().setRotate(newHeading);
 }
-protected void changeVisibility(UnmodifiableTurtleState uts){
+protected void changeVisibility(UnmodifiableTurtleState uts, double width){
 	myTurtleView.setVisibility(uts.isShowing());
+//	System.out.println(myTurtleView.getImage().getX());
+//	Rectangle2D viewportRect = new Rectangle2D(0, 0, 800, 800);
+//	myTurtleView.getImage().setViewport(viewportRect);
+//	System.out.println(width);
+//	if (myTurtleView.getImage().getX()<0 || myTurtleView.getImage().getX()>width-(myTurtleView.getImage().getBoundsInLocal().getWidth())){
+//		myTurtleView.setVisibility(false);
+//	}
 }
 }
