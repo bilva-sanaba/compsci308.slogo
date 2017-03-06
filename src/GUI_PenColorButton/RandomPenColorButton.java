@@ -2,7 +2,7 @@ package GUI_PenColorButton;
 
 import java.util.Random;
 
-import GUI.TurtleViewManager;
+import GUI_TurtleMovers.TurtleViewManager;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
