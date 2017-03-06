@@ -37,7 +37,7 @@ public class Interpreter {
 		
 	}
 	
-	private Scope getScopeFromRequest(TokenNode node, Scope fullScope){
+	private Scope getScopeFromRequest(TokenNode node, Scope fullScope) throws CommandException{
 		return new Scope(fullScope, node.getToken().getScopeRequest());
 	}
 }
