@@ -1,26 +1,43 @@
 package GUI;
 
-import javafx.scene.control.ComboBox;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import java.util.Arrays;
+import java.util.List;
 
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.util.Callback;
+import javafx.scene.image.Image;
 public class TurtleComboBox {
-	private ComboBox<ImageView> turtleChoice;
+	public static final List<String>turtles=Arrays.asList(new String[]{"turtle.gif","turtle2.gif"});
+	private ComboBox<Image> turtleChoice;
 	public TurtleComboBox(TurtleViewManager t){
-		turtleChoice = new ComboBox<ImageView>();
-		turtleChoice.getItems().add(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.gif"))));
-		turtleChoice.getItems().add(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle2.gif"))));
+		initializeComboBox(t);
+}
+	private void initializeComboBox(TurtleViewManager t){
+		turtleChoice = new ComboBox<Image>();
+		for(String turtle:turtles)
+		turtleChoice.getItems().add(new Image(getClass().getClassLoader().getResourceAsStream(turtle)));
 		turtleChoice.setPromptText("Choose Turtle");
 		turtleChoice.valueProperty().addListener((x, y, newValue) -> {
-			t.getImage().setImage(newValue.getImage());
-			ComboBox<ImageView>ne=new ComboBox<ImageView>();
-			ne.getItems().addAll(turtleChoice.getItems());
-			turtleChoice.getItems().clear();
-			System.out.println(turtleChoice.getItems());
-			turtleChoice.getItems().addAll(ne.getItems());
+			
+				refreshBox(t,newValue);
+			
+			
 		});
-}
-	public ComboBox<ImageView> getTurtleChooser(){
+		//turtleChoice.setCellFactory(new Callback<ListView<Image>,ListCell<Image>>);
+	}
+	public ComboBox<Image> getTurtleChooser(){
 		return turtleChoice;
 	}
+private void refreshBox(TurtleViewManager t,Image newValue){
+	t.getImage().setImage(newValue);
+	/*ComboBox<Image>ne=new ComboBox<Image>();
+	ne.getItems().addAll(turtleChoice.getItems());
+	turtleChoice.getItems().clear();
+	
+	turtleChoice.getItems().addAll(ne.getItems());
+*/
+}
 }

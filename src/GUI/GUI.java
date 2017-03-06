@@ -23,6 +23,8 @@ import configuration.Trajectory;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -32,6 +34,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -44,6 +47,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 public class GUI {
+	private TabPane myRut=new TabPane();
 	private BorderPane myRoot = new BorderPane();
 	private TextArea textArea=new TextArea();
 	private Canvas canvas;
@@ -75,7 +79,8 @@ public class GUI {
 		background = new Rectangle(SCENE_WIDTH-commandScrollPane.getScrollPane().getWidth()-100,SCENE_HEIGHT-inputPanel.getHeight(),Color.WHITE);
 		wrapperPane.getChildren().add(background);
 		cb = new RainbowBackgroundColorButton(background);
-		inputPanel.getChildren().add(createLabel("Pick Background Color: "));
+		Rectangle clipper=new Rectangle(0,0,wrapperPane.getWidth(),wrapperPane.getHeight());
+		wrapperPane.setClip(clipper);
         inputPanel.getChildren().add(cb.getChooser());
 		createCanvas();
 		initializeTurtle();
@@ -106,7 +111,10 @@ public class GUI {
 	}
 
 	private Scene createScene() {
-        Scene scene = new Scene(myRoot, SCENE_WIDTH, SCENE_HEIGHT);
+        Scene scene = new Scene(myRut, SCENE_WIDTH, SCENE_HEIGHT);
+        Tab tab=new Tab();
+        tab.setContent(myRoot);
+       myRut.getTabs().add(tab);
         return scene;
     }
 	
@@ -133,6 +141,14 @@ public class GUI {
 	}
 	private void setLanguage(String language){
 		currentLanguage=language;
+	}
+	private void addTab(Tab tab){
+	myRut.getTabs().add(tab);
+	}
+	private Tab getTab(){
+		Tab tab=new Tab();
+		tab.setContent(myRoot);
+		return tab;
 	}
 	public String getCurrentLanguage(){
 		return currentLanguage;
@@ -183,7 +199,7 @@ public class GUI {
 	 }
 	 private void addOtherBoxes(){
 		 TurtleComboBox tcb = new TurtleComboBox(tvm);
-		 ComboBox<ImageView>turtleChoice=tcb.getTurtleChooser();
+		 ComboBox<Image>turtleChoice=tcb.getTurtleChooser();
 	       inputPanel.getChildren().add(turtleChoice);
 	       inputPanel.getChildren().add(createLanguageBox());
 	 }
