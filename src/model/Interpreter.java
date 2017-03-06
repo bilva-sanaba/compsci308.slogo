@@ -12,7 +12,6 @@ import parser.tokenNodes.TokenNode;
 public class Interpreter {
 	
 	public Token evaluateTree(TokenNode root, Scope scope) throws CommandException{
-
 		Arguments returnArgs = new Arguments();
 		
 		if(root.getToken().getType() == TokenType.LIST){

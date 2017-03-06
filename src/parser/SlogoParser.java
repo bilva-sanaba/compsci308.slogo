@@ -14,6 +14,7 @@ import model.TList;
 import model.Token;
 import model.TokenType;
 import model.commands.CommandException;
+import model.commands.CommandFactory;
 import parser.tokenNodes.TListNode;
 import parser.tokenNodes.TokenNode;
 import parser.tokenNodes.TokenNodeFactory;
@@ -28,9 +29,10 @@ import parser.tokenNodes.TokenNodeFactory;
 
 public class SlogoParser {
 	
-	private TokenNodeFactory factory = new TokenNodeFactory();
+	private TokenNodeFactory factory;
 	
-	public SlogoParser(){
+	public SlogoParser(CommandFactory commands){
+		factory = new TokenNodeFactory(commands);
 	}
 	
 	public TokenNode parse(TokenNode tNode, String command) throws CommandException{
