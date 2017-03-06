@@ -1,14 +1,17 @@
 package model.commands;
 
 import model.Arguments;
+import model.Command;
 import model.Scope;
+import model.Token;
+import model.TokenType;
 
 /**
  * Command that does nothing
  * @author DhruvKPatel
  *
  */
-public class NullCommand extends AbstractCommand {
+public class NullCommand implements Command {
 	private String id;
 	
 	/**
@@ -17,16 +20,6 @@ public class NullCommand extends AbstractCommand {
 	 */
 	public NullCommand(String id){
 		this.id = id;
-	}
-	
-	@Override
-	public double execute(Arguments args, Scope scope) throws CommandException {
-		return 0;
-	}
-
-	@Override
-	public Arguments getDefaultArgs() {
-		return new Arguments();
 	}
 
 	@Override
@@ -37,6 +30,21 @@ public class NullCommand extends AbstractCommand {
 	@Override
 	public String getID() {
 		return id;
+	}
+
+	@Override
+	public TokenType getType() {
+		return TokenType.COMMAND;
+	}
+
+	@Override
+	public Token evaluate(Arguments args, Scope scope) throws CommandException {
+		return this;
+	}
+
+	@Override
+	public int getNumArgs() {
+		return 0;
 	}
 
 }

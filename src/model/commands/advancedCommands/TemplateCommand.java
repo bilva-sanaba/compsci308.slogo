@@ -1,8 +1,10 @@
 package model.commands.advancedCommands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import model.Arguments;
+import model.Constant;
 import model.Scope;
 import model.TList;
 import model.Variable;
@@ -74,10 +76,11 @@ public class TemplateCommand extends AbstractCommand {
 	 */
 	public void setOrderedVariableArguments(Arguments variables) throws CommandException {
 		defaultArgs = new Arguments();
+		argumentVariables = new ArrayList<>();
 		
 		for(int i = 0; i < variables.numArgs(); i++){
-			argumentVariables.add(new Variable((variables.getVariable(i)).getName()));
-			defaultArgs.add(variables.getVariable(i).getValue());	// Default variable
+			argumentVariables.add(variables.getVariable(i));
+			defaultArgs.add(new Constant(0));	// Default variable
 		}
 	}
 }

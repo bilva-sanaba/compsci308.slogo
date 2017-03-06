@@ -16,6 +16,8 @@ import model.Token;
 import model.Variable;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
+import model.commands.NullCommand;
+import parser.regularExpressions.ProgramParser;
 /**
  * 
  * @author Jacob Weiss
@@ -32,6 +34,7 @@ public class TokenNodeFactory {
 	public static final String SYNTAX = "Syntax";
 	private String language = "English";
 
+	private ProgramParser parser = new ProgramParser();
 	
 	private static List<String> possibleCommands = new ArrayList<String>();
 	private static Map<String, ArrayList<String>> keyMap = new HashMap<String, ArrayList<String>>();
@@ -43,7 +46,6 @@ public class TokenNodeFactory {
 	
 	private void createValueList(){
 		//may need try and catch
-		syntaxResourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCES_PACKAGE + SYNTAX);
 		languageResourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCES_PACKAGE + language);
 		Enumeration<String> resourceKeys = languageResourceBundle.getKeys();
 		while(resourceKeys.hasMoreElements()){
@@ -59,19 +61,26 @@ public class TokenNodeFactory {
 	
 
 	public TokenNode genTokenNode(TokenNode parentNode, String word) throws CommandException{
+		parser.addPatterns(DEFAULT_RESOURCES_PACKAGE + SYNTAX);
 		createValueList();
 		TokenNode tokenNode = new TokenNode(parentNode, null);
-
-			if(possibleCommands.contains(word)){//word is in resources
-				String wordID = findWordID(word);
-				CommandFactory cFactory = new CommandFactory();
-				Command t = cFactory.getCommand(wordID);
-				tokenNode = new CommandNode(parentNode, t);
+		String type = parser.getSymbol(word);
+		System.out.println(word + ", " + type);
+			if(type.equals("Command")){//word is in resources
+				if(possibleCommands.contains(word)){
+					String wordID = findWordID(word);
+					CommandFactory cFactory = new CommandFactory();
+					Command t = cFactory.getCommand(wordID);
+					tokenNode = new CommandNode(parentNode, t);
+				}
+				else{
+					tokenNode = new CommandNode(parentNode, new NullCommand(word));
+				}
 			}
-			else if(word.substring(0,1).equals(":")){ //include : check
+			else if(type.equals("Variable")){ //include : check
 				tokenNode = new VariableNode(parentNode, new Variable(word.substring(1)));
 			}
-			else if(Double.valueOf(word)!=null){
+			else if(type.equals("Constant")){
 				tokenNode = new ConstantNode(parentNode, new Constant(Double.parseDouble(word)));
 			}
 			return tokenNode;
