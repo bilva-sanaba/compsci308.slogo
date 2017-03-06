@@ -61,6 +61,7 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	public Trajectory getMostRecentAdditions(){
 		Trajectory newTraj =  new Trajectory(trajectoryAdditions);
 		trajectoryAdditions.clear();
+		trajectoryAdditions.add(getLast());
 		return newTraj;		
 	}
 	
