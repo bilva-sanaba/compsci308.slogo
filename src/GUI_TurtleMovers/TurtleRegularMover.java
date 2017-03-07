@@ -11,8 +11,8 @@ public class TurtleRegularMover extends TurtleViewManager{
     public static final int DEFAULT_FPS = 10;
     public static final double MILLIS_PER_SECOND = 1000;
     
-	public TurtleRegularMover(TurtleView t,GraphicsContext gc, double w){
-		super(t,gc,w);
+	public TurtleRegularMover(TurtleView t,GraphicsContext gc){
+		super(t,gc);
 	}
 
 protected void moveLocation(UnmodifiableTurtleState uts,double screenWidth, double screenHeight){
@@ -33,11 +33,11 @@ protected void draw(UnmodifiableTurtleState uts,double screenWidth, double scree
 		graphics.strokeLine(oldX, oldY, penX, penY);
 	}
 }
-protected void rotate(UnmodifiableTurtleState uts,double width){
+protected void rotate(UnmodifiableTurtleState uts){
 	double newHeading=uts.getHeading();
 	myTurtleView.getImage().setRotate(newHeading);
 }
-protected void changeVisibility(UnmodifiableTurtleState uts, double width){
+protected void changeVisibility(UnmodifiableTurtleState uts){
 	myTurtleView.setVisibility(uts.isShowing());
 }
 }

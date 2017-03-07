@@ -4,10 +4,7 @@ package GUI;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import GUI_RetrievableCode.CommandScrollPane;
-import GUI_RetrievableCode.VariableScrollPane;
 import GUI_TurtleMovers.TurtleAnimator;
 import GUI_TurtleMovers.TurtleRegularMover;
 import GUI_TurtleMovers.TurtleView;
@@ -15,31 +12,19 @@ import GUI_TurtleMovers.TurtleViewManager;
 import configuration.Trajectory;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.beans.value.ChangeListener;
-import javafx.collections.FXCollections;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import javafx.stage.Stage;
 import model.Model;
 
 public class GUI {
-	private TabPane myRut=new TabPane();
 	private BorderPane myRoot = new BorderPane();
 	private TextArea textArea=new TextArea();
 	private Canvas canvas;
@@ -48,20 +33,15 @@ public class GUI {
 	private LeftPanel lp;
 	private VBox rightScreen = new VBox();
 	private RightPanel rp;
-	private CommandScrollPane commandScrollPane;
 	private Shape background;
-	private VariableScrollPane variableScrollPane;
 	private Button runButton;
 	private Button newTab;
 	private Pane wrapperPane = new Pane();
 	private TurtleViewManager tvm;
 	private List<Button> otherButtons;
-	private Stage myStage;
 	BorderPane bottomPanel=new BorderPane();
-	private double centerX,centerY;
 	public static final int SCENE_WIDTH = 1200; 
 	public static final int SCENE_HEIGHT = 680;
-	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
 	private List<Label> stateLabels;
 	private Model model;
 	public GUI(Button b,Button n, Model m){
@@ -70,14 +50,11 @@ public class GUI {
 		model=m;
 		createButtons();
 		createRoot();
-		//myStage = stage;
-		//myStage.setScene(createScene());
-	
 		myRoot.setLeft(lp.getPanel());	
 		myRoot.setRight(rightScreen);
 		rightScreen.getChildren().add(rp.getPanel());
 		background = new Rectangle(SCENE_WIDTH-lp.getPanel().getWidth()-rp.getPanel().getWidth(),SCENE_HEIGHT-bottomPanel.getBoundsInLocal().getHeight(),Color.WHITE);
-		background=new Rectangle(800,480,Color.WHITE);
+		background=new Rectangle(750,480,Color.WHITE);
 		wrapperPane.getChildren().add(background);
 		createCanvas();
 		initializeTurtle();
@@ -91,7 +68,7 @@ public class GUI {
 		wrapperPane.getChildren().add(tvm.getImage());
 	}
 	private void initializeTurtle(){
-		tvm = new TurtleAnimator(new TurtleView(), gc, SCENE_WIDTH-lp.getPanel().getWidth()-rp.getPanel().getWidth());
+		tvm = new TurtleAnimator(new TurtleView(), gc);
 		tvm.getImage().setOnMouseEntered(e->showStates(getStateLabels()));
 		tvm.getImage().setOnMouseExited(e->removeStates());
 	}
@@ -106,7 +83,7 @@ public class GUI {
 	private void removeStates(){
 		wrapperPane.getChildren().removeAll(stateLabels);
 	}
-	private void drawTurtle(){		
+	private void drawTurtle(){	
 		tvm.setX(background.getBoundsInLocal().getWidth()/2);
 		tvm.setY(background.getBoundsInLocal().getHeight()/2);
 	}
@@ -140,7 +117,7 @@ public class GUI {
 	}
 	public void handleRunButton(Trajectory T){
 		rp.getScrollPane().addText();
-		tvm.moveTurtle(T,wrapperPane.getBoundsInLocal().getWidth(),wrapperPane.getBoundsInLocal().getHeight());
+		tvm.moveTurtle(T,750,480);
 		textArea.clear();
 	}
 	private void createButtons(){
