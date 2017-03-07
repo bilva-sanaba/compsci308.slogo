@@ -33,9 +33,9 @@ public class Scope {
 	 * @throws CommandException 
 	 */
 	public Scope(CommandFactory commands, VariableContainer variables, Trajectory trajectory, Scope request) throws CommandException{
-		if(request.getCommands() != null) this.commands = commands;
-		if(request.getVariables() != null) this.variables = variables;
-		if(request.getTrajectory() != null) this.trajectory = trajectory;	
+		if(request.commands != null) this.commands = commands;
+		if(request.variables != null) this.variables = variables;
+		if(request.trajectory != null) this.trajectory = trajectory;	
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public class Scope {
 	 * @throws CommandException 
 	 */
 	public Scope(Scope old, Scope request) throws CommandException{
-		this(old.getCommands(), old.getVariables(), old.getTrajectory(), request);
+		this(old.commands, old.variables, old.trajectory, request);
 	}
 	
 	/**
