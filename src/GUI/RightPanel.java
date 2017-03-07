@@ -46,7 +46,7 @@ public class RightPanel {
 	}
 	private void createScrollPane(){
 		commandScrollPane=new CommandScrollPane(myTextArea,play);
-		commandScrollPane.getScrollPane().setPrefSize(width/4,height*.73);
+		commandScrollPane.getScrollPane().setPrefSize(width/4,height*.71);
 		commandScrollPane.getScrollPane().setLayoutX(0);
 		commandScrollPane.getScrollPane().setLayoutY(0);
 	}

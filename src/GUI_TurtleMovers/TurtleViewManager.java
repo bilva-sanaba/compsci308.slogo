@@ -8,6 +8,7 @@ import configuration.Trajectory;
 import configuration.UnmodifiableTurtleState;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 
 public abstract class TurtleViewManager {
@@ -23,10 +24,25 @@ public abstract class TurtleViewManager {
 		graphics = gc;
 		width = w;
 		extraButtons = new ArrayList<Node>();
-		
 	}
 	public List<Node> getExtraButtons(){
 		return extraButtons;
+	}
+	public List<Label> getStateLabels(){
+		Label coordinateLabel=new Label("X:"+myTurtleView.getImage().getX()+"  Y:"+myTurtleView.getImage().getY());
+		Label headingLabel=new Label(""+myTurtleView.getImage().getRotate());
+		Label penUpLabel=new Label("false");
+		ArrayList<Label>stateLabels=new ArrayList<Label>();
+		stateLabels.add(coordinateLabel);
+		stateLabels.add(headingLabel);
+		stateLabels.add(penUpLabel);
+		arrangeLabels(stateLabels);
+		return stateLabels;
+	}
+	private void arrangeLabels(List<Label>labels){
+		for(int i=0;i<labels.size();i++){
+			labels.get(i).setLayoutY(10*i);
+		}
 	}
 	public void moveTurtle(Trajectory T,double screenWidth, double screenHeight){
 		for(UnmodifiableTurtleState uts:T){

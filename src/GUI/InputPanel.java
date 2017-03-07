@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import resources.*;
 import ColorChoosers.BackgroundColorChooser;
 import ColorChoosers.PenColorChooser;
 import GUI_BackgroundColorChooser.BackgroundColorWriteBox;
@@ -42,7 +42,7 @@ public class InputPanel {
 	private String currentLanguage = "English";
 	private PenColorChooser pb;
 	private static final String HELP_WINDOW_TITLE="Syntax";
-	private static final String HELP_URL="help.html";
+	private static final String HELP_URL="/resources/help.html";
 	private static final int BUTTON_SPACING = 20;
 	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
 public InputPanel(TurtleViewManager tvm, List<Button> otherButtons,Shape background, double width, double height){

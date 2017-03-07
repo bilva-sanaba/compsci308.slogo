@@ -47,7 +47,7 @@ public class TurtleAnimator extends TurtleViewManager{
 		createSpeedChooser();
 		createPenSizeChooser();
 	}
-	public static class Location {
+	private static class Location {
 		double x;
 		double y;
 	}
@@ -87,8 +87,6 @@ public class TurtleAnimator extends TurtleViewManager{
 	@Override
 	public void moveTurtle(Trajectory T,double screenWidth, double screenHeight){
 		SequentialTransition x = new SequentialTransition();
-		
-		System.out.println(T);
 		for (UnmodifiableTurtleState uts : T){
 			if (!skipFirst){
 				currentXPos=myTurtleView.getImage().getX()+myTurtleView.getImage().getTranslateX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2;
@@ -131,8 +129,6 @@ public class TurtleAnimator extends TurtleViewManager{
 	protected PathTransition moveLocations(UnmodifiableTurtleState uts, double screenWidth, double screenHeight, double X, double Y) {
 		double penX=uts.getX()+screenWidth/2;
 		double penY=-uts.getY()+screenHeight/2;
-		System.out.println(penX);
-		System.out.println(penY);
 		myTurtleView.setPen(uts.isPenDown());
 		if (currentXPos!=penX || currentYPos!=penY){
 		Path path = new Path();
