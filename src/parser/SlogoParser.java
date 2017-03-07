@@ -37,6 +37,7 @@ public class SlogoParser {
 	
 	public TokenNode parse(TokenNode tNode, String command) throws CommandException{
 		ArrayList<String> commandList = fillList(command);
+		System.out.println(commandList);
 		TokenNode root = tNode;
 		TokenNode parentNode = new TListNode(null, new TList());
 		TokenNode head=root;
@@ -51,13 +52,60 @@ public class SlogoParser {
 				int startIndex = command.substring(0, stringCursor).length() + command.substring(stringCursor).indexOf("["); //puts to end of list //EDIT
 				int startListIndex = i; // modify commandList
 				
-				int endIndex = startIndex + getEndStringIndex(command.substring(startIndex));
+				int endIndex = startIndex + getEndStringIndex(command.substring(startIndex), "[");
 				
 				ArrayList<String> subList = createSubList(startListIndex, commandList);
 				
-				int endListIndex = getEndListIndex(subList);
+				int endListIndex = getEndListIndex(subList, "[");
 				
 				tokenNode = parse(new TListNode(root, new TList()), command.substring(startIndex + 1, endIndex));
+				
+				i=endListIndex + startListIndex;
+				
+			}
+			else if(word.equals("(")){ //UNLIMITED PARAMETERS
+				
+				int startIndex = command.substring(0, stringCursor).length() + command.substring(stringCursor).indexOf("("); //puts to end of list //EDIT
+				int startListIndex = i; // modify commandList
+				
+				int endIndex = startIndex + getEndStringIndex(command.substring(startIndex), "(");
+				
+				ArrayList<String> subList = createSubList(startListIndex, commandList);
+				
+				int endListIndex = getEndListIndex(subList, "(");
+				
+				String unlimitedParamCommand = commandList.get(i+1);
+				
+				tokenNode = factory.genTokenNode(root, unlimitedParamCommand);
+				
+				int numArgs = ((Command) tokenNode.getToken()).getNumArgs();
+				int check=0;
+				String subCommand="";
+				
+				String newCommand = command.substring(startIndex + 1, endIndex);
+				
+				for(String s: fillList(newCommand)){
+					System.out.println(s);
+					System.out.println(check + ", " + numArgs);
+					if(check == 0){
+						subCommand = subCommand + " " + unlimitedParamCommand;
+						check++;
+					}
+					if(!s.equals(unlimitedParamCommand)){
+						subCommand = subCommand + " " + s;
+						check++;
+					}
+					if(check > numArgs){
+						check = 0;
+					}
+				}
+				
+				System.out.println(subCommand);
+				
+				//for loop adding tokenNodes for the ()
+				
+				
+				tokenNode = parse(root, subCommand);
 				
 				i=endListIndex + startListIndex;
 				
@@ -93,14 +141,14 @@ public class SlogoParser {
 		return ans;
 	}
 
-	private int getEndStringIndex(String command) throws CommandException{
+	private int getEndStringIndex(String command, String t) throws CommandException{
 		Stack<String> stack = new Stack<String>();
-		stack.push("[");
+		stack.push(t);
 		for(int i = 1; i < command.length(); i++){
-			if(command.substring(i, i+1).equals("[")){
+			if(command.substring(i, i+1).equals(t)){
 				stack.push(command.substring(i, i+1));
 			}
-			else if(command.substring(i, i+1).equals("]")){
+			else if(command.substring(i, i+1).equals("]") || command.substring(i, i+1).equals(")")){
 				stack.pop();
 			}
 			if(stack.isEmpty()){
@@ -110,14 +158,14 @@ public class SlogoParser {
 		throw new CommandException("List never closes");
 	}
 	
-	private int getEndListIndex(ArrayList<String> commandList) throws CommandException{
+	private int getEndListIndex(ArrayList<String> commandList, String t) throws CommandException{
 		Stack<String> stack = new Stack<String>();
-		stack.push("[");
+		stack.push(t);
 		for(int i = 1; i < commandList.size(); i++){
-			if(commandList.get(i).equals("[")){
+			if(commandList.get(i).equals(t)){
 				stack.push(commandList.get(i));
 			}
-			else if(commandList.get(i).equals("]")){
+			else if(commandList.get(i).equals("]") || commandList.get(i).equals(")")){
 				stack.pop();
 			}
 			if(stack.isEmpty()){
