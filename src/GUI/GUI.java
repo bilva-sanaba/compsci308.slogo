@@ -80,7 +80,7 @@ public class GUI {
 		wrapperPane.getChildren().add(tvm.getImage());
 	}
 	private void initializeTurtle(){
-		tvm = new TurtleRegularMover(new TurtleView(), gc, SCENE_WIDTH-lp.getPanel().getWidth()-rp.getPanel().getWidth());
+		tvm = new TurtleAnimator(new TurtleView(), gc, SCENE_WIDTH-lp.getPanel().getWidth()-rp.getPanel().getWidth());
 	}
 	private void drawTurtle(){
 		centerX = (SCENE_WIDTH-lp.getPanel().getBoundsInLocal().getWidth()-rp.getPanel().getBoundsInLocal().getWidth())/2;

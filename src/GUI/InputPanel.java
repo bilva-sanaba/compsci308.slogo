@@ -102,6 +102,7 @@ private void addExtraButtons(TurtleViewManager tvm){
 	if (extraButtons.size()!=0){
 		inputPanel.setConstraints(extraButtons.get(0),0,5);
 		inputPanel.setConstraints(extraButtons.get(1),0,4);
+		inputPanel.setConstraints(extraButtons.get(2),0,6);
 	}
 	 inputPanel.getChildren().addAll(extraButtons);
 }
