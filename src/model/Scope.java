@@ -30,8 +30,9 @@ public class Scope {
 	 * @param variables
 	 * @param trajectory
 	 * @param request
+	 * @throws CommandException 
 	 */
-	public Scope(CommandFactory commands, VariableContainer variables, Trajectory trajectory, Scope request){
+	public Scope(CommandFactory commands, VariableContainer variables, Trajectory trajectory, Scope request) throws CommandException{
 		if(request.getCommands() != null) this.commands = commands;
 		if(request.getVariables() != null) this.variables = variables;
 		if(request.getTrajectory() != null) this.trajectory = trajectory;	
@@ -39,8 +40,9 @@ public class Scope {
 	
 	/**
 	 * Copy request constructor
+	 * @throws CommandException 
 	 */
-	public Scope(Scope old, Scope request){
+	public Scope(Scope old, Scope request) throws CommandException{
 		this(old.getCommands(), old.getVariables(), old.getTrajectory(), request);
 	}
 	
@@ -62,16 +64,23 @@ public class Scope {
 		if(needsTrajectory) this.trajectory = new Trajectory();
 	}
 	
-	public CommandFactory getCommands(){
+	public CommandFactory getCommands() throws CommandException{
+		checkForAccess(commands, "command");
 		return commands;
 	}
 	
-	public VariableContainer getVariables(){
+	public VariableContainer getVariables() throws CommandException{
+		checkForAccess(commands, "variables");
 		return variables;
 	}
 	
-	public Trajectory getTrajectory(){
+	public Trajectory getTrajectory() throws CommandException{
+		checkForAccess(commands, "trajectory");
 		return trajectory;
+	}
+	
+	private void checkForAccess(Object accessor, String name) throws CommandException{
+		if(accessor == null) throw new CommandException(String.format("Access to %s denied", name));
 	}
 
 }

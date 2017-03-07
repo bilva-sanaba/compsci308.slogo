@@ -1,8 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import configuration.Trajectory;
 import configuration.TurtleState;
 import model.commands.CommandException;
@@ -19,15 +16,15 @@ import parser.tokenNodes.TokenNode;
 public class SlogoModel implements Model {
 	private SlogoParser parser;
 	
-	private CommandFactory defaultCommands;
+	private CommandFactory globalCommands;
 	private VariableContainer globalVariables;
 	
 	private Trajectory turtleTrajectory;
 	
 	public SlogoModel() throws CommandException{
-		defaultCommands = new CommandFactory();
+		globalCommands = new CommandFactory();
 		globalVariables = new VariableContainer();
-		parser = new SlogoParser();
+		parser = new SlogoParser(globalCommands);
 		
 		turtleTrajectory = new Trajectory();
 		turtleTrajectory.addLast(new TurtleState());
@@ -36,9 +33,8 @@ public class SlogoModel implements Model {
 	@Override
 	public Trajectory getTrajectory(String commands) throws CommandException{
 		Interpreter i = new Interpreter();
-		Scope scope = new Scope(defaultCommands, globalVariables, turtleTrajectory, new Scope(true, true, true));
-//		//EDIT
-//		ArrayList<String> commandList = fillList(commands);
+		Scope scope = new Scope(globalCommands, globalVariables, turtleTrajectory, new Scope(true, true, true));
+		
 		TokenNode root = parser.parse(new TokenNode(null, new TList()), commands);
 		
 		for(TokenNode cmd: root.getChildren()){
@@ -52,10 +48,4 @@ public class SlogoModel implements Model {
 	public void setLanguage(String language) {
 		parser.setLanguage(language);		
 	}
-	
-	private ArrayList<String> fillList(String command){
-		command=command.trim();
-		return new ArrayList<String>(Arrays.asList(command.split(" ")));
-	}
-
 }

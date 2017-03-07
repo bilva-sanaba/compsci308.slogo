@@ -1,3 +1,4 @@
+
 package model.commands.advancedCommands;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class TemplateCommand extends AbstractCommand {
 		
 		Arguments answer = subCommands.executeChildren(subScope);
 		return(answer.getDouble(answer.numArgs() - 1));
+		
 	}
 
 	@Override

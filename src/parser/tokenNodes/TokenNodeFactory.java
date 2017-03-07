@@ -39,9 +39,10 @@ public class TokenNodeFactory {
 	private static List<String> possibleCommands = new ArrayList<String>();
 	private static Map<String, ArrayList<String>> keyMap = new HashMap<String, ArrayList<String>>();
 	
+	private CommandFactory cFactory;
 	
-	
-	public TokenNodeFactory(){
+	public TokenNodeFactory(CommandFactory commands){
+		cFactory = commands;
 	}
 	
 	private void createValueList(){
@@ -69,9 +70,11 @@ public class TokenNodeFactory {
 			if(type.equals("Command")){//word is in resources
 				if(possibleCommands.contains(word)){
 					String wordID = findWordID(word);
-					CommandFactory cFactory = new CommandFactory();
 					Command t = cFactory.getCommand(wordID);
 					tokenNode = new CommandNode(parentNode, t);
+				}
+				else if(cFactory.containsRuntimeCommand(word)){
+					tokenNode = new CommandNode(parentNode, cFactory.getCommand(word));
 				}
 				else{
 					tokenNode = new CommandNode(parentNode, new NullCommand(word));

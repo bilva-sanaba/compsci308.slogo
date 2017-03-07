@@ -34,7 +34,7 @@ public class Variable implements Token {
 	}
 
 	@Override
-	public Token evaluate(Arguments args, Scope scope) {
+	public Token evaluate(Arguments args, Scope scope) throws CommandException {
 		vars = scope.getVariables();
 		return this;
 	}

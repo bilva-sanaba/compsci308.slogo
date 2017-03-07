@@ -1,6 +1,8 @@
 package model.commands;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import model.Command;
@@ -21,6 +23,9 @@ import model.Command;
 public class CommandFactory {
 	private final ResourceBundle DEFAULT_COMMANDS = ResourceBundle.getBundle("resources/Commands");
 	private HashMap<String, Command> registeredCommands  = new HashMap<>();
+	private List<String> runtimeAddedCommands = new ArrayList<>();
+	
+	private boolean defaultsAreFilled = false;
 	
 	/**
 	 * Constructs an empty command factory.
@@ -40,6 +45,7 @@ public class CommandFactory {
 				throw new CommandException(String.format("Command is broken: %s", commandID));
 			} 
 		}
+		defaultsAreFilled = true;
 	}
 	
 	/**
@@ -61,6 +67,7 @@ public class CommandFactory {
 	 */
 	public void registerCommand(String commandID, Command cmd) throws CommandException {
 		registeredCommands.put(commandID, cmd);
+		if(defaultsAreFilled) runtimeAddedCommands.add(commandID);
 	}
 	
 	
@@ -75,7 +82,15 @@ public class CommandFactory {
 		if(cmd == null) throw new CommandException(String.format("Command does not exist: %s", commandID));
 		else return cmd;
 	}
-
+	
+	/**
+	 * Checks registry specifically for runtime-added commands
+	 * returns whether the command exists in the registry.
+	 */
+	public boolean containsRuntimeCommand(String name){
+		return runtimeAddedCommands.contains(name);
+	}
+	
 	/**
 	 * Prints current commands listed for debugging
 	 */
