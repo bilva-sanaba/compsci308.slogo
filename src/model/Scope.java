@@ -30,20 +30,20 @@ public class Scope {
 	 * @param variables
 	 * @param trajectory
 	 * @param request
+	 * @throws CommandException 
 	 */
-	public Scope(CommandFactory commands, VariableContainer variables, Trajectory trajectory, Scope request){
-		if(request.getCommands() != null) this.commands = commands;
-		if(request.getVariables() != null) this.variables = variables;
-		if(request.getTrajectory() != null) this.trajectory = trajectory;	
+	public Scope(CommandFactory commands, VariableContainer variables, Trajectory trajectory, Scope request) throws CommandException{
+		if(request.commands != null) this.commands = commands;
+		if(request.variables != null) this.variables = variables;
+		if(request.trajectory != null) this.trajectory = trajectory;	
 	}
 	
 	/**
 	 * Copy request constructor
+	 * @throws CommandException 
 	 */
-	public Scope(Scope old, Scope request){
-		if(request.getCommands() != null) this.commands = old.getCommands();
-		if(request.getVariables() != null) this.variables = old.getVariables();
-		if(request.getTrajectory() != null) this.trajectory = old.getTrajectory();
+	public Scope(Scope old, Scope request) throws CommandException{
+		this(old.commands, old.variables, old.trajectory, request);
 	}
 	
 	/**
@@ -64,16 +64,23 @@ public class Scope {
 		if(needsTrajectory) this.trajectory = new Trajectory();
 	}
 	
-	public CommandFactory getCommands(){
+	public CommandFactory getCommands() throws CommandException{
+		checkForAccess(commands, "command factory");
 		return commands;
 	}
 	
-	public VariableContainer getVariables(){
+	public VariableContainer getVariables() throws CommandException{
+		checkForAccess(variables, "variable container");
 		return variables;
 	}
 	
-	public Trajectory getTrajectory(){
+	public Trajectory getTrajectory() throws CommandException{
+		checkForAccess(trajectory, "trajectory");
 		return trajectory;
+	}
+	
+	private void checkForAccess(Object accessor, String name) throws CommandException{
+		if(accessor == null) throw new CommandException(String.format("Access to %s denied", name));
 	}
 
 }

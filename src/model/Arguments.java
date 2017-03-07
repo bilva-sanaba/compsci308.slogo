@@ -110,15 +110,18 @@ public class Arguments implements Iterable<Token>{
 	 * Returns double from certain index.
 	 * 
 	 * If Token at index is not a Constant,
-	 * this will return null.
+	 * this will return 0.
 	 * 
 	 * Likewise, if an index doesn't exist,
 	 * it will return null.
 	 * @param index
 	 * @return argument (double)
+	 * @throws CommandException 
 	 */
-	public double getDouble(int index){
-		return getConstant(index).getVal();
+	public double getDouble(int index) throws CommandException{
+		Constant c = getConstant(index);
+		if(c == null) return 0;
+		return c.getVal();
 	}
 	
 	/**
@@ -134,7 +137,10 @@ public class Arguments implements Iterable<Token>{
 	 */
 	public Variable getVariable(int index){
 		Token t = this.get(index);
-		return ((Variable)t);
+		if(t.getType() == TokenType.VARIABLE){
+			return ((Variable)t);
+		}
+		else return null;
 	}
 	
 	/**
@@ -147,23 +153,52 @@ public class Arguments implements Iterable<Token>{
 	 * it will return null.
 	 * @param index
 	 * @return argument (constant)
+	 * @throws CommandException 
 	 */
-	public Constant getConstant(int index){
+	public Constant getConstant(int index) throws CommandException{
 		Token t = this.get(index);
 		
 		if(t.getType() == TokenType.VARIABLE){
 			return ((Variable)t).getValue();
 		}
-		return ((Constant)t);
-		
+		else if(t.getType() == TokenType.CONSTANT){
+			return ((Constant)t);
+		}
+		else return null;		
 	}
 	
 	/**
 	 * Returns TList from certain index
+	 * 
+	 * If Token at index is not a Constant,
+	 * this will return null.
+	 * 
+	 * Likewise, if an index doesn't exist,
+	 * it will return null.
+	 * @param index
+	 * @return argument (constant)
 	 */
 	public TList getTList(int index){
 		Token t = this.get(index);
-		return ((TList)t);
+		if(t.getType() == TokenType.LIST) return ((TList)t);
+		else return null;
+	}
+	
+	/**
+	 * Returns Command from certain index
+	 * 
+	 * If Token at index is not a Constant,
+	 * this will return null.
+	 * 
+	 * Likewise, if an index doesn't exist,
+	 * it will return null.
+	 * @param index
+	 * @return argument (constant)
+	 */
+	public Command getCommand(int index){
+		Token t = this.get(index);
+		if(t.getType() == TokenType.COMMAND) return ((Command)t);
+		else return null;
 	}
 	
 	/**

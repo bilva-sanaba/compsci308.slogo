@@ -14,6 +14,10 @@ import model.TList;
 import model.Token;
 import model.TokenType;
 import model.commands.CommandException;
+import model.commands.CommandFactory;
+import parser.tokenNodes.TListNode;
+import parser.tokenNodes.TokenNode;
+import parser.tokenNodes.TokenNodeFactory;
 
 
 
@@ -25,47 +29,35 @@ import model.commands.CommandException;
 
 public class SlogoParser {
 	
-	private TokenNodeFactory factory = new TokenNodeFactory();
+	private TokenNodeFactory factory;
 	
-	public SlogoParser(){
+	public SlogoParser(CommandFactory commands){
+		factory = new TokenNodeFactory(commands);
 	}
 	
 	public TokenNode parse(TokenNode tNode, String command) throws CommandException{
 		ArrayList<String> commandList = fillList(command);
 		TokenNode root = tNode;
-		TokenNode parentNode = null;
+		TokenNode parentNode = new TListNode(null, new TList());
 		TokenNode head=root;
-		int stringCursor = 0; //EDIT
+		int stringCursor = 0;
 		
 		for(int i=0; i<commandList.size(); i++){
 			String word = commandList.get(i).trim();
 			TokenNode tokenNode;
+
 			if(word.equals("[")){
-				//System.out.println("listCursor: " + listCursor);
-				System.out.println("stringCursor: " + stringCursor);
-				System.out.println("sub1: " + command.substring(0, stringCursor));
-				System.out.println("sub2: " + command.substring(stringCursor));
+
 				int startIndex = command.substring(0, stringCursor).length() + command.substring(stringCursor).indexOf("["); //puts to end of list //EDIT
 				int startListIndex = i; // modify commandList
-				System.out.println("si: " + startIndex);
-				//System.out.println("sI: " + command.substring(cursor));
-				//System.out.println("sListI: " + createSubList(cursor, commandList));
 				
-				int endIndex = getEndIndex(command.substring(startIndex)); //EDIT: startIndex
+				int endIndex = startIndex + getEndStringIndex(command.substring(startIndex));
 				
-				System.out.println("endIndex: " + endIndex);
+				ArrayList<String> subList = createSubList(startListIndex, commandList);
 				
-				ArrayList<String> subList = createSubList(startListIndex, commandList); //EDIT: list cursor
+				int endListIndex = getEndListIndex(subList);
 				
-				System.out.println("sublist: " + subList);
-				System.out.println("startListIndex: " + startListIndex);
-				int endListIndex = getEndCursor(subList);
-				
-				System.out.println("endListIndex: " + endListIndex);
-
-				i = startIndex + endIndex;
-				
-				tokenNode = parse(new TokenNode(root, new TList()), command.substring(startIndex + 1, i)); //EDIT: i
+				tokenNode = parse(new TListNode(root, new TList()), command.substring(startIndex + 1, endIndex));
 				
 				i=endListIndex + startListIndex;
 				
@@ -74,8 +66,6 @@ public class SlogoParser {
 				tokenNode = factory.genTokenNode(parentNode, word); //will be global
 			}
 			root.addChild(tokenNode);
-			
-			
 			
 			if(tokenNode.getToken().getType() == TokenType.COMMAND){
 				parentNode=root;
@@ -86,23 +76,24 @@ public class SlogoParser {
 				root=parentNode;
 				parentNode=root.getParent();
 			}
-			stringCursor+=commandList.get(i).length() + 1; //EDIT
+			
+			stringCursor+=commandList.get(i).length() + 1; //add 1 for the space character
 		}
+		
 		return head;
 	}
 	
 	private ArrayList<String> createSubList(int cursor, ArrayList<String> commandList) {
 		ArrayList<String> ans = new ArrayList<String>();
 		for(int i = 0; i<commandList.size(); i++){ 
-			if(i>=cursor){ //EDIT: i >= cursor
-				//System.out.println(commandList.get(i));
+			if(i>=cursor){
 				ans.add(commandList.get(i));
 			}
 		}
 		return ans;
 	}
 
-	private int getEndIndex(String command) throws CommandException{
+	private int getEndStringIndex(String command) throws CommandException{
 		Stack<String> stack = new Stack<String>();
 		stack.push("[");
 		for(int i = 1; i < command.length(); i++){
@@ -119,7 +110,7 @@ public class SlogoParser {
 		throw new CommandException("List never closes");
 	}
 	
-	private int getEndCursor(ArrayList<String> commandList) throws CommandException{
+	private int getEndListIndex(ArrayList<String> commandList) throws CommandException{
 		Stack<String> stack = new Stack<String>();
 		stack.push("[");
 		for(int i = 1; i < commandList.size(); i++){

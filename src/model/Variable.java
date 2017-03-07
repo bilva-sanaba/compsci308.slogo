@@ -34,11 +34,12 @@ public class Variable implements Token {
 	}
 
 	@Override
-	public Token evaluate(Arguments args) {
+	public Token evaluate(Arguments args, Scope scope) throws CommandException {
+		vars = scope.getVariables();
 		return this;
 	}
 	
-	public Constant getValue(){
+	public Constant getValue() throws CommandException{
 		return vars.get(this);
 	}
 	
@@ -47,19 +48,6 @@ public class Variable implements Token {
 	 */
 	public String toString(){
 		return String.format(":%s", getName());
-	}
-	
-//	/**
-//	 * Variables with same name are equal in a set.
-//	 */
-//	@Override
-//	public int hashCode(){
-//		return this.name.hashCode();
-//	}
-
-	@Override
-	public void setScope(Scope s) {
-		vars = s.getVariables();
 	}
 	
 	@Override

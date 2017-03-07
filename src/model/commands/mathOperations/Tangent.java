@@ -1,8 +1,8 @@
 package model.commands.mathOperations;
 
 import model.Arguments;
-import model.Constant;
-import model.Token;
+import model.Scope;
+import model.commands.CommandException;
 
 /**
  * Tan Function
@@ -12,7 +12,7 @@ import model.Token;
 public class Tangent extends OneParamOperation {
 
 	@Override
-	public double execute(Arguments args) {
+	public double execute(Arguments args, Scope scope) throws CommandException {
 		return Math.tan(Math.toRadians(args.getDouble(0)));
 	}
 

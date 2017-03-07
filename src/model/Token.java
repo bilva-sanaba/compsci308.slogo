@@ -22,17 +22,13 @@ public interface Token {
 	 * Throws error if arguments don't match up.
 	 * @throws CommandException 
 	 */
-	public Token evaluate(Arguments args) throws CommandException;
+	public Token evaluate(Arguments args, Scope scope) throws CommandException;
 	
 	/**
 	 * Describes token for error messages
 	 */
 	public String toString();
 	
-	/**
-	 * Passes information to token
-	 */
-	void setScope(Scope s);
 	
 	/**
 	 * Asks which information it will need

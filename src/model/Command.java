@@ -16,17 +16,12 @@ public interface Command extends Token {
 	 * type and quantity
 	 * @throws CommandException 
 	 */
-	public Token evaluate(Arguments args) throws CommandException;
+	public Token evaluate(Arguments args, Scope scope) throws CommandException;
 	
 	/**
 	 * Gets number of arguments required by the command
 	 */
 	public int getNumArgs();
-	
-	/**
-	 * Sets scope of command (what information it needs about current state)
-	 */
-	public void setScope(Scope scope);
 	
 	/**
 	 * Gets scope request of command (what information the command will need)
