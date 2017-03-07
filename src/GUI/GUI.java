@@ -36,6 +36,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import model.Model;
+import xml.Default;
+import xml.XML;
 
 public class GUI {
 	private TabPane myRut=new TabPane();
@@ -58,13 +60,18 @@ public class GUI {
 	BorderPane bottomPanel=new BorderPane();
 	public static final int SCENE_WIDTH = 1200; 
 	public static final int SCENE_HEIGHT = 680;
+	public static final String DEFAULT_FILE="data/Defaults.xml";
 	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
 	private List<Label> stateLabels;
 	private Model model;
+	private XML xml;
+	private Default myDefault;
 	public GUI(Button b,Button n, Model m){
 		runButton = b;
 		newTab=n;
 		model=m;
+		xml=new XML(DEFAULT_FILE);
+		myDefault=xml.getDefaults();
 		createButtons();
 		createRoot();
 		//myStage = stage;
@@ -73,7 +80,7 @@ public class GUI {
 		myRoot.setLeft(lp.getPanel());
 		myRoot.setRight(rp.getPanel());
 		background = new Rectangle(SCENE_WIDTH-lp.getPanel().getWidth()-rp.getPanel().getWidth(),SCENE_HEIGHT-bottomPanel.getBoundsInLocal().getHeight(),Color.WHITE);
-		background=new Rectangle(800,490,Color.WHITE);
+		background=new Rectangle(800,490,Color.valueOf(myDefault.getBackgroundColor()));
 		wrapperPane.getChildren().add(background);
 		createCanvas();
 		initializeTurtle();
@@ -81,13 +88,14 @@ public class GUI {
 		bottomPanel.setCenter(realInput.getBottomPanel());
 		myRoot.setBottom(bottomPanel);
 		placeTurtle();
+		
 	}
 	private void placeTurtle(){
 		drawTurtle();
 		wrapperPane.getChildren().add(tvm.getImage());
 	}
 	private void initializeTurtle(){
-		tvm = new TurtleRegularMover(new TurtleView(), gc, SCENE_WIDTH-lp.getPanel().getWidth()-rp.getPanel().getWidth());
+		tvm = new TurtleAnimator(new TurtleView(), gc, SCENE_WIDTH-lp.getPanel().getWidth()-rp.getPanel().getWidth());
 	tvm.getImage().setOnMouseEntered(e->showStates(getStateLabels()));
 	tvm.getImage().setOnMouseExited(e->removeStates());
 	}
