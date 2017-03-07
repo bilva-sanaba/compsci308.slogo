@@ -29,9 +29,11 @@ public abstract class TurtleViewManager {
 		return extraButtons;
 	}
 	public List<Label> getStateLabels(){
-		Label coordinateLabel=new Label("X:"+myTurtleView.getImage().getX()+"  Y:"+myTurtleView.getImage().getY());
-		Label headingLabel=new Label(""+myTurtleView.getImage().getRotate());
-		Label penUpLabel=new Label("false");
+		double currentXPos=myTurtleView.getImage().getTranslateX();
+		double currentYPos=-myTurtleView.getImage().getTranslateY()+1;
+		Label coordinateLabel=new Label("X:"+currentXPos+"  Y:"+currentYPos);
+		Label headingLabel=new Label(""+myTurtleView.getImage().getRotate()%360);
+		Label penUpLabel=new Label("" +getPenBool());
 		ArrayList<Label>stateLabels=new ArrayList<Label>();
 		stateLabels.add(coordinateLabel);
 		stateLabels.add(headingLabel);

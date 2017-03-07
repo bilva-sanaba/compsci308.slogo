@@ -127,8 +127,13 @@ public class TurtleAnimator extends TurtleViewManager{
 
 	}
 	protected PathTransition moveLocations(UnmodifiableTurtleState uts, double screenWidth, double screenHeight, double X, double Y) {
+		
 		double penX=uts.getX()+screenWidth/2;
-		double penY=-uts.getY()+screenHeight/2;
+		double penY=-uts.getY()+screenHeight/2-1;
+		System.out.println(currentXPos);
+		System.out.println(penX);
+		System.out.println(currentYPos);
+		System.out.println(penY);
 		myTurtleView.setPen(uts.isPenDown());
 		if (currentXPos!=penX || currentYPos!=penY){
 		Path path = new Path();
