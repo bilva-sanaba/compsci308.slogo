@@ -83,8 +83,25 @@ public class SlogoParser {
 				String subCommand="";
 				
 				String newCommand = command.substring(startIndex + 1, endIndex);
+				ArrayList<String> newCommandList = fillList(newCommand);
 				
-				for(String s: fillList(newCommand)){
+				//FOR INFINITE ARGS
+				for(String s: newCommandList){
+					if(check == 0){
+						for(int de=0; de<newCommandList.size()-2; de++){
+							subCommand = subCommand + " " + unlimitedParamCommand;
+						}
+						check++;
+					}
+					else{
+						subCommand = subCommand + " " + s;
+					}
+				}
+				//FOR INFINITE ARGS
+
+				/*
+				//FOR MULTIPLE ARGS 
+				for(String s: newCommandList){
 					System.out.println(s);
 					System.out.println(check + ", " + numArgs);
 					if(check == 0){
@@ -99,6 +116,9 @@ public class SlogoParser {
 						check = 0;
 					}
 				}
+				//FOR MULTIPLE ARGS
+				 * *
+				 */
 				
 				System.out.println(subCommand);
 				
