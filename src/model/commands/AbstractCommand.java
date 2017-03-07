@@ -8,8 +8,6 @@ import model.Token;
 import model.TokenType;
 
 public abstract class AbstractCommand implements Command{
-	Scope scope;
-	
 	/**
 	 * Returns number of arguments command requires
 	 */
@@ -24,13 +22,13 @@ public abstract class AbstractCommand implements Command{
 	 * then calls on subclass to complete execution.
 	 * @throws CommandException 
 	 */
-	public Token evaluate(Arguments args) throws CommandException{
+	public Token evaluate(Arguments args, Scope scope) throws CommandException{
 		try{
 			getDefaultArgs().checkForTypeDifferences(args);
 		} catch(CommandException e){
 			throw new CommandException(String.format("Incorrect arguments for Command: %s (%s)", getID(), e.getMessage()));
 		}
-		return new Constant(execute(args));
+		return new Constant(execute(args, scope));
 	}
 	
 	/**
@@ -53,7 +51,7 @@ public abstract class AbstractCommand implements Command{
 	 * the argument follows the default type.
 	 * @throws CommandException 
 	 */
-	public abstract double execute(Arguments args) throws CommandException;
+	public abstract double execute(Arguments args, Scope scope) throws CommandException;
 	
 	/**
 	 * Each subclass must have this to be able to test validity of arguments.
@@ -65,6 +63,13 @@ public abstract class AbstractCommand implements Command{
 	 * 		 ...
 	 */
 	public abstract Arguments getDefaultArgs();
+	
+	
+	/**
+	 * Returns scope request of command. This prevents from recieving
+	 * information that they don't need
+	 */
+	public abstract Scope getScopeRequest();
 	
 	/**
 	 * Returns String ID of command 
@@ -78,21 +83,5 @@ public abstract class AbstractCommand implements Command{
 	 */
 	public String toString(){
 		return getID();
-	}
-	
-	/**
-	 * Sets scope of command
-	 */
-	public void setScope(Scope scope){
-		this.scope = scope;
-	}
-	
-	/**
-	 * Returns scope of command
-	 * @throws CommandException 
-	 */
-	public Scope getScope() throws CommandException{
-		if(scope == null) throw new CommandException(String.format("Command not sent scope: %s", this.getID()));
-		return scope;
 	}
 }

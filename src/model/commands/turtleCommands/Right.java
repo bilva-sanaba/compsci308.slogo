@@ -4,6 +4,7 @@ import configuration.Trajectory;
 import configuration.TurtleState;
 import model.Arguments;
 import model.Constant;
+import model.Scope;
 import model.Token;
 import model.commands.CommandException;
 /**
@@ -11,10 +12,10 @@ import model.commands.CommandException;
  * @author Jacob Weiss
  *
  */
-public class Right extends TurtleCommand {
+public class Right extends OneParamCommand {
 	@Override
-	public double execute(Arguments args) throws CommandException {
-		Trajectory trajectory = getScope().getTrajectory();
+	public double execute(Arguments args, Scope scope) throws CommandException {
+		Trajectory trajectory = scope.getTrajectory();
 		TurtleState current = trajectory.getLast().getModifiableCopy();
 		double heading = current.getHeading();
 				
@@ -23,12 +24,6 @@ public class Right extends TurtleCommand {
 		current.setHeading(heading+angleChange);
 		trajectory.addLast(current);
 		return angleChange;
-	}
-
-	@Override
-	public Arguments getDefaultArgs() {
-		Token[] def = {new Constant(0)};
-		return new Arguments(def);
 	}
 
 	@Override

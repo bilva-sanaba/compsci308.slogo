@@ -1,4 +1,4 @@
-package parser;
+package parser.tokenNodes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import model.commands.CommandException;
  * @author Jacob Weiss
  *
  */
-public class TokenNode{
+public class TokenNode implements TokenNodeInterface{
 	private Token token;
 	private List<TokenNode> children;
 	private TokenNode parentNode;

@@ -15,7 +15,7 @@ import model.Variable;
 import model.VariableContainer;
 import model.commands.AbstractCommand;
 import model.commands.CommandException;
-import parser.TokenNode;
+import parser.tokenNodes.TokenNode;
 /**
  * 
  * @author Jacob Weiss
@@ -29,20 +29,18 @@ public class IfElse extends AbstractCommand {
 	}
 
 	@Override
-	public double execute(Arguments args) throws CommandException {
-		Trajectory trajectory = getScope().getTrajectory();
-		
+	public double execute(Arguments args, Scope scope) throws CommandException {
 		int check = (int) args.getDouble(0);
 		TList trueList= args.getTList(1);
 		TList falseList = args.getTList(2);
 		double result = 0;
 		
 		if(check!=0){
-			Constant r = (Constant)trueList.executeChildren().getLast();
+			Constant r = (Constant)trueList.executeChildren(scope).getLast();
 			result = r.getVal();
 		}
 		else{
-			Constant r = (Constant)falseList.executeChildren().getLast();
+			Constant r = (Constant)falseList.executeChildren(scope).getLast();
 			result = r.getVal();
 		}
 		
@@ -51,7 +49,7 @@ public class IfElse extends AbstractCommand {
 
 	@Override
 	public Arguments getDefaultArgs() {
-		Token[] def = {new Constant(0), new TList()};
+		Token[] def = {new Constant(0), new TList(), new TList()};
 		return new Arguments(def);
 	}
 

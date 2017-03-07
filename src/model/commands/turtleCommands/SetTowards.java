@@ -4,6 +4,7 @@ import configuration.Trajectory;
 import configuration.TurtleState;
 import model.Arguments;
 import model.Constant;
+import model.Scope;
 import model.Token;
 import model.commands.CommandException;
 
@@ -15,11 +16,11 @@ import model.commands.CommandException;
  * @author DhruvKPatel
  *
  */
-public class SetTowards extends TurtleCommand {
+public class SetTowards extends TwoParamCommand {
 
 	@Override
-	public double execute(Arguments args) throws CommandException {
-		Trajectory trajectory = getScope().getTrajectory();
+	public double execute(Arguments args, Scope scope) throws CommandException {
+		Trajectory trajectory = scope.getTrajectory();
 		TurtleState current = trajectory.getLast().getModifiableCopy();
 		double currentX = trajectory.getLast().getX();
 		double currentY = trajectory.getLast().getY();
@@ -34,17 +35,6 @@ public class SetTowards extends TurtleCommand {
 		current.setHeading(newHeading);	
 		trajectory.addLast(current);
 		return newHeading;
-	}
-
-	/**
-	 * Expected Arguments:
-	 * 1: Constant (x coordinate)
-	 * 2: Constant (y coordinate)
-	 */
-	@Override
-	public Arguments getDefaultArgs() {
-		Token[] def = {new Constant(0), new Constant(0)};
-		return new Arguments(def);
 	}
 
 	@Override
