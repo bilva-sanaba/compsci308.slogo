@@ -22,6 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -34,6 +35,7 @@ public class GUI {
 	private InputPanel realInput;
 	private GraphicsContext gc;
 	private LeftPanel lp;
+	private VBox rightScreen = new VBox();
 	private RightPanel rp;
 	private CommandScrollPane commandScrollPane;
 	private Shape background;
@@ -44,6 +46,8 @@ public class GUI {
 	private List<Button> otherButtons;
 	private Stage myStage;
 	BorderPane bottomPanel=new BorderPane();
+	private double centerX,centerY;
+	private Label turtleData = createLabel("XPos: 0, YPos: 0, H: 0, P: true");
 	public static final int SCENE_WIDTH = 1200; 
 	public static final int SCENE_HEIGHT = 680;
 	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
@@ -56,8 +60,11 @@ public class GUI {
 		myStage = stage;
 		myStage.setScene(createScene());
 	
-		myRoot.setLeft(lp.getPanel());
-		myRoot.setRight(rp.getPanel());
+		myRoot.setLeft(lp.getPanel());	
+		myRoot.setRight(rightScreen);
+		rightScreen.getChildren().add(turtleData);
+		rightScreen.getChildren().add(rp.getPanel());
+		
 		show();
 		background = new Rectangle(SCENE_WIDTH-lp.getPanel().getWidth()-rp.getPanel().getWidth(),SCENE_HEIGHT-bottomPanel.getBoundsInLocal().getHeight(),Color.WHITE);
 		wrapperPane.getChildren().add(background);
@@ -73,12 +80,13 @@ public class GUI {
 		wrapperPane.getChildren().add(tvm.getImage());
 	}
 	private void initializeTurtle(){
-		tvm = new TurtleAnimator(new TurtleView(), gc, SCENE_WIDTH-lp.getPanel().getWidth()-rp.getPanel().getWidth());
+		tvm = new TurtleRegularMover(new TurtleView(), gc, SCENE_WIDTH-lp.getPanel().getWidth()-rp.getPanel().getWidth());
 	}
 	private void drawTurtle(){
-		System.out.println(lp.getPanel().getBoundsInLocal().getWidth());
-		tvm.setX((SCENE_WIDTH-lp.getPanel().getBoundsInLocal().getWidth()-rp.getPanel().getBoundsInLocal().getWidth())/2);
-		tvm.setY((SCENE_HEIGHT-bottomPanel.getBoundsInLocal().getHeight())/2);
+		centerX = (SCENE_WIDTH-lp.getPanel().getBoundsInLocal().getWidth()-rp.getPanel().getBoundsInLocal().getWidth())/2;
+		tvm.setX(centerX);
+		centerY= (SCENE_HEIGHT-bottomPanel.getBoundsInLocal().getHeight())/2;
+		tvm.setY(centerY);
 	}
 	private void createCanvas(){
 		canvas = new Canvas(SCENE_WIDTH-rp.getPanel().getWidth()-lp.getPanel().getWidth(),SCENE_HEIGHT-bottomPanel.getBoundsInLocal().getHeight());
@@ -109,8 +117,13 @@ public class GUI {
 	}
 	public void handleRunButton(Trajectory T){
 		rp.getScrollPane().addText();
-//		gc.clearRect(0, 0, wrapperPane.getWidth(), wrapperPane.getHeight());
 		tvm.moveTurtle(T,wrapperPane.getBoundsInLocal().getWidth(),wrapperPane.getBoundsInLocal().getHeight());
+		
+		turtleData.setText("XPos: "+ Integer.toString((int) Math.round(tvm.getImage().getX()-centerX+tvm.getImage().getBoundsInLocal().getWidth()/2))
+			+ " YPos: " + Integer.toString((int) Math.round(-tvm.getImage().getY()+centerY-tvm.getImage().getBoundsInLocal().getHeight()/2))
+			+ " H: "+ Integer.toString((int) Math.round(tvm.getTurtleView().getImage().getRotate()%360))
+			+ " P: "+ tvm.getPenBool());
+		
 		textArea.clear();
 	}
 	private void createButtons(){

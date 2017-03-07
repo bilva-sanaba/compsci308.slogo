@@ -23,8 +23,8 @@ protected void moveLocation(UnmodifiableTurtleState uts,double screenWidth, doub
 }	
 
 protected void draw(UnmodifiableTurtleState uts,double screenWidth, double screenHeight){
-	boolean newPen = uts.isPenDown();
-	if (newPen == true){
+	myTurtleView.setPen(uts.isPenDown());
+	if (myTurtleView.getPen()){
 		double oldX=myTurtleView.getImage().getX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2;
 		double oldY=myTurtleView.getImage().getY()+myTurtleView.getImage().getBoundsInLocal().getHeight()/2;
 		double penX=uts.getX()+screenWidth/2;

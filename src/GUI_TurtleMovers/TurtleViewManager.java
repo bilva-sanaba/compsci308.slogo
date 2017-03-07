@@ -48,6 +48,12 @@ public abstract class TurtleViewManager {
 	public void setY(double yLoc){
 		myTurtleView.getImage().setY(yLoc-myTurtleView.getImage().getBoundsInLocal().getHeight()/2);
 	}
+	public void getRotate(){
+		myTurtleView.getImage().getRotate();
+	}
+	public boolean getPenBool(){
+		return myTurtleView.getPen();
+	}
 	public ImageView getImage(){
 		return myTurtleView.getImage();
 	}
