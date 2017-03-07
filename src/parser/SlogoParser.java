@@ -32,25 +32,43 @@ public class SlogoParser {
 	
 	public TokenNode parse(TokenNode tNode, String command) throws CommandException{
 		ArrayList<String> commandList = fillList(command);
-		//System.out.println(commandList);
 		TokenNode root = tNode;
 		TokenNode parentNode = null;
 		TokenNode head=root;
-	
-		
+		int stringCursor = 0; //EDIT
 		
 		for(int i=0; i<commandList.size(); i++){
 			String word = commandList.get(i).trim();
 			TokenNode tokenNode;
-			
 			if(word.equals("[")){
-				int startIndex = command.indexOf(("["));
-				//System.out.println(startIndex);
-				//System.out.println(command.substring(startIndex, command.length()));
-				int endIndex = getEndIndex(command.substring(startIndex), startIndex);
+				//System.out.println("listCursor: " + listCursor);
+				System.out.println("stringCursor: " + stringCursor);
+				System.out.println("sub1: " + command.substring(0, stringCursor));
+				System.out.println("sub2: " + command.substring(stringCursor));
+				int startIndex = command.substring(0, stringCursor).length() + command.substring(stringCursor).indexOf("["); //puts to end of list //EDIT
+				int startListIndex = i; // modify commandList
+				System.out.println("si: " + startIndex);
+				//System.out.println("sI: " + command.substring(cursor));
+				//System.out.println("sListI: " + createSubList(cursor, commandList));
+				
+				int endIndex = getEndIndex(command.substring(startIndex)); //EDIT: startIndex
+				
+				System.out.println("endIndex: " + endIndex);
+				
+				ArrayList<String> subList = createSubList(startListIndex, commandList); //EDIT: list cursor
+				
+				System.out.println("sublist: " + subList);
+				System.out.println("startListIndex: " + startListIndex);
+				int endListIndex = getEndCursor(subList);
+				
+				System.out.println("endListIndex: " + endListIndex);
+
 				i = startIndex + endIndex;
 				
-				tokenNode = parse(new TokenNode(root, new TList()), command.substring(startIndex + 1, i));
+				tokenNode = parse(new TokenNode(root, new TList()), command.substring(startIndex + 1, i)); //EDIT: i
+				
+				i=endListIndex + startListIndex;
+				
 			}
 			else{
 				tokenNode = factory.genTokenNode(parentNode, word); //will be global
@@ -64,30 +82,56 @@ public class SlogoParser {
 				root=tokenNode;
 			}
 			
-			if(root.getChildren().size()==((Command)root.getToken()).getNumArgs()){
+			if(root.getToken().getType() == TokenType.COMMAND && root.getChildren().size()==((Command)root.getToken()).getNumArgs()){
 				root=parentNode;
 				parentNode=root.getParent();
-			}		
+			}
+			stringCursor+=commandList.get(i).length() + 1; //EDIT
 		}
 		return head;
 	}
 	
-	private int getEndIndex(String command, int startIndex) throws CommandException{
+	private ArrayList<String> createSubList(int cursor, ArrayList<String> commandList) {
+		ArrayList<String> ans = new ArrayList<String>();
+		for(int i = 0; i<commandList.size(); i++){ 
+			if(i>=cursor){ //EDIT: i >= cursor
+				//System.out.println(commandList.get(i));
+				ans.add(commandList.get(i));
+			}
+		}
+		return ans;
+	}
+
+	private int getEndIndex(String command) throws CommandException{
 		Stack<String> stack = new Stack<String>();
 		stack.push("[");
-		//System.out.println(command);
 		for(int i = 1; i < command.length(); i++){
 			if(command.substring(i, i+1).equals("[")){
 				stack.push(command.substring(i, i+1));
 			}
 			else if(command.substring(i, i+1).equals("]")){
 				stack.pop();
-				//System.out.println("x");
 			}
 			if(stack.isEmpty()){
 				return i;
 			}
-			System.out.println(i);
+		}
+		throw new CommandException("List never closes");
+	}
+	
+	private int getEndCursor(ArrayList<String> commandList) throws CommandException{
+		Stack<String> stack = new Stack<String>();
+		stack.push("[");
+		for(int i = 1; i < commandList.size(); i++){
+			if(commandList.get(i).equals("[")){
+				stack.push(commandList.get(i));
+			}
+			else if(commandList.get(i).equals("]")){
+				stack.pop();
+			}
+			if(stack.isEmpty()){
+				return i;
+			}
 		}
 		throw new CommandException("List never closes");
 	}
@@ -102,4 +146,3 @@ public class SlogoParser {
 	}
 	
 }
-

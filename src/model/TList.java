@@ -44,13 +44,14 @@ public class TList implements Token {
 	 * @return Token
 	 * @throws CommandException 
 	 */
-	public Token executeChildren() throws CommandException{
+	public Arguments executeChildren() throws CommandException{
+		Arguments returns = new Arguments();
+		
 		Interpreter i = new Interpreter();
-		Token ans = new Constant(0);
 		for(TokenNode child: this.getChildren()){
-			ans = i.evaluateTree(child, myScope);
+			returns.add(i.evaluateTree(child, myScope));
 		}
-		return ans;s
+		return returns;
 	}
 	
 	

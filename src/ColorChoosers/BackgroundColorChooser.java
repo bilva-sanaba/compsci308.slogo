@@ -1,6 +1,7 @@
 package ColorChoosers;
 
 
+import GUI.GUI;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -15,7 +16,9 @@ public abstract class BackgroundColorChooser extends ColorChooser{
 	protected Shape background;
 	
 	public BackgroundColorChooser(Shape rect){
+		super();
 		background=rect;
+		displays.add(GUI.createLabel("Pick Background Color: "));
 	}
 	
 	protected void setColor(){

@@ -53,6 +53,14 @@ public class Arguments implements Iterable<Token>{
 		return t;
 	}
 	
+	/**
+	 * Gets last argument in the list
+	 * @param index
+	 * @param t
+	 */
+	public Token getLast(){
+		return arguments.get(numArgs() - 1);
+	}
 	
 	public void set(int index, Token t){
 		arguments.set(index, t);

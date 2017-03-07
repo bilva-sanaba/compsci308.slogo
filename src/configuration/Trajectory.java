@@ -2,6 +2,7 @@ package configuration;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Holds a trajectory of Unmodifiable TurtleStates
@@ -22,14 +23,23 @@ import java.util.Iterator;
  */
 public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	
-	ArrayList<UnmodifiableTurtleState> trajectory;
+	ArrayList<UnmodifiableTurtleState> fullTrajectory;
+	ArrayList<UnmodifiableTurtleState> trajectoryAdditions;
+	
+	/**
+	 * Constructs a Trajectory from a list of UnmodifiableTurtleStates
+	 */
+	public Trajectory(List<UnmodifiableTurtleState> states){
+		fullTrajectory = new ArrayList<>(states);
+		trajectoryAdditions = new ArrayList<>(states);
+	}
 	
 	/**
 	 * Constructs a Trajectory with no initial states.
 	 * Use methods to add to end of trajectory
 	 */
 	public Trajectory(){
-		trajectory = new ArrayList<UnmodifiableTurtleState>();
+		this(new ArrayList<UnmodifiableTurtleState>());
 	}
 	
 	/**
@@ -39,7 +49,20 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	 */
 	public void addLast(TurtleState nextState){
 		if(!nextState.equals(getLast()))
-			trajectory.add((UnmodifiableTurtleState)nextState.getModifiableCopy());	
+			fullTrajectory.add((UnmodifiableTurtleState)nextState.getModifiableCopy());	
+			trajectoryAdditions.add((UnmodifiableTurtleState)nextState.getModifiableCopy());
+	}
+	
+	/**
+	 * Returns a trajectory made up of most recent additions to trajectory
+	 * 
+	 * Note: when this is called, it resets its count of most recent additions.
+	 */
+	public Trajectory getMostRecentAdditions(){
+		Trajectory newTraj =  new Trajectory(trajectoryAdditions);
+		trajectoryAdditions.clear();
+		trajectoryAdditions.add(getLast());
+		return newTraj;		
 	}
 	
 	/**
@@ -47,22 +70,22 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	 * @return
 	 */
 	public UnmodifiableTurtleState getLast(){
-		if(trajectory.size() == 0) return null;
-		return trajectory.get(trajectory.size() - 1);
+		if(fullTrajectory.size() == 0) return null;
+		return fullTrajectory.get(fullTrajectory.size() - 1);
 	}
 	
 	/**
 	 * Clears entire trajectory
 	 */
 	public void clear(){
-		trajectory = new ArrayList<UnmodifiableTurtleState>();
+		fullTrajectory = new ArrayList<UnmodifiableTurtleState>();
 	}
 	
 	/**
 	 * Returns size of trajectory
 	 */
 	public int size(){
-		return trajectory.size();
+		return fullTrajectory.size();
 	}
 	
 	/**
@@ -70,7 +93,7 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	 */
 	@Override
 	public Iterator<UnmodifiableTurtleState> iterator() {
-		return trajectory.iterator();
+		return fullTrajectory.iterator();
 	}
 	
 	/**
