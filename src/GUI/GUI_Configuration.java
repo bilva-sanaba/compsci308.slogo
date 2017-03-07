@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
+import model.Model;
 
 public class GUI_Configuration {
 	public static final int SCENE_WIDTH = 1200; 

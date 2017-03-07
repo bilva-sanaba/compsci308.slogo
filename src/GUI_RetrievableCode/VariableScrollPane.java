@@ -21,7 +21,7 @@ public class VariableScrollPane {
 	private Group root;
 private ScrollPane myScrollPane;
 private int startingHeight;
-private Map<String,Integer> myVariables;
+private Map<String,Double> myVariables;
 
 public VariableScrollPane() {
 	root=new Group();
@@ -29,7 +29,7 @@ public VariableScrollPane() {
 	myScrollPane.setContent(root);
 	startingHeight=0;
 }
-public void add(Map<String,Integer>variables){
+public void add(Map<String,Double>variables){
 	myVariables=variables;
 for(String s:myVariables.keySet()){
 		
@@ -38,7 +38,7 @@ for(String s:myVariables.keySet()){
 	
 	Rectangle r=new Rectangle();
 		Text text=new Text("    "+s+":  ");
-		TextField t=new TextField(Integer.toString(variables.get(s)));
+		TextField t=new TextField(Double.toString(variables.get(s)));
 		t.setMaxWidth(30);
 		t.setOnKeyPressed(e->changeVariable(e.getCode(),s,t));
 		r.setFill(Color.WHITE);
@@ -66,7 +66,7 @@ public void clearScrollPane(){
 private void changeVariable(KeyCode code,String s,TextField t){
 	if(code==KeyCode.ENTER){
 		try{
-			Integer i=Integer.parseInt(t.getText());
+			Double i=Double.parseDouble(t.getText());
 			myVariables.put(s,i);
 			System.out.println(myVariables);
 		}
@@ -75,7 +75,7 @@ private void changeVariable(KeyCode code,String s,TextField t){
 			alert.setTitle("Please enter a valid number");
 			alert.setContentText(e.getMessage()); 
 			alert.showAndWait();
-			t.setText(Integer.toString(myVariables.get(s)));
+			t.setText(Double.toString(myVariables.get(s)));
 			
 		}
 	}

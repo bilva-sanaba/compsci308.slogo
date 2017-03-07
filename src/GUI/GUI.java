@@ -35,6 +35,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
+import model.Model;
 
 public class GUI {
 	private TabPane myRut=new TabPane();
@@ -59,10 +60,11 @@ public class GUI {
 	public static final int SCENE_HEIGHT = 680;
 	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
 	private List<Label> stateLabels;
-
-	public GUI(Button b,Button n){
+	private Model model;
+	public GUI(Button b,Button n, Model m){
 		runButton = b;
 		newTab=n;
+		model=m;
 		createButtons();
 		createRoot();
 		//myStage = stage;
@@ -119,7 +121,7 @@ public class GUI {
 	}
 	private void createRoot() {
 		createTextArea();
-		lp = new LeftPanel(SCENE_WIDTH,SCENE_HEIGHT);
+		lp = new LeftPanel(SCENE_WIDTH,SCENE_HEIGHT,model);
 		rp = new RightPanel(textArea, runButton, SCENE_WIDTH,SCENE_HEIGHT);	
 		myRoot.setCenter(wrapperPane);
 	}
