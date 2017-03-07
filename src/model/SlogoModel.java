@@ -48,4 +48,14 @@ public class SlogoModel implements Model {
 	public void setLanguage(String language) {
 		parser.setLanguage(language);		
 	}
+
+	@Override
+	public VariableContainer getGlobalVariables() {
+		return globalVariables;
+	}
+	
+	@Override
+	public CommandFactory getGlobalCommands() {
+		return globalCommands;
+	}
 }

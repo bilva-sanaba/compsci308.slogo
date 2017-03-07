@@ -65,17 +65,17 @@ public class Scope {
 	}
 	
 	public CommandFactory getCommands() throws CommandException{
-		checkForAccess(commands, "command");
+		checkForAccess(commands, "command factory");
 		return commands;
 	}
 	
 	public VariableContainer getVariables() throws CommandException{
-		checkForAccess(commands, "variables");
+		checkForAccess(variables, "variable container");
 		return variables;
 	}
 	
 	public Trajectory getTrajectory() throws CommandException{
-		checkForAccess(commands, "trajectory");
+		checkForAccess(trajectory, "trajectory");
 		return trajectory;
 	}
 	
