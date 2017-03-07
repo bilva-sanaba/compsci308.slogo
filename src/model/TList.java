@@ -46,16 +46,17 @@ public class TList implements Token {
 	public Arguments executeChildren(Scope scope) throws CommandException{
 		Arguments returns = new Arguments();
 		
-		Interpreter i = new Interpreter();
+		Interpreter i = new Interpreter(scope.getWorld());
+		
 		for(TokenNode child: this.getChildren()){
-			returns.add(i.evaluateTree(child, scope));
+			returns.add(i.evaluateForTurtles(scope.getWorld().getActiveTurtles(), child, scope));
 		}
 		return returns;
 	}
 
 	@Override
 	public Scope getScopeRequest() {
-		return new Scope(true, true, true);
+		return new Scope(true, true, true, true);
 	}
 
 }

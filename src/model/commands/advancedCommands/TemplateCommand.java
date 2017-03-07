@@ -40,7 +40,7 @@ public class TemplateCommand extends AbstractCommand {
 			subVariables.set(argumentVariables.get(i), args.getConstant(i));
 		}
 				
-		Scope subScope = new Scope(scope.getCommands(), subVariables, scope.getTrajectory(), getScopeRequest());
+		Scope subScope = new Scope(scope.getCommands(), subVariables, scope.getTrajectory(), scope.getWorld(), getScopeRequest());
 		
 		Arguments answer = subCommands.executeChildren(subScope);
 		return(answer.getDouble(answer.numArgs() - 1));
@@ -59,7 +59,7 @@ public class TemplateCommand extends AbstractCommand {
 
 	@Override
 	public Scope getScopeRequest() {
-		return new Scope(true, true, true);
+		return new Scope(true, true, true, true);
 	}
 
 	/**

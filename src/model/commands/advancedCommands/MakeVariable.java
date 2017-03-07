@@ -18,7 +18,7 @@ public class MakeVariable extends AbstractCommand{
 	
 	@Override
 	public Scope getScopeRequest() {
-		return new Scope(false, true, false);
+		return new Scope(false, true, false, true);
 	}
 
 	@Override

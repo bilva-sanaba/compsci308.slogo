@@ -19,7 +19,7 @@ public class DoTimes extends AbstractCommand {
 
 	@Override
 	public Scope getScopeRequest() {
-		return new Scope(false, true, false);
+		return new Scope(true, true, true, true);
 	}
 
 	@Override

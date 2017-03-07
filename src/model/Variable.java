@@ -52,7 +52,7 @@ public class Variable implements Token {
 	
 	@Override
 	public Scope getScopeRequest() {
-		return new Scope(false, true, false);
+		return new Scope(false, true, false, false);
 	}
 
 }

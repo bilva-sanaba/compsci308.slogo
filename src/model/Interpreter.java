@@ -1,5 +1,8 @@
 package model;
 
+import java.util.List;
+import java.util.Map;
+
 import model.commands.CommandException;
 import parser.tokenNodes.TokenNode;
 
@@ -10,6 +13,25 @@ import parser.tokenNodes.TokenNode;
  *
  */
 public class Interpreter {
+	private World world;
+	
+	public Interpreter(World world){
+		this.world = world;
+	}
+	
+	public Token evaluateForTurtles(Map<Integer, Turtle> turtles, TokenNode root, Scope scope) throws CommandException{
+		Arguments returnArgs = new Arguments();
+		
+		for(Turtle t : turtles.values()){
+			world.setCurrentlyActiveTurtle(t);
+			
+			Scope singleTurtleScope = new Scope(scope.getCommands(), scope.getVariables(), t.getTrajectory(), scope.getWorld(), scope);
+			returnArgs.add(this.evaluateTree(root, singleTurtleScope));
+		}
+		
+		return returnArgs.getLast(); // Returns answer to last turtle's evaluation
+		
+	}
 	
 	public Token evaluateTree(TokenNode root, Scope scope) throws CommandException{
 		Arguments returnArgs = new Arguments();
@@ -34,8 +56,8 @@ public class Interpreter {
 	
 		
 		return root.getToken().evaluate(returnArgs, getScopeFromRequest(root, scope));
-		
 	}
+	
 	
 	private Scope getScopeFromRequest(TokenNode node, Scope fullScope) throws CommandException{
 		return new Scope(fullScope, node.getToken().getScopeRequest());

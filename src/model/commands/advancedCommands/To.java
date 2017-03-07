@@ -82,7 +82,7 @@ public class To extends AbstractCommand {
 
 	@Override
 	public Scope getScopeRequest() {
-		return new Scope(true, true, true);
+		return new Scope(true, true, true, true);
 	}
 
 }

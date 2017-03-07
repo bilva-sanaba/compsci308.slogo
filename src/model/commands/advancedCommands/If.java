@@ -1,21 +1,13 @@
 package model.commands.advancedCommands;
 
-import java.awt.List;
-
 import configuration.Trajectory;
-import configuration.TurtleState;
 import model.Arguments;
 import model.Constant;
-import model.Interpreter;
 import model.Scope;
 import model.TList;
 import model.Token;
-import model.TokenType;
-import model.Variable;
-import model.VariableContainer;
 import model.commands.AbstractCommand;
 import model.commands.CommandException;
-import parser.tokenNodes.TokenNode;
 /**
  * 
  * @author Jacob Weiss
@@ -25,13 +17,11 @@ public class If extends AbstractCommand {
 
 	@Override
 	public Scope getScopeRequest() {
-		return new Scope(true, true, true);
+		return new Scope(true, true, true, true);
 	}
 
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {
-		Trajectory trajectory = scope.getTrajectory();
-		
 		int check = (int) args.getDouble(0);
 		TList tList= args.getTList(1);
 		double result = 0;

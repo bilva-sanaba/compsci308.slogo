@@ -31,7 +31,7 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	 */
 	public Trajectory(List<UnmodifiableTurtleState> states){
 		fullTrajectory = new ArrayList<>(states);
-		trajectoryAdditions = new ArrayList<>(states);
+		trajectoryAdditions = new ArrayList<>(); // Insert "states" into parameter if first trajectory should contain initial state
 	}
 	
 	/**
@@ -48,6 +48,7 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	 */
 	public Trajectory(){
 		this(new ArrayList<UnmodifiableTurtleState>());
+		fullTrajectory.add(new TurtleState());
 	}
 	
 	/**
@@ -69,7 +70,7 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	public Trajectory getMostRecentAdditions(){
 		Trajectory newTraj =  new Trajectory(trajectoryAdditions);
 		trajectoryAdditions.clear();
-		trajectoryAdditions.add(getLast());
+//		trajectoryAdditions.add(getLast());// Uncomment if frontend wants start state every time
 		return newTraj;		
 	}
 	
@@ -110,7 +111,7 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	public String toString(){
 		String s = "______Trajectory______";
 		for(UnmodifiableTurtleState state: this) s += "\n" + state.toString();
-		s += "______________________";
+		s += "______________________\n";
 		return s;
 	}
 }
