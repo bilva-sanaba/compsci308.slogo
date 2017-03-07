@@ -17,7 +17,7 @@ public class SlogoModel implements Model {
 	
 	private CommandFactory globalCommands;
 	private VariableContainer globalVariables;	
-	private Trajectory turtleTrajectory;
+//	private Trajectory turtleTrajectory;
 	private World world;
 	
 	public SlogoModel() throws CommandException{
@@ -46,7 +46,8 @@ public class SlogoModel implements Model {
 		
 //		System.out.println(world); // Uncomment this to test functionality of model
 		Trajectory t =  world.getTurtle(0).getTrajectory().getMostRecentAdditions(); // this is temporary. 
-		System.out.println(t);
+		System.out.println(world);
+		System.out.println(scope.getVariables());
 		return t;
 	}
 

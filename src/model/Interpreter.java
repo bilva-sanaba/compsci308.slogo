@@ -22,13 +22,17 @@ public class Interpreter {
 	public Token evaluateForTurtles(Map<Integer, Turtle> turtles, TokenNode root, Scope scope) throws CommandException{
 		Arguments returnArgs = new Arguments();
 		
-		for(Turtle t : turtles.values()){
-			world.setCurrentlyActiveTurtle(t);
-			
-			Scope singleTurtleScope = new Scope(scope.getCommands(), scope.getVariables(), t.getTrajectory(), scope.getWorld(), scope);
-			returnArgs.add(this.evaluateTree(root, singleTurtleScope));
+		if(root.getToken().getScopeRequest().getTrajectory() == null){
+			returnArgs.add(this.evaluateTree(root, scope));
 		}
-		
+		else{
+			for(Turtle t : turtles.values()){
+				world.setCurrentlyActiveTurtle(t);
+				
+				Scope singleTurtleScope = new Scope(scope.getCommands(), scope.getVariables(), t.getTrajectory(), scope.getWorld(), scope);
+				returnArgs.add(this.evaluateTree(root, singleTurtleScope));
+			}
+		}
 		return returnArgs.getLast(); // Returns answer to last turtle's evaluation
 		
 	}
