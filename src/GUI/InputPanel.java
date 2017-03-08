@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import resources.*;
+import xml.Default;
 import ColorChoosers.BackgroundColorChooser;
 import ColorChoosers.PenColorChooser;
 import GUI_BackgroundColorChooser.BackgroundColorWriteBox;
@@ -45,13 +46,14 @@ public class InputPanel {
 	private static final String HELP_URL="/resources/help.html";
 	private static final int BUTTON_SPACING = 20;
 	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
-public InputPanel(TurtleViewManager tvm, List<Button> otherButtons,Shape background, double width, double height){
+public InputPanel(TurtleViewManager tvm, List<Button> otherButtons,Shape background, double width, double height,Default myDefault){
 	returnPanel = initInputPanel(otherButtons);
 	returnPanel.setPrefSize(width, height/4);
 	addBackgroundButton(background);
 	addOtherBoxes(tvm);
 	addPenButton(tvm);
 	addExtraButtons(tvm);
+	setLanguage(myDefault.getLanguage());
 	}
 public Pane getBottomPanel(){
 	return returnPanel;
@@ -102,6 +104,7 @@ private void addExtraButtons(TurtleViewManager tvm){
 	if (extraButtons.size()!=0){
 		inputPanel.setConstraints(extraButtons.get(0),0,5);
 		inputPanel.setConstraints(extraButtons.get(1),0,4);
+		inputPanel.setConstraints(extraButtons.get(2),0,6);
 	}
 	 inputPanel.getChildren().addAll(extraButtons);
 }

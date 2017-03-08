@@ -40,7 +40,7 @@ public class LeftPanel {
 			map.put(s, variables.get(new Variable(s)).getVal());
 		}
 		variableScrollPane=new VariableScrollPane();
-		variableScrollPane.getScrollPane().setPrefSize(width/8,height*.73);
+		variableScrollPane.getScrollPane().setPrefSize(width/8,height*.71);
 		variableScrollPane.getScrollPane().setLayoutX(0);
 		variableScrollPane.getScrollPane().setLayoutY(0);
 		variableScrollPane.add(map);

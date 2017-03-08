@@ -61,7 +61,7 @@ import java.util.HashMap;
 	    public String getPenColor(){
 	    	return myDataValues.get("penColor");
 	    }
-	    public String getImage(){
+	    public String getImageString(){
 	    	return myDataValues.get("image");
 	    }
 	    @Override

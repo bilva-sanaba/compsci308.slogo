@@ -10,8 +10,8 @@ public class TurtleView {
 	private boolean penDown;
 	private boolean visible;
 	private Paint penColor; 
-	public TurtleView(){
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream("turtle2.gif"));
+	public TurtleView(String s){
+		Image image = new Image(getClass().getClassLoader().getResourceAsStream(s));
 		Turtle_Image = new ImageView(image);
 		penDown=true;
 		visible=true;
@@ -32,11 +32,14 @@ public class TurtleView {
 	public void setHeading(double heading){
 		Turtle_Image.setRotate(heading);
 	}
-	public void setPenDown(){
-		penDown=true;
+	public void setPen(boolean x){
+		penDown=x;
 	}
 	public void setPenUp(){
 		penDown=false;
+	}
+	public boolean getPen(){
+		return penDown;
 	}
 	public void setVisibility(boolean v){
 		Turtle_Image.setVisible(v);
