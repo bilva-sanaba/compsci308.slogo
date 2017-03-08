@@ -32,7 +32,7 @@ public class Ask extends AskCommand {
 	 * @throws CommandException 
 	 * 
 	 */
-	private double askThenRevert(Arguments indicies, TList commands, Scope scope) throws CommandException{
+	public double askThenRevert(Arguments indicies, TList commands, Scope scope) throws CommandException{
 		Set<Integer> previouslyActiveTurtles = scope.getWorld().getActiveTurtles().keySet();
 		
 		scope.getWorld().setActiveTurtles(argumentsToIndicies(indicies));
