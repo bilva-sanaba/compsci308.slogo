@@ -11,8 +11,9 @@ public class TurtleCellFactory extends ListCell<String> {
 	        setText(null);
 	        if(item!=null){
 	            ImageView imageView = new ImageView(new Image(item));
-	            imageView.setFitWidth(40);
-	            imageView.setFitHeight(40);
+	            //Values chosen to match regular button height for asthetic purposes
+	            imageView.setFitWidth(20);
+	            imageView.setFitHeight(20);
 	            setGraphic(imageView);
 	        }
 	    }

@@ -10,6 +10,8 @@ import javax.xml.bind.annotation.XmlElement.DEFAULT;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import javafx.scene.paint.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -98,9 +100,7 @@ public class XML {
         }
     }
     // Helper method to do the boilerplate code needed to make a documentBuilder.
-    private int squared(int i){
-    	return i*i;
-    }
+  
     private static DocumentBuilder getDocumentBuilder () {
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -109,6 +109,5 @@ public class XML {
             throw new XMLException(e);
         }
     }
-   
     
 }

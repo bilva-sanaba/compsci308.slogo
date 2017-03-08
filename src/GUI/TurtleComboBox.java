@@ -35,16 +35,11 @@ public class TurtleComboBox {
 	}
 	private void changeImage(TurtleViewManager tvm, String newString){
 		ImageView newValue=new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(newString)));
-		System.out.println("ba"+tvm.getImage().getX()+tvm.getImage().getBoundsInLocal().getWidth()/2);
 		tvm.getImage().setX(tvm.getImage().getX()+tvm.getImage().getBoundsInLocal().getWidth()/2);
 		tvm.getImage().setY(tvm.getImage().getY()+tvm.getImage().getBoundsInLocal().getHeight()/2);
 		tvm.getImage().setImage(newValue.getImage());
-		System.out.println("b"+tvm.getImage().getX());
-		System.out.println("c"+tvm.getImage().getX());
 		tvm.getImage().setY(tvm.getImage().getY()-tvm.getImage().getBoundsInLocal().getHeight()/2);
-		System.out.println("d"+tvm.getImage().getBoundsInLocal().getWidth());
 		tvm.getImage().setX(tvm.getImage().getX()-tvm.getImage().getBoundsInLocal().getWidth()/2);
-		System.out.println("e"+tvm.getImage().getX()+tvm.getImage().getBoundsInLocal().getWidth());
 	}
 
 }

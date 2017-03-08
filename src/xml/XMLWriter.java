@@ -29,10 +29,14 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import GUI.TurtleComboBox;
+
 import java.util.Arrays;
 import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -41,51 +45,38 @@ import javafx.stage.Window;
 public class XMLWriter {
 	private static final DocumentBuilder DOCUMENT_BUILDER = getDocumentBuilder();
 	private Default myDefault;
-	int[]params;
-	Cell[][]myCells;
-	public static final String TITLE_ELEMENT="title";
-    public static final String AUTHOR_ELEMENT="author";
-    public static final String TYPE_ATTRIBUTE = "type";
-    public static final String GRID_ATTRIBUTE = "grid";
-    public static final String STATE_ELEMENT="states";
-    public static final String SHAPE_ELEMENT="shape";
-    public static final String TOROIDAL_ELEMENT="toroidal";
-	public XMLWriter(Default d, int[] param,Cell[][] cells){
-		myDefault=d;
-		params=param;
-		myCells=cells;
-	}
+	   public static final String TYPE_ATTRIBUTE = "type";
+	    public static final String IMAGE_ELEMENT = "image";
+	    public static final String BACKGROUNDCOLOR_ELEMENT="backgroundColor";
+	    public static final String PENCOLOR_ELEMENT="penColor";
+	    public static final String LANGUAGE_ELEMENT="language";
+	    public XMLWriter(Default d){
+	    	myDefault=d;
+	    }
  //Prepares the Document in a DocumentBuilder by appending elements and attributes
-	public void getXML(){
+	public void getXML(String imageString,Paint backgroundColor,Paint penColor,String language){
 	Document doc=DOCUMENT_BUILDER.newDocument();
 	Element root=doc.createElement("Default"); 
 	doc.appendChild(root);
 	setAttributes( root, doc);
-	for(String s:myDefault.getFields()){
-	Element element=doc.createElement(s);
-	int location=myDefault.getFields().indexOf(s);
-	element.appendChild(doc.createTextNode(""+params[location]));
+	
+	
+	Element element=doc.createElement(IMAGE_ELEMENT);
+	element.appendChild(doc.createTextNode(imageString));
+	//t.getTurtleChooser().getSelectionModel().getSelectedItem())
 	root.appendChild(element);
-	 }
-	getNamingElements(TITLE_ELEMENT,root,doc);
-	getNamingElements(AUTHOR_ELEMENT,root,doc);
-	Element element=doc.createElement(SHAPE_ELEMENT);
-	element.appendChild(doc.createTextNode(myDefault.getShape()));
-	root.appendChild(element);
-	String states=getStates();
-	Element state=doc.createElement(STATE_ELEMENT);
-	state.appendChild(doc.createTextNode(states));
-	root.appendChild(state);
-	Element toroidal=doc.createElement(TOROIDAL_ELEMENT);
-	toroidal.appendChild(doc.createTextNode(Boolean.toString(myDefault.isToroidal())));
-	root.appendChild(toroidal);
+	Element bgc=doc.createElement(BACKGROUNDCOLOR_ELEMENT);
+	bgc.appendChild(doc.createTextNode(backgroundColor.toString()));
+	root.appendChild(bgc);
+	Element pc=doc.createElement(PENCOLOR_ELEMENT);
+	pc.appendChild(doc.createTextNode(penColor.toString()));
+	root.appendChild(pc);
+	Element lang=doc.createElement(LANGUAGE_ELEMENT);
+	lang.appendChild(doc.createTextNode(language));
+	root.appendChild(lang);
 	printFile(doc);
  }
- private void getNamingElements(String s, Element root,Document doc){
-	 Element e=doc.createElement(s);
-	 e.appendChild(doc.createTextNode(promptUser(s)));
-	 root.appendChild(e);
- }
+
  private String promptUser(String prompt){
 	 String s="";
 	 TextInputDialog input=new TextInputDialog(String.format("Please enter the %s for this simulation",prompt));
@@ -97,23 +88,11 @@ public class XMLWriter {
 	 }
  return s;
  }
- private String getStates(){
-	 String states="";
-		for(int i=0;i<myCells.length;i++){
-			for(int j=0;j<myCells.length;j++){
-				states+=myCells[i][j].getType();
-				if(!(i==j)||!(j==myCells.length-1))
-					states+=" ";
-			}
-		}
-		return states;
- }
+ 
  private void setAttributes(Element root, Document doc){
-	 Attr grid=doc.createAttribute(GRID_ATTRIBUTE);
-		grid.setValue(Integer.toString(1));
+	 
 		Attr type=doc.createAttribute(TYPE_ATTRIBUTE);
 		type.setValue(myDefault.getType());
-		root.setAttributeNode(grid);
 		root.setAttributeNode(type);
  }
  private void printFile(Document doc){

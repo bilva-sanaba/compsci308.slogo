@@ -31,6 +31,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import model.Model;
 import xml.Default;
 import xml.XML;
+import xml.XMLWriter;
 
 public class GUI {
 	private BorderPane myRoot = new BorderPane();
@@ -92,7 +93,7 @@ public class GUI {
 	}
 	private void initializeTurtle(){
 
-		tvm = new TurtleRegularMover(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
+		tvm = new TurtleAnimator(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
 
 		tvm.getImage().setOnMouseEntered(e->showStates(getStateLabels()));
 		tvm.getImage().setOnMouseExited(e->removeStates());
@@ -153,13 +154,21 @@ public class GUI {
 			textArea.setText("clear");
 			play.fire();
 		});   
-		Button load= createButton("Load File",e-> handleLoad());
+		Button load= createButton("Load Preferences",e-> handleLoad());
+		Button save=createButton("Save Preferences",e->handleSave());
 		Button newW=newTab;
-		otherButtons = Arrays	.asList(play, clear,newW,load);
+		otherButtons = Arrays	.asList(play, clear,newW,load,save);
+	}
+	private void handleSave(){
+		FileChooser fileChooser=new FileChooser();
+		fileChooser.setTitle("Select location to save file");
+		fileChooser.getExtensionFilters().addAll(new ExtensionFilter(".xml files","*.xml"));
+		XMLWriter xmlWriter=new XMLWriter(myDefault);
+		xmlWriter.getXML("turtle.gif", background.getFill(), Color.BLACK, realInput.getCurrentLanguage());
 	}
 	private void handleLoad(){
 		FileChooser fileChooser=new FileChooser();
-		fileChooser.setTitle("Select xml Defaul File");
+		fileChooser.setTitle("Select xml Default File");
 		fileChooser.getExtensionFilters().addAll(new ExtensionFilter(".xml files","*.xml"));
 		Stage ownerWindow = new Stage();
 		File file = fileChooser.showOpenDialog(ownerWindow);
