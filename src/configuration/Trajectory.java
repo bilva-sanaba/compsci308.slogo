@@ -49,6 +49,7 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	public Trajectory(){
 		this(new ArrayList<UnmodifiableTurtleState>());
 		fullTrajectory.add(new TurtleState());
+		trajectoryAdditions.add(new TurtleState());
 	}
 	
 	/**

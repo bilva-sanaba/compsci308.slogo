@@ -42,7 +42,7 @@ public class TemplateCommand extends AbstractCommand {
 				
 		Scope subScope = new Scope(scope.getCommands(), subVariables, scope.getTrajectory(), scope.getWorld(), getScopeRequest());
 		
-		Arguments answer = subCommands.executeChildren(subScope);
+		Arguments answer = subCommands.evaluateContents(subScope);
 		return(answer.getDouble(answer.numArgs() - 1));
 		
 	}

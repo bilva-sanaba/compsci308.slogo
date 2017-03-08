@@ -43,13 +43,13 @@ public class TList implements Token {
 	 * @return Token
 	 * @throws CommandException 
 	 */
-	public Arguments executeChildren(Scope scope) throws CommandException{
+	public Arguments evaluateContents(Scope scope) throws CommandException{
 		Arguments returns = new Arguments();
 		
 		Interpreter i = new Interpreter(scope.getWorld());
 		
 		for(TokenNode child: this.getChildren()){
-			returns.add(i.evaluateForTurtles(scope.getWorld().getActiveTurtles(), child, scope));
+			returns = i.evaluateForAllTurtles(scope.getWorld().getActiveTurtles(), child, scope);
 		}
 		return returns;
 	}

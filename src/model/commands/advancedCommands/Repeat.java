@@ -38,7 +38,7 @@ public class Repeat extends AbstractCommand {
 		int repcount=1;
 		
 		for(int i=times; i>0; i--){
-			Constant r = (Constant) tList.executeChildren(scope).getLast();
+			Constant r = (Constant) tList.evaluateContents(scope).getLast();
 			result = r.getVal();
 			vars.set(new Variable("repcount"), new Constant(repcount));
 			repcount++;

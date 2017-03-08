@@ -7,52 +7,55 @@ import model.Arguments;
 import model.Scope;
 import model.TList;
 import model.Token;
-import model.TokenType;
-import model.commands.AbstractCommand;
 import model.commands.CommandException;
 
-public class Ask extends AbstractCommand {
+/**
+ * Class for the "Ask" command
+ * 
+ * @author DhruvKPatel
+ */
+public class Ask extends AskCommand {
 
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {
 		TList turtles = args.getTList(0);
-		
-		Arguments turtleIndicies = turtles.executeChildren(scope);
 		TList commands = args.getTList(1);
 		
+		Arguments turtleIndicies = turtles.evaluateContents(scope); // simplifies list
+		return askThenRevert(turtleIndicies, commands, scope);
+	}
+	
+	/**
+	 * Asks turtles in indicies to complete commands, with given scope
+	 * 
+	 * After asking, it reverts to its previous state
+	 * @throws CommandException 
+	 * 
+	 */
+	private double askThenRevert(Arguments indicies, TList commands, Scope scope) throws CommandException{
 		Set<Integer> previouslyActiveTurtles = scope.getWorld().getActiveTurtles().keySet();
-		scope.getWorld().setActiveTurtles(argumentsToIndicies(turtleIndicies));
 		
-		Arguments returnArgs = commands.executeChildren(scope);
+		scope.getWorld().setActiveTurtles(argumentsToIndicies(indicies));
+		Arguments returnArgs = commands.evaluateContents(scope);
 		scope.getWorld().setActiveTurtles(previouslyActiveTurtles);
-		
 		return returnArgs.getDouble(returnArgs.numArgs() - 1);
 	}
 	
+	/**
+	 * Converts and Arguments object to a Set of Integers
+	 * 
+	 * If an argument is not a Constant, will throw an error.
+	 * @param a
+	 * @return
+	 * @throws CommandException
+	 */
 	private Set<Integer> argumentsToIndicies(Arguments a) throws CommandException{
 		Set<Integer> indicies = new HashSet<>();
 		for(int i = 0; i < a.numArgs(); i++){
-			if(a.get(i).getType() != TokenType.CONSTANT) throw new CommandException("Only constants valid in argument 1 of \"AskWith\"");
+			if(a.getConstant(i) == null) throw new CommandException("Only constants valid in argument 1 of \"AskWith\"");
 			indicies.add((int) a.getDouble(i)); // rounds down
 		}
 		return indicies;		
-	}
-
-	/**
-	 * Expected Arguments:
-	 * 1: List
-	 * 2: List
-	 */
-	@Override
-	public Arguments getDefaultArgs() {
-		Token[] returnArgs = {new TList(), new TList()};
-		return new Arguments(returnArgs);
-	}
-
-	
-	@Override
-	public Scope getScopeRequest() {
-		return new Scope(true, true, true, true);
 	}
 
 	@Override

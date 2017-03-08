@@ -29,7 +29,7 @@ public class If extends AbstractCommand {
 			return result;
 		}
 		else{
-			Constant r = (Constant)tList.executeChildren(scope).getLast();
+			Constant r = (Constant)tList.evaluateContents(scope).getLast();
 			result = r.getVal();
 			return result;
 		}

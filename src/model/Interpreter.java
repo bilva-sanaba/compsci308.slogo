@@ -18,7 +18,7 @@ public class Interpreter {
 		this.world = world;
 	}
 	
-	public Token evaluateForTurtles(Map<Integer, Turtle> turtles, TokenNode root, Scope scope) throws CommandException{
+	public Arguments evaluateForAllTurtles(Map<Integer, Turtle> turtles, TokenNode root, Scope scope) throws CommandException{
 		Arguments returnArgs = new Arguments();
 		
 		if(root.getToken().getScopeRequest().getTrajectory() == null){
@@ -32,7 +32,7 @@ public class Interpreter {
 				returnArgs.add(this.evaluateTree(root, singleTurtleScope));
 			}
 		}
-		return returnArgs.getLast(); // Returns answer to last turtle's evaluation
+		return returnArgs; // Returns answer to last turtle's evaluation
 		
 	}
 	

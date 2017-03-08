@@ -41,12 +41,12 @@ public class SlogoModel implements Model {
 		
 		for(TokenNode cmd: root.getChildren()){
 //			i.evaluateTree(cmd, scope); // for single turtle only
-			i.evaluateForTurtles(world.getActiveTurtles(), cmd, scope); // for multiple turtles
+			i.evaluateForAllTurtles(world.getActiveTurtles(), cmd, scope); // for multiple turtles
 		}
 		
 //		System.out.println(world); // Uncomment this to test functionality of model
 		Trajectory t =  world.getTurtle(0).getTrajectory().getMostRecentAdditions(); // this is temporary. 
-		System.out.println(world);
+		System.out.println(t);
 		System.out.println(scope.getVariables());
 		return t;
 	}
@@ -78,7 +78,7 @@ public class SlogoModel implements Model {
 		TokenNode root = parser.parse(new TokenNode(null, new TList()), commands);
 		
 		for(TokenNode cmd: root.getChildren()){
-			i.evaluateForTurtles(world.getActiveTurtles(), cmd, scope); // for multiple turtles
+			i.evaluateForAllTurtles(world.getActiveTurtles(), cmd, scope); // for multiple turtles
 		}
 		
 //		System.out.println(world); // Uncomment this to test functionality of model
