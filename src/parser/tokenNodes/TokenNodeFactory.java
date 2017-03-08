@@ -70,8 +70,7 @@ public class TokenNodeFactory {
 		TokenNode tokenNode = new TokenNode(parentNode, null);
 		String type = parser.getSymbol(word);
 		System.out.println(word + ", " + type);
-		System.out.println(unlimitedParam);
-		ArrayList<String> infiniteArgsCommandList = new ArrayList<String>(Arrays.asList(infiniteArgsCommands));
+		ArrayList<String> infiniteArgsCommandList = getInfiniteArgsCommands();
 			if(type.equals("Command")){//word is in resources
 				if(possibleCommands.contains(word)){
 					String wordID = findWordID(word);
@@ -112,6 +111,10 @@ public class TokenNodeFactory {
 	
 	public void setLanguage(String language){
 		this.language = language;
+	}
+	
+	public ArrayList<String> getInfiniteArgsCommands(){
+		return new ArrayList<String>(Arrays.asList(infiniteArgsCommands));
 	}
 }
 
