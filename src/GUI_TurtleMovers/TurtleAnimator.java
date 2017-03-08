@@ -41,8 +41,8 @@ public class TurtleAnimator extends TurtleViewManager{
 	private double currentRotate=0;
 	private double currentOpacity=1.0;
 	private boolean skipFirst = false;
-	public TurtleAnimator(TurtleView t, GraphicsContext gc,double w) {
-		super(t, gc,w);
+	public TurtleAnimator(TurtleView t, GraphicsContext gc) {
+		super(t, gc);
 		createSpeedSlider();
 		createSpeedChooser();
 		createPenSizeChooser();
@@ -119,21 +119,18 @@ public class TurtleAnimator extends TurtleViewManager{
 
 	}
 	@Override
-	protected void rotate(UnmodifiableTurtleState uts, double width){
+	protected void rotate(UnmodifiableTurtleState uts){
 
 	}
 	@Override
-	protected void changeVisibility(UnmodifiableTurtleState uts, double width){
+	protected void changeVisibility(UnmodifiableTurtleState uts){
 
 	}
 	protected PathTransition moveLocations(UnmodifiableTurtleState uts, double screenWidth, double screenHeight, double X, double Y) {
 		
 		double penX=uts.getX()+screenWidth/2;
-		double penY=-uts.getY()+screenHeight/2-1;
-		System.out.println(currentXPos);
-		System.out.println(penX);
-		System.out.println(currentYPos);
-		System.out.println(penY);
+		double penY=-uts.getY()+screenHeight/2;
+		
 		myTurtleView.setPen(uts.isPenDown());
 		if (currentXPos!=penX || currentYPos!=penY){
 		Path path = new Path();
