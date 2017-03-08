@@ -10,16 +10,16 @@ import java.util.Stack;
 import model.Arguments;
 import model.Command;
 import model.Constant;
+import model.Group;
 import model.TList;
 import model.Token;
 import model.TokenType;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
+import parser.tokenNodes.GroupNode;
 import parser.tokenNodes.TListNode;
 import parser.tokenNodes.TokenNode;
 import parser.tokenNodes.TokenNodeFactory;
-
-
 
 /**
  * The parser for user SLogo commands. We read the command and convert it into a tree
@@ -37,102 +37,67 @@ public class SlogoParser {
 	
 	public TokenNode parse(TokenNode tNode, String command) throws CommandException{
 		ArrayList<String> commandList = fillList(command);
-		System.out.println(commandList);
 		TokenNode root = tNode;
 		TokenNode parentNode = new TListNode(null, new TList());
 		TokenNode head=root;
 		int stringCursor = 0;
 		
+		
 		for(int i=0; i<commandList.size(); i++){
 			String word = commandList.get(i).trim();
 			TokenNode tokenNode;
 
-			if(word.equals("[")){
-
-				int startIndex = command.substring(0, stringCursor).length() + command.substring(stringCursor).indexOf("["); //puts to end of list //EDIT
+			if(word.equals("[") || word.equals("(")){
+				int startIndex = command.substring(0, stringCursor).length() + command.substring(stringCursor).indexOf(word); //puts to end of list //EDIT
 				int startListIndex = i; // modify commandList
 				
-				int endIndex = startIndex + getEndStringIndex(command.substring(startIndex), "[");
+				int endIndex = startIndex + getEndStringIndex(command.substring(startIndex), word);
 				
 				ArrayList<String> subList = createSubList(startListIndex, commandList);
 				
-				int endListIndex = getEndListIndex(subList, "[");
+				int endListIndex = getEndListIndex(subList, word);
 				
-				tokenNode = parse(new TListNode(root, new TList()), command.substring(startIndex + 1, endIndex));
-				
-				i=endListIndex + startListIndex;
-				
-			}
-			else if(word.equals("(")){ //UNLIMITED PARAMETERS
-				
-				int startIndex = command.substring(0, stringCursor).length() + command.substring(stringCursor).indexOf("("); //puts to end of list //EDIT
-				int startListIndex = i; // modify commandList
-				
-				int endIndex = startIndex + getEndStringIndex(command.substring(startIndex), "(");
-				
-				ArrayList<String> subList = createSubList(startListIndex, commandList);
-				
-				int endListIndex = getEndListIndex(subList, "(");
-				
-				String unlimitedParamCommand = commandList.get(i+1);
-				
-				tokenNode = factory.genTokenNode(root, unlimitedParamCommand);
-				
-				int numArgs = ((Command) tokenNode.getToken()).getNumArgs();
-				int check=0;
-				String subCommand="";
-				
-				String newCommand = command.substring(startIndex + 1, endIndex);
-				ArrayList<String> newCommandList = fillList(newCommand);
-				
-				//FOR INFINITE ARGS
-				for(String s: newCommandList){
-					if(check == 0){
-						for(int de=0; de<newCommandList.size()-2; de++){
-							subCommand = subCommand + " " + unlimitedParamCommand;
-						}
-						check++;
-					}
-					else{
-						subCommand = subCommand + " " + s;
-					}
+				if(word.equals("[")){
+					
+					tokenNode = parse(new TListNode(root, new TList()), command.substring(startIndex + 1, endIndex));
+					
 				}
-				//FOR INFINITE ARGS
-
-				/*
-				//FOR MULTIPLE ARGS 
-				for(String s: newCommandList){
-					System.out.println(s);
-					System.out.println(check + ", " + numArgs);
-					if(check == 0){
-						subCommand = subCommand + " " + unlimitedParamCommand;
-						check++;
-					}
-					if(!s.equals(unlimitedParamCommand)){
-						subCommand = subCommand + " " + s;
-						check++;
-					}
-					if(check > numArgs){
-						check = 0;
-					}
+				/*else{
+					
+					tokenNode = parse(new GroupNode(root, new Group()), command.substring(startIndex + 1, endIndex));
+					
+				}*/
+				else{ //UNLIMITED PARAMETERS
+					
+					String unlimitedParamCommand = commandList.get(i+1);
+					
+					TokenNode unlimitedTokenNode = factory.genTokenNode(root, unlimitedParamCommand);
+					
+					int numArgs = ((Command) unlimitedTokenNode.getToken()).getNumArgs();
+					
+					String newCommand = command.substring(startIndex + 1, endIndex);
+					ArrayList<String> newCommandList = fillList(newCommand);
+					
+					String reformatCommand = "";
+					
+					//FOR INFINITE ARGS
+					//reformatCommand = getReformatCommandForUnlimited(newCommandList, unlimitedParamCommand);
+					//FOR INFINITE ARGS
+		
+					//FOR MULTIPLE ARGS 
+					//reformatCommand = getReformatCommandForSpecified(newCommandList, unlimitedParamCommand, numArgs);
+					//FOR MULTIPLE ARGS
+					
+					tokenNode = parse(root, reformatCommand);
+					
 				}
-				//FOR MULTIPLE ARGS
-				 * *
-				 */
 				
-				System.out.println(subCommand);
-				
-				//for loop adding tokenNodes for the ()
-				
-				
-				tokenNode = parse(root, subCommand);
-				
-				i=endListIndex + startListIndex;
-				
+				i = endListIndex + startListIndex;
 			}
 			else{
 				tokenNode = factory.genTokenNode(parentNode, word); //will be global
 			}
+			
 			root.addChild(tokenNode);
 			
 			if(tokenNode.getToken().getType() == TokenType.COMMAND){
@@ -193,6 +158,42 @@ public class SlogoParser {
 			}
 		}
 		throw new CommandException("List never closes");
+	}
+	
+	private String getReformatCommandForUnlimited(ArrayList<String> newCommandList, String unlimitedParamCommand){
+		int check = 0;
+		String subCommand = "";
+		for(String s: newCommandList){
+			if(check == 0){
+				for(int de=0; de<newCommandList.size()-2; de++){
+					subCommand = subCommand + " " + unlimitedParamCommand;
+				}
+				check++;
+			}
+			else{
+				subCommand = subCommand + " " + s;
+			}
+		}
+		return subCommand;
+	}
+	
+	private String getReformatCommandForSpecified(ArrayList<String> newCommandList, String unlimitedParamCommand, int numArgs){
+		int check = 0;
+		String subCommand = "";
+		for(String s: newCommandList){
+			if(check == 0){
+				subCommand = subCommand + " " + unlimitedParamCommand;
+				check++;
+			}
+			if(!s.equals(unlimitedParamCommand)){
+				subCommand = subCommand + " " + s;
+				check++;
+			}
+			if(check > numArgs){
+				check = 0;
+			}
+		}
+		return subCommand;
 	}
 
 	private ArrayList<String> fillList(String command){
