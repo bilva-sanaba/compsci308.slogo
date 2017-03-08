@@ -32,11 +32,14 @@ public class TurtleView {
 	public void setHeading(double heading){
 		Turtle_Image.setRotate(heading);
 	}
-	public void setPenDown(){
-		penDown=true;
+	public void setPen(boolean x){
+		penDown=x;
 	}
 	public void setPenUp(){
 		penDown=false;
+	}
+	public boolean getPen(){
+		return penDown;
 	}
 	public void setVisibility(boolean v){
 		Turtle_Image.setVisible(v);
