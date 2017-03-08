@@ -120,7 +120,7 @@ public class Arguments implements Iterable<Token>{
 	 */
 	public double getDouble(int index) throws CommandException{
 		Constant c = getConstant(index);
-		if(c == null) return 0;
+		if(c == null) return 0; // returns 0 for non-constants
 		return c.getVal();
 	}
 	

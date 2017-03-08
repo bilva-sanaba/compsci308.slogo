@@ -14,7 +14,7 @@ import model.commands.AbstractCommand;
 public abstract class TurtleCommand extends AbstractCommand {
 	
 	public Scope getScopeRequest(){
-		return new Scope(false, false, true);
+		return new Scope(false, false, true, false);
 	}
 
 }

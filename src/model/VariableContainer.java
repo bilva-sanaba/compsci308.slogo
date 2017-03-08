@@ -1,6 +1,7 @@
 package model;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import model.commands.CommandException;
@@ -65,6 +66,18 @@ public class VariableContainer {
 	 */
 	public Set<String> getVariableNames(){
 		return variables.keySet();
+	}
+	
+	/**
+	 * Returns a string reference for all variable values
+	 */
+	public String toString(){
+		String v = "- - - - - - - - -\nVariables:\n";
+		for(Entry<String, Constant> e : variables.entrySet()){
+			v += String.format("%s: %f\n", e.getKey(), e.getValue().getVal());
+		}
+		v += "- - - - - - - - -\n";
+		return v;
 	}
 
 }

@@ -41,7 +41,7 @@ public class Constant implements Token {
 
 	@Override
 	public Scope getScopeRequest() {
-		return new Scope(false, false, false);
+		return new Scope(false, false, false, false);
 	}
 	
 	
