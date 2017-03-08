@@ -26,6 +26,7 @@ public abstract class TurtleViewManager {
 	public List<Node> getExtraButtons(){
 		return extraButtons;
 	}
+	
 	public List<Label> getStateLabels(){
 		double currentXPos=myTurtleView.getImage().getTranslateX();
 		double currentYPos=-myTurtleView.getImage().getTranslateY();

@@ -98,10 +98,13 @@ public static Label createLabel(String text) {
 private void addExtraButtons(TurtleViewManager tvm){
 	List<Node> extraButtons = new ArrayList<Node>();
 	extraButtons.addAll(tvm.getExtraButtons());
-	if (extraButtons.size()!=0){
+	if (extraButtons.size()==3){
 		inputPanel.setConstraints(extraButtons.get(0),0,5);
 		inputPanel.setConstraints(extraButtons.get(1),0,4);
 		inputPanel.setConstraints(extraButtons.get(2),0,6);
+	}
+	if (extraButtons.size()==1){
+		inputPanel.setConstraints(extraButtons.get(0),0,4);
 	}
 	 inputPanel.getChildren().addAll(extraButtons);
 }

@@ -4,15 +4,20 @@ import configuration.UnmodifiableTurtleState;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 public class TurtleRegularMover extends TurtleViewManager{
     public static final int DEFAULT_FPS = 10;
     public static final double MILLIS_PER_SECOND = 1000;
+	private double penSize = DEFAULT_PEN_SIZE;
+	private TextField penSizeButton;
+	private static final double DEFAULT_PEN_SIZE = 4;
     
 	public TurtleRegularMover(TurtleView t,GraphicsContext gc){
 		super(t,gc);
+		createPenSizeChooser();
 	}
 
 protected void moveLocation(UnmodifiableTurtleState uts,double screenWidth, double screenHeight){
@@ -21,6 +26,20 @@ protected void moveLocation(UnmodifiableTurtleState uts,double screenWidth, doub
 	myTurtleView.setX(newX);
 	myTurtleView.setY(newY);
 }	
+private void createPenSizeChooser(){
+	penSizeButton = new TextField();
+	penSizeButton.setPromptText("Enter Pen Size");
+	penSizeButton.setOnAction(e -> {
+    	try{
+    		penSize = Double.parseDouble(penSizeButton.getText());
+    		penSizeButton.setText("");
+    	}catch(IllegalArgumentException y){
+    		
+    	}
+    	catch(NullPointerException i){}
+    });
+	extraButtons.add(penSizeButton);	
+}
 
 protected void draw(UnmodifiableTurtleState uts,double screenWidth, double screenHeight){
 	myTurtleView.setPen(uts.isPenDown());
@@ -30,6 +49,7 @@ protected void draw(UnmodifiableTurtleState uts,double screenWidth, double scree
 		double penX=uts.getX()+screenWidth/2;
 		double penY=-uts.getY()+screenHeight/2;
 		graphics.setStroke(myTurtleView.getPenColor());
+		graphics.setLineWidth(penSize);
 		graphics.strokeLine(oldX, oldY, penX, penY);
 	}
 }
