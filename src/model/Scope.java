@@ -23,6 +23,7 @@ public class Scope {
 	private CommandFactory commands;
 	private VariableContainer variables;
 	private Trajectory trajectory;
+	private World world;
 
 	/**
 	 * This constructor is to send actual scope to commands
@@ -32,10 +33,11 @@ public class Scope {
 	 * @param request
 	 * @throws CommandException 
 	 */
-	public Scope(CommandFactory commands, VariableContainer variables, Trajectory trajectory, Scope request) throws CommandException{
+	public Scope(CommandFactory commands, VariableContainer variables, Trajectory trajectory, World world, Scope request) throws CommandException{
 		if(request.commands != null) this.commands = commands;
 		if(request.variables != null) this.variables = variables;
 		if(request.trajectory != null) this.trajectory = trajectory;	
+		if(request.world != null) this.world = world;
 	}
 	
 	/**
@@ -43,7 +45,7 @@ public class Scope {
 	 * @throws CommandException 
 	 */
 	public Scope(Scope old, Scope request) throws CommandException{
-		this(old.commands, old.variables, old.trajectory, request);
+		this(old.commands, old.variables, old.trajectory, old.world, request);
 	}
 	
 	/**
@@ -53,7 +55,7 @@ public class Scope {
 	 * @param needsVariables
 	 * @param needsTrajectory
 	 */
-	public Scope(boolean needsCommands, boolean needsVariables, boolean needsTrajectory){
+	public Scope(boolean needsCommands, boolean needsVariables, boolean needsTrajectory, boolean needsWorld){
 		try{
 			if(needsCommands) this.commands = new CommandFactory();
 		} 
@@ -62,6 +64,7 @@ public class Scope {
 		}
 		if(needsVariables) this.variables = new VariableContainer();
 		if(needsTrajectory) this.trajectory = new Trajectory();
+		if(needsWorld) this.world = new World();
 	}
 	
 	public CommandFactory getCommands() throws CommandException{
@@ -79,8 +82,13 @@ public class Scope {
 		return trajectory;
 	}
 	
+	public World getWorld() throws CommandException{
+		checkForAccess(world, "world");
+		return world;
+	}
+	
 	private void checkForAccess(Object accessor, String name) throws CommandException{
-		if(accessor == null) throw new CommandException(String.format("Access to %s denied", name));
+//		if(accessor == null) throw new CommandException(String.format("Access to %s denied", name));
 	}
 
 }

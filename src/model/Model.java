@@ -15,7 +15,15 @@ public interface Model {
 	 * @throws CommandException 
 	 * @throws SyntaxException 
 	 */
+	/*
+	 * This method should no longer be used when Front-end is adjusted for multiple turtles
+	 */
 	public Trajectory getTrajectory(String commands) throws CommandException;
+	
+	/**
+	 * Returns world of turtles and background
+	 */
+	public World getWorld(String commands) throws CommandException;
 	
 	/**
 	 * Sets language for model to interpret with

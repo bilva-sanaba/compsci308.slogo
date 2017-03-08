@@ -24,7 +24,7 @@ public class NullCommand implements Command {
 
 	@Override
 	public Scope getScopeRequest() {
-		return new Scope(false, false, false);
+		return new Scope(false, false, false, false);
 	}
 
 	@Override
