@@ -83,6 +83,10 @@ public abstract class AbstractCommand implements Command{
 		return false;
 	}
 	
+	public boolean isNullCommand(){
+		return false;
+	}
+	
 	/**
 	 * Describes command for error messages
 	 */

@@ -25,6 +25,7 @@ public class SlogoParser {
 	
 	private TokenNodeFactory factory;
 	private Map<String, String> startToEnd = new HashMap<String, String>();
+	
 	private final String SPACE = " ";
 	
 	public SlogoParser(CommandFactory commands){
@@ -57,12 +58,16 @@ public class SlogoParser {
 				if(word.equals("[")){
 					unlimited = false;
 					newRoot = new TListNode(root, new TList());
+					System.out.println("x ");
 				}
 				else{
 					unlimited = true;
 					newRoot = root;
 				}
-				tokenNode = parse(newRoot, command.substring(startIndex + 1, endIndex), unlimited);
+				System.out.println("startIndex +1 : "  + (startIndex + 1));
+				System.out.println("endIndex: " + endIndex);
+				System.out.println("parsing: " + command.substring(startIndex+1, endIndex));
+				tokenNode = parse(newRoot, command.substring(startIndex + SPACE.length(), endIndex), unlimited);
 				i = endListIndex + startListIndex;
 			}
 			else{
@@ -70,27 +75,33 @@ public class SlogoParser {
 			}
 			root.addChild(tokenNode);
 			
-			
-			if(root.getToken().getType() == TokenType.COMMAND && root.getChildren().size()==((Command)root.getToken()).getNumArgs()){
-				String commandString = commandList.get(0);
-				if(!unlimitedParam || !factory.getInfiniteArgsCommands().contains(commandString)){
-					root=parentNode;
-					parentNode=root.getParent();
-					if(unlimitedParam && i<commandList.size()-1){
-						tokenNode = factory.genTokenNode(parentNode, commandString, unlimitedParam);
-						root.addChild(tokenNode);
-					}
-				}
-			}		
-			
 			//MOVED DOWN
 			if(tokenNode.getToken().getType() == TokenType.COMMAND){
 				parentNode=root;
 				root=tokenNode;
 			}
 			
+			if(root.getToken().getType() == TokenType.COMMAND && root.getChildren().size()==((Command)root.getToken()).getNumArgs()){
+				String commandString = commandList.get(0);
+				boolean nullCommand = ((Command)root.getToken()).isNullCommand();
+				System.out.println("commandString: " + commandString);
+				System.out.println("root : " + ((Command)root.getToken()).getID());
+				System.out.println("parentNode : " + parentNode);
+				System.out.println("current:" + commandList.get(i));
+				if(!unlimitedParam || !factory.getInfiniteArgsCommands().contains(commandString)){
+					root=parentNode;
+					parentNode=root.getParent();
+					if(unlimitedParam && i<commandList.size()-1 && !nullCommand){
+						tokenNode = factory.genTokenNode(parentNode, commandString, unlimitedParam);
+						root.addChild(tokenNode);
+						parentNode=root; //ADD
+						root=tokenNode; //ADD
+					}
+				}
+			}		
 			
-			stringCursor+=commandList.get(i).length() + 1; //add 1 for the space character
+			System.out.println("word : " + word);
+			stringCursor+=commandList.get(i).length() + SPACE.length(); //add 1 for the space character
 		}
 		return head;
 	}
