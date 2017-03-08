@@ -35,7 +35,7 @@ public class SlogoModel implements Model {
 		Interpreter i = new Interpreter();
 		Scope scope = new Scope(globalCommands, globalVariables, turtleTrajectory, new Scope(true, true, true));
 		
-		TokenNode root = parser.parse(new TokenNode(null, new TList()), commands);
+		TokenNode root = parser.parse(new TokenNode(null, new TList()), commands, false);
 		
 		for(TokenNode cmd: root.getChildren()){
 			i.evaluateTree(cmd, scope);

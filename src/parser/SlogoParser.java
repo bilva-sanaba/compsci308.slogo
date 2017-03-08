@@ -10,13 +10,11 @@ import java.util.Stack;
 import model.Arguments;
 import model.Command;
 import model.Constant;
-import model.Group;
 import model.TList;
 import model.Token;
 import model.TokenType;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
-import parser.tokenNodes.GroupNode;
 import parser.tokenNodes.TListNode;
 import parser.tokenNodes.TokenNode;
 import parser.tokenNodes.TokenNodeFactory;
@@ -35,16 +33,12 @@ public class SlogoParser {
 		factory = new TokenNodeFactory(commands);
 	}
 	
-	public TokenNode parse(TokenNode tNode, String command) throws CommandException{
+	public TokenNode parse(TokenNode tNode, String command, boolean unlimitedParam) throws CommandException{
 		ArrayList<String> commandList = fillList(command);
 		TokenNode root = tNode;
 		TokenNode parentNode = new TListNode(null, new TList());
 		TokenNode head=root;
 		int stringCursor = 0;
-		boolean unlimitedParam = false;
-		if(root.getToken().getType() == TokenType.GROUP){
-			unlimitedParam = true;
-		}
 		
 		
 		for(int i=0; i<commandList.size(); i++){
@@ -61,23 +55,27 @@ public class SlogoParser {
 				
 				int endListIndex = getEndListIndex(subList, word);
 				
+				boolean unlimited;
+				
 				if(word.equals("[")){
 					
-					tokenNode = parse(new TListNode(root, new TList()), command.substring(startIndex + 1, endIndex));
+					unlimited = false;
 					
 				}
 				else{
 					
-					tokenNode = parse(new GroupNode(root, new Group()), command.substring(startIndex + 1, endIndex));
+					unlimited = true;
 					
 				}
+				tokenNode = parse(new TListNode(root, new TList()), command.substring(startIndex + 1, endIndex), unlimited);
 				
 				i = endListIndex + startListIndex;
 			}
 			else{
 				tokenNode = factory.genTokenNode(parentNode, word, unlimitedParam); //will be global
 			}
-			System.out.println(tokenNode.getToken().getType() + " , " + tokenNode.getChildren().size());
+			System.out.println(tokenNode.getToken().getType() + " , " );
+			System.out.println(tokenNode.getChildren() == null);
 			root.addChild(tokenNode);
 			
 			if(tokenNode.getToken().getType() == TokenType.COMMAND){
