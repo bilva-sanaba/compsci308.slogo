@@ -16,21 +16,20 @@ public abstract class TurtleViewManager {
 	protected GraphicsContext graphics;
 	protected List<Node> extraButtons;
     public static final int DEFAULT_FPS = 10;
-    protected double width;
     public static final double MILLIS_PER_SECOND = 1000;
     
-	public TurtleViewManager(TurtleView t,GraphicsContext gc, double w){
+	public TurtleViewManager(TurtleView t,GraphicsContext gc){
 		myTurtleView=t;
 		graphics = gc;
-		width = w;
 		extraButtons = new ArrayList<Node>();
 	}
 	public List<Node> getExtraButtons(){
 		return extraButtons;
 	}
+	
 	public List<Label> getStateLabels(){
 		double currentXPos=myTurtleView.getImage().getTranslateX();
-		double currentYPos=-myTurtleView.getImage().getTranslateY()+1;
+		double currentYPos=-myTurtleView.getImage().getTranslateY();
 		Label coordinateLabel=new Label("X:"+currentXPos+"  Y:"+currentYPos);
 		Label headingLabel=new Label(""+myTurtleView.getImage().getRotate()%360);
 		Label penUpLabel=new Label("" +getPenBool());
@@ -50,14 +49,14 @@ public abstract class TurtleViewManager {
 		for(UnmodifiableTurtleState uts:T){
 			draw(uts,screenWidth,screenHeight);
 			moveLocation(uts,screenWidth,screenHeight);
-			rotate(uts,width);
-			changeVisibility(uts,width);
+			rotate(uts);
+			changeVisibility(uts);
 		}
 	}
 	protected abstract void draw(UnmodifiableTurtleState uts,double screenWidth, double screenHeight);
 	protected abstract void moveLocation(UnmodifiableTurtleState uts,double screenWidth, double screenHeight);
-	protected abstract void rotate(UnmodifiableTurtleState uts,double width);
-	protected abstract void changeVisibility(UnmodifiableTurtleState uts, double width);
+	protected abstract void rotate(UnmodifiableTurtleState uts);
+	protected abstract void changeVisibility(UnmodifiableTurtleState uts);
 	
 	
 	public void setX(double xLoc){

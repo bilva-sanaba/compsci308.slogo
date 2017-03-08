@@ -4,8 +4,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+<<<<<<< HEAD
 import resources.*;
 import xml.Default;
+=======
+
+>>>>>>> 6e5716873aa2add41bb597176263ed6dd60eef11
 import ColorChoosers.BackgroundColorChooser;
 import ColorChoosers.PenColorChooser;
 import GUI_BackgroundColorChooser.BackgroundColorWriteBox;
@@ -43,10 +47,12 @@ public class InputPanel {
 	private String currentLanguage = "English";
 	private PenColorChooser pb;
 	private static final String HELP_WINDOW_TITLE="Syntax";
-	private static final String HELP_URL="/resources/help.html";
+	private static final String HELP_URL="help.html";
 	private static final int BUTTON_SPACING = 20;
+
 	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
 public InputPanel(TurtleViewManager tvm, List<Button> otherButtons,Shape background, double width, double height,Default myDefault){
+
 	returnPanel = initInputPanel(otherButtons);
 	returnPanel.setPrefSize(width, height/4);
 	addBackgroundButton(background);
@@ -101,19 +107,23 @@ public static Label createLabel(String text) {
 private void addExtraButtons(TurtleViewManager tvm){
 	List<Node> extraButtons = new ArrayList<Node>();
 	extraButtons.addAll(tvm.getExtraButtons());
-	if (extraButtons.size()!=0){
+	if (extraButtons.size()==3){
 		inputPanel.setConstraints(extraButtons.get(0),0,5);
 		inputPanel.setConstraints(extraButtons.get(1),0,4);
 		inputPanel.setConstraints(extraButtons.get(2),0,6);
+	}
+	if (extraButtons.size()==1){
+		inputPanel.setConstraints(extraButtons.get(0),0,4);
 	}
 	 inputPanel.getChildren().addAll(extraButtons);
 }
 
 private ChoiceBox<String> createLanguageBox() {
-	ChoiceBox<String> language = createChoiceBox(Languages, (observable, oldValue, newValue) -> {
-        setLanguage(newValue.toString());
+	List<String> Languages = (new LanguageFactory()).getLanguages();
+	ChoiceBox<String> languageBox = createChoiceBox(Languages, (observable, oldValue, newValue) -> {
+        setLanguage(Languages.get((newValue.intValue())));
         });
-	return language;
+	return languageBox;
 }
 private void setLanguage(String language){
 	currentLanguage=language;
