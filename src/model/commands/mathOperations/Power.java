@@ -7,7 +7,7 @@ import model.commands.CommandException;
 /**
  * Returns Power: (arg1)^(arg2)
  * 
- * @author DhruvKPatel
+ * @author DhruvKPatel, Jacob Weiss
  */
 public class Power extends Sum{
 	

@@ -11,7 +11,7 @@ public class Group implements Token {
 	
 	@Override
 	public TokenType getType() {
-		return TokenType.LIST;
+		return TokenType.GROUP;
 	}
 
 	@Override

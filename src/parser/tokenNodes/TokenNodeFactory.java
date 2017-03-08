@@ -33,7 +33,10 @@ public class TokenNodeFactory {
 	
 	public static final String SYNTAX = "Syntax";
 	private String language = "English";
-
+	
+	private String[] infiniteArgsCommands = {"Sum", "Difference" , "Product" , "Quotient" , "Remainder" , "Power"};
+	private final String UNLIMITED = "Unlimited";
+	
 	private ProgramParser parser = new ProgramParser();
 	
 	private static List<String> possibleCommands = new ArrayList<String>();
@@ -61,15 +64,23 @@ public class TokenNodeFactory {
 	}
 	
 
-	public TokenNode genTokenNode(TokenNode parentNode, String word) throws CommandException{
+	public TokenNode genTokenNode(TokenNode parentNode, String word, boolean unlimitedParam) throws CommandException{
 		parser.addPatterns(DEFAULT_RESOURCES_PACKAGE + SYNTAX);
 		createValueList();
 		TokenNode tokenNode = new TokenNode(parentNode, null);
 		String type = parser.getSymbol(word);
 		System.out.println(word + ", " + type);
+		System.out.println(unlimitedParam);
+		ArrayList<String> infiniteArgsCommandList = new ArrayList<String>(Arrays.asList(infiniteArgsCommands));
 			if(type.equals("Command")){//word is in resources
 				if(possibleCommands.contains(word)){
 					String wordID = findWordID(word);
+					
+					//check if unlimParam and wordID is sum, diff, etc.
+					if(unlimitedParam && infiniteArgsCommandList.contains(wordID)){
+						wordID = UNLIMITED + wordID;
+					}
+					
 					Command t = cFactory.getCommand(wordID);
 					tokenNode = new CommandNode(parentNode, t);
 				}

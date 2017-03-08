@@ -9,7 +9,7 @@ public enum TokenType {
 	VARIABLE("model.Variable"),
 	LIST("model.TList"),
 	COMMAND("model.Command"),
-	GROUP("model.Group");
+	GROUP("model.Group"),
 	CONSTANT("model.Constant");
 	
 	// COMMENT (not included because no functionality is needed)

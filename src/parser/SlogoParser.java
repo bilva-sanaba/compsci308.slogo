@@ -41,6 +41,10 @@ public class SlogoParser {
 		TokenNode parentNode = new TListNode(null, new TList());
 		TokenNode head=root;
 		int stringCursor = 0;
+		boolean unlimitedParam = false;
+		if(root.getToken().getType() == TokenType.GROUP){
+			unlimitedParam = true;
+		}
 		
 		
 		for(int i=0; i<commandList.size(); i++){
@@ -62,42 +66,18 @@ public class SlogoParser {
 					tokenNode = parse(new TListNode(root, new TList()), command.substring(startIndex + 1, endIndex));
 					
 				}
-				/*else{
+				else{
 					
 					tokenNode = parse(new GroupNode(root, new Group()), command.substring(startIndex + 1, endIndex));
-					
-				}*/
-				else{ //UNLIMITED PARAMETERS
-					
-					String unlimitedParamCommand = commandList.get(i+1);
-					
-					TokenNode unlimitedTokenNode = factory.genTokenNode(root, unlimitedParamCommand);
-					
-					int numArgs = ((Command) unlimitedTokenNode.getToken()).getNumArgs();
-					
-					String newCommand = command.substring(startIndex + 1, endIndex);
-					ArrayList<String> newCommandList = fillList(newCommand);
-					
-					String reformatCommand = "";
-					
-					//FOR INFINITE ARGS
-					//reformatCommand = getReformatCommandForUnlimited(newCommandList, unlimitedParamCommand);
-					//FOR INFINITE ARGS
-		
-					//FOR MULTIPLE ARGS 
-					//reformatCommand = getReformatCommandForSpecified(newCommandList, unlimitedParamCommand, numArgs);
-					//FOR MULTIPLE ARGS
-					
-					tokenNode = parse(root, reformatCommand);
 					
 				}
 				
 				i = endListIndex + startListIndex;
 			}
 			else{
-				tokenNode = factory.genTokenNode(parentNode, word); //will be global
+				tokenNode = factory.genTokenNode(parentNode, word, unlimitedParam); //will be global
 			}
-			
+			System.out.println(tokenNode.getToken().getType() + " , " + tokenNode.getChildren().size());
 			root.addChild(tokenNode);
 			
 			if(tokenNode.getToken().getType() == TokenType.COMMAND){
@@ -105,14 +85,13 @@ public class SlogoParser {
 				root=tokenNode;
 			}
 			
-			if(root.getToken().getType() == TokenType.COMMAND && root.getChildren().size()==((Command)root.getToken()).getNumArgs()){
+			if(!unlimitedParam && root.getToken().getType() == TokenType.COMMAND && root.getChildren().size()==((Command)root.getToken()).getNumArgs()){
 				root=parentNode;
 				parentNode=root.getParent();
 			}
 			
 			stringCursor+=commandList.get(i).length() + 1; //add 1 for the space character
 		}
-		
 		return head;
 	}
 	
@@ -129,6 +108,8 @@ public class SlogoParser {
 	private int getEndStringIndex(String command, String t) throws CommandException{
 		Stack<String> stack = new Stack<String>();
 		stack.push(t);
+		System.out.println(t);
+		System.out.println("String: " + command);
 		for(int i = 1; i < command.length(); i++){
 			if(command.substring(i, i+1).equals(t)){
 				stack.push(command.substring(i, i+1));
@@ -146,6 +127,8 @@ public class SlogoParser {
 	private int getEndListIndex(ArrayList<String> commandList, String t) throws CommandException{
 		Stack<String> stack = new Stack<String>();
 		stack.push(t);
+		System.out.println(t);
+		System.out.println("List: " + commandList);
 		for(int i = 1; i < commandList.size(); i++){
 			if(commandList.get(i).equals(t)){
 				stack.push(commandList.get(i));
