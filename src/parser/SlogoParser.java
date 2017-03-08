@@ -25,6 +25,7 @@ public class SlogoParser {
 	
 	private TokenNodeFactory factory;
 	private Map<String, String> startToEnd = new HashMap<String, String>();
+	private final String SPACE = " ";
 	
 	public SlogoParser(CommandFactory commands){
 		factory = new TokenNodeFactory(commands);
@@ -68,6 +69,8 @@ public class SlogoParser {
 				tokenNode = factory.genTokenNode(parentNode, word, unlimitedParam); //will be global
 			}
 			root.addChild(tokenNode);
+			
+			
 			if(root.getToken().getType() == TokenType.COMMAND && root.getChildren().size()==((Command)root.getToken()).getNumArgs()){
 				String commandString = commandList.get(0);
 				if(!unlimitedParam || !factory.getInfiniteArgsCommands().contains(commandString)){
@@ -78,12 +81,15 @@ public class SlogoParser {
 						root.addChild(tokenNode);
 					}
 				}
-			}			
+			}		
+			
 			//MOVED DOWN
 			if(tokenNode.getToken().getType() == TokenType.COMMAND){
 				parentNode=root;
 				root=tokenNode;
 			}
+			
+			
 			stringCursor+=commandList.get(i).length() + 1; //add 1 for the space character
 		}
 		return head;
@@ -135,7 +141,7 @@ public class SlogoParser {
 	
 	private ArrayList<String> fillList(String command){
 		command=command.trim();
-		return new ArrayList<String>(Arrays.asList(command.split(" ")));
+		return new ArrayList<String>(Arrays.asList(command.split(SPACE)));
 	}
 	
 	public void setLanguage(String language){
