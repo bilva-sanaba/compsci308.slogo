@@ -3,6 +3,8 @@ package GUI;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import GUI_TurtleMovers.TurtleAnimator;
@@ -16,12 +18,16 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.FileChooser.ExtensionFilter;
 import model.Model;
 import xml.Default;
 import xml.XML;
@@ -66,7 +72,7 @@ public class GUI {
 		background = new Rectangle(SCENE_WIDTH-lp.getPanel().getWidth()-rp.getPanel().getWidth(),SCENE_HEIGHT-bottomPanel.getBoundsInLocal().getHeight(),Color.WHITE);
 
 
-		background=new Rectangle(800,490,Color.valueOf(myDefault.getBackgroundColor()));
+		background=new Rectangle(750,480,Color.valueOf(myDefault.getBackgroundColor()));
 
 		//background=new Rectangle(800,480,Color.WHITE);
 
@@ -86,7 +92,7 @@ public class GUI {
 	}
 	private void initializeTurtle(){
 
-		tvm = new TurtleAnimator(new TurtleView(myDefault.getImageString()), gc);
+		tvm = new TurtleRegularMover(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
 
 		tvm.getImage().setOnMouseEntered(e->showStates(getStateLabels()));
 		tvm.getImage().setOnMouseExited(e->removeStates());
@@ -146,9 +152,37 @@ public class GUI {
 			textArea.clear();
 			textArea.setText("clear");
 			play.fire();
-		});     
+		});   
+		Button load= createButton("Load File",e-> handleLoad());
 		Button newW=newTab;
-		otherButtons = Arrays	.asList(play, clear,newW);
+		otherButtons = Arrays	.asList(play, clear,newW,load);
+	}
+	private void handleLoad(){
+		FileChooser fileChooser=new FileChooser();
+		fileChooser.setTitle("Select xml Defaul File");
+		fileChooser.getExtensionFilters().addAll(new ExtensionFilter(".xml files","*.xml"));
+		Stage ownerWindow = new Stage();
+		File file = fileChooser.showOpenDialog(ownerWindow);
+		try{
+			xml=new XML(file);
+			myDefault = xml.getDefaults();
+			updateDefaults();
+		}
+		catch(Exception e){
+			
+		}
+	}
+	private void updateDefaults(){
+		updateInputPanel();
+			
+		updateBackground();
+	}
+	private void updateBackground(){
+		background.setFill(Color.valueOf(myDefault.getBackgroundColor()));
+	}
+	
+	private void updateInputPanel(){
+		realInput.updateDefaults(myDefault);
 	}
 	private Button createButton(String label, EventHandler<ActionEvent> e) {
 		Button b = new Button();

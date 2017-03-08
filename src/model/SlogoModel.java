@@ -46,8 +46,7 @@ public class SlogoModel implements Model {
 		
 //		System.out.println(world); // Uncomment this to test functionality of model
 		Trajectory t =  world.getTurtle(0).getTrajectory().getMostRecentAdditions(); // this is temporary. 
-		System.out.println(t);
-		System.out.println(scope.getVariables());
+		System.out.println(world);
 		return t;
 	}
 

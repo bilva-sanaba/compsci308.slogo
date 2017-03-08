@@ -11,11 +11,12 @@ import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import xml.Default;
 
 public class PenColorPicker extends PenColorChooser{
-	public PenColorPicker(TurtleViewManager tvm){
+	public PenColorPicker(TurtleViewManager tvm,Default myDefault){
 		super(tvm);
-		colorPicker = new ColorPicker(Color.BLACK);
+		colorPicker = new ColorPicker(Color.valueOf(myDefault.getPenColor()));
 		displays.add(new Label("Pick Pen Color: "));
 		displays.add(colorPicker);
 		((ComboBoxBase<Color>) colorPicker).setOnAction(new EventHandler() {
