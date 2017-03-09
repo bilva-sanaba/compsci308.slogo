@@ -47,7 +47,6 @@ public class SlogoParser {
 	
 	public TokenNode parse(String command) throws CommandException{
 		command = cReformat.reformatCommand(command);
-		System.out.println("#move: " + parser.getSymbol("#move"));
 		return makeTree(new TokenNode(null, new TList()), command, false);
 	}
 	
@@ -96,14 +95,9 @@ public class SlogoParser {
 				Command rootCommand = (Command)root.getToken();
 				if(root.getChildren().size()==rootCommand.getNumArgs() && !rootCommand.hasUnlimitedArgs()){
 					String commandString = commandList.get(0);
-					System.out.println("CS : " + commandString);
-					System.out.println("NUMARGS : " + ((Command)root.getToken()).getNumArgs());
-					System.out.println(((Command)root.getToken()).hasUnlimitedArgs());
 					if(!(unlimitedParam && factory.getInfiniteArgsCommands().contains(commandString))){
 						root=parentNode;
-						boolean nullCommand = rootCommand.isNullCommand();
-						if(unlimitedParam && i<commandList.size()-1 && !nullCommand){
-							System.out.println("x ");
+						if(unlimitedParam && i<commandList.size()-1 && !rootCommand.isNullCommand()){
 							tokenNode = factory.genTokenNode(parentNode, commandString, unlimitedParam);
 							root.addChild(tokenNode);
 							parentNode=root; 
@@ -139,11 +133,8 @@ public class SlogoParser {
 			else if(parser.getSymbol(command.substring(i, i+1)).equals(end)){
 				stack.pop();
 			}
-			if(stack.isEmpty()){
-				if(i==1){
-					throw new CommandException("List is empty");
-				}
-				return i;
+			if(i==1 && stack.isEmpty()){
+				throw new CommandException("List is empty");
 			}
 		}
 		throw new CommandException("List never closes");
@@ -160,11 +151,8 @@ public class SlogoParser {
 			else if(parser.getSymbol(commandList.get(i)).equals(end)){
 				stack.pop();
 			}
-			if(stack.isEmpty()){
-				if(i==1){
-					throw new CommandException("List is empty");
-				}
-				return i;
+			if(i==1 && stack.isEmpty()){
+				throw new CommandException("List is empty");
 			}
 		}
 		throw new CommandException("List never closes");

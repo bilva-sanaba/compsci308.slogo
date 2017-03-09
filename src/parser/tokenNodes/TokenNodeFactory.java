@@ -75,7 +75,6 @@ public class TokenNodeFactory {
 					if(unlimitedParam && infiniteArgsCommandList.contains(wordID)){
 						wordID = UNLIMITED + wordID;
 					}
-					System.out.println("WID: " + wordID);
 					Command t = cFactory.getCommand(wordID);
 					tokenNode = new CommandNode(parentNode, t);
 				}
@@ -86,7 +85,7 @@ public class TokenNodeFactory {
 					tokenNode = new CommandNode(parentNode, new NullCommand(word));
 				}
 			}
-			else if(type.equals(VARIABLE)){ //include : check
+			else if(type.equals(VARIABLE)){
 				tokenNode = new VariableNode(parentNode, new Variable(word.substring(1)));
 			}
 			else if(type.equals(CONSTANT)){
