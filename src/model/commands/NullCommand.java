@@ -46,5 +46,9 @@ public class NullCommand implements Command {
 	public int getNumArgs() {
 		return 0;
 	}
+	
+	public boolean isNullCommand(){
+		return true;
+	}
 
 }

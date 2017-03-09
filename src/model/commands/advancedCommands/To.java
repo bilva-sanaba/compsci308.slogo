@@ -22,7 +22,7 @@ public class To extends AbstractCommand {
 	public double execute(Arguments args, Scope scope) throws CommandException {
 		commandName = args.getCommand(0).getID(); 	 // Command Name
 		TList parameters = args.getTList(1);		 // Variable Names
-		TList contents = args.getTList(2);			 // Full commands with variables
+		TList contents = args.getTList(2);	// Full commands with variables
 
 		TemplateCommand newCommand = new TemplateCommand(commandName);
 		newCommand.setOnEvaluation(contents);

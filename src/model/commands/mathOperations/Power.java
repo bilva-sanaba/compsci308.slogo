@@ -7,13 +7,17 @@ import model.commands.CommandException;
 /**
  * Returns Power: (arg1)^(arg2)
  * 
- * @author DhruvKPatel
+ * @author DhruvKPatel, Jacob Weiss
  */
 public class Power extends Sum{
 	
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {
-		return Math.pow(args.getDouble(0), args.getDouble(1));
+		double ans = args.getDouble(0);
+		for(int i = 1; i < args.numArgs(); i++){
+			ans = Math.pow(ans, args.getDouble(i));
+		}
+		return ans;
 	}
 	
 	@Override

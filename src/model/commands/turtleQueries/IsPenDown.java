@@ -20,7 +20,7 @@ public class IsPenDown extends NoParamCommand {
 	public double execute(Arguments args, Scope scope) throws CommandException {
 		Trajectory trajectory = scope.getTrajectory();
 		TurtleState current = trajectory.getLast().getModifiableCopy();
-		if(current.penDown()){
+		if(current.isPenDown()){
 			return 1;
 		}
 		else{

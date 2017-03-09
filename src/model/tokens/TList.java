@@ -77,7 +77,7 @@ public class TList implements Token {
 		Arguments returns = new Arguments();
 		
 		Interpreter i = new Interpreter();
-		
+
 		for(TokenNode child: this.getChildren()){
 			returns.add(i.evaluateTree(child, scope));
 		}

@@ -1,14 +1,20 @@
 package GUI;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import resources.*;
+import xml.Default;
+
 import ColorChoosers.BackgroundColorChooser;
 import ColorChoosers.PenColorChooser;
 import GUI_BackgroundColorChooser.BackgroundColorWriteBox;
 import GUI_PenColorButton.PenColorPicker;
+import GUI_PenColorButton.RandomPenColorButton;
 import GUI_RetrievableCode.CommandScrollPane;
 import GUI_TurtleMovers.TurtleViewManager;
 import javafx.beans.value.ChangeListener;
@@ -23,6 +29,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -32,6 +39,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -40,17 +48,24 @@ public class InputPanel {
 	private Pane returnPanel;
 	private GridPane inputPanel = new GridPane();
 	private String currentLanguage = "English";
+	private ChoiceBox<String> languages;
 	private PenColorChooser pb;
 	private static final String HELP_WINDOW_TITLE="Syntax";
-	private static final String HELP_URL="help.html";
+	private static final String HELP_URL="resources/help.html";
 	private static final int BUTTON_SPACING = 20;
-public InputPanel(TurtleViewManager tvm, List<Button> otherButtons,Shape background, double width, double height){
+	private TurtleViewManager tvm;
+	private TurtleComboBox tcb;
+	HBox topButtons;
+	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
+public InputPanel(TurtleViewManager TVM, List<Button> otherButtons,Shape background, double width, double height,Default myDefault){
+	tvm=TVM;
 	returnPanel = initInputPanel(otherButtons);
 	returnPanel.setPrefSize(width, height/4);
 	addBackgroundButton(background);
-	addOtherBoxes(tvm);
-	addPenButton(tvm);
-	addExtraButtons(tvm);
+	addOtherBoxes();
+	addPenButton(myDefault);
+	addExtraButtons();
+	setLanguage(myDefault.getLanguage());
 	}
 public Pane getBottomPanel(){
 	return returnPanel;
@@ -73,20 +88,24 @@ private void addBackgroundButton(Shape background){
 	inputPanel.setConstraints(topButtons,0,3);
     inputPanel.getChildren().add(topButtons);
 }
-private void addOtherBoxes(TurtleViewManager tvm){
- TurtleComboBox tcb = new TurtleComboBox(tvm);
- ComboBox<ImageView>turtleChoice=tcb.getTurtleChooser();
+private void addOtherBoxes(){
+  tcb = new TurtleComboBox(tvm);
+ ComboBox<String>turtleChoice=tcb.getTurtleChooser();
  Pane theBoxes = new HBox(BUTTON_SPACING);
  inputPanel.setConstraints(theBoxes,0,1);
  inputPanel.getChildren().add(theBoxes);
    theBoxes.getChildren().add(turtleChoice);
    theBoxes.getChildren().add(createLanguageBox());
 }
-private void addPenButton(TurtleViewManager tvm){
-	pb = new PenColorPicker(tvm);
-	HBox topButtons = new HBox(BUTTON_SPACING);
+private void addPenButton(Default myDefault){
+	pb = new PenColorPicker(tvm,myDefault);
+	placePenButton();
+	 
+}
+private  void placePenButton(){
+	 topButtons = new HBox(BUTTON_SPACING);
 	topButtons.getChildren().addAll(pb.getChooser());
-	 inputPanel.setConstraints(topButtons,0,2);
+	inputPanel.setConstraints(topButtons,0,2);
 	 inputPanel.getChildren().add(topButtons);
 }
 public static Label createLabel(String text) {
@@ -95,7 +114,7 @@ public static Label createLabel(String text) {
     return label;
     
 }
-private void addExtraButtons(TurtleViewManager tvm){
+private void addExtraButtons(){
 	List<Node> extraButtons = new ArrayList<Node>();
 	extraButtons.addAll(tvm.getExtraButtons());
 	if (extraButtons.size()==3){
@@ -114,10 +133,38 @@ private ChoiceBox<String> createLanguageBox() {
 	ChoiceBox<String> languageBox = createChoiceBox(Languages, (observable, oldValue, newValue) -> {
         setLanguage(Languages.get((newValue.intValue())));
         });
+	languages=languageBox;
 	return languageBox;
+}
+public void updateDefaults(Default d) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
+	setLanguage(d.getLanguage());
+	updatePenColor(d);
+	updateImage(d);
+}
+public String getCurrentTurtleImage(){
+	return tcb.getTurtleChooser().getSelectionModel().getSelectedItem();
+}
+public Paint getCurrentPenColor(){
+	return tvm.getTurtleView().getPenColor();
+}
+private Object makeClass(Class<?> clazz, TurtleViewManager t,Default d) throws InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
+	Constructor<?> ctor = clazz.getDeclaredConstructor(TurtleViewManager.class, Default.class);
+	Object o = ctor.newInstance(t, d);
+	return o;
+}
+private void updatePenColor(Default d) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
+	Class<?>clazz=Class.forName(pb.getClass().getName());
+	topButtons.getChildren().removeAll();
+	pb=(PenColorChooser)makeClass(clazz,tvm,d);
+	placePenButton();
+	tvm.getTurtleView().setPenColor(Color.valueOf(d.getPenColor()));
+}
+private void updateImage(Default d){
+	tcb.getTurtleChooser().getSelectionModel().select(d.getImageString());
 }
 private void setLanguage(String language){
 	currentLanguage=language;
+	languages.getSelectionModel().select(language);
 }
 public String getCurrentLanguage(){
 	return currentLanguage;

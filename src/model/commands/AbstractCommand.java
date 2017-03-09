@@ -23,10 +23,12 @@ public abstract class AbstractCommand implements Command{
 	 * @throws CommandException 
 	 */
 	public Token evaluate(Arguments args, Scope scope) throws CommandException{
-		try{
-			getDefaultArgs().checkForTypeDifferences(args);
-		} catch(CommandException e){
-			throw new CommandException(String.format("Incorrect arguments for Command: %s (%s)", getID(), e.getMessage()));
+		if(!hasUnlimitedArgs()){
+			try{
+				getDefaultArgs().checkForTypeDifferences(args);
+			} catch(CommandException e){
+				throw new CommandException(String.format("Incorrect arguments for Command: %s (%s)", getID(), e.getMessage()));
+			}
 		}
 		return new Constant(execute(args, scope));
 	}
@@ -77,6 +79,13 @@ public abstract class AbstractCommand implements Command{
 	 */
 	public abstract String getID();
 	
+	public boolean hasUnlimitedArgs(){
+		return false;
+	}
+	
+	public boolean isNullCommand(){
+		return false;
+	}
 	
 	/**
 	 * Describes command for error messages

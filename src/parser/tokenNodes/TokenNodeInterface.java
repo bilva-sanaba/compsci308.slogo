@@ -4,6 +4,11 @@ import java.util.List;
 
 import model.Token;
 
+/**
+ * 
+ * @author Jacob Weiss
+ *
+ */
 
 public interface TokenNodeInterface {
 	

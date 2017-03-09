@@ -20,6 +20,7 @@ public class World {
 	
 	public World(Trajectory turtleTrajectory){
 		turtles = new TurtleManager(turtleTrajectory);
+
 		backgroundColor = 0;
 	}
 	
@@ -30,7 +31,7 @@ public class World {
 	public TurtleManager getTurtles(){
 		return turtles;
 	}	
-	
+
 	/**
 	 * Makes all turtles with indicies contained int the list active.
 	 * 

@@ -35,5 +35,11 @@ public interface Command extends Token {
 	 * Gets String ID of command name
 	 */
 	public String getID();
+	
+	/**
+	 * Tests for null command
+	 */
+
+	public boolean isNullCommand();
 }
 

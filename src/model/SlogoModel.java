@@ -36,8 +36,8 @@ public class SlogoModel implements Model {
 	@Override
 	public Trajectory getTrajectory(String commands) throws CommandException{
 		Interpreter i = new Interpreter();
-		Scope scope = new Scope(globalCommands, globalVariables, turtleTrajectory, world, new Scope(true, true, true, true));
-		TokenNode root = parser.parse(new TokenNode(null, new TList()), commands);
+		Scope scope = new Scope(globalCommands, globalVariables, turtleTrajectory, world, new Scope(true, true, true, true));	
+		TokenNode root = parser.parse(commands);
 		
 		for(TokenNode cmd: root.getChildren()){
 			i.evaluateTree(cmd, scope);
@@ -69,9 +69,11 @@ public class SlogoModel implements Model {
 	 */
 	@Override
 	public World getWorld(String commands) throws CommandException {
+
 		Interpreter i = new Interpreter();
 		Scope scope = new Scope(globalCommands, globalVariables, turtleTrajectory, world, new Scope(true, true, true, true));
-		TokenNode root = parser.parse(new TokenNode(null, new TList()), commands);
+		TokenNode root = parser.parse(commands);
+
 		
 		for(TokenNode cmd: root.getChildren()){
 			i.evaluateTree(cmd, scope); // for multiple turtles

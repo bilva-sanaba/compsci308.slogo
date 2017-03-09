@@ -16,8 +16,13 @@ public class Product extends TwoParamOperation {
 	 */
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {
-		return args.getDouble(0) * args.getDouble(1);
+		double ans = 1;
+		for(int i = 0; i < args.numArgs(); i++){
+			ans = ans*args.getDouble(i);
+		}
+		return ans;
 	}
+
 
 	@Override
 	public String getID() {

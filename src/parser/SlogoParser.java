@@ -2,11 +2,11 @@ package parser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
+<<<<<<< HEAD
 import model.Arguments;
 import model.Token;
 import model.TokenType;
@@ -15,11 +15,17 @@ import model.commands.CommandFactory;
 import model.tokens.Command;
 import model.tokens.Constant;
 import model.tokens.TList;
+=======
+import model.Command;
+import model.TList;
+import model.TokenType;
+import model.commands.CommandException;
+import model.commands.CommandFactory;
+import parser.regularExpressions.ProgramParser;
+>>>>>>> 108ae0541a2dc6b86ed643379af39bcc6d20ad08
 import parser.tokenNodes.TListNode;
 import parser.tokenNodes.TokenNode;
 import parser.tokenNodes.TokenNodeFactory;
-
-
 
 /**
  * The parser for user SLogo commands. We read the command and convert it into a tree
@@ -30,40 +36,64 @@ import parser.tokenNodes.TokenNodeFactory;
 public class SlogoParser {
 	
 	private TokenNodeFactory factory;
+	private Map<String, String> startToEnd = new HashMap<String, String>();
+	
+	private ProgramParser parser = new ProgramParser();
+	private CommandReformatter cReformat = new CommandReformatter();
+	
+	private final String LISTSTART = "ListStart";
+	private final String LISTEND = "ListEnd";
+	private final String GROUPSTART = "GroupStart";
+	private final String GROUPEND = "GroupEnd";
+	
+	private final String SPACE = " ";
 	
 	public SlogoParser(CommandFactory commands){
 		factory = new TokenNodeFactory(commands);
+		cReformat = new CommandReformatter();
+		parser = cReformat.getParser();
+		startToEnd.put(LISTSTART, LISTEND);
+		startToEnd.put(GROUPSTART, GROUPEND);
 	}
 	
-	public TokenNode parse(TokenNode tNode, String command) throws CommandException{
+	public TokenNode parse(String command) throws CommandException{
+		command = cReformat.reformatCommand(command);
+		return makeTree(new TokenNode(null, new TList()), command, false);
+	}
+	
+	private TokenNode makeTree(TokenNode tNode, String command, boolean unlimitedParam) throws CommandException{
 		ArrayList<String> commandList = fillList(command);
 		TokenNode root = tNode;
 		TokenNode parentNode = new TListNode(null, new TList());
 		TokenNode head=root;
 		int stringCursor = 0;
-		
+
 		for(int i=0; i<commandList.size(); i++){
 			String word = commandList.get(i).trim();
+			String wordType = parser.getSymbol(word);
 			TokenNode tokenNode;
-
-			if(word.equals("[")){
-
-				int startIndex = command.substring(0, stringCursor).length() + command.substring(stringCursor).indexOf("["); //puts to end of list //EDIT
-				int startListIndex = i; // modify commandList
-				
-				int endIndex = startIndex + getEndStringIndex(command.substring(startIndex));
-				
+			if(wordType.equals(LISTSTART) || wordType.equals(GROUPSTART)){
+				int startIndex = command.substring(0, stringCursor).length() + command.substring(stringCursor).indexOf(word); //puts to end of list //EDIT
+				int startListIndex = i;
+				int endIndex = startIndex + getEndStringIndex(command.substring(startIndex), word);
 				ArrayList<String> subList = createSubList(startListIndex, commandList);
+				int endListIndex = getEndListIndex(subList, word);
+				boolean unlimited;
+				TokenNode newRoot;
 				
-				int endListIndex = getEndListIndex(subList);
-				
-				tokenNode = parse(new TListNode(root, new TList()), command.substring(startIndex + 1, endIndex));
-				
-				i=endListIndex + startListIndex;
-				
+				if(wordType.equals(LISTSTART)){
+					unlimited = false;
+					newRoot = new TListNode(root, new TList());
+				}
+				else{
+					unlimited = true;
+					newRoot = root;
+				}
+				tokenNode = makeTree(newRoot, command.substring(startIndex + SPACE.length(), endIndex), unlimited);
+				i = endListIndex + startListIndex;
 			}
 			else{
-				tokenNode = factory.genTokenNode(parentNode, word); //will be global
+				tokenNode = factory.genTokenNode(parentNode, word, unlimitedParam); //will be global
 			}
 			root.addChild(tokenNode);
 			
@@ -73,13 +103,21 @@ public class SlogoParser {
 			}
 			
 			if(root.getToken().getType() == TokenType.COMMAND && root.getChildren().size()==((Command)root.getToken()).getNumArgs()){
-				root=parentNode;
-				parentNode=root.getParent();
-			}
+				String commandString = commandList.get(0);
+				boolean nullCommand = ((Command)root.getToken()).isNullCommand();
+				if(!(unlimitedParam && factory.getInfiniteArgsCommands().contains(commandString))){
+					root=parentNode;
+					if(unlimitedParam && i<commandList.size()-1 && !nullCommand){
+						tokenNode = factory.genTokenNode(parentNode, commandString, unlimitedParam);
+						root.addChild(tokenNode);
+						parentNode=root; 
+						root=tokenNode; 
+					}
+				}
+			}		
 			
-			stringCursor+=commandList.get(i).length() + 1; //add 1 for the space character
+			stringCursor+=commandList.get(i).length() + SPACE.length(); //add 1 for the space character
 		}
-		
 		return head;
 	}
 	
@@ -93,47 +131,65 @@ public class SlogoParser {
 		return ans;
 	}
 
-	private int getEndStringIndex(String command) throws CommandException{
+	private int getEndStringIndex(String command, String t) throws CommandException{
 		Stack<String> stack = new Stack<String>();
-		stack.push("[");
+		stack.push(t);
+		String end = startToEnd.get(parser.getSymbol(t));
 		for(int i = 1; i < command.length(); i++){
-			if(command.substring(i, i+1).equals("[")){
+			if(command.substring(i, i+1).equals(t)){
 				stack.push(command.substring(i, i+1));
 			}
-			else if(command.substring(i, i+1).equals("]")){
+			else if(parser.getSymbol(command.substring(i, i+1)).equals(end)){
 				stack.pop();
 			}
 			if(stack.isEmpty()){
+				if(i==1){
+					throw new CommandException("List is empty");
+				}
 				return i;
 			}
 		}
 		throw new CommandException("List never closes");
 	}
 	
-	private int getEndListIndex(ArrayList<String> commandList) throws CommandException{
+	private int getEndListIndex(ArrayList<String> commandList, String t) throws CommandException{
 		Stack<String> stack = new Stack<String>();
-		stack.push("[");
+		stack.push(t);
+		String end = startToEnd.get(parser.getSymbol(t));
 		for(int i = 1; i < commandList.size(); i++){
-			if(commandList.get(i).equals("[")){
+			if(commandList.get(i).equals(t)){
 				stack.push(commandList.get(i));
 			}
-			else if(commandList.get(i).equals("]")){
+			else if(parser.getSymbol(commandList.get(i)).equals(end)){
 				stack.pop();
 			}
 			if(stack.isEmpty()){
+				if(i==1){
+					throw new CommandException("List is empty");
+				}
 				return i;
 			}
 		}
 		throw new CommandException("List never closes");
 	}
-
+	
 	private ArrayList<String> fillList(String command){
 		command=command.trim();
-		return new ArrayList<String>(Arrays.asList(command.split(" ")));
+		ArrayList<String> ansList = new ArrayList<String>(Arrays.asList(command.split(SPACE)));
+		return removeEmptyElements(ansList);
+	}
+	
+	private ArrayList<String> removeEmptyElements(ArrayList<String> ansList){
+		ArrayList<String> result = new ArrayList<String>();
+		for(String d : ansList){
+			if(!d.isEmpty()){
+				result.add(d);
+			}
+		}
+		return result;
 	}
 	
 	public void setLanguage(String language){
 		factory.setLanguage(language);
 	}
-	
 }

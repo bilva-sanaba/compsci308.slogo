@@ -6,7 +6,7 @@ import model.commands.CommandException;
 
 /**
  * Sums two Constants together
- * @author DhruvKPatel
+ * @author DhruvKPatel, Jacob Weiss
  */
 public class Sum extends TwoParamOperation {
 
@@ -16,7 +16,11 @@ public class Sum extends TwoParamOperation {
 	 */
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {
-		return args.getDouble(0) + args.getDouble(1);
+		double ans= 0;
+		for(int i = 0; i < args.numArgs(); i++){
+			ans+=args.getDouble(i);
+		}
+		return ans;
 	}
 
 	@Override

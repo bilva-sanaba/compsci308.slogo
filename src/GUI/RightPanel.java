@@ -1,5 +1,6 @@
 package GUI;
 
+import GUI_Objects.ButtonMaker;
 import GUI_RetrievableCode.CommandScrollPane;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -18,7 +19,6 @@ public class RightPanel {
 	private Button play;
 	private double width;
 	private double height;
-	private Label label;
 	private TextArea myTextArea;
 	
 	
@@ -41,9 +41,7 @@ public class RightPanel {
 	public CommandScrollPane getScrollPane(){
 		return commandScrollPane;
 	}
-	private void createLabel(){
-		label=GUI.createLabel("test");
-	}
+
 	private void createScrollPane(){
 		commandScrollPane=new CommandScrollPane(myTextArea,play);
 		commandScrollPane.getScrollPane().setPrefSize(width/4,height*.71);
