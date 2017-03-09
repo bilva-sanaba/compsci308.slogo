@@ -28,7 +28,10 @@ public class VariableContainer {
 	 * @param original
 	 */
 	public VariableContainer(VariableContainer original){
-		variables = new HashMap<>(original.variables);
+		variables = new HashMap<>();
+		for(Entry<String, Constant> e : original.variables.entrySet()){
+			variables.put(e.getKey(), new Constant(e.getValue().getVal()));
+		}
 	}
 	
 	/**

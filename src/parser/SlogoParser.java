@@ -132,9 +132,9 @@ public class SlogoParser {
 				stack.pop();
 			}
 			if(stack.isEmpty()){
-				if(i==1){
-					throw new CommandException("List is empty");
-				}
+//				if(i==1){
+//					throw new CommandException("List is empty");
+//				}
 				return i;
 			}
 		}
@@ -153,9 +153,9 @@ public class SlogoParser {
 				stack.pop();
 			}
 			if(stack.isEmpty()){
-				if(i==1){
-					throw new CommandException("List is empty");
-				}
+//				if(i==1){
+//					throw new CommandException("List is empty");
+//				}
 				return i;
 			}
 		}
