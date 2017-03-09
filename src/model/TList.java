@@ -47,7 +47,7 @@ public class TList implements Token {
 		Arguments returns = new Arguments();
 		
 		Interpreter i = new Interpreter(scope.getWorld());
-		
+	
 		for(TokenNode child: this.getChildren()){
 			returns = i.evaluateForAllTurtles(scope.getWorld().getActiveTurtles(), child, scope);
 		}

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Stack;
 
 import model.Command;
@@ -28,36 +27,36 @@ public class SlogoParser {
 	private TokenNodeFactory factory;
 	private Map<String, String> startToEnd = new HashMap<String, String>();
 	
-	
-	private final String SYNTAX = "Syntax";
-	private final String DEFAULT_RESOURCES_PACKAGE = "resources.languages/";
-	
 	private ProgramParser parser = new ProgramParser();
-	private ResourceBundle syntaxResourceBundle;
+	private CommandReformatter cReformat = new CommandReformatter();
 	
 	private final String LISTSTART = "ListStart";
 	private final String LISTEND = "ListEnd";
 	private final String GROUPSTART = "GroupStart";
 	private final String GROUPEND = "GroupEnd";
 	
-	
 	private final String SPACE = " ";
 	
 	public SlogoParser(CommandFactory commands){
 		factory = new TokenNodeFactory(commands);
-		parser.addPatterns(DEFAULT_RESOURCES_PACKAGE + SYNTAX);
-		syntaxResourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCES_PACKAGE + SYNTAX);
+		cReformat = new CommandReformatter();
+		parser = cReformat.getParser();
 		startToEnd.put(LISTSTART, LISTEND);
 		startToEnd.put(GROUPSTART, GROUPEND);
 	}
 	
-	public TokenNode parse(TokenNode tNode, String command, boolean unlimitedParam) throws CommandException{
+	public TokenNode parse(String command) throws CommandException{
+		command = cReformat.reformatCommand(command);
+		return makeTree(new TokenNode(null, new TList()), command, false);
+	}
+	
+	private TokenNode makeTree(TokenNode tNode, String command, boolean unlimitedParam) throws CommandException{
 		ArrayList<String> commandList = fillList(command);
 		TokenNode root = tNode;
 		TokenNode parentNode = new TListNode(null, new TList());
 		TokenNode head=root;
 		int stringCursor = 0;
-		
+
 		for(int i=0; i<commandList.size(); i++){
 			String word = commandList.get(i).trim();
 			String wordType = parser.getSymbol(word);
@@ -74,16 +73,12 @@ public class SlogoParser {
 				if(wordType.equals(LISTSTART)){
 					unlimited = false;
 					newRoot = new TListNode(root, new TList());
-					System.out.println("x ");
 				}
 				else{
 					unlimited = true;
 					newRoot = root;
 				}
-				/*System.out.println("startIndex +1 : "  + (startIndex + 1));
-				System.out.println("endIndex: " + endIndex);
-				System.out.println("parsing: " + command.substring(startIndex+1, endIndex));*/
-				tokenNode = parse(newRoot, command.substring(startIndex + SPACE.length(), endIndex), unlimited);
+				tokenNode = makeTree(newRoot, command.substring(startIndex + SPACE.length(), endIndex), unlimited);
 				i = endListIndex + startListIndex;
 			}
 			else{
@@ -91,7 +86,6 @@ public class SlogoParser {
 			}
 			root.addChild(tokenNode);
 			
-			//MOVED DOWN
 			if(tokenNode.getToken().getType() == TokenType.COMMAND){
 				parentNode=root;
 				root=tokenNode;
@@ -100,25 +94,17 @@ public class SlogoParser {
 			if(root.getToken().getType() == TokenType.COMMAND && root.getChildren().size()==((Command)root.getToken()).getNumArgs()){
 				String commandString = commandList.get(0);
 				boolean nullCommand = ((Command)root.getToken()).isNullCommand();
-				/*System.out.println("commandString: " + commandString);
-				System.out.println("root : " + ((Command)root.getToken()).getID());
-				if(root.getParent().getToken().getType() != TokenType.LIST){
-				System.out.println("parentNode : " + ((Command)root.getParent().getToken()).getID());}
-				
-				System.out.println("current:" + commandList.get(i));*/
-				if(!unlimitedParam || !factory.getInfiniteArgsCommands().contains(commandString)){
+				if(!(unlimitedParam && factory.getInfiniteArgsCommands().contains(commandString))){
 					root=parentNode;
-					//parentNode=root.getParent(); //KEEP OUT
 					if(unlimitedParam && i<commandList.size()-1 && !nullCommand){
 						tokenNode = factory.genTokenNode(parentNode, commandString, unlimitedParam);
 						root.addChild(tokenNode);
-						parentNode=root; //ADD
-						root=tokenNode; //ADD
+						parentNode=root; 
+						root=tokenNode; 
 					}
 				}
 			}		
 			
-			System.out.println("word : " + word);
 			stringCursor+=commandList.get(i).length() + SPACE.length(); //add 1 for the space character
 		}
 		return head;
@@ -146,6 +132,9 @@ public class SlogoParser {
 				stack.pop();
 			}
 			if(stack.isEmpty()){
+				if(i==1){
+					throw new CommandException("List is empty");
+				}
 				return i;
 			}
 		}
@@ -164,6 +153,9 @@ public class SlogoParser {
 				stack.pop();
 			}
 			if(stack.isEmpty()){
+				if(i==1){
+					throw new CommandException("List is empty");
+				}
 				return i;
 			}
 		}
@@ -172,7 +164,18 @@ public class SlogoParser {
 	
 	private ArrayList<String> fillList(String command){
 		command=command.trim();
-		return new ArrayList<String>(Arrays.asList(command.split(SPACE)));
+		ArrayList<String> ansList = new ArrayList<String>(Arrays.asList(command.split(SPACE)));
+		return removeEmptyElements(ansList);
+	}
+	
+	private ArrayList<String> removeEmptyElements(ArrayList<String> ansList){
+		ArrayList<String> result = new ArrayList<String>();
+		for(String d : ansList){
+			if(!d.isEmpty()){
+				result.add(d);
+			}
+		}
+		return result;
 	}
 	
 	public void setLanguage(String language){

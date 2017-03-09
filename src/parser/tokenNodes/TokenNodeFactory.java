@@ -7,12 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.regex.Pattern;
 
 import model.Command;
 import model.Constant;
-import model.TList;
-import model.Token;
+
 import model.Variable;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
@@ -25,11 +23,9 @@ import parser.regularExpressions.ProgramParser;
  */
 public class TokenNodeFactory {
 	
-
 	private static ResourceBundle languageResourceBundle;
 	
 	public static final String DEFAULT_RESOURCES_PACKAGE = "resources.languages/";
-	
 	public static final String SYNTAX = "Syntax";
 	private String language = "English";
 	
@@ -52,7 +48,6 @@ public class TokenNodeFactory {
 	}
 	
 	private void createValueList(){
-		//may need try and catch
 		languageResourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCES_PACKAGE + language);
 		Enumeration<String> resourceKeys = languageResourceBundle.getKeys();
 		while(resourceKeys.hasMoreElements()){
@@ -66,7 +61,6 @@ public class TokenNodeFactory {
 		}
 	}
 	
-
 	public TokenNode genTokenNode(TokenNode parentNode, String word, boolean unlimitedParam) throws CommandException{
 		parser.addPatterns(DEFAULT_RESOURCES_PACKAGE + SYNTAX);
 		createValueList();
@@ -77,12 +71,10 @@ public class TokenNodeFactory {
 			if(type.equals(COMMAND)){//word is in resources
 				if(possibleCommands.contains(word)){
 					String wordID = findWordID(word);
-					
 					//check if unlimParam and wordID is sum, diff, etc.
 					if(unlimitedParam && infiniteArgsCommandList.contains(wordID)){
 						wordID = UNLIMITED + wordID;
 					}
-					
 					Command t = cFactory.getCommand(wordID);
 					tokenNode = new CommandNode(parentNode, t);
 				}
@@ -99,10 +91,12 @@ public class TokenNodeFactory {
 			else if(type.equals(CONSTANT)){
 				tokenNode = new ConstantNode(parentNode, new Constant(Double.parseDouble(word)));
 			}
+			else{
+				throw new CommandException(String.format("Improper syntax: %s is not valid (may need to fix spacing)", word));
+			}
 			return tokenNode;
-		
 	}
-	
+
 	private String findWordID(String word){
 		for(String key: keyMap.keySet()){
 			if(keyMap.get(key).contains(word)){
