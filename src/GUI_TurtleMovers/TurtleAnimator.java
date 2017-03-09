@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import GUI.GUI;
-
+import GUI_Objects.ButtonMaker;
 import configuration.Trajectory;
 import configuration.UnmodifiableTurtleState;
 import javafx.animation.FadeTransition;
@@ -31,6 +31,7 @@ import javafx.util.Duration;
 public class TurtleAnimator extends TurtleViewManager{
 	private static final int DEFAULT_SPEED = 4000;
 	private int speed=DEFAULT_SPEED;
+	private ButtonMaker buttonMaker = new ButtonMaker();
 	private Slider slider;
 	private Label speedLabel;
 	private static final double DEFAULT_PEN_SIZE = 4;
@@ -41,11 +42,13 @@ public class TurtleAnimator extends TurtleViewManager{
 	private double currentRotate=0;
 	private double currentOpacity=1.0;
 	private boolean skipFirst = false;
+	private SequentialTransition xy = new SequentialTransition();
 	public TurtleAnimator(TurtleView t, GraphicsContext gc) {
 		super(t, gc);
 		createSpeedSlider();
 		createSpeedChooser();
 		createPenSizeChooser();
+		xy.play();
 	}
 	private static class Location {
 		double x;
@@ -67,7 +70,7 @@ public class TurtleAnimator extends TurtleViewManager{
 		
 	}
 	private void createSpeedSlider() {
-		speedLabel = GUI.createLabel("Animation Speed : " + Integer.toString(DEFAULT_SPEED) + " milliseconds");
+		speedLabel = buttonMaker.createLabel("Animation Speed : " + Integer.toString(DEFAULT_SPEED) + " milliseconds");
 		slider = new Slider(1, 8000, 4000);
 		slider.setMajorTickUnit(1000);
 		slider.setShowTickMarks(true);
@@ -76,8 +79,6 @@ public class TurtleAnimator extends TurtleViewManager{
 		extraButtons.add(slider);
 	}
 	private void createSpeedChooser() {
-
-
 		slider.valueProperty().addListener((observable, oldValue, newValue) -> {
 			slider.setValue(newValue.intValue());
 			speedLabel.setText(String.format("Animation Speed : " + Integer.toString(newValue.intValue()) + " milliseconds"));
@@ -108,7 +109,10 @@ public class TurtleAnimator extends TurtleViewManager{
 			}
 			skipFirst=true;
 		}
-		x.play();
+		x.setOnFinished(e->{xy.getChildren().remove(x); xy.play();});
+		xy.getChildren().add(x);
+		System.out.println(x);
+		xy.play();
 	}
 	@Override
 	protected void draw(UnmodifiableTurtleState uts, double screenWidth, double screenHeight) {
