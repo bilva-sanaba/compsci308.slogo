@@ -131,12 +131,6 @@ public class SlogoParser {
 			else if(parser.getSymbol(command.substring(i, i+1)).equals(end)){
 				stack.pop();
 			}
-			if(stack.isEmpty()){
-				if(i==1){
-					throw new CommandException("List is empty");
-				}
-				return i;
-			}
 		}
 		throw new CommandException("List never closes");
 	}
@@ -151,12 +145,6 @@ public class SlogoParser {
 			}
 			else if(parser.getSymbol(commandList.get(i)).equals(end)){
 				stack.pop();
-			}
-			if(stack.isEmpty()){
-				if(i==1){
-					throw new CommandException("List is empty");
-				}
-				return i;
 			}
 		}
 		throw new CommandException("List never closes");

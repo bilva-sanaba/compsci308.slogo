@@ -4,7 +4,9 @@ package GUI;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
@@ -123,7 +125,7 @@ public class GUI {
 		rightScreen.getChildren().add(rp.getPanel());
 	}
 	private void initializeTurtle(){
-		tvm = new TurtleAnimator(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
+		tvm = new TurtleRegularMover(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
 		tvm.getImage().setOnMouseEntered(e->showStates(getStateLabels()));
 		tvm.getImage().setOnMouseExited(e->removeStates());
 	}
@@ -188,16 +190,44 @@ public class GUI {
 			gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
 			
 		});   
-		Button load= buttonMaker.createButton("Load Preferences",e-> handleLoad());
+		Button loadPref= buttonMaker.createButton("Load Preferences",e-> handleLoadPref());
 		Button save=buttonMaker.createButton("Save Preferences",e->handleSave());
+		Button loadCommand=buttonMaker.createButton("Load Command", e->handleLoadCommand());
 		Button newW=newTab;
-		otherButtons = Arrays	.asList(play, clear,newW,load,save);
+		otherButtons = Arrays	.asList(play, clear,newW,loadPref,save,loadCommand);
 	}
 	private void handleSave(){	
 		XMLWriter xmlWriter=new XMLWriter(myDefault);
 		xmlWriter.getXML(realInput.getCurrentTurtleImage(), background.getFill(), realInput.getCurrentPenColor(), realInput.getCurrentLanguage());
 	}
-	private void handleLoad() {
+	
+	private void handleLoadCommand(){
+		FileChooser fileChooser=new FileChooser();
+		fileChooser.setTitle("Select Command File");
+		fileChooser.getExtensionFilters().addAll(new ExtensionFilter(".logo files","*.logo"));
+		fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+		Stage ownerWindow = new Stage();
+		File file = fileChooser.showOpenDialog(ownerWindow);
+		try{
+			FileReader f=new FileReader(file);
+			BufferedReader buf = new BufferedReader(f); 
+			String line = buf.readLine(); 
+			StringBuilder sb = new StringBuilder();
+			while(line != null){ 
+				sb.append(line).append("\n"); 
+				line = buf.readLine(); 
+				}
+			String fileAsString = sb.toString();
+			textArea.setText(fileAsString);
+			
+			
+		}
+		catch(Exception e){
+			SlogoAlert alert=new SlogoAlert("Not a valid file",e.getMessage());
+			alert.showAlert();
+		}
+	}
+	private void handleLoadPref() {
 		FileChooser fileChooser=new FileChooser();
 		fileChooser.setTitle("Select xml Default File");
 		fileChooser.getExtensionFilters().addAll(new ExtensionFilter(".xml files","*.xml"));

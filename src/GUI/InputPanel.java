@@ -56,7 +56,6 @@ public class InputPanel {
 	private TurtleViewManager tvm;
 	private TurtleComboBox tcb;
 	HBox topButtons;
-	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
 public InputPanel(TurtleViewManager TVM, List<Button> otherButtons,Shape background, double width, double height,Default myDefault){
 	tvm=TVM;
 	returnPanel = initInputPanel(otherButtons);
