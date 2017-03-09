@@ -2,6 +2,7 @@ import GUI.GUI;
 import GUI.GUI_Configuration;
 import configuration.TurtleState;
 import configuration.UnmodifiableTurtleState;
+import error.SlogoAlert;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -17,6 +18,7 @@ public class Controller {
 	public Controller(Stage stage) throws CommandException{
 		counter=1;
 		GUI gui=initializeGUI();
+		
 		myGUIBuilder = new GUI_Configuration(gui,stage);
 		
 		
@@ -42,11 +44,8 @@ public class Controller {
 		try {
 			gui.handleRunButton(model.getTrajectory(text));
 		} catch (CommandException|NumberFormatException e){
-			alert= new Alert(AlertType.ERROR);
-			alert.setTitle("Learn to Code: https://www.codeschool.com/");
-			alert.setContentText(e.getMessage()); 
-			alert.showAndWait();
-			e.printStackTrace();
+			SlogoAlert alert=new SlogoAlert("Learn to Code: https://www.codeschool.com/",e.getMessage());
+			alert.showAlert();
 		}
 	
 	}
@@ -58,10 +57,8 @@ public class Controller {
 		
 		}
 		catch(CommandException e1){
-			alert= new Alert(AlertType.ERROR);
-			alert.setTitle("Unable to make new Workspace");
-			alert.setContentText(e1.getMessage()); 
-			alert.showAndWait();
+			SlogoAlert alert=new SlogoAlert("Unable to make new Workspace",e1.getMessage());
+			alert.showAlert();
 		
 		}
 	}

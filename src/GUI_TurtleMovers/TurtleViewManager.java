@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 
 public abstract class TurtleViewManager {
 	protected TurtleView myTurtleView;
+	protected boolean active;
 	protected GraphicsContext graphics;
 	protected List<Node> extraButtons;
     public static final int DEFAULT_FPS = 10;
@@ -22,11 +23,17 @@ public abstract class TurtleViewManager {
 		myTurtleView=t;
 		graphics = gc;
 		extraButtons = new ArrayList<Node>();
+		activeClick();
+	}
+	public boolean isActive(){
+		return active;
 	}
 	public List<Node> getExtraButtons(){
 		return extraButtons;
 	}
-	
+	private void activeClick(){
+		myTurtleView.getImage().setOnMouseClicked(e -> active=!active);
+	}
 	public List<Label> getStateLabels(){
 		double currentXPos=myTurtleView.getImage().getTranslateX();
 		double currentYPos=-myTurtleView.getImage().getTranslateY();
