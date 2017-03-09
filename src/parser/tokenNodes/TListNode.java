@@ -1,7 +1,7 @@
 package parser.tokenNodes;
 
-import model.TList;
 import model.Token;
+import model.tokens.TList;
 
 public class TListNode extends TokenNode{
 

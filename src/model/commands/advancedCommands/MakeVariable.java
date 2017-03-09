@@ -1,12 +1,12 @@
 package model.commands.advancedCommands;
 
 import model.Arguments;
-import model.Constant;
 import model.Scope;
-import model.Variable;
-import model.VariableContainer;
 import model.commands.AbstractCommand;
 import model.commands.CommandException;
+import model.tokens.Constant;
+import model.tokens.Variable;
+import model.tokens.VariableContainer;
 
 /**
  * Sets a variable to a constant value

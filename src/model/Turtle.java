@@ -22,15 +22,6 @@ public class Turtle {
 		this.trajectory = trajectory;
 		this.isActive = isActive;
 	}
-	
-	/**
-	 * Constructs a new turtle with empty trajectory given ID, defaults to active
-	 * @param id
-	 */
-	public Turtle(){
-		this.trajectory = new Trajectory();
-		this.isActive = true;
-	}
 
 	/**
 	 * Returns turtle's Trajectory
@@ -47,7 +38,7 @@ public class Turtle {
 //	public void setTrajectory(Trajectory trajectory){
 //		this.trajectory = trajectory;
 //	}
-//	
+	
 	/**
 	 * Returns whether turtle is active
 	 * @return

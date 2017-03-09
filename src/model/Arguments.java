@@ -2,10 +2,15 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import model.commands.CommandException;
+import model.tokens.Command;
+import model.tokens.Constant;
+import model.tokens.TList;
+import model.tokens.Variable;
 
 /**
  * This class is used to hold arguments (other commands) to pass to commands
@@ -20,13 +25,23 @@ public class Arguments implements Iterable<Token>{
 	private List<Token> arguments;
 	
 	/**
-	 * Constructs a new argument list
+	 * Constructs a new argument list from array
 	 * 
 	 * The command is also stored, so that ID
 	 * can be retrieved on invalid parameter error.
 	 */
 	public Arguments(Token[] args){
 		arguments = new ArrayList<Token>(Arrays.asList(args));
+	}
+	
+	/**
+	 * Constructs a new argument list from collection
+	 * 
+	 * The command is also stored, so that ID
+	 * can be retrieved on invalid parameter error.
+	 */
+	public Arguments(Collection<Token> args){
+		arguments = new ArrayList<Token>(args);
 	}
 	
 	public Arguments(){
@@ -214,7 +229,7 @@ public class Arguments implements Iterable<Token>{
 	 * for debugging
 	 */
 	public String toString(){
-		String s = "-----------\nArguments: ";
+		String s = "-----------\nArguments:\n";
 		for(Token t: this){
 			s += t.toString() + "\n";
 		}

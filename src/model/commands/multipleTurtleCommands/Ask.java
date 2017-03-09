@@ -1,13 +1,13 @@
 package model.commands.multipleTurtleCommands;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import model.Arguments;
 import model.Scope;
-import model.TList;
-import model.Token;
 import model.commands.CommandException;
+import model.tokens.TList;
 
 /**
  * Class for the "Ask" command
@@ -22,7 +22,8 @@ public class Ask extends AskCommand {
 		TList commands = args.getTList(1);
 		
 		Arguments turtleIndicies = turtles.evaluateContents(scope); // simplifies list
-		return askThenRevert(turtleIndicies, commands, scope);
+		Arguments results = askThenRevert(argumentsToIndicies(turtleIndicies), commands, scope);
+		return results.getDouble(0);
 	}
 	
 	/**
@@ -31,14 +32,15 @@ public class Ask extends AskCommand {
 	 * After asking, it reverts to its previous state
 	 * @throws CommandException 
 	 * 
+	 * @returns 
+	 * 
 	 */
-	public double askThenRevert(Arguments indicies, TList commands, Scope scope) throws CommandException{
-		Set<Integer> previouslyActiveTurtles = scope.getWorld().getActiveTurtles().keySet();
-		
-		scope.getWorld().setActiveTurtles(argumentsToIndicies(indicies));
+	public Arguments askThenRevert(List<Integer> indicies, TList commands, Scope scope) throws CommandException{
+		Collection<Integer> previouslyActiveTurtles = scope.getWorld().getActiveTurtleIndicies();
+		scope.getWorld().setActiveTurtles(indicies);
 		Arguments returnArgs = commands.evaluateContents(scope);
 		scope.getWorld().setActiveTurtles(previouslyActiveTurtles);
-		return returnArgs.getDouble(returnArgs.numArgs() - 1);
+		return returnArgs;
 	}
 	
 	/**
@@ -49,8 +51,8 @@ public class Ask extends AskCommand {
 	 * @return
 	 * @throws CommandException
 	 */
-	private Set<Integer> argumentsToIndicies(Arguments a) throws CommandException{
-		Set<Integer> indicies = new HashSet<>();
+	public List<Integer> argumentsToIndicies(Arguments a) throws CommandException{
+		List<Integer> indicies = new ArrayList<>();
 		for(int i = 0; i < a.numArgs(); i++){
 			if(a.getConstant(i) == null) throw new CommandException("Only constants valid in argument 1 of \"AskWith\"");
 			indicies.add((int) a.getDouble(i)); // rounds down

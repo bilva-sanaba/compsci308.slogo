@@ -1,8 +1,15 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+
+import configuration.SingleTurtleState;
+import configuration.Trajectory;
+import model.commands.CommandFactory;
+import model.tokens.VariableContainer;
 
 /**
  * This class contains all of the Turtles 
@@ -10,95 +17,79 @@ import java.util.Set;
  * @author DhruvKPatel
  *
  */
-public class World {
-	private Map<Integer, Turtle> turtles;
-	private Turtle currentlyActiveTurtle;
-	private int backgroundColor;
-	private boolean variableChanged;
-	public World(){
-		turtles = new HashMap<>();		
-		turtles.put(0, new Turtle()); // initial default turtle
-		currentlyActiveTurtle = turtles.get(0);
-		backgroundColor = 0;
+public class World implements UnmodifiableWorld{
+	private TurtleManager turtles;
+	private VariableContainer variables;
+	private CommandFactory commands;
+	
+	private int backgroundIndex;
+	private boolean shouldClear;
+	private Map<Integer, ArrayList<Integer>> paletteUpdates;
+
+	
+	public World(Trajectory turtleTrajectory, VariableContainer variables, CommandFactory commands){
+		turtles = new TurtleManager(turtleTrajectory);
+		backgroundIndex = 0;
+		shouldClear = false;
+		paletteUpdates = new HashMap<>();
+		this.variables = variables;
+		this.commands = commands;
 	}
 	
 	/**
-	 * Returns list of all turtles that exist in world
+	 * Returns Trajectory composed of all turtle
+	 * trajectories
 	 */
-	public Map<Integer, Turtle> getTurtles(){
+	public TurtleManager getTurtles(){
 		return turtles;
-	}
-	public boolean isVariableChanged(){
-		return variableChanged;
-	}
+	}	
 	
-	/**
-	 * Returns the Turtle at a certain ID
-	 * 
-	 * If ID does not exist, will return null
-	 * @param turtleID
-	 * @return
-	 */
-	public Turtle getTurtle(int turtleID){
-		return turtles.get(turtleID);
-	}
-	
+
 	/**
 	 * Makes all turtles with indicies contained int the list active.
 	 * 
 	 * Note: if turtle index doesn't exist in world, will add turtle to world as active will default state
 	 * @param Indecies
 	 */
-	public void setActiveTurtles(Set<Integer> Indicies){
-		for(Turtle t: turtles.values()){
-			t.setActive(false);
-		}
-		for(Integer index : Indicies){
-			if(turtles.get(index) == null){
-				turtles.put(index, new Turtle());
-			}
-			else{
-				turtles.get(index).setActive(true);
-			}
-		}
+	public void setActiveTurtles(Collection<Integer> indicies){
+		turtles.setActiveTurtles(indicies);
 	}
 	
 	/**
-	 * Returns a list of all active turtles
+	 * Returns a collection of all active turtles
 	 */
-	public Map<Integer, Turtle> getActiveTurtles(){
-		Map<Integer, Turtle> actives = new HashMap<>();
-		
-		for(Integer index : turtles.keySet()){
-			Turtle t = turtles.get(index);
-			if(t.isActive()) actives.put(index, t);
-		}
-		return actives;
+	public Collection<SingleTurtleState> getActiveTurtles(){
+		return turtles.getActiveTurtles();
 	}
 	
 	/**
-	 * Returns singular active turtle at any point in time
-	 * 
-	 * (defaults to turtle 0)
+	 * Returns a collection of all active turtle indicies
 	 */
-	public Turtle getCurrentlyActiveTurtle(){
-		return currentlyActiveTurtle;
+	public Collection<Integer> getActiveTurtleIndicies(){
+		return turtles.getActiveTurtleIndicies();
 	}
 	
 	/**
-	 * Sets singular active turtle at any point in time
+	 * Returns a collection of all turtles
+	 * @return
 	 */
-	public void setCurrentlyActiveTurtle(Turtle t){
-		currentlyActiveTurtle = t;
+	public Collection<SingleTurtleState> getAllTurtles(){
+		return turtles.getAllTurtles();
+	}
+	
+	/**
+	 * Returns a collection of all active turtle indicies
+	 */
+	public Collection<Integer> getAllTurtleIndicies(){
+		return turtles.getAllTurtleIndicies();
 	}
 
-	
 	/**
 	 * Sets background color index of world
 	 * @param newColor
 	 */
 	public void setBackground(int newColor){
-		backgroundColor = newColor;
+		backgroundIndex = newColor;
 	}
 	
 	/**
@@ -106,19 +97,64 @@ public class World {
 	 * @param newColor
 	 */
 	public int getBackground(){
-		return backgroundColor;
+		return backgroundIndex;
 	}
+	
+	/**
+	 * Adds new pallete index
+	 */
+	public void addPalleteUpdate(int index, int r, int g, int b){
+		this.paletteUpdates.put(index, new ArrayList<Integer>(Arrays.asList(r, g, b)));
+	}
+	
+	/**
+	 * Gets pallete updates
+	 */
+	public Map<Integer, ArrayList<Integer>> getPalleteUpdates(){
+		Map<Integer, ArrayList<Integer>> updates = new HashMap<>(paletteUpdates);
+		paletteUpdates.clear();
+		return updates;
+	}
+	
+	/**
+	 * Returns whether world should clear
+	 */
+	public boolean shouldClear(){
+		boolean result = shouldClear;
+		shouldClear = false;
+		return result;
+	}
+	
+	/**
+	 * Clears trajectory in backend and updates status
+	 */
+	public void clear(){
+		shouldClear = true;
+		turtles.getTrajectory().clear();
+	}	
 	
 	/**
 	 * Returns string of all existing turtles
 	 */
 	public String toString(){
 		String w = "*********World********\n";
-		for(Integer i : this.getTurtles().keySet()){
-			w += String.format("\nTurtle: %d, Active: %b\n", i, getTurtle(i).isActive());
-			w += getTurtle(i).getTrajectory();
-		}
+		w += turtles.getTrajectory();
 		w += "**********************\n";
 		return w;
+	}
+
+	@Override
+	public Trajectory getTrajectoryUpdates() {
+		return turtles.getTrajectory().getMostRecentAdditions();
+	}
+
+	@Override
+	public VariableContainer getVariables() {
+		return variables;
+	}
+
+	@Override
+	public Collection<String> getCommandNames() {
+		return commands.getUserDefinedNames();
 	}
 }
