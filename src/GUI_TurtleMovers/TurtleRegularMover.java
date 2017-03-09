@@ -17,7 +17,6 @@ public class TurtleRegularMover extends TurtleViewManager{
     
 	public TurtleRegularMover(TurtleView t,GraphicsContext gc){
 		super(t,gc);
-		createPenSizeChooser();
 	}
 
 protected void moveLocation(UnmodifiableTurtleState uts,double screenWidth, double screenHeight){
@@ -26,20 +25,20 @@ protected void moveLocation(UnmodifiableTurtleState uts,double screenWidth, doub
 	myTurtleView.setX(newX);
 	myTurtleView.setY(newY);
 }	
-private void createPenSizeChooser(){
-	penSizeButton = new TextField();
-	penSizeButton.setPromptText("Enter Pen Size");
-	penSizeButton.setOnAction(e -> {
-    	try{
-    		penSize = Double.parseDouble(penSizeButton.getText());
-    		penSizeButton.setText("");
-    	}catch(IllegalArgumentException y){
-    		
-    	}
-    	catch(NullPointerException i){}
-    });
-	extraButtons.add(penSizeButton);	
-}
+//private void createPenSizeChooser(){
+//	penSizeButton = new TextField();
+//	penSizeButton.setPromptText("Enter Pen Size");
+//	penSizeButton.setOnAction(e -> {
+//    	try{
+//    		penSize = Double.parseDouble(penSizeButton.getText());
+//    		penSizeButton.setText("");
+//    	}catch(IllegalArgumentException y){
+//    		
+//    	}
+//    	catch(NullPointerException i){}
+//    });
+//	extraButtons.add(penSizeButton);	
+//}
 
 protected void draw(UnmodifiableTurtleState uts,double screenWidth, double screenHeight){
 	myTurtleView.setPen(uts.isPenDown());
@@ -48,6 +47,7 @@ protected void draw(UnmodifiableTurtleState uts,double screenWidth, double scree
 		double oldY=myTurtleView.getImage().getY()+myTurtleView.getImage().getBoundsInLocal().getHeight()/2;
 		double penX=uts.getX()+screenWidth/2;
 		double penY=-uts.getY()+screenHeight/2;
+		
 		graphics.setStroke(myTurtleView.getPenColor());
 		graphics.setLineWidth(penSize);
 		graphics.strokeLine(oldX, oldY, penX, penY);

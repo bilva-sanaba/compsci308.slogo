@@ -10,7 +10,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import GUI_Objects.ButtonMaker;
+import GUI_Objects.InputHandler;
+import GUI_Objects.WASDMover;
 import GUI_TurtleMovers.TurtleAnimator;
+import GUI_TurtleMovers.TurtleDotMover;
 import GUI_TurtleMovers.TurtleRegularMover;
 import GUI_TurtleMovers.TurtleView;
 import GUI_TurtleMovers.TurtleViewManager;
@@ -61,7 +64,7 @@ public class GUI {
 	BorderPane bottomPanel=new BorderPane();
 	public static final int SCENE_WIDTH = 1200; 
 	public static final int SCENE_HEIGHT = 680;
-
+	public InputHandler inputHandler=new WASDMover();
 	public static final String DEFAULT_FILE="data/Defaults.xml";
 
 	private List<Label> stateLabels;
@@ -88,28 +91,11 @@ public class GUI {
 	}
 	public void handleKeyInput(KeyCode code){
 		if (tvm.isActive()){
-			if (code == KeyCode.W){
-				textArea.setText("fd 100");
-				runButton.fire();
-			}
-			if (code == KeyCode.S){
-				textArea.setText("back 100");
-				runButton.fire();
-			}
-			if (code == KeyCode.A){
-				textArea.setText("left 90");
-				runButton.fire();
-			}
-			if (code == KeyCode.D){
-				textArea.setText("right 90");
-				runButton.fire();
-			}
+			inputHandler.handleKeyInput(code,textArea,runButton);
 		}
 	}
 	private void initializeMainScreen(){
 		background=new Rectangle(750,480,Color.valueOf(myDefault.getBackgroundColor()));
-
-
 		wrapperPane.setClip(new Rectangle(background.getLayoutX(),background.getLayoutY(),background.getBoundsInLocal().getWidth(),background.getBoundsInLocal().getHeight()));
 		wrapperPane.getChildren().add(background);
 		createCanvas();
@@ -133,7 +119,6 @@ public class GUI {
 	private void showStates(List<Label> turtleStates){	
 		wrapperPane.getChildren().addAll(turtleStates);
 		stateLabels=turtleStates;
-		
 	}
 	private void removeStates(){
 		wrapperPane.getChildren().removeAll(stateLabels);

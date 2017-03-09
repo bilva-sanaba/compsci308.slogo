@@ -35,40 +35,32 @@ public class TurtleAnimator extends TurtleViewManager{
 	private Slider slider;
 	private Label speedLabel;
 	private static final double DEFAULT_PEN_SIZE = 4;
-	private double penSize = DEFAULT_PEN_SIZE;
 	private TextField penSizeButton;
 	private double currentXPos;
 	private double currentYPos;
 	private double currentRotate=0;
 	private double currentOpacity=1.0;
 	private boolean skipFirst = false;
-	private SequentialTransition xy = new SequentialTransition();
 	public TurtleAnimator(TurtleView t, GraphicsContext gc) {
 		super(t, gc);
+		penSize = DEFAULT_PEN_SIZE;
 		createSpeedSlider();
 		createSpeedChooser();
-		createPenSizeChooser();
-		xy.play();
 	}
-	private static class Location {
-		double x;
-		double y;
-	}
-	private void createPenSizeChooser(){
-		penSizeButton = new TextField();
-		penSizeButton.setPromptText("Enter Pen Size");
-		penSizeButton.setOnAction(e -> {
-        	try{
-        		penSize = Double.parseDouble(penSizeButton.getText());
-        		penSizeButton.setText("");
-        	}catch(IllegalArgumentException y){
-        		
-        	}
-        	catch(NullPointerException i){}
-        });
-		extraButtons.add(penSizeButton);
-		
-	}
+//	private void createPenSizeChooser(){
+//		penSizeButton = new TextField();
+//		penSizeButton.setPromptText("Enter Pen Size");
+//		penSizeButton.setOnAction(e -> {
+//        	try{
+//        		penSize = Double.parseDouble(penSizeButton.getText());
+//        		penSizeButton.setText("");
+//        	}catch(IllegalArgumentException y){
+//        		
+//        	}
+//        	catch(NullPointerException i){}
+//        });
+//		extraButtons.add(penSizeButton);
+//	}
 	private void createSpeedSlider() {
 		speedLabel = buttonMaker.createLabel("Animation Speed : " + Integer.toString(DEFAULT_SPEED) + " milliseconds");
 		slider = new Slider(1, 8000, 4000);
@@ -79,6 +71,8 @@ public class TurtleAnimator extends TurtleViewManager{
 		extraButtons.add(slider);
 	}
 	private void createSpeedChooser() {
+
+
 		slider.valueProperty().addListener((observable, oldValue, newValue) -> {
 			slider.setValue(newValue.intValue());
 			speedLabel.setText(String.format("Animation Speed : " + Integer.toString(newValue.intValue()) + " milliseconds"));
@@ -109,10 +103,7 @@ public class TurtleAnimator extends TurtleViewManager{
 			}
 			skipFirst=true;
 		}
-		x.setOnFinished(e->{xy.getChildren().remove(x); xy.play();});
-		xy.getChildren().add(x);
-		System.out.println(x);
-		xy.play();
+		x.play();
 	}
 	@Override
 	protected void draw(UnmodifiableTurtleState uts, double screenWidth, double screenHeight) {

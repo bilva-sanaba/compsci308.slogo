@@ -18,6 +18,7 @@ public abstract class TurtleViewManager {
 	protected List<Node> extraButtons;
     public static final int DEFAULT_FPS = 10;
     public static final double MILLIS_PER_SECOND = 1000;
+    protected double penSize;
     
 	public TurtleViewManager(TurtleView t,GraphicsContext gc){
 		myTurtleView=t;
@@ -65,7 +66,10 @@ public abstract class TurtleViewManager {
 	protected abstract void rotate(UnmodifiableTurtleState uts);
 	protected abstract void changeVisibility(UnmodifiableTurtleState uts);
 	
-	
+	protected static class Location {
+		double x;
+		double y;
+	}
 	public void setX(double xLoc){
 		myTurtleView.getImage().setX(xLoc-myTurtleView.getImage().getBoundsInLocal().getWidth()/2);
 	}
@@ -77,6 +81,9 @@ public abstract class TurtleViewManager {
 	}
 	public boolean getPenBool(){
 		return myTurtleView.getPen();
+	}
+	public void setPenSize(double size){
+		penSize =size;
 	}
 	public ImageView getImage(){
 		return myTurtleView.getImage();

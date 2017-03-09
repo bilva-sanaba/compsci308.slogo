@@ -13,6 +13,9 @@ import xml.Default;
 import ColorChoosers.BackgroundColorChooser;
 import ColorChoosers.PenColorChooser;
 import GUI_BackgroundColorChooser.BackgroundColorWriteBox;
+import GUI_Objects.ButtonMaker;
+import GUI_Objects.PenSizeChooser;
+import GUI_Objects.PenSizeTextInput;
 import GUI_PenColorButton.PenColorPicker;
 import GUI_PenColorButton.RandomPenColorButton;
 import GUI_RetrievableCode.CommandScrollPane;
@@ -56,8 +59,9 @@ public class InputPanel {
 	private TurtleViewManager tvm;
 	private TurtleComboBox tcb;
 	HBox topButtons;
-	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
+	private ButtonMaker buttonMaker; 
 public InputPanel(TurtleViewManager TVM, List<Button> otherButtons,Shape background, double width, double height,Default myDefault){
+	buttonMaker = new ButtonMaker();
 	tvm=TVM;
 	returnPanel = initInputPanel(otherButtons);
 	returnPanel.setPrefSize(width, height/4);
@@ -72,7 +76,7 @@ public Pane getBottomPanel(){
 }
 private Pane initInputPanel(List<Button> otherButtons) {
  	BorderPane bottomPanel = new BorderPane();
-    Button help=createButton("Help",e -> handleHelpButton());
+    Button help=buttonMaker.createButton("Help",e -> handleHelpButton());
     bottomPanel.setCenter(inputPanel);
     Pane controlButtons = new HBox(BUTTON_SPACING);
     controlButtons.getChildren().addAll(otherButtons);
@@ -108,24 +112,25 @@ private  void placePenButton(){
 	inputPanel.setConstraints(topButtons,0,2);
 	 inputPanel.getChildren().add(topButtons);
 }
-public static Label createLabel(String text) {
-    Label label = new Label(text);
-    label.setTextFill(Color.BLACK);
-    return label;
-    
+private PenSizeChooser createPenButton(){
+	PenSizeChooser p = new PenSizeTextInput(tvm);
+	return p;
 }
+
 private void addExtraButtons(){
 	List<Node> extraButtons = new ArrayList<Node>();
+	Node penButton = createPenButton().getPenButtons();
 	extraButtons.addAll(tvm.getExtraButtons());
-	if (extraButtons.size()==3){
+	if (extraButtons.size()==2){
 		inputPanel.setConstraints(extraButtons.get(0),0,5);
 		inputPanel.setConstraints(extraButtons.get(1),0,4);
-		inputPanel.setConstraints(extraButtons.get(2),0,6);
+		inputPanel.setConstraints(penButton,0,6);
 	}
-	if (extraButtons.size()==1){
-		inputPanel.setConstraints(extraButtons.get(0),0,4);
+	if (extraButtons.size()==0){
+		inputPanel.setConstraints(penButton,0,4);
 	}
 	 inputPanel.getChildren().addAll(extraButtons);
+	 inputPanel.getChildren().add(penButton);
 }
 
 private ChoiceBox<String> createLanguageBox() {
@@ -179,15 +184,7 @@ private ChoiceBox<String> createChoiceBox(List<String> items) {
     cb.getSelectionModel().selectFirst();
     return cb;
 }
-private Button createButton(String label, EventHandler<ActionEvent> e) {
-    Button b = new Button();
-    b.setText(label);
-    b.setOnAction(e);
-    return b;
-}
 private void handleHelpButton(){
-	
-	 
     Group root = new Group();
     WebView browser = new WebView();
     Scene helpScene = new Scene(root);
