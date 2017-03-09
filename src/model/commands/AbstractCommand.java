@@ -1,11 +1,11 @@
 package model.commands;
 
 import model.Arguments;
-import model.Command;
-import model.Constant;
 import model.Scope;
 import model.Token;
 import model.TokenType;
+import model.tokens.Command;
+import model.tokens.Constant;
 
 public abstract class AbstractCommand implements Command{
 	/**

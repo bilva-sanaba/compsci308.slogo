@@ -3,6 +3,7 @@ package model;
 import configuration.Trajectory;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
+import model.tokens.VariableContainer;
 
 
 public interface Model {

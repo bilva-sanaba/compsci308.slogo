@@ -9,11 +9,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
-import model.Constant;
 import model.Model;
-import model.Variable;
-import model.VariableContainer;
 import model.commands.CommandException;
+import model.tokens.Constant;
+import model.tokens.Variable;
+import model.tokens.VariableContainer;
 
 public class LeftPanel {
 	private VariableScrollPane variableScrollPane;

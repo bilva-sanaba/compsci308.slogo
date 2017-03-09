@@ -1,8 +1,12 @@
 package model;
 
+import configuration.SingleTurtleState;
 import configuration.Trajectory;
+import configuration.UnmodifiableTurtleComposite;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
+import model.tokens.TList;
+import model.tokens.VariableContainer;
 import parser.SlogoParser;
 import parser.tokenNodes.TokenNode;
 
@@ -17,38 +21,30 @@ public class SlogoModel implements Model {
 	
 	private CommandFactory globalCommands;
 	private VariableContainer globalVariables;	
-//	private Trajectory turtleTrajectory;
+	private Trajectory turtleTrajectory;
 	private World world;
 	
 	public SlogoModel() throws CommandException{
 		globalCommands = new CommandFactory();
 		globalVariables = new VariableContainer();
-		parser = new SlogoParser(globalCommands);
+		turtleTrajectory = new Trajectory();
+		world = new World(turtleTrajectory);
 		
-		world = new World();
-		
-//		turtleTrajectory = new Trajectory();
-//		turtleTrajectory.addLast(new TurtleState());
+		parser = new SlogoParser(globalCommands);		
 	}
 	
 	@Override
 	public Trajectory getTrajectory(String commands) throws CommandException{
-		Interpreter i = new Interpreter(world);
-		
-		Scope scope = new Scope(globalCommands, globalVariables, new Trajectory(), world, new Scope(true, true, true, true));
-		
+		Interpreter i = new Interpreter();
+		Scope scope = new Scope(globalCommands, globalVariables, turtleTrajectory, world, new Scope(true, true, true, true));
 		TokenNode root = parser.parse(new TokenNode(null, new TList()), commands);
 		
 		for(TokenNode cmd: root.getChildren()){
-//			i.evaluateTree(cmd, scope); // for single turtle only
-			i.evaluateForAllTurtles(world.getActiveTurtles(), cmd, scope); // for multiple turtles
+			i.evaluateTree(cmd, scope);
 		}
 		
-//		System.out.println(world); // Uncomment this to test functionality of model
-		Trajectory t =  world.getTurtle(0).getTrajectory().getMostRecentAdditions(); // this is temporary. 
-		System.out.println(t);
-		System.out.println(scope.getVariables());
-		return t;
+		System.out.println(world); // Uncomment this to test functionality of model
+		return new Trajectory();
 	}
 
 	@Override
@@ -73,12 +69,12 @@ public class SlogoModel implements Model {
 	 */
 	@Override
 	public World getWorld(String commands) throws CommandException {
-		Interpreter i = new Interpreter(world);
-		Scope scope = new Scope(globalCommands, globalVariables, new Trajectory(), world, new Scope(true, true, true, true));
+		Interpreter i = new Interpreter();
+		Scope scope = new Scope(globalCommands, globalVariables, turtleTrajectory, world, new Scope(true, true, true, true));
 		TokenNode root = parser.parse(new TokenNode(null, new TList()), commands);
 		
 		for(TokenNode cmd: root.getChildren()){
-			i.evaluateForAllTurtles(world.getActiveTurtles(), cmd, scope); // for multiple turtles
+			i.evaluateTree(cmd, scope); // for multiple turtles
 		}
 		
 //		System.out.println(world); // Uncomment this to test functionality of model

@@ -3,12 +3,12 @@ package model.commands.turtleQueries;
 import configuration.Trajectory;
 import configuration.TurtleState;
 import model.Arguments;
-import model.Constant;
 import model.Scope;
 import model.Token;
 import model.commands.CommandException;
 import model.commands.turtleCommands.NoParamCommand;
 import model.commands.turtleCommands.TurtleCommand;
+import model.tokens.Constant;
 /**
  * 
  * @author Jacob Weiss

@@ -2,12 +2,12 @@ package model.commands.advancedCommands;
 
 import model.Arguments;
 import model.Scope;
-import model.TList;
 import model.Token;
 import model.TokenType;
-import model.Variable;
 import model.commands.AbstractCommand;
 import model.commands.CommandException;
+import model.tokens.TList;
+import model.tokens.Variable;
 import parser.tokenNodes.TokenNode;
 
 /**

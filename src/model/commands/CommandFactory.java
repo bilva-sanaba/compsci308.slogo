@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import model.Command;
+import model.tokens.Command;
 
 /**
  * Creates commands from a Command ID.

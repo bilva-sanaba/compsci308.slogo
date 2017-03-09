@@ -1,7 +1,7 @@
 package parser.tokenNodes;
 
-import model.Command;
 import model.Token;
+import model.tokens.Command;
 
 public class CommandNode extends TokenNode {
 

@@ -8,13 +8,13 @@ import java.util.ResourceBundle;
 import java.util.Stack;
 
 import model.Arguments;
-import model.Command;
-import model.Constant;
-import model.TList;
 import model.Token;
 import model.TokenType;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
+import model.tokens.Command;
+import model.tokens.Constant;
+import model.tokens.TList;
 import parser.tokenNodes.TListNode;
 import parser.tokenNodes.TokenNode;
 import parser.tokenNodes.TokenNodeFactory;

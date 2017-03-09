@@ -2,12 +2,12 @@ package model.commands.advancedCommands;
 
 import configuration.Trajectory;
 import model.Arguments;
-import model.Constant;
 import model.Scope;
-import model.TList;
 import model.Token;
 import model.commands.AbstractCommand;
 import model.commands.CommandException;
+import model.tokens.Constant;
+import model.tokens.TList;
 /**
  * 
  * @author Jacob Weiss

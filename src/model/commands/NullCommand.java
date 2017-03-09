@@ -1,10 +1,10 @@
 package model.commands;
 
 import model.Arguments;
-import model.Command;
 import model.Scope;
 import model.Token;
 import model.TokenType;
+import model.tokens.Command;
 
 /**
  * Command that does nothing

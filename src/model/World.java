@@ -1,8 +1,11 @@
 package model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
 import java.util.Set;
+
+import configuration.SingleTurtleState;
+import configuration.Trajectory;
+import configuration.UnmodifiableTurtleComposite;
 
 /**
  * This class contains all of the Turtles 
@@ -11,35 +14,22 @@ import java.util.Set;
  *
  */
 public class World {
-	private Map<Integer, Turtle> turtles;
-	private Turtle currentlyActiveTurtle;
+	private TurtleManager turtles;
 	
 	private int backgroundColor;
 	
-	public World(){
-		turtles = new HashMap<>();		
-		turtles.put(0, new Turtle()); // initial default turtle
-		currentlyActiveTurtle = turtles.get(0);
+	public World(Trajectory turtleTrajectory){
+		turtles = new TurtleManager(turtleTrajectory);
 		backgroundColor = 0;
 	}
 	
 	/**
-	 * Returns list of all turtles that exist in world
+	 * Returns Trajectory composed of all turtle
+	 * trajectories
 	 */
-	public Map<Integer, Turtle> getTurtles(){
+	public TurtleManager getTurtles(){
 		return turtles;
-	}
-	
-	/**
-	 * Returns the Turtle at a certain ID
-	 * 
-	 * If ID does not exist, will return null
-	 * @param turtleID
-	 * @return
-	 */
-	public Turtle getTurtle(int turtleID){
-		return turtles.get(turtleID);
-	}
+	}	
 	
 	/**
 	 * Makes all turtles with indicies contained int the list active.
@@ -47,50 +37,30 @@ public class World {
 	 * Note: if turtle index doesn't exist in world, will add turtle to world as active will default state
 	 * @param Indecies
 	 */
-	public void setActiveTurtles(Set<Integer> Indicies){
-		for(Turtle t: turtles.values()){
-			t.setActive(false);
-		}
-		for(Integer index : Indicies){
-			if(turtles.get(index) == null){
-				turtles.put(index, new Turtle());
-			}
-			else{
-				turtles.get(index).setActive(true);
-			}
-		}
+	public void setActiveTurtles(Collection<Integer> indicies){
+		turtles.setActiveTurtles(indicies);
 	}
 	
 	/**
 	 * Returns a list of all active turtles
 	 */
-	public Map<Integer, Turtle> getActiveTurtles(){
-		Map<Integer, Turtle> actives = new HashMap<>();
-		
-		for(Integer index : turtles.keySet()){
-			Turtle t = turtles.get(index);
-			if(t.isActive()) actives.put(index, t);
-		}
-		return actives;
+	public Collection<SingleTurtleState> getActiveTurtles(){
+		return turtles.getActiveTurtles();
 	}
 	
-	/**
-	 * Returns singular active turtle at any point in time
-	 * 
-	 * (defaults to turtle 0)
-	 */
-	public Turtle getCurrentlyActiveTurtle(){
-		return currentlyActiveTurtle;
+	public Collection<Integer> getActiveTurtleIndicies(){
+		return turtles.getActiveTurtleIndicies();
 	}
 	
-	/**
-	 * Sets singular active turtle at any point in time
-	 */
-	public void setCurrentlyActiveTurtle(Turtle t){
-		currentlyActiveTurtle = t;
+	
+	public Collection<SingleTurtleState> getAllTurtles(){
+		return turtles.getAllTurtles();
+	}
+	
+	public Collection<Integer> getAllTurtleIndicies(){
+		return turtles.getAllTurtleIndicies();
 	}
 
-	
 	/**
 	 * Sets background color index of world
 	 * @param newColor
@@ -112,10 +82,10 @@ public class World {
 	 */
 	public String toString(){
 		String w = "*********World********\n";
-		for(Integer i : this.getTurtles().keySet()){
-			w += String.format("\nTurtle: %d, Active: %b\n", i, getTurtle(i).isActive());
-			w += getTurtle(i).getTrajectory();
-		}
+//		for(UnmodifiableTurtleComposite t : turtles.getTrajectory()){
+//			w += t;
+//		}
+		w += turtles.getTrajectory();
 		w += "**********************\n";
 		return w;
 	}

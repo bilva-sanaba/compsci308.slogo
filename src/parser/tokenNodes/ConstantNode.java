@@ -1,7 +1,7 @@
 package parser.tokenNodes;
 
-import model.Constant;
 import model.Token;
+import model.tokens.Constant;
 
 public class ConstantNode extends TokenNode {
 

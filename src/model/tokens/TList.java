@@ -1,10 +1,24 @@
-package model;
+package model.tokens;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import model.Arguments;
+import model.Interpreter;
+import model.Scope;
+import model.Token;
+import model.TokenType;
 import model.commands.CommandException;
 import parser.tokenNodes.TokenNode;
 
+/**
+ * This token is a container for all lists. 
+ * 
+ * When during the evaluation phase, the list stores the arguments it recieves.
+ * Later on, you can choose to evaluate the list's contents by calling "evaluateChildren"
+ * @author DhruvKPatel
+ *
+ */
 public class TList implements Token {
 	
 	private List<TokenNode> children;
@@ -18,6 +32,22 @@ public class TList implements Token {
 	public Token evaluate(Arguments args, Scope scope) throws CommandException {
 		if(children == null) throw new CommandException("List is empty");
 		return this;
+	}
+	
+	/**
+	 * Evaluates contents of list and sets this evaluation as new contents
+	 * @param args
+	 * @param scope
+	 * @throws CommandException
+	 */
+	public TList getSimplifiedList(Arguments args, Scope scope) throws CommandException{
+		List<TokenNode> newChildren = new ArrayList<>();
+		for(Token t: evaluateContents(scope)){
+			newChildren.add(new TokenNode(null, t));
+		}
+		TList newList = new TList();
+		newList.setChildren(newChildren);
+		return newList;
 	}
 	
 	public String toString(){
@@ -46,10 +76,10 @@ public class TList implements Token {
 	public Arguments evaluateContents(Scope scope) throws CommandException{
 		Arguments returns = new Arguments();
 		
-		Interpreter i = new Interpreter(scope.getWorld());
+		Interpreter i = new Interpreter();
 		
 		for(TokenNode child: this.getChildren()){
-			returns = i.evaluateForAllTurtles(scope.getWorld().getActiveTurtles(), child, scope);
+			returns.add(i.evaluateTree(child, scope));
 		}
 		return returns;
 	}

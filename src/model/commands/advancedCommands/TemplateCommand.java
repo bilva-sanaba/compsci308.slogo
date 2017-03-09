@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Arguments;
-import model.Constant;
 import model.Scope;
-import model.TList;
-import model.Variable;
-import model.VariableContainer;
 import model.commands.AbstractCommand;
 import model.commands.CommandException;
+import model.tokens.Constant;
+import model.tokens.TList;
+import model.tokens.Variable;
+import model.tokens.VariableContainer;
 
 /**
  * This is a Template Command for all Commands Defined by the user.
