@@ -12,6 +12,7 @@ import model.TList;
 import model.TokenType;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
+import parser.regularExpressions.ProgramParser;
 import parser.tokenNodes.TListNode;
 import parser.tokenNodes.TokenNode;
 import parser.tokenNodes.TokenNodeFactory;
@@ -27,21 +28,24 @@ public class SlogoParser {
 	private TokenNodeFactory factory;
 	private Map<String, String> startToEnd = new HashMap<String, String>();
 	
-	private ResourceBundle syntaxResourceBundle;
 	
 	private final String SYNTAX = "Syntax";
 	private final String DEFAULT_RESOURCES_PACKAGE = "resources.languages/";
 	
-	private final String LISTSTART = syntaxResourceBundle.getString("ListStart");
-	private final String LISTEND = syntaxResourceBundle.getString("ListEnd");
-	private final String GROUPSTART = syntaxResourceBundle.getString("GroupStart");
-	private final String GROUPEND = syntaxResourceBundle.getString("GroupEnd");
+	private ProgramParser parser = new ProgramParser();
+	private ResourceBundle syntaxResourceBundle;
+	
+	private final String LISTSTART = "ListStart";
+	private final String LISTEND = "ListEnd";
+	private final String GROUPSTART = "GroupStart";
+	private final String GROUPEND = "GroupEnd";
 	
 	
 	private final String SPACE = " ";
 	
 	public SlogoParser(CommandFactory commands){
 		factory = new TokenNodeFactory(commands);
+		parser.addPatterns(DEFAULT_RESOURCES_PACKAGE + SYNTAX);
 		syntaxResourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCES_PACKAGE + SYNTAX);
 		startToEnd.put(LISTSTART, LISTEND);
 		startToEnd.put(GROUPSTART, GROUPEND);
@@ -54,12 +58,11 @@ public class SlogoParser {
 		TokenNode head=root;
 		int stringCursor = 0;
 		
-		
 		for(int i=0; i<commandList.size(); i++){
 			String word = commandList.get(i).trim();
+			String wordType = parser.getSymbol(word);
 			TokenNode tokenNode;
-
-			if(word.equals(LISTSTART) || word.equals(GROUPSTART)){
+			if(wordType.equals(LISTSTART) || wordType.equals(GROUPSTART)){
 				int startIndex = command.substring(0, stringCursor).length() + command.substring(stringCursor).indexOf(word); //puts to end of list //EDIT
 				int startListIndex = i;
 				int endIndex = startIndex + getEndStringIndex(command.substring(startIndex), word);
@@ -68,7 +71,7 @@ public class SlogoParser {
 				boolean unlimited;
 				TokenNode newRoot;
 				
-				if(word.equals(LISTSTART)){
+				if(wordType.equals(LISTSTART)){
 					unlimited = false;
 					newRoot = new TListNode(root, new TList());
 					System.out.println("x ");
@@ -134,11 +137,12 @@ public class SlogoParser {
 	private int getEndStringIndex(String command, String t) throws CommandException{
 		Stack<String> stack = new Stack<String>();
 		stack.push(t);
+		String end = startToEnd.get(parser.getSymbol(t));
 		for(int i = 1; i < command.length(); i++){
 			if(command.substring(i, i+1).equals(t)){
 				stack.push(command.substring(i, i+1));
 			}
-			else if(command.substring(i, i+1).equals(startToEnd.get(t))){
+			else if(parser.getSymbol(command.substring(i, i+1)).equals(end)){
 				stack.pop();
 			}
 			if(stack.isEmpty()){
@@ -151,11 +155,12 @@ public class SlogoParser {
 	private int getEndListIndex(ArrayList<String> commandList, String t) throws CommandException{
 		Stack<String> stack = new Stack<String>();
 		stack.push(t);
+		String end = startToEnd.get(parser.getSymbol(t));
 		for(int i = 1; i < commandList.size(); i++){
 			if(commandList.get(i).equals(t)){
 				stack.push(commandList.get(i));
 			}
-			else if(commandList.get(i).equals(startToEnd.get(t))){
+			else if(parser.getSymbol(commandList.get(i)).equals(end)){
 				stack.pop();
 			}
 			if(stack.isEmpty()){

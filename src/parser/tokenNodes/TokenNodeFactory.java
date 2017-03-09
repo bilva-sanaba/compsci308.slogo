@@ -27,7 +27,6 @@ public class TokenNodeFactory {
 	
 
 	private static ResourceBundle languageResourceBundle;
-	private static ResourceBundle syntaxResourceBundle;
 	
 	public static final String DEFAULT_RESOURCES_PACKAGE = "resources.languages/";
 	
