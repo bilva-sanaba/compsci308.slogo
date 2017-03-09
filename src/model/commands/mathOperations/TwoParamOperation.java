@@ -1,8 +1,8 @@
 package model.commands.mathOperations;
 
 import model.Arguments;
-import model.Constant;
 import model.Token;
+import model.tokens.Constant;
 
 /**
  * Super-class for math operations with 1 parameter

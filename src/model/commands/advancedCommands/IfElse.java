@@ -5,16 +5,16 @@ import java.awt.List;
 import configuration.Trajectory;
 import configuration.TurtleState;
 import model.Arguments;
-import model.Constant;
 import model.Interpreter;
 import model.Scope;
-import model.TList;
 import model.Token;
 import model.TokenType;
-import model.Variable;
-import model.VariableContainer;
 import model.commands.AbstractCommand;
 import model.commands.CommandException;
+import model.tokens.Constant;
+import model.tokens.TList;
+import model.tokens.Variable;
+import model.tokens.VariableContainer;
 import parser.tokenNodes.TokenNode;
 /**
  * 

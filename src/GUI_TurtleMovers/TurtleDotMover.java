@@ -1,29 +1,29 @@
 package GUI_TurtleMovers;
 
-import configuration.UnmodifiableTurtleState;
+import configuration.UnmodifiableTurtleComposite;
 
 public class TurtleDotMover extends TurtleViewManager {
 
 	@Override
-	protected void draw(UnmodifiableTurtleState uts, double screenWidth, double screenHeight) {
+	protected void draw(UnmodifiableTurtleComposite uts, double screenWidth, double screenHeight) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	protected void moveLocation(UnmodifiableTurtleState uts, double screenWidth, double screenHeight) {
+	protected void moveLocation(UnmodifiableTurtleComposite uts, double screenWidth, double screenHeight) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	protected void rotate(UnmodifiableTurtleState uts) {
+	protected void rotate(UnmodifiableTurtleComposite uts) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	protected void changeVisibility(UnmodifiableTurtleState uts) {
+	protected void changeVisibility(UnmodifiableTurtleComposite uts) {
 		// TODO Auto-generated method stub
 		
 	}

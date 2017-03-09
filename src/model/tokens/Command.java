@@ -1,5 +1,8 @@
-package model;
+package model.tokens;
 
+import model.Arguments;
+import model.Scope;
+import model.Token;
 import model.commands.CommandException;
 
 /**

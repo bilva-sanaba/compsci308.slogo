@@ -1,4 +1,4 @@
-package model;
+package model.tokens;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -9,8 +9,9 @@ import model.commands.CommandException;
 /**
  * Container for Variable Objects
  * 
+ * Note: this is not a token. It's a container for variable Tokens.
+ * 
  * @author DhruvKPatel
- *
  */
 public class VariableContainer {
 	private HashMap<String, Constant> variables;
