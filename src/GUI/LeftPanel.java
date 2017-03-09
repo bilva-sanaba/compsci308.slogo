@@ -34,6 +34,7 @@ public class LeftPanel {
 	
 	private void createVariableScroller(double width, double height,Model model) throws CommandException{	
 		HashMap<String,Double>map=new HashMap<String,Double>();
+		map.put("X", 50.0);
 		VariableContainer variables=model.getGlobalVariables();
 		Set<String> variableNames=variables.getVariableNames();
 		for(String s:variableNames){

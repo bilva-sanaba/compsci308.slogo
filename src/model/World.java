@@ -13,9 +13,8 @@ import java.util.Set;
 public class World {
 	private Map<Integer, Turtle> turtles;
 	private Turtle currentlyActiveTurtle;
-	
 	private int backgroundColor;
-	
+	private boolean variableChanged;
 	public World(){
 		turtles = new HashMap<>();		
 		turtles.put(0, new Turtle()); // initial default turtle
@@ -28,6 +27,9 @@ public class World {
 	 */
 	public Map<Integer, Turtle> getTurtles(){
 		return turtles;
+	}
+	public boolean isVariableChanged(){
+		return variableChanged;
 	}
 	
 	/**

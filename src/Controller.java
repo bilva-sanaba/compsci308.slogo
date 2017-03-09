@@ -46,6 +46,7 @@ public class Controller {
 			alert.setTitle("Learn to Code: https://www.codeschool.com/");
 			alert.setContentText(e.getMessage()); 
 			alert.showAndWait();
+			e.printStackTrace();
 		}
 	
 	}

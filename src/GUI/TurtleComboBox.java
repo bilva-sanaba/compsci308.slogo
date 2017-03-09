@@ -16,43 +16,30 @@ import javafx.scene.image.Image;
 public class TurtleComboBox {
 
 
-	private ComboBox<ImageView> turtleChoice;
+	private ComboBox<String> turtleChoice;
 	public TurtleComboBox(TurtleViewManager tvm){
-		turtleChoice = new ComboBox<ImageView>();
-		turtleChoice.getItems().add(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle.gif"))));
-		turtleChoice.getItems().add(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("turtle2.gif"))));
-		turtleChoice.getItems().add(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("Turtle.png"))));
+		turtleChoice = new ComboBox<String>();
+		turtleChoice.getItems().add("turtle.gif");
+		turtleChoice.getItems().add("turtle2.gif");
+		turtleChoice.getItems().add("Turtle.png");
 		turtleChoice.setPromptText("Choose Turtle");
-		turtleChoice.valueProperty().addListener((x, y, newValue) -> {
-			changeImage(tvm,newValue);
-			
-			
-			ComboBox<ImageView>ne=new ComboBox<ImageView>();
-			ne.getItems().addAll(turtleChoice.getItems());
-			turtleChoice.getItems().clear();
-			turtleChoice.getItems().addAll(ne.getItems());
+		turtleChoice.setCellFactory(c-> new TurtleCellFactory());
+		turtleChoice.setButtonCell(new TurtleCellFactory());
+	turtleChoice.valueProperty().addListener((x, y, newValue) -> {
+		changeImage(tvm,newValue);
 		});
-		//turtleChoice.setCellFactory(new Callback<ListView<Image>,ListCell<Image>>);
+		
 	}
-	public ComboBox<ImageView> getTurtleChooser(){
+	public ComboBox<String> getTurtleChooser(){
 		return turtleChoice;
 	}
-	private void changeImage(TurtleViewManager tvm, ImageView newValue){
+	private void changeImage(TurtleViewManager tvm, String newString){
+		ImageView newValue=new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(newString)));
 		tvm.getImage().setX(tvm.getImage().getX()+tvm.getImage().getBoundsInLocal().getWidth()/2);
 		tvm.getImage().setY(tvm.getImage().getY()+tvm.getImage().getBoundsInLocal().getHeight()/2);
 		tvm.getImage().setImage(newValue.getImage());
-		tvm.getImage().setY(tvm.getImage().getY()-tvm.getImage().getBoundsInLocal().getHeight());
-		tvm.getImage().setX(tvm.getImage().getX()-tvm.getImage().getBoundsInLocal().getWidth());
-		System.out.println(tvm.getImage().getBoundsInLocal().getHeight());
-		
+		tvm.getImage().setY(tvm.getImage().getY()-tvm.getImage().getBoundsInLocal().getHeight()/2);
+		tvm.getImage().setX(tvm.getImage().getX()-tvm.getImage().getBoundsInLocal().getWidth()/2);
 	}
-private void refreshBox(TurtleViewManager t,Image newValue){
-	t.getImage().setImage(newValue);
-	/*ComboBox<Image>ne=new ComboBox<Image>();
-	ne.getItems().addAll(turtleChoice.getItems());
-	turtleChoice.getItems().clear();
-	
-	turtleChoice.getItems().addAll(ne.getItems());
-*/
-}
+
 }

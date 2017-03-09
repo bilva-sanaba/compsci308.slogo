@@ -10,12 +10,12 @@ public class TurtleView {
 	private boolean penDown;
 	private boolean visible;
 	private Paint penColor; 
-	public TurtleView(){
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream("turtle2.gif"));
+	public TurtleView(String s,String c){
+		Image image = new Image(getClass().getClassLoader().getResourceAsStream(s));
 		Turtle_Image = new ImageView(image);
 		penDown=true;
 		visible=true;
-		penColor=Color.BLACK;
+		penColor=Color.valueOf(c);
 	}
 	public Paint getPenColor(){
 		return penColor;
