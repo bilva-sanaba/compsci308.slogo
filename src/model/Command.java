@@ -38,5 +38,11 @@ public interface Command extends Token {
 	 */
 
 	public boolean isNullCommand();
+	
+	/**
+	 * Tests for unlimited args
+	 */
+	
+	public boolean hasUnlimitedArgs();
 }
 

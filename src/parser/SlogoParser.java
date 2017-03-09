@@ -47,6 +47,7 @@ public class SlogoParser {
 	
 	public TokenNode parse(String command) throws CommandException{
 		command = cReformat.reformatCommand(command);
+		System.out.println("#move: " + parser.getSymbol("#move"));
 		return makeTree(new TokenNode(null, new TList()), command, false);
 	}
 	
@@ -91,19 +92,26 @@ public class SlogoParser {
 				root=tokenNode;
 			}
 			
-			if(root.getToken().getType() == TokenType.COMMAND && root.getChildren().size()==((Command)root.getToken()).getNumArgs()){
-				String commandString = commandList.get(0);
-				boolean nullCommand = ((Command)root.getToken()).isNullCommand();
-				if(!(unlimitedParam && factory.getInfiniteArgsCommands().contains(commandString))){
-					root=parentNode;
-					if(unlimitedParam && i<commandList.size()-1 && !nullCommand){
-						tokenNode = factory.genTokenNode(parentNode, commandString, unlimitedParam);
-						root.addChild(tokenNode);
-						parentNode=root; 
-						root=tokenNode; 
+			if(root.getToken().getType() == TokenType.COMMAND){
+				Command rootCommand = (Command)root.getToken();
+				if(root.getChildren().size()==rootCommand.getNumArgs() && !rootCommand.hasUnlimitedArgs()){
+					String commandString = commandList.get(0);
+					System.out.println("CS : " + commandString);
+					System.out.println("NUMARGS : " + ((Command)root.getToken()).getNumArgs());
+					System.out.println(((Command)root.getToken()).hasUnlimitedArgs());
+					if(!(unlimitedParam && factory.getInfiniteArgsCommands().contains(commandString))){
+						root=parentNode;
+						boolean nullCommand = rootCommand.isNullCommand();
+						if(unlimitedParam && i<commandList.size()-1 && !nullCommand){
+							System.out.println("x ");
+							tokenNode = factory.genTokenNode(parentNode, commandString, unlimitedParam);
+							root.addChild(tokenNode);
+							parentNode=root; 
+							root=tokenNode; 
+						}
 					}
-				}
-			}		
+				}	
+			}
 			
 			stringCursor+=commandList.get(i).length() + SPACE.length(); //add 1 for the space character
 		}
