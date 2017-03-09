@@ -24,7 +24,7 @@ public class NullCommand implements Command {
 
 	@Override
 	public Scope getScopeRequest() {
-		return new Scope(false, false, false);
+		return new Scope(false, false, false, false);
 	}
 
 	@Override
@@ -45,6 +45,10 @@ public class NullCommand implements Command {
 	@Override
 	public int getNumArgs() {
 		return 0;
+	}
+	
+	public boolean isNullCommand(){
+		return true;
 	}
 
 }

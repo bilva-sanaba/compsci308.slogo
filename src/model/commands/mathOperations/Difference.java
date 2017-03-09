@@ -7,7 +7,7 @@ import model.commands.CommandException;
 /**
  * Returns difference between two constants
  * 
- * @author DhruvKPatel
+ * @author DhruvKPatel, Jacob Weiss
  */
 public class Difference extends TwoParamOperation{
 	
@@ -17,7 +17,11 @@ public class Difference extends TwoParamOperation{
 	 */
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {
-		return args.getDouble(0) - args.getDouble(1);
+		double ans = args.getDouble(0);
+		for(int i = 1; i < args.numArgs(); i++){
+			ans-=args.getDouble(i);
+		}
+		return ans;
 	}
 	
 	@Override

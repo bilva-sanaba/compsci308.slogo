@@ -25,7 +25,7 @@ public class IfElse extends AbstractCommand {
 
 	@Override
 	public Scope getScopeRequest() {
-		return new Scope(true, true, true);
+		return new Scope(true, true, true, true);
 	}
 
 	@Override
@@ -36,11 +36,11 @@ public class IfElse extends AbstractCommand {
 		double result = 0;
 		
 		if(check!=0){
-			Constant r = (Constant)trueList.executeChildren(scope).getLast();
+			Constant r = (Constant)trueList.evaluateContents(scope).getLast();
 			result = r.getVal();
 		}
 		else{
-			Constant r = (Constant)falseList.executeChildren(scope).getLast();
+			Constant r = (Constant)falseList.evaluateContents(scope).getLast();
 			result = r.getVal();
 		}
 		

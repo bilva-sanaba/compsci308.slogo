@@ -2,6 +2,7 @@ package model.commands.mathOperations;
 
 import model.Arguments;
 import model.Scope;
+import model.Token;
 import model.commands.CommandException;
 
 /**
@@ -11,7 +12,7 @@ import model.commands.CommandException;
  * @author DhruvKPatel
  *
  */
-public class And extends OneParamOperation {
+public class And extends TwoParamOperation {
 
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {

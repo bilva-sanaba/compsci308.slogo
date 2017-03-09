@@ -23,7 +23,7 @@ public abstract class TurtleViewManager {
 		myTurtleView=t;
 		graphics = gc;
 		extraButtons = new ArrayList<Node>();
-		lol();
+		activeClick();
 	}
 	public boolean isActive(){
 		return active;
@@ -31,7 +31,7 @@ public abstract class TurtleViewManager {
 	public List<Node> getExtraButtons(){
 		return extraButtons;
 	}
-	private void lol(){
+	private void activeClick(){
 		myTurtleView.getImage().setOnMouseClicked(e -> active=!active);
 	}
 	public List<Label> getStateLabels(){

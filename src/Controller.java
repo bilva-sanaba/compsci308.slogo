@@ -17,6 +17,7 @@ public class Controller {
 	public Controller(Stage stage) throws CommandException{
 		counter=1;
 		GUI gui=initializeGUI();
+		
 		myGUIBuilder = new GUI_Configuration(gui,stage);
 		
 		
@@ -46,6 +47,7 @@ public class Controller {
 			alert.setTitle("Learn to Code: https://www.codeschool.com/");
 			alert.setContentText(e.getMessage()); 
 			alert.showAndWait();
+			e.printStackTrace();
 		}
 	
 	}

@@ -42,11 +42,13 @@ public class TurtleAnimator extends TurtleViewManager{
 	private double currentRotate=0;
 	private double currentOpacity=1.0;
 	private boolean skipFirst = false;
+	private SequentialTransition xy = new SequentialTransition();
 	public TurtleAnimator(TurtleView t, GraphicsContext gc) {
 		super(t, gc);
 		createSpeedSlider();
 		createSpeedChooser();
 		createPenSizeChooser();
+		xy.play();
 	}
 	private static class Location {
 		double x;
@@ -77,8 +79,6 @@ public class TurtleAnimator extends TurtleViewManager{
 		extraButtons.add(slider);
 	}
 	private void createSpeedChooser() {
-
-
 		slider.valueProperty().addListener((observable, oldValue, newValue) -> {
 			slider.setValue(newValue.intValue());
 			speedLabel.setText(String.format("Animation Speed : " + Integer.toString(newValue.intValue()) + " milliseconds"));
@@ -109,7 +109,10 @@ public class TurtleAnimator extends TurtleViewManager{
 			}
 			skipFirst=true;
 		}
-		x.play();
+		x.setOnFinished(e->{xy.getChildren().remove(x); xy.play();});
+		xy.getChildren().add(x);
+		System.out.println(x);
+		xy.play();
 	}
 	@Override
 	protected void draw(UnmodifiableTurtleState uts, double screenWidth, double screenHeight) {

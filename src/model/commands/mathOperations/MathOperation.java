@@ -15,6 +15,6 @@ import model.commands.AbstractCommand;
  */
 public abstract class MathOperation extends AbstractCommand {
 	public Scope getScopeRequest(){
-		return new Scope(false, false, false);
+		return new Scope(false, false, false, false);
 	}
 }
