@@ -8,6 +8,8 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
+
+import GUI_Objects.ButtonMaker;
 import GUI_TurtleMovers.TurtleAnimator;
 import GUI_TurtleMovers.TurtleRegularMover;
 import GUI_TurtleMovers.TurtleView;
@@ -17,12 +19,15 @@ import error.SlogoAlert;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -52,6 +57,7 @@ public class GUI {
 	private Pane wrapperPane = new Pane();
 	private TurtleViewManager tvm;
 	private List<Button> otherButtons;
+	private ButtonMaker buttonMaker = new ButtonMaker();
 	BorderPane bottomPanel=new BorderPane();
 	public static final int SCENE_WIDTH = 1200; 
 	public static final int SCENE_HEIGHT = 680;
@@ -70,36 +76,56 @@ public class GUI {
 		myDefault=xml.getDefaults();
 		createButtons();
 		createRoot();
-		myRoot.setLeft(lp.getPanel());	
-		myRoot.setRight(rightScreen);
-		rightScreen.getChildren().add(rp.getPanel());
-		background = new Rectangle(SCENE_WIDTH-lp.getPanel().getWidth()-rp.getPanel().getWidth(),SCENE_HEIGHT-bottomPanel.getBoundsInLocal().getHeight(),Color.WHITE);
-
-
-		background=new Rectangle(750,480,Color.valueOf(myDefault.getBackgroundColor()));
-
-
-		wrapperPane.setClip(new Rectangle(background.getLayoutX(),background.getLayoutY(),background.getBoundsInLocal().getWidth(),background.getBoundsInLocal().getHeight()));;
-		wrapperPane.getChildren().add(background);
-		createCanvas();
+		initializeRightScreen();
+		initializeMainScreen();
 		initializeTurtle();
-		realInput = new InputPanel(tvm, otherButtons,background,SCENE_WIDTH,SCENE_HEIGHT,myDefault);
-		bottomPanel.setCenter(realInput.getBottomPanel());
-		myRoot.setBottom(bottomPanel);
+		createInputPanel();
 		placeTurtle();
-		
 	}
 	private void placeTurtle(){
 		drawTurtle();
 		wrapperPane.getChildren().add(tvm.getImage());
 	}
+	public void handleKeyInput(KeyCode code){
+		if (tvm.isActive()){
+			if (code == KeyCode.W){
+				textArea.setText("fd 100");
+				runButton.fire();
+			}
+			if (code == KeyCode.S){
+				textArea.setText("back 100");
+				runButton.fire();
+			}
+			if (code == KeyCode.A){
+				textArea.setText("left 90");
+				runButton.fire();
+			}
+			if (code == KeyCode.D){
+				textArea.setText("right 90");
+				runButton.fire();
+			}
+		}
+	}
+	private void initializeMainScreen(){
+		background=new Rectangle(750,480,Color.valueOf(myDefault.getBackgroundColor()));
+
+
+		wrapperPane.setClip(new Rectangle(background.getLayoutX(),background.getLayoutY(),background.getBoundsInLocal().getWidth(),background.getBoundsInLocal().getHeight()));
+		wrapperPane.getChildren().add(background);
+		createCanvas();
+	}
+	private void createInputPanel(){
+		realInput = new InputPanel(tvm, otherButtons,background,SCENE_WIDTH,SCENE_HEIGHT,myDefault);
+		bottomPanel.setCenter(realInput.getBottomPanel());
+		myRoot.setBottom(bottomPanel);
+	}
+	private void initializeRightScreen(){
+		rightScreen.getChildren().add(rp.getPanel());
+	}
 	private void initializeTurtle(){
-
 		tvm = new TurtleAnimator(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
-
 		tvm.getImage().setOnMouseEntered(e->showStates(getStateLabels()));
 		tvm.getImage().setOnMouseExited(e->removeStates());
-
 	}
 	private List<Label> getStateLabels(){
 		return tvm.getStateLabels();
@@ -132,6 +158,8 @@ public class GUI {
 		lp = new LeftPanel(SCENE_WIDTH,SCENE_HEIGHT,model);
 		rp = new RightPanel(textArea, runButton, SCENE_WIDTH,SCENE_HEIGHT);	
 		myRoot.setCenter(wrapperPane);
+		myRoot.setLeft(lp.getPanel());	
+		myRoot.setRight(rightScreen);
 	}
 	public Tab getTab(){
 		Tab tab=new Tab();
@@ -151,14 +179,14 @@ public class GUI {
 	}
 	private void createButtons(){
 		Button play = runButton;
-		Button clear = createButton("Clear", e -> {
+		Button clear = buttonMaker.createButton("Clear", e -> {
 			textArea.clear();
 			textArea.setText("clear");
 			gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
 			
 		});   
-		Button load= createButton("Load Preferences",e-> handleLoad());
-		Button save=createButton("Save Preferences",e->handleSave());
+		Button load= buttonMaker.createButton("Load Preferences",e-> handleLoad());
+		Button save=buttonMaker.createButton("Save Preferences",e->handleSave());
 		Button newW=newTab;
 		otherButtons = Arrays	.asList(play, clear,newW,load,save);
 	}
@@ -195,16 +223,4 @@ public class GUI {
 	private void updateInputPanel() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
 		realInput.updateDefaults(myDefault);
 	}
-	private Button createButton(String label, EventHandler<ActionEvent> e) {
-		Button b = new Button();
-		b.setText(label);
-		b.setOnAction(e);
-		return b;
-	}
-	public static Label createLabel(String text) {
-		Label label = new Label(text);
-		label.setTextFill(Color.BLACK);
-		return label;  
-	}
-
 }

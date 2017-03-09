@@ -18,6 +18,7 @@ public class Controller {
 	public Controller(Stage stage) throws CommandException{
 		counter=1;
 		GUI gui=initializeGUI();
+		
 		myGUIBuilder = new GUI_Configuration(gui,stage);
 		
 		

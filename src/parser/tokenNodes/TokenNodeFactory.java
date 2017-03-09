@@ -27,13 +27,19 @@ public class TokenNodeFactory {
 	
 
 	private static ResourceBundle languageResourceBundle;
-	private static ResourceBundle syntaxResourceBundle;
 	
 	public static final String DEFAULT_RESOURCES_PACKAGE = "resources.languages/";
 	
 	public static final String SYNTAX = "Syntax";
 	private String language = "English";
-
+	
+	private static final String COMMAND = "Command";
+	private static final String VARIABLE = "Variable";
+	private static final String CONSTANT = "Constant";
+	
+	private String[] infiniteArgsCommands = {"Sum", "Difference" , "Product" , "Quotient" , "Remainder" , "Power"};
+	private final String UNLIMITED = "Unlimited";
+	
 	private ProgramParser parser = new ProgramParser();
 	
 	private static List<String> possibleCommands = new ArrayList<String>();
@@ -61,15 +67,22 @@ public class TokenNodeFactory {
 	}
 	
 
-	public TokenNode genTokenNode(TokenNode parentNode, String word) throws CommandException{
+	public TokenNode genTokenNode(TokenNode parentNode, String word, boolean unlimitedParam) throws CommandException{
 		parser.addPatterns(DEFAULT_RESOURCES_PACKAGE + SYNTAX);
 		createValueList();
 		TokenNode tokenNode = new TokenNode(parentNode, null);
 		String type = parser.getSymbol(word);
 		System.out.println(word + ", " + type);
-			if(type.equals("Command")){//word is in resources
+		ArrayList<String> infiniteArgsCommandList = getInfiniteArgsCommands();
+			if(type.equals(COMMAND)){//word is in resources
 				if(possibleCommands.contains(word)){
 					String wordID = findWordID(word);
+					
+					//check if unlimParam and wordID is sum, diff, etc.
+					if(unlimitedParam && infiniteArgsCommandList.contains(wordID)){
+						wordID = UNLIMITED + wordID;
+					}
+					
 					Command t = cFactory.getCommand(wordID);
 					tokenNode = new CommandNode(parentNode, t);
 				}
@@ -80,10 +93,10 @@ public class TokenNodeFactory {
 					tokenNode = new CommandNode(parentNode, new NullCommand(word));
 				}
 			}
-			else if(type.equals("Variable")){ //include : check
+			else if(type.equals(VARIABLE)){ //include : check
 				tokenNode = new VariableNode(parentNode, new Variable(word.substring(1)));
 			}
-			else if(type.equals("Constant")){
+			else if(type.equals(CONSTANT)){
 				tokenNode = new ConstantNode(parentNode, new Constant(Double.parseDouble(word)));
 			}
 			return tokenNode;
@@ -101,6 +114,10 @@ public class TokenNodeFactory {
 	
 	public void setLanguage(String language){
 		this.language = language;
+	}
+	
+	public ArrayList<String> getInfiniteArgsCommands(){
+		return new ArrayList<String>(Arrays.asList(infiniteArgsCommands));
 	}
 }
 
