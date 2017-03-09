@@ -5,6 +5,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import java.util.Arrays;
 import java.util.List;
+
+import GUI_Objects.ButtonMaker;
 import GUI_TurtleMovers.TurtleAnimator;
 import GUI_TurtleMovers.TurtleRegularMover;
 import GUI_TurtleMovers.TurtleView;
@@ -39,6 +41,7 @@ public class GUI {
 	private Pane wrapperPane = new Pane();
 	private TurtleViewManager tvm;
 	private List<Button> otherButtons;
+	private ButtonMaker buttonMaker = new ButtonMaker();
 	BorderPane bottomPanel=new BorderPane();
 	public static final int SCENE_WIDTH = 1200; 
 	public static final int SCENE_HEIGHT = 680;
@@ -50,22 +53,29 @@ public class GUI {
 		model=m;
 		createButtons();
 		createRoot();
-		myRoot.setLeft(lp.getPanel());	
-		myRoot.setRight(rightScreen);
-		rightScreen.getChildren().add(rp.getPanel());
-		background = new Rectangle(SCENE_WIDTH-lp.getPanel().getWidth()-rp.getPanel().getWidth(),SCENE_HEIGHT-bottomPanel.getBoundsInLocal().getHeight(),Color.WHITE);
-		background=new Rectangle(750,480,Color.WHITE);
-		wrapperPane.getChildren().add(background);
-		createCanvas();
+		initializeRightScreen();
+		initializeMainScreen();
 		initializeTurtle();
-		realInput = new InputPanel(tvm, otherButtons,background,SCENE_WIDTH,SCENE_HEIGHT);
-		bottomPanel.setCenter(realInput.getBottomPanel());
-		myRoot.setBottom(bottomPanel);
+		createInputPanel();
 		placeTurtle();
 	}
 	private void placeTurtle(){
 		drawTurtle();
 		wrapperPane.getChildren().add(tvm.getImage());
+	}
+	private void initializeMainScreen(){
+		background = new Rectangle(SCENE_WIDTH-lp.getPanel().getWidth()-rp.getPanel().getWidth(),SCENE_HEIGHT-bottomPanel.getBoundsInLocal().getHeight(),Color.WHITE);
+		background=new Rectangle(750,480,Color.WHITE);
+		wrapperPane.getChildren().add(background);
+		createCanvas();
+	}
+	private void createInputPanel(){
+		realInput = new InputPanel(tvm, otherButtons,background,SCENE_WIDTH,SCENE_HEIGHT);
+		bottomPanel.setCenter(realInput.getBottomPanel());
+		myRoot.setBottom(bottomPanel);
+	}
+	private void initializeRightScreen(){
+		rightScreen.getChildren().add(rp.getPanel());
 	}
 	private void initializeTurtle(){
 		tvm = new TurtleAnimator(new TurtleView(), gc);
@@ -103,6 +113,8 @@ public class GUI {
 		lp = new LeftPanel(SCENE_WIDTH,SCENE_HEIGHT,model);
 		rp = new RightPanel(textArea, runButton, SCENE_WIDTH,SCENE_HEIGHT);	
 		myRoot.setCenter(wrapperPane);
+		myRoot.setLeft(lp.getPanel());	
+		myRoot.setRight(rightScreen);
 	}
 	public Tab getTab(){
 		Tab tab=new Tab();
@@ -122,7 +134,7 @@ public class GUI {
 	}
 	private void createButtons(){
 		Button play = runButton;
-		Button clear = createButton("Clear", e -> {
+		Button clear = buttonMaker.createButton("Clear", e -> {
 			textArea.clear();
 			textArea.setText("clear");
 			play.fire();
@@ -130,16 +142,4 @@ public class GUI {
 		Button newW=newTab;
 		otherButtons = Arrays.asList(play, clear,newW);
 	}
-	private Button createButton(String label, EventHandler<ActionEvent> e) {
-		Button b = new Button();
-		b.setText(label);
-		b.setOnAction(e);
-		return b;
-	}
-	public static Label createLabel(String text) {
-		Label label = new Label(text);
-		label.setTextFill(Color.BLACK);
-		return label;  
-	}
-
 }

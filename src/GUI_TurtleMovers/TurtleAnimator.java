@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import GUI.GUI;
-
+import GUI_Objects.ButtonMaker;
 import configuration.Trajectory;
 import configuration.UnmodifiableTurtleState;
 import javafx.animation.FadeTransition;
@@ -31,6 +31,7 @@ import javafx.util.Duration;
 public class TurtleAnimator extends TurtleViewManager{
 	private static final int DEFAULT_SPEED = 4000;
 	private int speed=DEFAULT_SPEED;
+	private ButtonMaker buttonMaker = new ButtonMaker();
 	private Slider slider;
 	private Label speedLabel;
 	private static final double DEFAULT_PEN_SIZE = 4;
@@ -67,7 +68,7 @@ public class TurtleAnimator extends TurtleViewManager{
 		
 	}
 	private void createSpeedSlider() {
-		speedLabel = GUI.createLabel("Animation Speed : " + Integer.toString(DEFAULT_SPEED) + " milliseconds");
+		speedLabel = buttonMaker.createLabel("Animation Speed : " + Integer.toString(DEFAULT_SPEED) + " milliseconds");
 		slider = new Slider(1, 8000, 4000);
 		slider.setMajorTickUnit(1000);
 		slider.setShowTickMarks(true);
