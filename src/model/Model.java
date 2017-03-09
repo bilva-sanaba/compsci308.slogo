@@ -24,7 +24,7 @@ public interface Model {
 	/**
 	 * Returns world of turtles and background
 	 */
-	public World getWorld(String commands) throws CommandException;
+	public UnmodifiableWorld getWorld(String commands) throws CommandException;
 	
 	/**
 	 * Sets language for model to interpret with

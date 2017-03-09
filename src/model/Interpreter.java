@@ -18,16 +18,16 @@ public class Interpreter {
 //	public Interpreter(World world){
 //		this.world = world;
 //	}
-	
-//	public Arguments evaluateForAllTurtles(Map<Integer, Turtle> turtles, TokenNode root, Scope scope) throws CommandException{
+//	
+//	public Arguments evaluateForAllTurtles(TokenNode root, Scope scope) throws CommandException{
 //		Arguments returnArgs = new Arguments();
 //		
 //		if(root.getToken().getScopeRequest().getTrajectory() == null){
 //			returnArgs.add(this.evaluateTree(root, scope));
 //		}
 //		else{
-//			for(Turtle t : turtles.values()){
-//				scope.getWorld().setCurrentlyActiveTurtle(t);
+//			for(Turtle t : scope.getwo){
+//				scope.getWorld().
 //				
 //				Scope singleTurtleScope = new Scope(scope.getCommands(), scope.getVariables(), t.getTrajectory(), scope.getWorld(), scope);
 //				returnArgs.add(this.evaluateTree(root, singleTurtleScope));
@@ -36,7 +36,7 @@ public class Interpreter {
 //		return returnArgs; // Returns answer to last turtle's evaluation
 //		
 //	}
-	
+
 	public Token evaluateTree(TokenNode root, Scope scope) throws CommandException{
 		Arguments returnArgs = new Arguments();
 		

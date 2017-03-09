@@ -8,20 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-<<<<<<< HEAD
-import model.Token;
-=======
-import model.Command;
-import model.Constant;
-
-import model.Variable;
->>>>>>> 108ae0541a2dc6b86ed643379af39bcc6d20ad08
 import model.commands.CommandException;
 import model.commands.CommandFactory;
 import model.commands.NullCommand;
 import model.tokens.Command;
 import model.tokens.Constant;
-import model.tokens.TList;
 import model.tokens.Variable;
 import parser.regularExpressions.ProgramParser;
 /**

@@ -219,13 +219,11 @@ public class CompositeTurtleState implements TurtleState, UnmodifiableTurtleComp
 
 	@Override
 	public boolean isActive() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void setActive(boolean active) {
-		// TODO Auto-generated method stub
-		
+		// fix later
 	}
 }

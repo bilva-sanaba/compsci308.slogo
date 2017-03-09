@@ -1,11 +1,8 @@
 package model;
 
-import configuration.SingleTurtleState;
 import configuration.Trajectory;
-import configuration.UnmodifiableTurtleComposite;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
-import model.tokens.TList;
 import model.tokens.VariableContainer;
 import parser.SlogoParser;
 import parser.tokenNodes.TokenNode;
@@ -28,11 +25,33 @@ public class SlogoModel implements Model {
 		globalCommands = new CommandFactory();
 		globalVariables = new VariableContainer();
 		turtleTrajectory = new Trajectory();
-		world = new World(turtleTrajectory);
+		world = new World(turtleTrajectory, globalVariables, globalCommands);
 		
 		parser = new SlogoParser(globalCommands);		
 	}
 	
+
+	/**
+	 * Evaluates a String of commands and modifies world of turtles/background to account for this
+	 * 
+	 * Returns modified world.
+	 */
+	@Override
+	public UnmodifiableWorld getWorld(String commands) throws CommandException {
+
+		Interpreter i = new Interpreter();
+		Scope scope = new Scope(globalCommands, globalVariables, turtleTrajectory, world, new Scope(true, true, true, true));
+		TokenNode root = parser.parse(commands);
+
+		for(TokenNode cmd: root.getChildren()){
+			i.evaluateTree(cmd, scope); // for multiple turtles
+		}
+		
+//		System.out.println(world); // Uncomment this to test functionality of model
+		return (UnmodifiableWorld) world;
+	}
+	
+	// This method should not be used after front-end implements multiple turtles.
 	@Override
 	public Trajectory getTrajectory(String commands) throws CommandException{
 		Interpreter i = new Interpreter();
@@ -60,26 +79,5 @@ public class SlogoModel implements Model {
 	@Override
 	public CommandFactory getGlobalCommands() {
 		return globalCommands;
-	}
-
-	/**
-	 * Evaluates a String of commands and modifies world of turtles/background to account for this
-	 * 
-	 * Returns modified world.
-	 */
-	@Override
-	public World getWorld(String commands) throws CommandException {
-
-		Interpreter i = new Interpreter();
-		Scope scope = new Scope(globalCommands, globalVariables, turtleTrajectory, world, new Scope(true, true, true, true));
-		TokenNode root = parser.parse(commands);
-
-		
-		for(TokenNode cmd: root.getChildren()){
-			i.evaluateTree(cmd, scope); // for multiple turtles
-		}
-		
-//		System.out.println(world); // Uncomment this to test functionality of model
-		return world;
 	}
 }

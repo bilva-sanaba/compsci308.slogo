@@ -6,23 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-<<<<<<< HEAD
-import model.Arguments;
-import model.Token;
 import model.TokenType;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
 import model.tokens.Command;
-import model.tokens.Constant;
 import model.tokens.TList;
-=======
-import model.Command;
-import model.TList;
-import model.TokenType;
-import model.commands.CommandException;
-import model.commands.CommandFactory;
 import parser.regularExpressions.ProgramParser;
->>>>>>> 108ae0541a2dc6b86ed643379af39bcc6d20ad08
 import parser.tokenNodes.TListNode;
 import parser.tokenNodes.TokenNode;
 import parser.tokenNodes.TokenNodeFactory;

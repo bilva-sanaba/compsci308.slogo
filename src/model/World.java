@@ -1,11 +1,15 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import configuration.SingleTurtleState;
 import configuration.Trajectory;
-import configuration.UnmodifiableTurtleComposite;
+import model.commands.CommandFactory;
+import model.tokens.VariableContainer;
 
 /**
  * This class contains all of the Turtles 
@@ -13,15 +17,23 @@ import configuration.UnmodifiableTurtleComposite;
  * @author DhruvKPatel
  *
  */
-public class World {
+public class World implements UnmodifiableWorld{
 	private TurtleManager turtles;
+	private VariableContainer variables;
+	private CommandFactory commands;
 	
-	private int backgroundColor;
-	
-	public World(Trajectory turtleTrajectory){
-		turtles = new TurtleManager(turtleTrajectory);
+	private int backgroundIndex;
+	private boolean shouldClear;
+	private Map<Integer, ArrayList<Integer>> paletteUpdates;
 
-		backgroundColor = 0;
+	
+	public World(Trajectory turtleTrajectory, VariableContainer variables, CommandFactory commands){
+		turtles = new TurtleManager(turtleTrajectory);
+		backgroundIndex = 0;
+		shouldClear = false;
+		paletteUpdates = new HashMap<>();
+		this.variables = variables;
+		this.commands = commands;
 	}
 	
 	/**
@@ -31,6 +43,7 @@ public class World {
 	public TurtleManager getTurtles(){
 		return turtles;
 	}	
+	
 
 	/**
 	 * Makes all turtles with indicies contained int the list active.
@@ -43,21 +56,30 @@ public class World {
 	}
 	
 	/**
-	 * Returns a list of all active turtles
+	 * Returns a collection of all active turtles
 	 */
 	public Collection<SingleTurtleState> getActiveTurtles(){
 		return turtles.getActiveTurtles();
 	}
 	
+	/**
+	 * Returns a collection of all active turtle indicies
+	 */
 	public Collection<Integer> getActiveTurtleIndicies(){
 		return turtles.getActiveTurtleIndicies();
 	}
 	
-	
+	/**
+	 * Returns a collection of all turtles
+	 * @return
+	 */
 	public Collection<SingleTurtleState> getAllTurtles(){
 		return turtles.getAllTurtles();
 	}
 	
+	/**
+	 * Returns a collection of all active turtle indicies
+	 */
 	public Collection<Integer> getAllTurtleIndicies(){
 		return turtles.getAllTurtleIndicies();
 	}
@@ -67,7 +89,7 @@ public class World {
 	 * @param newColor
 	 */
 	public void setBackground(int newColor){
-		backgroundColor = newColor;
+		backgroundIndex = newColor;
 	}
 	
 	/**
@@ -75,19 +97,64 @@ public class World {
 	 * @param newColor
 	 */
 	public int getBackground(){
-		return backgroundColor;
+		return backgroundIndex;
 	}
+	
+	/**
+	 * Adds new pallete index
+	 */
+	public void addPalleteUpdate(int index, int r, int g, int b){
+		this.paletteUpdates.put(index, new ArrayList<Integer>(Arrays.asList(r, g, b)));
+	}
+	
+	/**
+	 * Gets pallete updates
+	 */
+	public Map<Integer, ArrayList<Integer>> getPalleteUpdates(){
+		Map<Integer, ArrayList<Integer>> updates = new HashMap<>(paletteUpdates);
+		paletteUpdates.clear();
+		return updates;
+	}
+	
+	/**
+	 * Returns whether world should clear
+	 */
+	public boolean shouldClear(){
+		boolean result = shouldClear;
+		shouldClear = false;
+		return result;
+	}
+	
+	/**
+	 * Clears trajectory in backend and updates status
+	 */
+	public void clear(){
+		shouldClear = true;
+		turtles.getTrajectory().clear();
+	}	
 	
 	/**
 	 * Returns string of all existing turtles
 	 */
 	public String toString(){
 		String w = "*********World********\n";
-//		for(UnmodifiableTurtleComposite t : turtles.getTrajectory()){
-//			w += t;
-//		}
 		w += turtles.getTrajectory();
 		w += "**********************\n";
 		return w;
+	}
+
+	@Override
+	public Trajectory getTrajectoryUpdates() {
+		return turtles.getTrajectory().getMostRecentAdditions();
+	}
+
+	@Override
+	public VariableContainer getVariables() {
+		return variables;
+	}
+
+	@Override
+	public Collection<String> getCommandNames() {
+		return commands.getUserDefinedNames();
 	}
 }

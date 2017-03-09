@@ -65,7 +65,7 @@ public class Scope {
 		}
 		if(needsVariables) this.variables = new VariableContainer();
 		if(needsTrajectory) this.trajectory = new Trajectory();
-		if(needsWorld) this.world = new World(this.trajectory);
+		if(needsWorld) this.world = new World(trajectory, variables, commands);
 	}
 	
 	public CommandFactory getCommands() throws CommandException{

@@ -1,6 +1,7 @@
 package model.commands;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -70,7 +71,6 @@ public class CommandFactory {
 		if(defaultsAreFilled) runtimeAddedCommands.add(commandID);
 	}
 	
-	
 	/**
 	 * Checks registry for command ID.
 	 * If ID exists, gets command object for that ID.
@@ -98,5 +98,12 @@ public class CommandFactory {
 		String s = "Command Factory:\n";
 		for(String cmd : registeredCommands.keySet()) s += String.format("\t %s: \"%s\"\n", cmd, registeredCommands.get(cmd).getID());
 		return s;
+	}
+
+	/**
+	 * Returns string IDs of user-added commands
+	 */
+	public Collection<String> getUserDefinedNames() {
+		return runtimeAddedCommands;
 	}
 }
