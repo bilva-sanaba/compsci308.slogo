@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 
 import model.Command;
 import model.Constant;
-
+import model.TokenType;
 import model.Variable;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
@@ -79,7 +79,13 @@ public class TokenNodeFactory {
 					tokenNode = new CommandNode(parentNode, t);
 				}
 				else if(cFactory.containsRuntimeCommand(word)){
-					tokenNode = new CommandNode(parentNode, cFactory.getCommand(word));
+					//check parentNode for TO
+					if(parentNode.getToken().getType()==TokenType.COMMAND && ((Command)parentNode.getToken()).getID().equals("To")){
+						tokenNode = new CommandNode(parentNode, cFactory.getCommand(word));
+					}
+					else{
+						throw new CommandException(String.format("'To' Command must precede: %s ", word));
+					}
 				}
 				else{
 					tokenNode = new CommandNode(parentNode, new NullCommand(word));
