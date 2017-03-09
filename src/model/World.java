@@ -139,6 +139,8 @@ public class World implements UnmodifiableWorld{
 	public String toString(){
 		String w = "*********World********\n";
 		w += turtles.getTrajectory();
+		w += variables;
+		w += commands;
 		w += "**********************\n";
 		return w;
 	}

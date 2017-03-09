@@ -36,9 +36,11 @@ public class TemplateCommand extends AbstractCommand {
 		
 		VariableContainer subVariables = new VariableContainer(scope.getVariables()); // COPIES scope variable, so that instance variables are not added to global set.
 		
+		System.out.println("b4:" + subVariables);
 		for(int i = 0; i < argumentVariables.size(); i++){	// Adds argument variables to sub-scope
 			subVariables.set(argumentVariables.get(i), args.getConstant(i));
 		}
+		System.out.println("after: " + subVariables);
 				
 		Scope subScope = new Scope(scope.getCommands(), subVariables, scope.getTrajectory(), scope.getWorld(), getScopeRequest());
 		
