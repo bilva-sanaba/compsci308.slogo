@@ -59,8 +59,8 @@ public class GUI {
 	private List<Button> otherButtons;
 	private ButtonMaker buttonMaker = new ButtonMaker();
 	BorderPane bottomPanel=new BorderPane();
-	public static final int SCENE_WIDTH = 1200; 
-	public static final int SCENE_HEIGHT = 680;
+	public static final int SCENE_WIDTH = GUI_Configuration.SCENE_WIDTH; 
+	public static final int SCENE_HEIGHT = GUI_Configuration.SCENE_HEIGHT-120;
 
 	public static final String DEFAULT_FILE="data/Defaults.xml";
 
@@ -107,7 +107,7 @@ public class GUI {
 		}
 	}
 	private void initializeMainScreen(){
-		background=new Rectangle(750,480,Color.valueOf(myDefault.getBackgroundColor()));
+		background=new Rectangle(SCENE_WIDTH*5/8,SCENE_HEIGHT*12/17,Color.valueOf(myDefault.getBackgroundColor()));
 
 
 		wrapperPane.setClip(new Rectangle(background.getLayoutX(),background.getLayoutY(),background.getBoundsInLocal().getWidth(),background.getBoundsInLocal().getHeight()));
@@ -149,6 +149,9 @@ public class GUI {
 	}
 	private void createTextArea(){
 		textArea = new TextArea();
+		//Ratio chosen to impose symmetry,
+		textArea.setMaxWidth(SCENE_WIDTH/3);
+		textArea.setMinWidth(SCENE_WIDTH/3);
 		textArea.setPromptText("Enter Code Here");
 		bottomPanel.setLeft(textArea);
 		myRoot.setBottom(bottomPanel);
