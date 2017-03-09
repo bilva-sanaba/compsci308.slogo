@@ -46,14 +46,15 @@ public class XML {
     	Default myDefault=new Default();
         if (! isValidFile(root, myDefault.getType())) {
         	
-        	
         	throw new XMLException("XML file does not represent %s", myDefault.getType());
         }
         // read data associated with the fields given by the object
         
         Map<String, String> results = new HashMap<>();
         for (String field : myDefault.getFields()) {
-            
+            if(getTextValue(root,field).equals("")){
+            	throw new XMLException("XML file does not contain %s parameter",field);
+            }
         	results.put(field, getTextValue(root, field));
         	
         }
@@ -82,7 +83,7 @@ public class XML {
     }
     // Returns if this is a valid XML file for the specified object type
     private boolean isValidFile (Element root, String type) {
-        return getAttribute(root, TYPE_ATTRIBUTE).equals(type);
+    	return getAttribute(root, TYPE_ATTRIBUTE).equals(type);
     }
     // Get value of Element's attribute
     private String getAttribute (Element e, String attributeName) {

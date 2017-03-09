@@ -15,7 +15,7 @@ import xml.Default;
 
 public class PenColorPicker extends PenColorChooser{
 	public PenColorPicker(TurtleViewManager tvm,Default myDefault){
-		super(tvm);
+		super(tvm,myDefault);
 		colorPicker = new ColorPicker(Color.valueOf(myDefault.getPenColor()));
 		displays.add(new Label("Pick Pen Color: "));
 		displays.add(colorPicker);
