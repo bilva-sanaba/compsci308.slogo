@@ -1,8 +1,8 @@
 package model.commands.turtleCommands;
 
 import model.Arguments;
-import model.Constant;
 import model.Token;
+import model.tokens.Constant;
 
 public abstract class OneParamCommand extends TurtleCommand {
 	@Override

@@ -1,7 +1,7 @@
 package parser.tokenNodes;
 
 import model.Token;
-import model.Variable;
+import model.tokens.Variable;
 
 public class VariableNode extends TokenNode {
 

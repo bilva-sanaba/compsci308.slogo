@@ -3,6 +3,7 @@ package model;
 import configuration.Trajectory;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
+import model.tokens.VariableContainer;
 
 /**
  * This class deals with the scope of knowledge a 
@@ -64,7 +65,7 @@ public class Scope {
 		}
 		if(needsVariables) this.variables = new VariableContainer();
 		if(needsTrajectory) this.trajectory = new Trajectory();
-		if(needsWorld) this.world = new World();
+		if(needsWorld) this.world = new World(trajectory, variables, commands);
 	}
 	
 	public CommandFactory getCommands() throws CommandException{

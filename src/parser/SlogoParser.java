@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-import model.Command;
-import model.TList;
 import model.TokenType;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
+import model.tokens.Command;
+import model.tokens.TList;
 import parser.regularExpressions.ProgramParser;
 import parser.tokenNodes.TListNode;
 import parser.tokenNodes.TokenNode;
@@ -133,8 +133,8 @@ public class SlogoParser {
 			else if(parser.getSymbol(command.substring(i, i+1)).equals(end)){
 				stack.pop();
 			}
-			if(i==1 && stack.isEmpty()){
-				throw new CommandException("List is empty");
+			if(stack.isEmpty()){
+				return i;
 			}
 		}
 		throw new CommandException("List never closes");
@@ -151,8 +151,8 @@ public class SlogoParser {
 			else if(parser.getSymbol(commandList.get(i)).equals(end)){
 				stack.pop();
 			}
-			if(i==1 && stack.isEmpty()){
-				throw new CommandException("List is empty");
+			if(stack.isEmpty()){
+				return i;
 			}
 		}
 		throw new CommandException("List never closes");

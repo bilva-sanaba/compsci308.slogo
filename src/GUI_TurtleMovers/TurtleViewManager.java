@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import configuration.Trajectory;
-import configuration.UnmodifiableTurtleState;
+import configuration.UnmodifiableTurtleComposite;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
@@ -53,17 +53,17 @@ public abstract class TurtleViewManager {
 		}
 	}
 	public void moveTurtle(Trajectory T,double screenWidth, double screenHeight){
-		for(UnmodifiableTurtleState uts:T){
+		for(UnmodifiableTurtleComposite uts:T){
 			draw(uts,screenWidth,screenHeight);
 			moveLocation(uts,screenWidth,screenHeight);
 			rotate(uts);
 			changeVisibility(uts);
 		}
 	}
-	protected abstract void draw(UnmodifiableTurtleState uts,double screenWidth, double screenHeight);
-	protected abstract void moveLocation(UnmodifiableTurtleState uts,double screenWidth, double screenHeight);
-	protected abstract void rotate(UnmodifiableTurtleState uts);
-	protected abstract void changeVisibility(UnmodifiableTurtleState uts);
+	protected abstract void draw(UnmodifiableTurtleComposite uts,double screenWidth, double screenHeight);
+	protected abstract void moveLocation(UnmodifiableTurtleComposite uts,double screenWidth, double screenHeight);
+	protected abstract void rotate(UnmodifiableTurtleComposite uts);
+	protected abstract void changeVisibility(UnmodifiableTurtleComposite uts);
 	
 	
 	public void setX(double xLoc){

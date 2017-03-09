@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import model.Command;
-import model.Constant;
 import model.TokenType;
-import model.Variable;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
 import model.commands.NullCommand;
+import model.tokens.Command;
+import model.tokens.Constant;
+import model.tokens.Variable;
 import parser.regularExpressions.ProgramParser;
 /**
  * 
