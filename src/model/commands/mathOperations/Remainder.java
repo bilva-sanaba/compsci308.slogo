@@ -12,7 +12,11 @@ public class Remainder extends TwoParamOperation {
 
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {
-		return args.getDouble(0) % args.getDouble(1);
+		double ans = args.getDouble(0);
+		for(int i = 1; i < args.numArgs(); i++){
+			ans = ans % args.getDouble(i);
+		}
+		return ans;
 	}
 
 	@Override
