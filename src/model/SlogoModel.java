@@ -63,7 +63,7 @@ public class SlogoModel implements Model {
 		}
 		
 		System.out.println(world); // Uncomment this to test functionality of model
-		return new Trajectory();
+		return turtleTrajectory.getMostRecentAdditions();
 	}
 
 	@Override

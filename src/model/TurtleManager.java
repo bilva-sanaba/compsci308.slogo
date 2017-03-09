@@ -7,7 +7,6 @@ import java.util.Set;
 import configuration.CompositeTurtleState;
 import configuration.SingleTurtleState;
 import configuration.Trajectory;
-import configuration.TurtleState;
 import configuration.UnmodifiableTurtleComposite;
 
 /**
