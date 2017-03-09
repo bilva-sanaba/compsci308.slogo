@@ -30,10 +30,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import GUI.TurtleComboBox;
+import error.SlogoAlert;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -45,49 +52,26 @@ import javafx.stage.Window;
 public class XMLWriter {
 	private static final DocumentBuilder DOCUMENT_BUILDER = getDocumentBuilder();
 	private Default myDefault;
-	   public static final String TYPE_ATTRIBUTE = "type";
-	    public static final String IMAGE_ELEMENT = "image";
-	    public static final String BACKGROUNDCOLOR_ELEMENT="backgroundColor";
-	    public static final String PENCOLOR_ELEMENT="penColor";
-	    public static final String LANGUAGE_ELEMENT="language";
+	   public static final String TYPE_ATTRIBUTE = "type"; 
 	    public XMLWriter(Default d){
 	    	myDefault=d;
 	    }
  //Prepares the Document in a DocumentBuilder by appending elements and attributes
 	public void getXML(String imageString,Paint backgroundColor,Paint penColor,String language){
-	Document doc=DOCUMENT_BUILDER.newDocument();
-	Element root=doc.createElement("Default"); 
+		Document doc=DOCUMENT_BUILDER.newDocument();
+	Element root=doc.createElement(TYPE_ATTRIBUTE); 
 	doc.appendChild(root);
 	setAttributes( root, doc);
-	
-	
-	Element element=doc.createElement(IMAGE_ELEMENT);
-	element.appendChild(doc.createTextNode(imageString));
-	//t.getTurtleChooser().getSelectionModel().getSelectedItem())
-	root.appendChild(element);
-	Element bgc=doc.createElement(BACKGROUNDCOLOR_ELEMENT);
-	bgc.appendChild(doc.createTextNode(backgroundColor.toString()));
-	root.appendChild(bgc);
-	Element pc=doc.createElement(PENCOLOR_ELEMENT);
-	pc.appendChild(doc.createTextNode(penColor.toString()));
-	root.appendChild(pc);
-	Element lang=doc.createElement(LANGUAGE_ELEMENT);
-	lang.appendChild(doc.createTextNode(language));
-	root.appendChild(lang);
+	XMLData xmlData=new XMLData(imageString,backgroundColor,penColor,language);
+	Map<String,String>xmlMap=xmlData.getParameters();
+	for(String s:xmlMap.keySet()){
+		Element element=doc.createElement(s);
+		element.appendChild(doc.createTextNode(xmlMap.get(s)));
+		root.appendChild(element);
+	}
 	printFile(doc);
  }
 
- private String promptUser(String prompt){
-	 String s="";
-	 TextInputDialog input=new TextInputDialog(String.format("Please enter the %s for this simulation",prompt));
-	 input.setWidth(100);
-	 Optional<String> response = input.showAndWait();
-	 if (response.isPresent()){
-		 input.close();
-		 s=response.get();
-	 }
- return s;
- }
  
  private void setAttributes(Element root, Document doc){
 	 
@@ -102,19 +86,22 @@ public class XMLWriter {
 			transformer = transformerFactory.newTransformer();
 		} catch (TransformerConfigurationException e) {
 			
-			e.printStackTrace();
+			SlogoAlert alert=new SlogoAlert("Could not generate XML",e.getMessage());
+			alert.showAlert();
 		}
 		DOMSource source = new DOMSource(doc);
-		FileChooser filechooser=new FileChooser();
-		filechooser.setTitle("Select location to save XML file");
-		filechooser.getExtensionFilters().addAll(new ExtensionFilter(".xml files","*.xml"));
+		FileChooser fileChooser=new FileChooser();
+		fileChooser.setTitle("Select location to save XML file");
+		fileChooser.getExtensionFilters().addAll(new ExtensionFilter(".xml files","*.xml"));
+		fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
 		Stage ownerWindow=new Stage();
 		Result result=null;
-		 result = new StreamResult(filechooser.showSaveDialog(ownerWindow));		
+		 result = new StreamResult(fileChooser.showSaveDialog(ownerWindow));		
 		try {		
 			transformer.transform(source, result);
 		} catch (TransformerException e) {
-			e.printStackTrace();
+			SlogoAlert alert=new SlogoAlert("Could not generate XML",e.getMessage());
+			alert.showAlert();
 		}
  }
  private static DocumentBuilder getDocumentBuilder () {

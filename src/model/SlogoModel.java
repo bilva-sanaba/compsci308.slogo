@@ -74,7 +74,7 @@ public class SlogoModel implements Model {
 	public World getWorld(String commands) throws CommandException {
 		Interpreter i = new Interpreter(world);
 		Scope scope = new Scope(globalCommands, globalVariables, new Trajectory(), world, new Scope(true, true, true, true));
-		TokenNode root = parser.parse(new TokenNode(null, new TList()), commands);
+		TokenNode root = parser.parse(new TokenNode(null, new TList()), commands,false);
 		
 		for(TokenNode cmd: root.getChildren()){
 			i.evaluateForAllTurtles(world.getActiveTurtles(), cmd, scope); // for multiple turtles

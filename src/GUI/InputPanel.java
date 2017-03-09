@@ -1,5 +1,7 @@
 package GUI;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +14,7 @@ import ColorChoosers.BackgroundColorChooser;
 import ColorChoosers.PenColorChooser;
 import GUI_BackgroundColorChooser.BackgroundColorWriteBox;
 import GUI_PenColorButton.PenColorPicker;
+import GUI_PenColorButton.RandomPenColorButton;
 import GUI_RetrievableCode.CommandScrollPane;
 import GUI_TurtleMovers.TurtleViewManager;
 import javafx.beans.value.ChangeListener;
@@ -36,6 +39,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -51,6 +55,7 @@ public class InputPanel {
 	private static final int BUTTON_SPACING = 20;
 	private TurtleViewManager tvm;
 	private TurtleComboBox tcb;
+	HBox topButtons;
 	public static final List<String> Languages = Arrays.asList("English","Chinese","French","German","Italian","Portugese","Russian","Spanish");
 public InputPanel(TurtleViewManager TVM, List<Button> otherButtons,Shape background, double width, double height,Default myDefault){
 	tvm=TVM;
@@ -98,7 +103,7 @@ private void addPenButton(Default myDefault){
 	 
 }
 private  void placePenButton(){
-	HBox topButtons = new HBox(BUTTON_SPACING);
+	 topButtons = new HBox(BUTTON_SPACING);
 	topButtons.getChildren().addAll(pb.getChooser());
 	inputPanel.setConstraints(topButtons,0,2);
 	 inputPanel.getChildren().add(topButtons);
@@ -131,18 +136,30 @@ private ChoiceBox<String> createLanguageBox() {
 	languages=languageBox;
 	return languageBox;
 }
-public void updateDefaults(Default d){
+public void updateDefaults(Default d) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
 	setLanguage(d.getLanguage());
 	updatePenColor(d);
 	updateImage(d);
 }
-private void updatePenColor(Default d){
-	pb = new PenColorPicker(tvm,d);
+public String getCurrentTurtleImage(){
+	return tcb.getTurtleChooser().getSelectionModel().getSelectedItem();
+}
+public Paint getCurrentPenColor(){
+	return tvm.getTurtleView().getPenColor();
+}
+private Object makeClass(Class<?> clazz, TurtleViewManager t,Default d) throws InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
+	Constructor<?> ctor = clazz.getDeclaredConstructor(TurtleViewManager.class, Default.class);
+	Object o = ctor.newInstance(t, d);
+	return o;
+}
+private void updatePenColor(Default d) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
+	Class<?>clazz=Class.forName(pb.getClass().getName());
+	topButtons.getChildren().removeAll();
+	pb=(PenColorChooser)makeClass(clazz,tvm,d);
 	placePenButton();
 	tvm.getTurtleView().setPenColor(Color.valueOf(d.getPenColor()));
 }
 private void updateImage(Default d){
-	//tcb.getTurtleChooser().getSelectionModel().select(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(d.getImageString()))));
 	tcb.getTurtleChooser().getSelectionModel().select(d.getImageString());
 }
 private void setLanguage(String language){
