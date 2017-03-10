@@ -32,6 +32,7 @@ public class RightPanel {
 
 		
 		returnPanel.getChildren().add(commandScrollPane.getScrollPane());
+		returnPanel.getStyleClass().add("pane");
 		
 	}
 	
