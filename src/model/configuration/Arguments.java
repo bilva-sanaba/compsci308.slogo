@@ -76,6 +76,7 @@ public class Arguments implements Iterable<Token>{
 	 * @param t
 	 */
 	public Token getLast(){
+		if(arguments.size() == 0) return new Constant(0);
 		return arguments.get(numArgs() - 1);
 	}
 	

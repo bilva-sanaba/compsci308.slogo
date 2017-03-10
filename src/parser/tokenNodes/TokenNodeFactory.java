@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+
+import model.TokenType;
+
 import model.commands.CommandFactory;
 import model.commands.NullCommand;
 import model.exceptions.CommandException;
@@ -81,10 +84,16 @@ public class TokenNodeFactory {
 					tokenNode = new CommandNode(parentNode, cFactory.getCommand(word));
 				}
 				else{
-					tokenNode = new CommandNode(parentNode, new NullCommand(word));
+					//System.out.println(((Command)parentNode.getToken()).getID());
+					if(parentNode.getToken().getType()==TokenType.COMMAND && ((Command)parentNode.getToken()).getID().equals("To")){
+						tokenNode = new CommandNode(parentNode, new NullCommand(word));
+					}
+					else{
+						throw new CommandException(String.format("'To' Command must precede: %s ", word));
+					}
 				}
 			}
-			else if(type.equals(VARIABLE)){ //include : check
+			else if(type.equals(VARIABLE)){
 				tokenNode = new VariableNode(parentNode, new Variable(word.substring(1)));
 			}
 			else if(type.equals(CONSTANT)){

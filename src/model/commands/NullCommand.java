@@ -52,4 +52,10 @@ public class NullCommand implements Command {
 		return true;
 	}
 
+	@Override
+	public boolean hasUnlimitedArgs() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
