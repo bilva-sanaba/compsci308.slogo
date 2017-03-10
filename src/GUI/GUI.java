@@ -5,6 +5,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -120,7 +121,7 @@ public class GUI {
 		rightScreen.getChildren().add(rp.getPanel());
 	}
 	private void initializeTurtle(){
-		tvm = new TurtleRegularMover(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
+		tvm = new TurtleAnimator(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
 		activeTurtles = new HashMap<Integer, TurtleViewManager>();
 		activeTurtles.put(0, tvm);
 		tvm.getImage().setOnMouseEntered(e->showStates(getStateLabels()));
@@ -174,7 +175,7 @@ public class GUI {
 	public String getText(){
 		return textArea.getText();
 	}
-	public void handleRunButton(UnmodifiableWorld w){
+	public void handleRunButton(UnmodifiableWorld w) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		rp.getScrollPane().addText();
 		Trajectory updates = w.getTrajectoryUpdates();
 		//System.out.println(w.getTrajectoryUpdates().getLast());
@@ -183,17 +184,24 @@ public class GUI {
 		
 			if(!activeTurtles.keySet().contains(turtle.getID())){
 				TurtleView myHomie = new TurtleView(myDefault.getImageString(),myDefault.getPenColor());
+				Class<?>clazz=Class.forName(activeTurtles.get(0).getClass().getName());
+				TurtleViewManager newTurtle=(TurtleViewManager)makeClass(clazz,myHomie);
 				
-				TurtleViewManager newTurtle = new TurtleRegularMover(myHomie,gc);
 				placeTurtle(newTurtle);
 				activeTurtles.put(turtle.getID(), newTurtle);
 			}
+			
 		}
 		
 		TurtleUpdater tu = new TurtleUpdater();
 		tu.moveTurtles(updates,activeTurtles);
-		
+		System.out.println(activeTurtles);
 		textArea.clear();
+	}
+	private Object makeClass(Class<?>clazz,TurtleView myHomie) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		Constructor<?> ctor = clazz.getDeclaredConstructor(TurtleView.class,GraphicsContext.class);
+		Object o = ctor.newInstance(myHomie, gc);
+		return o;
 	}
 	private void createButtons(){
 		Button play = runButton;
