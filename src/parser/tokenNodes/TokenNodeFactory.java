@@ -68,9 +68,8 @@ public class TokenNodeFactory {
 		createValueList();
 		TokenNode tokenNode = new TokenNode(parentNode, null);
 		String type = parser.getSymbol(word);
-		System.out.println(word + ", " + type);
 		ArrayList<String> infiniteArgsCommandList = getInfiniteArgsCommands();
-			if(type.equals(COMMAND)){//word is in resources
+			if(type.equals(COMMAND)){
 				if(possibleCommands.contains(word)){
 					String wordID = findWordID(word);
 					//check if unlimParam and wordID is sum, diff, etc.
@@ -84,12 +83,11 @@ public class TokenNodeFactory {
 					tokenNode = new CommandNode(parentNode, cFactory.getCommand(word));
 				}
 				else{
-					//System.out.println(((Command)parentNode.getToken()).getID());
 					if(parentNode.getToken().getType()==TokenType.COMMAND && ((Command)parentNode.getToken()).getID().equals("To")){
 						tokenNode = new CommandNode(parentNode, new NullCommand(word));
 					}
 					else{
-						throw new CommandException(String.format("'To' Command must precede: %s ", word));
+						throw new CommandException(String.format("'%s' command is undefined.", word));
 					}
 				}
 			}

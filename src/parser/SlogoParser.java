@@ -89,17 +89,15 @@ public class SlogoParser {
 			if(tokenNode.getToken().getType() == TokenType.COMMAND){
 				parentNode=root;
 				root=tokenNode;
-				System.out.println("XXX");
 			}
 			
 			if(root.getToken().getType() == TokenType.COMMAND){
 				Command rootCommand = (Command)root.getToken();
 				if(root.getChildren().size()==rootCommand.getNumArgs() && !rootCommand.hasUnlimitedArgs()){
 					String commandString = commandList.get(0);
-					System.out.println(commandString);
 					if(!(unlimitedParam && factory.getInfiniteArgsCommands().contains(commandString))){
-						root=parentNode; //sets root to fd EDIT: head
-						//System.out.println(x);
+						root=parentNode; 
+						parentNode = root.getParent();
 						if(unlimitedParam && i<commandList.size()-1 && !rootCommand.isNullCommand()){
 							tokenNode = factory.genTokenNode(parentNode, commandString, unlimitedParam);
 							root.addChild(tokenNode);
@@ -110,7 +108,7 @@ public class SlogoParser {
 				}	
 			}
 			
-			stringCursor+=commandList.get(i).length() + SPACE.length(); //add 1 for the space character
+			stringCursor+= word.length() + SPACE.length(); //add 1 for the space character
 		}
 		return head;
 	}
