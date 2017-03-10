@@ -82,13 +82,14 @@ public class SlogoParser {
 				i = endListIndex + startListIndex;
 			}
 			else{
-				tokenNode = factory.genTokenNode(parentNode, word, unlimitedParam); //will be global
+				tokenNode = factory.genTokenNode(root, word, unlimitedParam); //will be global //EDIT: parentNode
 			}
 			root.addChild(tokenNode);
 			
 			if(tokenNode.getToken().getType() == TokenType.COMMAND){
 				parentNode=root;
 				root=tokenNode;
+				System.out.println("XXX");
 			}
 			
 			if(root.getToken().getType() == TokenType.COMMAND){

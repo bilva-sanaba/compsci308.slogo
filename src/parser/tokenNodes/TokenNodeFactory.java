@@ -79,16 +79,16 @@ public class TokenNodeFactory {
 					tokenNode = new CommandNode(parentNode, t);
 				}
 				else if(cFactory.containsRuntimeCommand(word)){
-					//check parentNode for TO
+					tokenNode = new CommandNode(parentNode, cFactory.getCommand(word));
+				}
+				else{
+					//System.out.println(((Command)parentNode.getToken()).getID());
 					if(parentNode.getToken().getType()==TokenType.COMMAND && ((Command)parentNode.getToken()).getID().equals("To")){
-						tokenNode = new CommandNode(parentNode, cFactory.getCommand(word));
+						tokenNode = new CommandNode(parentNode, new NullCommand(word));
 					}
 					else{
 						throw new CommandException(String.format("'To' Command must precede: %s ", word));
 					}
-				}
-				else{
-					tokenNode = new CommandNode(parentNode, new NullCommand(word));
 				}
 			}
 			else if(type.equals(VARIABLE)){
