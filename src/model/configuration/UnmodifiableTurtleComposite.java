@@ -39,7 +39,7 @@ public interface UnmodifiableTurtleComposite extends Iterable<SingleTurtleState>
 	 * @return
 	 */
 	public boolean isShowing();
-	
+
 	/**
 	 * Returns turtle ID
 	 * @return
