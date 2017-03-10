@@ -241,4 +241,14 @@ public class SingleTurtleState implements TurtleState{
 	public void setPenColor(int index) {
 		penColor = index;
 	}
+
+	@Override
+	public double right(double degrees) {
+		return this.setHeading(this.getHeading() + degrees);
+	}
+
+	@Override
+	public double left(double degrees) {
+		return this.setHeading(this.getHeading() - degrees);
+	}
 }

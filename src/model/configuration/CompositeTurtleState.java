@@ -158,14 +158,14 @@ public class CompositeTurtleState implements TurtleState, UnmodifiableTurtleComp
 	
 	public double right(double degrees){
 		for(TurtleState t : getActiveTurtleStates()){
-			t.setHeading(t.getHeading() + degrees);
+			t.right(degrees);
 		}
 		return degrees;
 	}
 	
 	public double left(double degrees){
 		for(TurtleState t : getActiveTurtleStates()){
-			t.setHeading(t.getHeading() - degrees);
+			t.left(degrees);
 		}
 		return degrees;
 	}
