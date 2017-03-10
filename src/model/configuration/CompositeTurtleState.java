@@ -1,4 +1,4 @@
-package configuration;
+package model.configuration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +9,9 @@ import java.util.Map.Entry;
 
 /**
  * This class follows the Composite Design pattern, for implementing multiple turtles.
+ * 
+ * There is a lot of repeated code in this section that I could simplify using 
+ * lamdas, which I will do if I have time later.
  * 
  * @author DhruvKPatel
  *
@@ -44,7 +47,7 @@ public class CompositeTurtleState implements TurtleState, UnmodifiableTurtleComp
 	 */
 	@Override
 	public double getX() {
-		return getActiveTurtleStates().get(this.headTurtleIndex()).getX();
+		return getHeadActiveTurtle().getX();
 	}
 
 	/**
@@ -52,7 +55,7 @@ public class CompositeTurtleState implements TurtleState, UnmodifiableTurtleComp
 	 */
 	@Override
 	public double getY() {
-		return getActiveTurtleStates().get(this.headTurtleIndex()).getY();
+		return getHeadActiveTurtle().getY();
 	}
 
 	/**
@@ -60,7 +63,7 @@ public class CompositeTurtleState implements TurtleState, UnmodifiableTurtleComp
 	 */
 	@Override
 	public double getHeading() {
-		return getActiveTurtleStates().get(this.headTurtleIndex()).getHeading();
+		return getHeadActiveTurtle().getHeading();
 	}
 
 	/**
@@ -68,7 +71,7 @@ public class CompositeTurtleState implements TurtleState, UnmodifiableTurtleComp
 	 */
 	@Override
 	public boolean isPenDown() {
-		return getActiveTurtleStates().get(this.headTurtleIndex()).isPenDown();
+		return getHeadActiveTurtle().isPenDown();
 	}
 
 	/**
@@ -76,14 +79,14 @@ public class CompositeTurtleState implements TurtleState, UnmodifiableTurtleComp
 	 */
 	@Override
 	public boolean isShowing() {
-		return getActiveTurtleStates().get(this.headTurtleIndex()).isShowing();
+		return getHeadActiveTurtle().isShowing();
 	}
 
 	/**
 	 * Returns ID of head turtle
 	 */
 	public int getID(){
-		return getActiveTurtleStates().get(this.headTurtleIndex()).getID();
+		return getHeadActiveTurtle().getID();
 	}
 	
 	/** 
@@ -146,16 +149,31 @@ public class CompositeTurtleState implements TurtleState, UnmodifiableTurtleComp
 		return degreesMoved.get(headTurtleIndex());
 	}
 	
+	@Override
+	public void setPenSize(int index) {
+		getHeadActiveTurtle().setPenSize(index);
+	}
+
+	@Override
+	public void setShape(int index) {
+		getHeadActiveTurtle().setShape(index);
+	}
+
+	@Override
+	public void setPenColor(int index) {
+		getHeadActiveTurtle().setPenColor(index);
+	}
+	
 	/*
 	 * The following methods are visible to composite turtle states only
 	 */
 
 	/**
-	 * Returns "head" turtle. (TurtleState that will represent group in singular getter methods)
+	 * Returns "head" active turtle. (TurtleState that will represent group in singular getter methods)
 	 * @return
 	 */
-	private TurtleState headTurtle(){
-		return getActiveTurtleStates().get(headTurtleIndex());
+	private TurtleState getHeadActiveTurtle(){
+		return getActiveTurtleStates().get(this.headTurtleIndex());
 	}
 	
 	/**
@@ -224,6 +242,21 @@ public class CompositeTurtleState implements TurtleState, UnmodifiableTurtleComp
 
 	@Override
 	public void setActive(boolean active) {
-		// fix later
+		return;
+	}
+
+	@Override
+	public int getPenSize() {
+		return getHeadActiveTurtle().getPenSize();
+	}
+
+	@Override
+	public int getShape() {
+		return getHeadActiveTurtle().getShape();
+	}
+
+	@Override
+	public int getPenColor() {
+		return getHeadActiveTurtle().getPenColor();
 	}
 }

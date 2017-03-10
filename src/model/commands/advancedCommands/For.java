@@ -10,17 +10,8 @@ import model.tokens.TList;
 import model.tokens.Variable;
 import model.tokens.VariableContainer;
 
-/**
- * Does commands for each counter
- * @author DhruvKPatel
- *
- */
-public class DoTimes extends AbstractCommand {
+public class For extends AbstractCommand {
 
-	@Override
-	public Scope getScopeRequest() {
-		return new Scope(true, true, true, true);
-	}
 
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {
@@ -30,26 +21,37 @@ public class DoTimes extends AbstractCommand {
 		TList actions = args.getTList(1);
 
 		Variable var = myArgs.getVariable(0);
-		int limit = (int) myArgs.getDouble(1); // rounds down to nearest in
+		double start = myArgs.getDouble(1);
+		double end = myArgs.getDouble(2);
+		double increment = myArgs.getDouble(3);
+		
+		if(increment == 0) throw new CommandException("Loop will never terminate: increment is 0");
+		if((end-start)/increment < 0) throw new CommandException("Loop will never terminate");
 		
 		double returns = 0;
-		for(int i = 1; i <= limit; i++){ // upper limit inclusive
-			vars.set(var, new Constant(i));
+		double counter = start;
+		while(counter <= end){ // upper limit inclusive
+			vars.set(var, new Constant(counter));
 			Arguments returnArgs = actions.evaluateContents(scope);
 			returns = returnArgs.getDouble(returnArgs.numArgs() - 1);
+			counter += increment;
 		}
 		return returns;		
 	}
 
 	@Override
 	public Arguments getDefaultArgs() {
-		Token[] t = {new TList(), new TList()};
-		return new Arguments(t);
+		return new Arguments(new Token[]{new TList(), new TList()});
+	}
+
+	@Override
+	public Scope getScopeRequest() {
+		return new Scope(true, true, true, true);
 	}
 
 	@Override
 	public String getID() {
-		return "DoTimes";
+		return "For";
 	}
 
 }

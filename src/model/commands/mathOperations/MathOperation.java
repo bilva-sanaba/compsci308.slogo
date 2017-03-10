@@ -1,7 +1,7 @@
 package model.commands.mathOperations;
 
-import model.Scope;
 import model.commands.AbstractCommand;
+import model.configuration.Scope;
 
 /**
  * Class for all Math Operation Commands.

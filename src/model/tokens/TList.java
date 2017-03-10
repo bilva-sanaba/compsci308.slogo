@@ -3,12 +3,12 @@ package model.tokens;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Arguments;
 import model.Interpreter;
-import model.Scope;
 import model.Token;
 import model.TokenType;
-import model.commands.CommandException;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.exceptions.CommandException;
 import parser.tokenNodes.TokenNode;
 
 /**

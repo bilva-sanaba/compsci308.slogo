@@ -1,7 +1,7 @@
 package model.commands.turtleCommands;
 
-import model.Scope;
 import model.commands.AbstractCommand;
+import model.configuration.Scope;
 
 /**
  * This class will be a super-class to all "TurtleCommands" and "TurtleQueries".

@@ -1,8 +1,9 @@
 package model;
 
-import configuration.Trajectory;
-import model.commands.CommandException;
 import model.commands.CommandFactory;
+import model.configuration.Scope;
+import model.configuration.Trajectory;
+import model.exceptions.CommandException;
 import model.tokens.VariableContainer;
 import parser.SlogoParser;
 import parser.tokenNodes.TokenNode;

@@ -1,7 +1,7 @@
 package model.commands.turtleCommands;
 
-import model.Arguments;
 import model.Token;
+import model.configuration.Arguments;
 
 public abstract class NoParamCommand extends TurtleCommand {
 	@Override

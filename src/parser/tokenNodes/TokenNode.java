@@ -3,10 +3,10 @@ package parser.tokenNodes;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Arguments;
 import model.Token;
 import model.TokenType;
-import model.commands.CommandException;
+import model.configuration.Arguments;
+import model.exceptions.CommandException;
 /**
  * 
  * @author Jacob Weiss

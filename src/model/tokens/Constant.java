@@ -1,9 +1,9 @@
  package model.tokens;
 
-import model.Arguments;
-import model.Scope;
 import model.Token;
 import model.TokenType;
+import model.configuration.Arguments;
+import model.configuration.Scope;
 
 /**
  * Token: Constant

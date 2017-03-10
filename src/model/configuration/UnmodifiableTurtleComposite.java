@@ -1,4 +1,4 @@
-package configuration;
+package model.configuration;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -46,6 +46,16 @@ public interface UnmodifiableTurtleComposite extends Iterable<SingleTurtleState>
 	 */
 	public int getID();
 	
+	public int getPenSize();
+	
+	public int getShape();
+	
+	public int getPenColor();
+	
+	/*
+	 * Composite stuff
+	 */
+	
 	/**
 	 * Returns viewable map of single states
 	 */
@@ -56,7 +66,10 @@ public interface UnmodifiableTurtleComposite extends Iterable<SingleTurtleState>
 	 */
 	public CompositeTurtleState getCompositeCopy();
 	
-	
+	/**
+	 * Returns generic copy of turtle state
+	 * @return
+	 */
 	public TurtleState getModifiableCopy();
 	
 	/**

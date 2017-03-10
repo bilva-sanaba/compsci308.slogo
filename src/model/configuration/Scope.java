@@ -1,8 +1,8 @@
-package model;
+package model.configuration;
 
-import configuration.Trajectory;
-import model.commands.CommandException;
+import model.World;
 import model.commands.CommandFactory;
+import model.exceptions.CommandException;
 import model.tokens.VariableContainer;
 
 /**

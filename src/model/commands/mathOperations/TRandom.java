@@ -2,9 +2,9 @@ package model.commands.mathOperations;
 
 import java.util.Random;
 
-import model.Arguments;
-import model.Scope;
-import model.commands.CommandException;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.exceptions.CommandException;
 
 /**
  * Returns random non-negative number strictly less than argument

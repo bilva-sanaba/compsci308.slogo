@@ -1,6 +1,8 @@
 package model;
 
-import model.commands.CommandException;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.exceptions.CommandException;
 
 /**
  * This is a very small interface used to encapsulate all Commands, Constants, Variables, and Lists.
