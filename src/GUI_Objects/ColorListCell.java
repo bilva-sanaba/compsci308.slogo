@@ -19,7 +19,7 @@ public class ColorListCell extends ListCell<String>{
             rect.setHeight(20);
             rect.setFill(color);
             setGraphic(rect);
-            setText(Integer.toString(this.getIndex()+1)+": "+item);
+            setText(Integer.toString(this.getIndex())+": "+item);
         }
     }
 }

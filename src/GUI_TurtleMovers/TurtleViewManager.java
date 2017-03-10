@@ -4,7 +4,7 @@ package GUI_TurtleMovers;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import GUI_Objects.Palette;
 import model.configuration.CompositeTurtleState;
 import model.configuration.SingleTurtleState;
 
@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import model.configuration.Trajectory;
 import model.configuration.UnmodifiableTurtleComposite;
 
@@ -24,10 +25,12 @@ public abstract class TurtleViewManager {
     public static final int DEFAULT_FPS = 10;
     public static final double MILLIS_PER_SECOND = 1000;
     protected double penSize;
+    protected Palette myPalette;
     
-	public TurtleViewManager(TurtleView t,GraphicsContext gc){
+	public TurtleViewManager(TurtleView t,GraphicsContext gc, Palette p){
 		myTurtleView=t;
 		graphics = gc;
+		myPalette = p;
 		extraButtons = new ArrayList<Node>();
 		activeClick();
 	}
@@ -39,6 +42,12 @@ public abstract class TurtleViewManager {
 	}
 	private void activeClick(){
 		myTurtleView.getImage().setOnMouseClicked(e -> active=!active);
+	}
+	protected Color getPenColor(SingleTurtleState uts){
+		if (myPalette.evalPalette(uts.getPenColor())!=null){
+			return myPalette.evalPalette(uts.getPenColor());
+		}
+		return myPalette.evalPalette(1);
 	}
 	public List<Label> getStateLabels(){
 		double currentXPos=+myTurtleView.getImage().getX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2-GUI.GUI.BACKGROUND_WIDTH/2;
