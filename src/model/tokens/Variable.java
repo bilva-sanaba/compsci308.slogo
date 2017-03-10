@@ -1,10 +1,10 @@
 package model.tokens;
 
-import model.Arguments;
-import model.Scope;
 import model.Token;
 import model.TokenType;
-import model.commands.CommandException;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.exceptions.CommandException;
 
 /**
  * This class is for variables, to keep track of names/values.

@@ -1,4 +1,4 @@
-package model.commands;
+package model.exceptions;
 
 /**
  * This class represents what might go wrong when creating Commands.

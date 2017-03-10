@@ -10,7 +10,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import model.Model;
-import model.commands.CommandException;
+import model.exceptions.CommandException;
 import model.tokens.Constant;
 import model.tokens.Variable;
 import model.tokens.VariableContainer;

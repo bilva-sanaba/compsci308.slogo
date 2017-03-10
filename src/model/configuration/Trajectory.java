@@ -1,4 +1,4 @@
-package configuration;
+package model.configuration;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -79,7 +79,10 @@ public class Trajectory implements Iterable<UnmodifiableTurtleComposite> {
 	 * Clears entire trajectory
 	 */
 	public void clear(){
-		fullTrajectory = new ArrayList<UnmodifiableTurtleComposite>();
+		fullTrajectory.clear();
+		trajectoryAdditions.clear();
+		addLast(new CompositeTurtleState(new SingleTurtleState(0))); // adds one state at index 0
+
 	}
 	
 	/**
@@ -103,6 +106,7 @@ public class Trajectory implements Iterable<UnmodifiableTurtleComposite> {
 	public String toString(){
 		String s = "______Trajectory______";
 //		for(UnmodifiableTurtleComposite state: this) s += "\n" + state.toString(); // prints all values
+		if(getLast() == null) return s;
 		s += "\n" + getLast().toString(); // prints last values
 		s += "______________________\n";
 		return s;

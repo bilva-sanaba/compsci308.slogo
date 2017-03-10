@@ -4,10 +4,10 @@ package model.commands.advancedCommands;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Arguments;
-import model.Scope;
 import model.commands.AbstractCommand;
-import model.commands.CommandException;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.exceptions.CommandException;
 import model.tokens.Constant;
 import model.tokens.TList;
 import model.tokens.Variable;
@@ -36,9 +36,11 @@ public class TemplateCommand extends AbstractCommand {
 		
 		VariableContainer subVariables = new VariableContainer(scope.getVariables()); // COPIES scope variable, so that instance variables are not added to global set.
 		
+		System.out.println("b4:" + subVariables);
 		for(int i = 0; i < argumentVariables.size(); i++){	// Adds argument variables to sub-scope
 			subVariables.set(argumentVariables.get(i), args.getConstant(i));
 		}
+		System.out.println("after: " + subVariables);
 				
 		Scope subScope = new Scope(scope.getCommands(), subVariables, scope.getTrajectory(), scope.getWorld(), getScopeRequest());
 		

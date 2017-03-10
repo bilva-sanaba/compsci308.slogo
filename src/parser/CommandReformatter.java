@@ -33,7 +33,7 @@ public class CommandReformatter {
 				ans = ans + str;
 			}
 		}
-		return ans;
+		return ans.toLowerCase();
 	}
 	
 

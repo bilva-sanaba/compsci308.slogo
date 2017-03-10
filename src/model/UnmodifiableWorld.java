@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-import configuration.Trajectory;
+import model.configuration.Trajectory;
 import model.tokens.VariableContainer;
 
 /**

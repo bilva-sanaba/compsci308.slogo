@@ -5,8 +5,6 @@ import java.util.List;
 
 import GUI.GUI;
 import GUI_Objects.ButtonMaker;
-import configuration.Trajectory;
-import configuration.UnmodifiableTurtleComposite;
 import javafx.animation.FadeTransition;
 import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
@@ -27,6 +25,8 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import model.configuration.Trajectory;
+import model.configuration.UnmodifiableTurtleComposite;
 
 public class TurtleAnimator extends TurtleViewManager{
 	private static final int DEFAULT_SPEED = 4000;

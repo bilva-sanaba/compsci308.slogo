@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import model.commands.CommandException;
 import model.commands.CommandFactory;
 import model.commands.NullCommand;
+import model.exceptions.CommandException;
 import model.tokens.Command;
 import model.tokens.Constant;
 import model.tokens.Variable;

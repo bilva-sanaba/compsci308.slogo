@@ -15,7 +15,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import model.commands.CommandException;
+import model.exceptions.CommandException;
 
 public class VariableScrollPane {
 	private Group root;

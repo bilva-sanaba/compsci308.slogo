@@ -14,7 +14,6 @@ import GUI_TurtleMovers.TurtleAnimator;
 import GUI_TurtleMovers.TurtleRegularMover;
 import GUI_TurtleMovers.TurtleView;
 import GUI_TurtleMovers.TurtleViewManager;
-import configuration.Trajectory;
 import error.SlogoAlert;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -38,6 +37,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import model.Model;
+import model.configuration.Trajectory;
 import xml.Default;
 import xml.XML;
 import xml.XMLWriter;
@@ -123,7 +123,7 @@ public class GUI {
 		rightScreen.getChildren().add(rp.getPanel());
 	}
 	private void initializeTurtle(){
-		tvm = new TurtleAnimator(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
+		tvm = new TurtleRegularMover(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
 		tvm.getImage().setOnMouseEntered(e->showStates(getStateLabels()));
 		tvm.getImage().setOnMouseExited(e->removeStates());
 	}

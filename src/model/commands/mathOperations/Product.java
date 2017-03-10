@@ -1,8 +1,8 @@
 package model.commands.mathOperations;
 
-import model.Arguments;
-import model.Scope;
-import model.commands.CommandException;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.exceptions.CommandException;
 
 /**
  * Multiplies two Constants together
