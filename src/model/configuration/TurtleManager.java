@@ -1,13 +1,8 @@
-package model;
+package model.configuration;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
-import configuration.CompositeTurtleState;
-import configuration.SingleTurtleState;
-import configuration.Trajectory;
-import configuration.UnmodifiableTurtleComposite;
 
 /**
  * This class Adapts the "Trajectory" objects,

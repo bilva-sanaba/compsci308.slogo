@@ -1,6 +1,6 @@
 package GUI_TurtleMovers;
 
-import configuration.UnmodifiableTurtleComposite;
+import model.configuration.UnmodifiableTurtleComposite;
 
 public class TurtleDotMover extends TurtleViewManager {
 

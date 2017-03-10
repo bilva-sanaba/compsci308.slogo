@@ -5,7 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import model.SlogoModel;
-import model.commands.CommandException;
+import model.exceptions.CommandException;
 
 public class Controller {
 	private GUI_Configuration myGUIBuilder;

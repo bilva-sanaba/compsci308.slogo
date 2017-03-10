@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Stack;
 
 import model.TokenType;
-import model.commands.CommandException;
 import model.commands.CommandFactory;
+import model.exceptions.CommandException;
 import model.tokens.Command;
 import model.tokens.TList;
 import parser.regularExpressions.ProgramParser;
@@ -96,8 +96,10 @@ public class SlogoParser {
 				Command rootCommand = (Command)root.getToken();
 				if(root.getChildren().size()==rootCommand.getNumArgs() && !rootCommand.hasUnlimitedArgs()){
 					String commandString = commandList.get(0);
+					System.out.println(commandString);
 					if(!(unlimitedParam && factory.getInfiniteArgsCommands().contains(commandString))){
-						root=parentNode;
+						root=parentNode; //sets root to fd EDIT: head
+						//System.out.println(x);
 						if(unlimitedParam && i<commandList.size()-1 && !rootCommand.isNullCommand()){
 							tokenNode = factory.genTokenNode(parentNode, commandString, unlimitedParam);
 							root.addChild(tokenNode);

@@ -4,10 +4,10 @@ package model.commands.advancedCommands;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Arguments;
-import model.Scope;
 import model.commands.AbstractCommand;
-import model.commands.CommandException;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.exceptions.CommandException;
 import model.tokens.Constant;
 import model.tokens.TList;
 import model.tokens.Variable;

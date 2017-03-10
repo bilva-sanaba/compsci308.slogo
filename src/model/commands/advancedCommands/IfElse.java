@@ -2,15 +2,15 @@ package model.commands.advancedCommands;
 
 import java.awt.List;
 
-import configuration.Trajectory;
-import configuration.TurtleState;
-import model.Arguments;
 import model.Interpreter;
-import model.Scope;
 import model.Token;
 import model.TokenType;
 import model.commands.AbstractCommand;
-import model.commands.CommandException;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.configuration.Trajectory;
+import model.configuration.TurtleState;
+import model.exceptions.CommandException;
 import model.tokens.Constant;
 import model.tokens.TList;
 import model.tokens.Variable;
