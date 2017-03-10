@@ -78,7 +78,7 @@ public class GUI {
 	public static final int GUI_HEIGHT = GUI_Configuration.SCENE_HEIGHT-120;
 	public static final double BACKGROUND_WIDTH = GUI_WIDTH*5/8;
 	public static final double BACKGROUND_HEIGHT =GUI_HEIGHT*12/17;
-	
+
 	public static final String DEFAULT_FILE="data/Defaults.xml";
 
 	private List<Label> stateLabels;
@@ -189,22 +189,22 @@ public class GUI {
 		Trajectory updates = w.getTrajectoryUpdates();
 		if (updates.getLast()!=null){
 			System.out.println(updates.getLast());
-		for(SingleTurtleState turtle: updates.getLast()){
-			if(!activeTurtles.keySet().contains(turtle.getID())){
-				TurtleView myHomie = new TurtleView(myDefault.getImageString(),myDefault.getPenColor());
-				TurtleViewManager newTurtle = new TurtleAnimator(myHomie,gc,myPalette);
-				placeTurtle(newTurtle);
-				activeTurtles.put(turtle.getID(), newTurtle);
-				configureStateDisplay(newTurtle);
+			for(SingleTurtleState turtle: updates.getLast()){
+				if(!activeTurtles.keySet().contains(turtle.getID())){
+					TurtleView myHomie = new TurtleView(myDefault.getImageString(),myDefault.getPenColor());
+					TurtleViewManager newTurtle = new TurtleAnimator(myHomie,gc,myPalette);
+					placeTurtle(newTurtle);
+					activeTurtles.put(turtle.getID(), newTurtle);
+					configureStateDisplay(newTurtle);
+				}
 			}
+			TurtleUpdater tu = new TurtleUpdater();
+			tu.moveTurtles(updates,activeTurtles);
 		}
-		TurtleUpdater tu = new TurtleUpdater();
-		tu.moveTurtles(updates,activeTurtles);
-		}
-		
+
 		DisplayUpdater du = new DisplayUpdater();
 		du.updatePalette(currentWorld, myPalette);
-		
+		du.updateBackground(currentWorld, background, myPalette);
 		textArea.clear();
 	}
 
@@ -214,7 +214,7 @@ public class GUI {
 			textArea.clear();
 			textArea.setText("clear");
 			gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
-			
+
 		});   
 		Button load= buttonMaker.createButton("Load Preferences",e-> handleLoad());
 		Button save=buttonMaker.createButton("Save Preferences",e->handleSave());
@@ -238,19 +238,19 @@ public class GUI {
 			updateDefaults();
 		}
 		catch(Exception e){;
-			SlogoAlert alert=new SlogoAlert("Not a valid file",e.getMessage());
-			alert.showAlert();
+		SlogoAlert alert=new SlogoAlert("Not a valid file",e.getMessage());
+		alert.showAlert();
 		}
 	}
 	private void updateDefaults() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
 		updateInputPanel();
-			
+
 		updateBackground();
 	}
 	private void updateBackground(){
 		background.setFill(Color.valueOf(myDefault.getBackgroundColor()));
 	}
-	
+
 	private void updateInputPanel() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
 		realInput.updateDefaults(myDefault);
 	}
