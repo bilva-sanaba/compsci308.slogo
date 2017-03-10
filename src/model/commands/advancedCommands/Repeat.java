@@ -1,21 +1,14 @@
 package model.commands.advancedCommands;
 
-import java.awt.List;
-
-import configuration.Trajectory;
-import configuration.TurtleState;
-import model.Arguments;
-import model.Interpreter;
-import model.Scope;
 import model.Token;
-import model.TokenType;
 import model.commands.AbstractCommand;
-import model.commands.CommandException;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.exceptions.CommandException;
 import model.tokens.Constant;
 import model.tokens.TList;
 import model.tokens.Variable;
 import model.tokens.VariableContainer;
-import parser.tokenNodes.TokenNode;
 /**
  * 
  * @author Jacob Weiss
@@ -30,7 +23,7 @@ public class Repeat extends AbstractCommand {
 
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {
-		VariableContainer vars = new VariableContainer();
+		VariableContainer vars = scope.getVariables();
 		
 		int times = (int) args.getDouble(0);
 		TList tList= args.getTList(1);
@@ -38,9 +31,9 @@ public class Repeat extends AbstractCommand {
 		int repcount=1;
 		
 		for(int i=times; i>0; i--){
+			vars.set(new Variable("repcount"), new Constant(repcount));
 			Constant r = (Constant) tList.evaluateContents(scope).getLast();
 			result = r.getVal();
-			vars.set(new Variable("repcount"), new Constant(repcount));
 			repcount++;
 		}
 		
@@ -55,7 +48,6 @@ public class Repeat extends AbstractCommand {
 
 	@Override
 	public String getID() {
-		// TODO Auto-generated method stub
 		return "Repeat";
 	}
 

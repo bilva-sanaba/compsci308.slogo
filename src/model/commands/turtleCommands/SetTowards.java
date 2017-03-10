@@ -1,11 +1,11 @@
 package model.commands.turtleCommands;
 
-import configuration.Trajectory;
-import configuration.TurtleState;
-import model.Arguments;
-import model.Scope;
 import model.Token;
-import model.commands.CommandException;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.configuration.Trajectory;
+import model.configuration.TurtleState;
+import model.exceptions.CommandException;
 import model.tokens.Constant;
 
 /**

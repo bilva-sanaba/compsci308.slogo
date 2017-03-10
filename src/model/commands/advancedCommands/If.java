@@ -1,11 +1,11 @@
 package model.commands.advancedCommands;
 
-import configuration.Trajectory;
-import model.Arguments;
-import model.Scope;
 import model.Token;
 import model.commands.AbstractCommand;
-import model.commands.CommandException;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.configuration.Trajectory;
+import model.exceptions.CommandException;
 import model.tokens.Constant;
 import model.tokens.TList;
 /**

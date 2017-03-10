@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Stack;
 
 import model.TokenType;
-import model.commands.CommandException;
 import model.commands.CommandFactory;
+import model.exceptions.CommandException;
 import model.tokens.Command;
 import model.tokens.TList;
 import parser.regularExpressions.ProgramParser;

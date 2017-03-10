@@ -1,9 +1,10 @@
 package model.commands;
 
-import model.Arguments;
-import model.Scope;
 import model.Token;
 import model.TokenType;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.exceptions.CommandException;
 import model.tokens.Command;
 import model.tokens.Constant;
 

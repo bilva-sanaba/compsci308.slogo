@@ -2,10 +2,10 @@ package model.commands.multipleTurtleCommands;
 
 import java.util.List;
 
-import model.Arguments;
-import model.Scope;
 import model.commands.AbstractCommand;
-import model.commands.CommandException;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.exceptions.CommandException;
 import model.tokens.TList;
 
 /**

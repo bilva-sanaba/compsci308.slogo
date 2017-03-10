@@ -1,4 +1,4 @@
-package configuration;
+package model.configuration;
 
 /**
  * This conceptually represents a "Turtle"
@@ -18,6 +18,10 @@ public class SingleTurtleState implements TurtleState{
 	private double x, y, heading;
 	private boolean penDown, showing;
 	private boolean isActive;
+	private int penSize;
+	private int shapeshape;
+	private int shape;
+	private int penColor;
 	
 	/**
 	 * Constructs new turtle state with given parameters
@@ -207,5 +211,35 @@ public class SingleTurtleState implements TurtleState{
 	 */
 	public boolean isActive(){
 		return isActive;
+	}
+
+	@Override
+	public int getPenSize() {
+		return penSize;
+	}
+
+	@Override
+	public int getShape() {
+		return shape;
+	}
+
+	@Override
+	public int getPenColor() {
+		return penColor;
+	}
+
+	@Override
+	public void setPenSize(int index) {
+		penSize = index;
+	}
+
+	@Override
+	public void setShape(int index) {
+		shape = index;
+	}
+
+	@Override
+	public void setPenColor(int index) {
+		penColor = index;
 	}
 }

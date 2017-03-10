@@ -1,7 +1,7 @@
 package model.commands.mathOperations;
 
-import model.Arguments;
 import model.Token;
+import model.configuration.Arguments;
 import model.tokens.Constant;
 
 /**

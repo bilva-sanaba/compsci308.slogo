@@ -1,9 +1,9 @@
 package model.commands.advancedCommands;
 
-import model.Arguments;
-import model.Scope;
 import model.commands.AbstractCommand;
-import model.commands.CommandException;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.exceptions.CommandException;
 import model.tokens.Constant;
 import model.tokens.Variable;
 import model.tokens.VariableContainer;

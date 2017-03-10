@@ -1,13 +1,13 @@
 package model.commands.turtleQueries;
 
-import configuration.Trajectory;
-import configuration.TurtleState;
-import model.Arguments;
-import model.Scope;
 import model.Token;
-import model.commands.CommandException;
 import model.commands.turtleCommands.NoParamCommand;
 import model.commands.turtleCommands.TurtleCommand;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.configuration.Trajectory;
+import model.configuration.TurtleState;
+import model.exceptions.CommandException;
 import model.tokens.Constant;
 /**
  * 

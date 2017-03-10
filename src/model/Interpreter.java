@@ -2,7 +2,9 @@ package model;
 
 import java.util.Map;
 
-import model.commands.CommandException;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.exceptions.CommandException;
 import model.tokens.TList;
 import parser.tokenNodes.TokenNode;
 

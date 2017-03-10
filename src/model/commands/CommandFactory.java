@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import model.exceptions.CommandException;
 import model.tokens.Command;
 
 /**
@@ -95,8 +96,10 @@ public class CommandFactory {
 	 * Prints current commands listed for debugging
 	 */
 	public String toString(){
-		String s = "Command Factory:\n";
-		for(String cmd : registeredCommands.keySet()) s += String.format("\t %s: \"%s\"\n", cmd, registeredCommands.get(cmd).getID());
+		String s = "Commands:\n";
+//		for(String cmd : registeredCommands.keySet()) s += String.format("\t %s: \"%s\"\n", cmd, registeredCommands.get(cmd).getID());
+		for(String cmd : runtimeAddedCommands) s += String.format("\t %s: \"%s\"\n", cmd, cmd);
+
 		return s;
 	}
 

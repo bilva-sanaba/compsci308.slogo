@@ -1,9 +1,9 @@
 package model.commands.multipleTurtleCommands;
 
-import model.Arguments;
-import model.Scope;
 import model.Token;
 import model.commands.AbstractCommand;
+import model.configuration.Arguments;
+import model.configuration.Scope;
 import model.tokens.TList;
 
 public abstract class AskCommand extends AbstractCommand {
