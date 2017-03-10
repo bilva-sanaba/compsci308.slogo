@@ -16,6 +16,7 @@ public Adapter(){
 public static Map<Integer,SingleTurtleTrajectory>getSingleTrajectories(Trajectory t){
 	Map<Integer, SingleTurtleTrajectory> map=new HashMap<Integer,SingleTurtleTrajectory>();
 	UnmodifiableTurtleComposite last=t.getLast();
+	
 	ArrayList<Integer>presentTurtles=new ArrayList<Integer>();
 	for(SingleTurtleState turtle:last){
 		int i=turtle.getID();

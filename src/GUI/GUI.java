@@ -7,6 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,8 +19,7 @@ import GUI_TurtleMovers.TurtleDotMover;
 import GUI_TurtleMovers.TurtleRegularMover;
 import GUI_TurtleMovers.TurtleView;
 import GUI_TurtleMovers.TurtleViewManager;
-import configuration.SingleTurtleState;
-import configuration.Trajectory;
+
 import error.SlogoAlert;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -45,6 +45,8 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import model.Model;
 import model.UnmodifiableWorld;
 import model.World;
+import model.configuration.SingleTurtleState;
+import model.configuration.Trajectory;
 import xml.Default;
 import xml.XML;
 import xml.XMLWriter;
@@ -65,6 +67,7 @@ public class GUI {
 	private TurtleViewManager tvm;
 	private List<Button> otherButtons;
 	private ButtonMaker buttonMaker = new ButtonMaker();
+	private TextAreaWriter textAreaWriter;
 	BorderPane bottomPanel=new BorderPane();
 	private Map<Integer, TurtleViewManager> activeTurtles;
 	public InputHandler inputHandler=new WASDMover();
@@ -91,10 +94,10 @@ public class GUI {
 		initializeMainScreen();
 		initializeTurtle();
 		createInputPanel();
-		placeTurtle();
+		placeTurtle(tvm);
 	}
-	private void placeTurtle(){
-		drawTurtle();
+	private void placeTurtle(TurtleViewManager tvm){
+		drawTurtle(tvm);
 		wrapperPane.getChildren().add(tvm.getImage());
 	}
 	public void handleKeyInput(KeyCode code){
@@ -109,7 +112,7 @@ public class GUI {
 		createCanvas();
 	}
 	private void createInputPanel(){
-		realInput = new InputPanel(tvm, otherButtons,background,GUI_WIDTH,GUI_HEIGHT,myDefault);
+		realInput = new InputPanel(tvm, otherButtons,background,GUI_WIDTH,GUI_HEIGHT,myDefault,textAreaWriter,runButton);
 		bottomPanel.setCenter(realInput.getBottomPanel());
 		myRoot.setBottom(bottomPanel);
 	}
@@ -118,7 +121,8 @@ public class GUI {
 	}
 	private void initializeTurtle(){
 		tvm = new TurtleRegularMover(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
-		activeTurtles.put(1, tvm);
+		activeTurtles = new HashMap<Integer, TurtleViewManager>();
+		activeTurtles.put(0, tvm);
 		tvm.getImage().setOnMouseEntered(e->showStates(getStateLabels()));
 		tvm.getImage().setOnMouseExited(e->removeStates());
 	}
@@ -132,7 +136,7 @@ public class GUI {
 	private void removeStates(){
 		wrapperPane.getChildren().removeAll(stateLabels);
 	}
-	private void drawTurtle(){	
+	private void drawTurtle(TurtleViewManager tvm){	
 		tvm.setX(background.getBoundsInLocal().getWidth()/2);
 		tvm.setY(background.getBoundsInLocal().getHeight()/2);
 	}
@@ -144,6 +148,7 @@ public class GUI {
 	private void createTextArea(){
 		textArea = new TextArea();
 		//Ratio chosen to impose symmetry,
+		textAreaWriter = new TextAreaWriter(textArea);
 		textArea.setMaxWidth(GUI_WIDTH/3);
 		textArea.setMinWidth(GUI_WIDTH/3);
 		textArea.setPromptText("Enter Code Here");
@@ -153,7 +158,7 @@ public class GUI {
 	private void createRoot() {
 		createTextArea();
 		lp = new LeftPanel(GUI_WIDTH,GUI_HEIGHT,model);
-		rp = new RightPanel(textArea, runButton, GUI_WIDTH,GUI_HEIGHT);	
+		rp = new RightPanel(textAreaWriter, runButton, GUI_WIDTH,GUI_HEIGHT);	
 		myRoot.setCenter(wrapperPane);
 		myRoot.setLeft(lp.getPanel());	
 		myRoot.setRight(rightScreen);
@@ -171,14 +176,23 @@ public class GUI {
 	}
 	public void handleRunButton(UnmodifiableWorld w){
 		rp.getScrollPane().addText();
-		for(SingleTurtleState turtle:w.getTrajectoryUpdates().getLast()){
+		Trajectory updates = w.getTrajectoryUpdates();
+		//System.out.println(w.getTrajectoryUpdates().getLast());
+		
+		for(SingleTurtleState turtle: updates.getLast()){
+		
 			if(!activeTurtles.keySet().contains(turtle.getID())){
-				TurtleViewManager newTurtle = new TurtleRegularMover(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()),gc);
+				TurtleView myHomie = new TurtleView(myDefault.getImageString(),myDefault.getPenColor());
+				
+				TurtleViewManager newTurtle = new TurtleRegularMover(myHomie,gc);
+				placeTurtle(newTurtle);
 				activeTurtles.put(turtle.getID(), newTurtle);
 			}
 		}
-		TurtleUpdater.moveTurtles(w,activeTurtles);
-		tvm.moveTurtle(w,background.getBoundsInLocal().getWidth(),background.getBoundsInLocal().getHeight());
+		
+		TurtleUpdater tu = new TurtleUpdater();
+		tu.moveTurtles(updates,activeTurtles);
+		
 		textArea.clear();
 	}
 	private void createButtons(){
