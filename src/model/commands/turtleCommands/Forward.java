@@ -3,10 +3,10 @@ package model.commands.turtleCommands;
 import configuration.Trajectory;
 import configuration.TurtleState;
 import model.Arguments;
-import model.Constant;
 import model.Scope;
 import model.Token;
 import model.commands.CommandException;
+import model.tokens.Constant;
 /**
  * 
  * @author Jacob Weiss
@@ -28,7 +28,6 @@ public class Forward extends OneParamCommand {
 
 	@Override
 	public String getID() {
-		// TODO Auto-generated method stub
 		return "Forward";
 	}
 

@@ -5,31 +5,19 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Holds a trajectory of Unmodifiable TurtleStates
- * 
- * The purpose of this class is to transfer knowledge of
- * Turtle's motion from the model to the view. The first item
- * in a trajectory will always be the Turtle's initial state, 
- * and the last item will be its final State.
- * 
- * Features:
- * - Once a TurtleState is added to a trajectory,
- * it is no longer modifiable. This is to prevent further tampering.
- * 
- * - Adding the same state to a trajectory twice in a row will only create
- * one new trajectory state (reduces unecessary repeating).
+ * Holds a single turtle's trajectory of Unmodifiable TurtleStates
  * 
  * @author DhruvKPatel
  */
-public class Trajectory implements Iterable<UnmodifiableTurtleState> {
+public class Trajectory implements Iterable<UnmodifiableTurtleComposite> {
 	
-	ArrayList<UnmodifiableTurtleState> fullTrajectory;
-	ArrayList<UnmodifiableTurtleState> trajectoryAdditions;
+	ArrayList<UnmodifiableTurtleComposite> fullTrajectory;
+	ArrayList<UnmodifiableTurtleComposite> trajectoryAdditions;
 	
 	/**
 	 * Constructs a Trajectory from a list of UnmodifiableTurtleStates
 	 */
-	public Trajectory(List<UnmodifiableTurtleState> states){
+	public Trajectory(List<UnmodifiableTurtleComposite> states){
 		fullTrajectory = new ArrayList<>(states);
 		trajectoryAdditions = new ArrayList<>(); // Insert "states" into parameter if first trajectory should contain initial state
 	}
@@ -38,7 +26,7 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	 * Copy constructor
 	 * @param original
 	 */
-	public Trajectory(Trajectory original){
+	public Trajectory (Trajectory original){
 		this(original.fullTrajectory);
 	}
 	
@@ -47,9 +35,7 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	 * Use methods to add to end of trajectory
 	 */
 	public Trajectory(){
-		this(new ArrayList<UnmodifiableTurtleState>());
-		fullTrajectory.add(new TurtleState());
-		trajectoryAdditions.add(new TurtleState());
+		this(new ArrayList<UnmodifiableTurtleComposite>());
 	}
 	
 	/**
@@ -57,10 +43,16 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	 * than the previous
 	 * @param nextState
 	 */
-	public void addLast(TurtleState nextState){
+	public void addLastComposite(UnmodifiableTurtleComposite nextState){
 		if(!nextState.equals(getLast()))
-			fullTrajectory.add((UnmodifiableTurtleState)nextState.getModifiableCopy());	
-			trajectoryAdditions.add((UnmodifiableTurtleState)nextState.getModifiableCopy());
+			fullTrajectory.add((UnmodifiableTurtleComposite)nextState.getCompositeCopy());	
+			trajectoryAdditions.add((UnmodifiableTurtleComposite)nextState.getCompositeCopy());
+	}
+	
+	public void addLast(TurtleState nextState){
+		if(nextState instanceof CompositeTurtleState){
+			addLastComposite((UnmodifiableTurtleComposite)nextState);
+		}
 	}
 	
 	/**
@@ -71,7 +63,6 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	public Trajectory getMostRecentAdditions(){
 		Trajectory newTraj =  new Trajectory(trajectoryAdditions);
 		trajectoryAdditions.clear();
-//		trajectoryAdditions.add(getLast());// Uncomment if frontend wants start state every time
 		return newTraj;		
 	}
 	
@@ -79,7 +70,7 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	 * Returns last state in Trajectory.
 	 * @return
 	 */
-	public UnmodifiableTurtleState getLast(){
+	public UnmodifiableTurtleComposite getLast(){
 		if(fullTrajectory.size() == 0) return null;
 		return fullTrajectory.get(fullTrajectory.size() - 1);
 	}
@@ -88,7 +79,7 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	 * Clears entire trajectory
 	 */
 	public void clear(){
-		fullTrajectory = new ArrayList<UnmodifiableTurtleState>();
+		fullTrajectory = new ArrayList<UnmodifiableTurtleComposite>();
 	}
 	
 	/**
@@ -102,7 +93,7 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	 * This method exists to allow the class to be iterable
 	 */
 	@Override
-	public Iterator<UnmodifiableTurtleState> iterator() {
+	public Iterator<UnmodifiableTurtleComposite> iterator() {
 		return fullTrajectory.iterator();
 	}
 	
@@ -111,7 +102,8 @@ public class Trajectory implements Iterable<UnmodifiableTurtleState> {
 	 */
 	public String toString(){
 		String s = "______Trajectory______";
-		for(UnmodifiableTurtleState state: this) s += "\n" + state.toString();
+//		for(UnmodifiableTurtleComposite state: this) s += "\n" + state.toString(); // prints all values
+		s += "\n" + getLast().toString(); // prints last values
 		s += "______________________\n";
 		return s;
 	}

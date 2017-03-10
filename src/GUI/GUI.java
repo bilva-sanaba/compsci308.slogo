@@ -41,6 +41,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import model.Model;
+import model.UnmodifiableWorld;
+import model.World;
 import xml.Default;
 import xml.XML;
 import xml.XMLWriter;
@@ -62,9 +64,12 @@ public class GUI {
 	private List<Button> otherButtons;
 	private ButtonMaker buttonMaker = new ButtonMaker();
 	BorderPane bottomPanel=new BorderPane();
-	public static final int SCENE_WIDTH = 1200; 
-	public static final int SCENE_HEIGHT = 680;
 	public InputHandler inputHandler=new WASDMover();
+	public static final int GUI_WIDTH = GUI_Configuration.SCENE_WIDTH; 
+	public static final int GUI_HEIGHT = GUI_Configuration.SCENE_HEIGHT-120;
+	public static final double BACKGROUND_WIDTH = GUI_WIDTH*5/8;
+	public static final double BACKGROUND_HEIGHT =GUI_HEIGHT*12/17;
+	
 	public static final String DEFAULT_FILE="data/Defaults.xml";
 
 	private List<Label> stateLabels;
@@ -95,13 +100,13 @@ public class GUI {
 		}
 	}
 	private void initializeMainScreen(){
-		background=new Rectangle(750,480,Color.valueOf(myDefault.getBackgroundColor()));
+		background=new Rectangle(BACKGROUND_WIDTH,BACKGROUND_HEIGHT,Color.valueOf(myDefault.getBackgroundColor()));
 		wrapperPane.setClip(new Rectangle(background.getLayoutX(),background.getLayoutY(),background.getBoundsInLocal().getWidth(),background.getBoundsInLocal().getHeight()));
 		wrapperPane.getChildren().add(background);
 		createCanvas();
 	}
 	private void createInputPanel(){
-		realInput = new InputPanel(tvm, otherButtons,background,SCENE_WIDTH,SCENE_HEIGHT,myDefault);
+		realInput = new InputPanel(tvm, otherButtons,background,GUI_WIDTH,GUI_HEIGHT,myDefault);
 		bottomPanel.setCenter(realInput.getBottomPanel());
 		myRoot.setBottom(bottomPanel);
 	}
@@ -109,7 +114,7 @@ public class GUI {
 		rightScreen.getChildren().add(rp.getPanel());
 	}
 	private void initializeTurtle(){
-		tvm = new TurtleAnimator(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
+		tvm = new TurtleRegularMover(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
 		tvm.getImage().setOnMouseEntered(e->showStates(getStateLabels()));
 		tvm.getImage().setOnMouseExited(e->removeStates());
 	}
@@ -134,14 +139,17 @@ public class GUI {
 	}
 	private void createTextArea(){
 		textArea = new TextArea();
+		//Ratio chosen to impose symmetry,
+		textArea.setMaxWidth(GUI_WIDTH/3);
+		textArea.setMinWidth(GUI_WIDTH/3);
 		textArea.setPromptText("Enter Code Here");
 		bottomPanel.setLeft(textArea);
 		myRoot.setBottom(bottomPanel);
 	}
 	private void createRoot() {
 		createTextArea();
-		lp = new LeftPanel(SCENE_WIDTH,SCENE_HEIGHT,model);
-		rp = new RightPanel(textArea, runButton, SCENE_WIDTH,SCENE_HEIGHT);	
+		lp = new LeftPanel(GUI_WIDTH,GUI_HEIGHT,model);
+		rp = new RightPanel(textArea, runButton, GUI_WIDTH,GUI_HEIGHT);	
 		myRoot.setCenter(wrapperPane);
 		myRoot.setLeft(lp.getPanel());	
 		myRoot.setRight(rightScreen);
@@ -157,9 +165,10 @@ public class GUI {
 	public String getText(){
 		return textArea.getText();
 	}
-	public void handleRunButton(Trajectory T){
+	public void handleRunButton(UnmodifiableWorld w){
 		rp.getScrollPane().addText();
-		tvm.moveTurtle(T,background.getBoundsInLocal().getWidth(),background.getBoundsInLocal().getHeight());
+		TurtleUpdater.moveTurtles(w);
+		tvm.moveTurtle(w,background.getBoundsInLocal().getWidth(),background.getBoundsInLocal().getHeight());
 		textArea.clear();
 	}
 	private void createButtons(){

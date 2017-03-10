@@ -4,8 +4,10 @@ package GUI_TurtleMovers;
 import java.util.ArrayList;
 import java.util.List;
 
+import configuration.CompositeTurtleState;
+import configuration.SingleTurtleState;
 import configuration.Trajectory;
-import configuration.UnmodifiableTurtleState;
+import configuration.UnmodifiableTurtleComposite;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
@@ -53,18 +55,18 @@ public abstract class TurtleViewManager {
 			labels.get(i).setLayoutY(10*i);
 		}
 	}
-	public void moveTurtle(Trajectory T,double screenWidth, double screenHeight){
-		for(UnmodifiableTurtleState uts:T){
+	public void moveTurtle(SingleTurtleTrajectory T,double screenWidth, double screenHeight){
+		for(SingleTurtleState uts:T){
 			draw(uts,screenWidth,screenHeight);
 			moveLocation(uts,screenWidth,screenHeight);
 			rotate(uts);
 			changeVisibility(uts);
 		}
 	}
-	protected abstract void draw(UnmodifiableTurtleState uts,double screenWidth, double screenHeight);
-	protected abstract void moveLocation(UnmodifiableTurtleState uts,double screenWidth, double screenHeight);
-	protected abstract void rotate(UnmodifiableTurtleState uts);
-	protected abstract void changeVisibility(UnmodifiableTurtleState uts);
+	protected abstract void draw(SingleTurtleState uts,double screenWidth, double screenHeight);
+	protected abstract void moveLocation(SingleTurtleState uts,double screenWidth, double screenHeight);
+	protected abstract void rotate(SingleTurtleState uts);
+	protected abstract void changeVisibility(SingleTurtleState uts);
 	
 	protected static class Location {
 		double x;

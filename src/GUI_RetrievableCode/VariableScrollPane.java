@@ -36,20 +36,14 @@ for(String s:myVariables.keySet()){
 	StackPane entry=new StackPane();
 	FlowPane textPane=new FlowPane();	
 	
-	Rectangle r=new Rectangle();
 		Text text=new Text("    "+s+":  ");
 		TextField t=new TextField(Double.toString(variables.get(s)));
 		t.setMaxWidth(30);
 		t.setOnKeyPressed(e->changeVariable(e.getCode(),s,t));
-		r.setFill(Color.WHITE);
-		 r.setStroke(Color.BLACK);
-		 r.setWidth(myScrollPane.getPrefWidth());
-		 r.setHeight(text.getBoundsInLocal().getHeight()+10);
 		 textPane.setPrefWidth(t.getMaxWidth()+text.getBoundsInLocal().getWidth());
 		 textPane.getChildren().add(text);
 		 textPane.getChildren().add(t);
 		 entry.setMaxWidth(myScrollPane.getPrefWidth()-1);
-		 entry.getChildren().add(r);
 		 entry.getChildren().add(textPane);
 		 entry.setLayoutY(startingHeight);
 		 startingHeight+=entry.getBoundsInLocal().getHeight()+12;

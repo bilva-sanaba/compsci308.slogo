@@ -1,10 +1,7 @@
 import GUI.GUI;
 import GUI.GUI_Configuration;
-import configuration.TurtleState;
-import configuration.UnmodifiableTurtleState;
 import error.SlogoAlert;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import model.SlogoModel;
@@ -42,7 +39,7 @@ public class Controller {
 		String text = gui.getText();
 		model.setLanguage(gui.getCurrentLanguage());
 		try {
-			gui.handleRunButton(model.getTrajectory(text));
+			gui.handleRunButton(model.getWorld(text));
 		} catch (CommandException|NumberFormatException e){
 			SlogoAlert alert=new SlogoAlert("Learn to Code: https://www.codeschool.com/",e.getMessage());
 			alert.showAlert();

@@ -2,9 +2,9 @@ package model.commands.multipleTurtleCommands;
 
 import model.Arguments;
 import model.Scope;
-import model.TList;
 import model.Token;
 import model.commands.AbstractCommand;
+import model.tokens.TList;
 
 public abstract class AskCommand extends AbstractCommand {
 	
@@ -28,4 +28,6 @@ public abstract class AskCommand extends AbstractCommand {
 		Token[] returnArgs = {new TList(), new TList()};
 		return new Arguments(returnArgs);
 	}
+	
+	
 }

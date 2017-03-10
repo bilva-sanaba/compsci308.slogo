@@ -1,6 +1,7 @@
 package GUI_TurtleMovers;
 
-import configuration.UnmodifiableTurtleState;
+
+import configuration.SingleTurtleState;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextField;
 import javafx.scene.shape.Circle;
@@ -19,7 +20,7 @@ public class TurtleDotMover extends TurtleViewManager {
 			createPenSizeChooser();
 			 createStamp();
 		}
-	protected void moveLocation(UnmodifiableTurtleState uts,double screenWidth, double screenHeight){
+	protected void moveLocation(SingleTurtleState uts,double screenWidth, double screenHeight){
 		double newX=uts.getX()+screenWidth/2-myTurtleView.getImage().getBoundsInLocal().getWidth()/2;
 		double newY=-uts.getY()+screenHeight/2-myTurtleView.getImage().getBoundsInLocal().getHeight()/2;
 		myTurtleView.setX(newX);
@@ -40,7 +41,7 @@ public class TurtleDotMover extends TurtleViewManager {
 		extraButtons.add(penSizeButton);	
 	}
 
-	protected void draw(UnmodifiableTurtleState uts,double screenWidth, double screenHeight){
+	protected void draw(SingleTurtleState uts,double screenWidth, double screenHeight){
 		myTurtleView.setPen(uts.isPenDown());
 		if (myTurtleView.getPen()){
 			double oldX=myTurtleView.getImage().getX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2;
@@ -55,11 +56,11 @@ public class TurtleDotMover extends TurtleViewManager {
 	private void createStamp(){
 		stamp = new Circle(penSize,myTurtleView.getPenColor());
 	}
-	protected void rotate(UnmodifiableTurtleState uts){
+	protected void rotate(SingleTurtleState uts){
 		double newHeading=uts.getHeading();
 		myTurtleView.getImage().setRotate(newHeading);
 	}
-	protected void changeVisibility(UnmodifiableTurtleState uts){
+	protected void changeVisibility(SingleTurtleState uts){
 		myTurtleView.setVisibility(uts.isShowing());
 	}
 }

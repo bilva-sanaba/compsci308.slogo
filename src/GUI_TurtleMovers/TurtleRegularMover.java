@@ -1,6 +1,7 @@
 package GUI_TurtleMovers;
+import configuration.SingleTurtleState;
 import configuration.Trajectory;
-import configuration.UnmodifiableTurtleState;
+import configuration.UnmodifiableTurtleComposite;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -19,7 +20,7 @@ public class TurtleRegularMover extends TurtleViewManager{
 		super(t,gc);
 	}
 
-protected void moveLocation(UnmodifiableTurtleState uts,double screenWidth, double screenHeight){
+protected void moveLocation(SingleTurtleState uts,double screenWidth, double screenHeight){
 	double newX=uts.getX()+screenWidth/2-myTurtleView.getImage().getBoundsInLocal().getWidth()/2;
 	double newY=-uts.getY()+screenHeight/2-myTurtleView.getImage().getBoundsInLocal().getHeight()/2;
 	myTurtleView.setX(newX);
@@ -40,7 +41,7 @@ protected void moveLocation(UnmodifiableTurtleState uts,double screenWidth, doub
 //	extraButtons.add(penSizeButton);	
 //}
 
-protected void draw(UnmodifiableTurtleState uts,double screenWidth, double screenHeight){
+protected void draw(SingleTurtleState uts,double screenWidth, double screenHeight){
 	myTurtleView.setPen(uts.isPenDown());
 	if (myTurtleView.getPen()){
 		double oldX=myTurtleView.getImage().getX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2;
@@ -53,11 +54,11 @@ protected void draw(UnmodifiableTurtleState uts,double screenWidth, double scree
 		graphics.strokeLine(oldX, oldY, penX, penY);
 	}
 }
-protected void rotate(UnmodifiableTurtleState uts){
+protected void rotate(SingleTurtleState uts){
 	double newHeading=uts.getHeading();
 	myTurtleView.getImage().setRotate(newHeading);
 }
-protected void changeVisibility(UnmodifiableTurtleState uts){
+protected void changeVisibility(SingleTurtleState uts){
 	myTurtleView.setVisibility(uts.isShowing());
 }
 }

@@ -3,6 +3,7 @@ package model;
 import configuration.Trajectory;
 import model.commands.CommandException;
 import model.commands.CommandFactory;
+import model.tokens.VariableContainer;
 
 
 public interface Model {
@@ -23,7 +24,7 @@ public interface Model {
 	/**
 	 * Returns world of turtles and background
 	 */
-	public World getWorld(String commands) throws CommandException;
+	public UnmodifiableWorld getWorld(String commands) throws CommandException;
 	
 	/**
 	 * Sets language for model to interpret with

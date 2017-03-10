@@ -5,8 +5,10 @@ import java.util.List;
 
 import GUI.GUI;
 import GUI_Objects.ButtonMaker;
+import configuration.CompositeTurtleState;
+import configuration.SingleTurtleState;
 import configuration.Trajectory;
-import configuration.UnmodifiableTurtleState;
+import configuration.UnmodifiableTurtleComposite;
 import javafx.animation.FadeTransition;
 import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
@@ -80,9 +82,9 @@ public class TurtleAnimator extends TurtleViewManager{
 		});
 	}
 	@Override
-	public void moveTurtle(Trajectory T,double screenWidth, double screenHeight){
+	public void moveTurtle(SingleTurtleTrajectory T,double screenWidth, double screenHeight){
 		SequentialTransition x = new SequentialTransition();
-		for (UnmodifiableTurtleState uts : T){
+		for (SingleTurtleState uts : T){
 			if (!skipFirst){
 				currentXPos=myTurtleView.getImage().getX()+myTurtleView.getImage().getTranslateX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2;
 				currentYPos=myTurtleView.getImage().getY()+myTurtleView.getImage().getTranslateY()+myTurtleView.getImage().getBoundsInLocal().getHeight()/2;
@@ -106,22 +108,22 @@ public class TurtleAnimator extends TurtleViewManager{
 		x.play();
 	}
 	@Override
-	protected void draw(UnmodifiableTurtleState uts, double screenWidth, double screenHeight) {
+	protected void draw(SingleTurtleState uts, double screenWidth, double screenHeight) {
 		//no function because drawing is simultaneous with movement
 	}
 	@Override
-	protected void moveLocation(UnmodifiableTurtleState uts, double screenWidth, double screenHeight){
+	protected void moveLocation(SingleTurtleState uts, double screenWidth, double screenHeight){
 
 	}
 	@Override
-	protected void rotate(UnmodifiableTurtleState uts){
+	protected void rotate(SingleTurtleState uts){
 
 	}
 	@Override
-	protected void changeVisibility(UnmodifiableTurtleState uts){
+	protected void changeVisibility(SingleTurtleState uts){
 
 	}
-	protected PathTransition moveLocations(UnmodifiableTurtleState uts, double screenWidth, double screenHeight, double X, double Y) {
+	protected PathTransition moveLocations(SingleTurtleState uts, double screenWidth, double screenHeight, double X, double Y) {
 		
 		double penX=uts.getX()+screenWidth/2;
 		double penY=-uts.getY()+screenHeight/2;
@@ -174,7 +176,7 @@ public class TurtleAnimator extends TurtleViewManager{
 	}				            
 
 
-	protected RotateTransition rotates(UnmodifiableTurtleState uts, double width) {
+	protected RotateTransition rotates(SingleTurtleState uts, double width) {
 		
 		if (uts.getHeading()!=currentRotate){
 			RotateTransition rt = new RotateTransition(Duration.millis(speed),myTurtleView.getImage());
@@ -186,7 +188,7 @@ public class TurtleAnimator extends TurtleViewManager{
 		return null;
 	}
 
-	protected FadeTransition changeVisibilitys(UnmodifiableTurtleState uts,double width) {
+	protected FadeTransition changeVisibilitys(SingleTurtleState uts,double width) {
 		double newOpacity=0;
 		if (uts.isShowing()){
 			newOpacity=1.0;

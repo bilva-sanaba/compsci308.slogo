@@ -28,7 +28,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -51,7 +51,7 @@ public class InputPanel {
 	private Pane returnPanel;
 	private GridPane inputPanel = new GridPane();
 	private String currentLanguage = "English";
-	private ChoiceBox<String> languages;
+	private ComboBox<String> languages;
 	private PenColorChooser pb;
 	private static final String HELP_WINDOW_TITLE="Syntax";
 	private static final String HELP_URL="resources/help.html";
@@ -83,6 +83,8 @@ private Pane initInputPanel(List<Button> otherButtons) {
     controlButtons.getChildren().add(help);
     inputPanel.setConstraints(controlButtons,0,0);
     inputPanel.getChildren().add(controlButtons);
+    bottomPanel.getStyleClass().add("pane");
+    //bottomPanel.setMinHeight(GUI_Configuration.SCENE_WIDTH*3/16);
     return bottomPanel;
 }
 private void addBackgroundButton(Shape background){
@@ -133,9 +135,9 @@ private void addExtraButtons(){
 	 inputPanel.getChildren().add(penButton);
 }
 
-private ChoiceBox<String> createLanguageBox() {
+private ComboBox<String> createLanguageBox() {
 	List<String> Languages = (new LanguageFactory()).getLanguages();
-	ChoiceBox<String> languageBox = createChoiceBox(Languages, (observable, oldValue, newValue) -> {
+	ComboBox<String> languageBox = createComboBox(Languages, (observable, oldValue, newValue) -> {
         setLanguage(Languages.get((newValue.intValue())));
         });
 	languages=languageBox;
@@ -159,7 +161,7 @@ private Object makeClass(Class<?> clazz, TurtleViewManager t,Default d) throws I
 }
 private void updatePenColor(Default d) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
 	Class<?>clazz=Class.forName(pb.getClass().getName());
-	topButtons.getChildren().removeAll();
+	topButtons.getChildren().clear();
 	pb=(PenColorChooser)makeClass(clazz,tvm,d);
 	placePenButton();
 	tvm.getTurtleView().setPenColor(Color.valueOf(d.getPenColor()));
@@ -174,13 +176,13 @@ private void setLanguage(String language){
 public String getCurrentLanguage(){
 	return currentLanguage;
 }
-private ChoiceBox<String> createChoiceBox(List<String> items, ChangeListener<? super Number> listener) {
-    ChoiceBox<String> cb = createChoiceBox(items);
+private ComboBox<String> createComboBox(List<String> items, ChangeListener<? super Number> listener) {
+    ComboBox<String> cb = createComboBox(items);
     cb.getSelectionModel().selectedIndexProperty().addListener(listener);
     return cb;
 }
-private ChoiceBox<String> createChoiceBox(List<String> items) {
-    ChoiceBox<String> cb = new ChoiceBox<String>(FXCollections.observableArrayList(items));
+private ComboBox<String> createComboBox(List<String> items) {
+    ComboBox<String> cb = new ComboBox<String>(FXCollections.observableArrayList(items));
     cb.getSelectionModel().selectFirst();
     return cb;
 }
