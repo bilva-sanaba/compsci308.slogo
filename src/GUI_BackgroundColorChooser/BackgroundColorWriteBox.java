@@ -1,5 +1,7 @@
 package GUI_BackgroundColorChooser;
 
+import GUI.Language;
+import GUI.TextAreaWriter;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,10 +17,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 public class BackgroundColorWriteBox extends BackgroundColorComboBox {
-	private Paint p;
+	private Color p;
 	private TextField inputText;
-	public BackgroundColorWriteBox(Shape rect){
-		super(rect);
+	public BackgroundColorWriteBox(Shape rect,TextAreaWriter t,Language l){
+		super(rect,t,l);
 		doStuff();
 		displays.add(1,inputText);
 	}
@@ -49,7 +51,7 @@ public class BackgroundColorWriteBox extends BackgroundColorComboBox {
 		});
 	}
 	@Override
-	protected Paint generateColor() {
+	protected Color generateColor() {
 		return p;
 	}
 
