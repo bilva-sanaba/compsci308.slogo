@@ -29,7 +29,7 @@ import model.configuration.Trajectory;
 import model.configuration.UnmodifiableTurtleComposite;
 
 public class TurtleAnimator extends TurtleViewManager{
-	private static final int DEFAULT_SPEED = 4000;
+	private static final int DEFAULT_SPEED = 1500;
 	private int speed=DEFAULT_SPEED;
 	private ButtonMaker buttonMaker = new ButtonMaker();
 	private Slider slider;
@@ -71,8 +71,8 @@ public class TurtleAnimator extends TurtleViewManager{
 	}
 	private void createSpeedSlider() {
 		speedLabel = buttonMaker.createLabel("Animation Speed : " + Integer.toString(DEFAULT_SPEED) + " milliseconds");
-		slider = new Slider(1, 8000, 4000);
-		slider.setMajorTickUnit(1000);
+		slider = new Slider(DEFAULT_SPEED/30, 2*DEFAULT_SPEED, DEFAULT_SPEED);
+		slider.setMajorTickUnit(DEFAULT_SPEED/3);
 		slider.setShowTickMarks(true);
 		slider.setSnapToTicks(true);
 		extraButtons.add(speedLabel);

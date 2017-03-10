@@ -4,7 +4,9 @@ package GUI;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +46,7 @@ import xml.XMLWriter;
 
 public class GUI {
 	private BorderPane myRoot = new BorderPane();
-	private TextArea textArea=new TextArea();
+	private TextAreaWriter textAreaWriter;
 	private Canvas canvas;
 	private InputPanel realInput;
 	private GraphicsContext gc;
@@ -89,19 +91,19 @@ public class GUI {
 	public void handleKeyInput(KeyCode code){
 		if (tvm.isActive()){
 			if (code == KeyCode.W){
-				textArea.setText("fd 100");
+				textAreaWriter.setText("fd 100");
 				runButton.fire();
 			}
 			if (code == KeyCode.S){
-				textArea.setText("back 100");
+				textAreaWriter.setText("back 100");
 				runButton.fire();
 			}
 			if (code == KeyCode.A){
-				textArea.setText("left 90");
+				textAreaWriter.setText("left 90");
 				runButton.fire();
 			}
 			if (code == KeyCode.D){
-				textArea.setText("right 90");
+				textAreaWriter.setText("right 90");
 				runButton.fire();
 			}
 		}
@@ -115,7 +117,10 @@ public class GUI {
 		createCanvas();
 	}
 	private void createInputPanel(){
-		realInput = new InputPanel(tvm, otherButtons,background,SCENE_WIDTH,SCENE_HEIGHT,myDefault);
+		RunButtonFire fire=(b)->b.fire();
+		//try to use lambdas to do this instead of passing the whole button
+		
+		realInput = new InputPanel(tvm, otherButtons,background,SCENE_WIDTH,SCENE_HEIGHT,myDefault,textAreaWriter,runButton);
 		bottomPanel.setCenter(realInput.getBottomPanel());
 		myRoot.setBottom(bottomPanel);
 	}
@@ -148,7 +153,8 @@ public class GUI {
 		wrapperPane.getChildren().add(canvas);	
 	}
 	private void createTextArea(){
-		textArea = new TextArea();
+		TextArea textArea = new TextArea();
+		 textAreaWriter=new TextAreaWriter(textArea);
 		//Ratio chosen to impose symmetry,
 		textArea.setMaxWidth(SCENE_WIDTH/3);
 		textArea.setMinWidth(SCENE_WIDTH/3);
@@ -159,7 +165,7 @@ public class GUI {
 	private void createRoot() {
 		createTextArea();
 		lp = new LeftPanel(SCENE_WIDTH,SCENE_HEIGHT,model);
-		rp = new RightPanel(textArea, runButton, SCENE_WIDTH,SCENE_HEIGHT);	
+		rp = new RightPanel(textAreaWriter, runButton, SCENE_WIDTH,SCENE_HEIGHT);	
 		myRoot.setCenter(wrapperPane);
 		myRoot.setLeft(lp.getPanel());	
 		myRoot.setRight(rightScreen);
@@ -173,31 +179,59 @@ public class GUI {
 		return realInput.getCurrentLanguage();
 	}
 	public String getText(){
-		return textArea.getText();
+		return textAreaWriter.getText();
 	}
 	public void handleRunButton(Trajectory T){
 		rp.getScrollPane().addText();
 		tvm.moveTurtle(T,background.getBoundsInLocal().getWidth(),background.getBoundsInLocal().getHeight());
-		textArea.clear();
+		textAreaWriter.clear();
 	}
 	private void createButtons(){
 		Button play = runButton;
 		Button clear = buttonMaker.createButton("Clear", e -> {
-			textArea.clear();
-			textArea.setText("clear");
+			textAreaWriter.clear();
+			textAreaWriter.setText("clear");
 			gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
 			
 		});   
-		Button load= buttonMaker.createButton("Load Preferences",e-> handleLoad());
+		Button loadPref= buttonMaker.createButton("Load Preferences",e-> handleLoadPref());
 		Button save=buttonMaker.createButton("Save Preferences",e->handleSave());
+		Button loadCommand=buttonMaker.createButton("Load Command", e->handleLoadCommand());
 		Button newW=newTab;
-		otherButtons = Arrays	.asList(play, clear,newW,load,save);
+		otherButtons = Arrays	.asList(play, clear,newW,loadPref,save,loadCommand);
 	}
 	private void handleSave(){	
 		XMLWriter xmlWriter=new XMLWriter(myDefault);
 		xmlWriter.getXML(realInput.getCurrentTurtleImage(), background.getFill(), realInput.getCurrentPenColor(), realInput.getCurrentLanguage());
 	}
-	private void handleLoad() {
+	
+	private void handleLoadCommand(){
+		FileChooser fileChooser=new FileChooser();
+		fileChooser.setTitle("Select Command File");
+		fileChooser.getExtensionFilters().addAll(new ExtensionFilter(".logo files","*.logo"));
+		fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+		Stage ownerWindow = new Stage();
+		File file = fileChooser.showOpenDialog(ownerWindow);
+		try{
+			FileReader f=new FileReader(file);
+			BufferedReader buf = new BufferedReader(f); 
+			String line = buf.readLine(); 
+			StringBuilder sb = new StringBuilder();
+			while(line != null){ 
+				sb.append(line).append("\n"); 
+				line = buf.readLine(); 
+				}
+			String fileAsString = sb.toString();
+			textAreaWriter.setText(fileAsString);
+			
+			
+		}
+		catch(Exception e){
+			SlogoAlert alert=new SlogoAlert("Not a valid file",e.getMessage());
+			alert.showAlert();
+		}
+	}
+	private void handleLoadPref() {
 		FileChooser fileChooser=new FileChooser();
 		fileChooser.setTitle("Select xml Default File");
 		fileChooser.getExtensionFilters().addAll(new ExtensionFilter(".xml files","*.xml"));

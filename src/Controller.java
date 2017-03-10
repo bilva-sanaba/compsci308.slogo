@@ -21,8 +21,6 @@ public class Controller {
 		
 		 
 		
-		//Button w=new Button("New WorkSpace");
-		//w.setOnAction(e->onNew());
 	}
 	private GUI initializeGUI() throws CommandException{
 		SlogoModel model = new SlogoModel();
@@ -38,6 +36,7 @@ public class Controller {
 	private void onRun(GUI gui,SlogoModel model){
 		String text = gui.getText();
 		model.setLanguage(gui.getCurrentLanguage());
+		System.out.println(gui.getCurrentLanguage());
 		try {
 			gui.handleRunButton(model.getTrajectory(text));
 		} catch (CommandException|NumberFormatException e){

@@ -18,7 +18,7 @@ TabPane window=new TabPane();
 public GUI_Configuration(GUI gui,Stage stage){
 	addTab(gui,1);
 	createScene();
-	//myScene.getStylesheets().add(DEFAULT_RESOURCE_PACKAGE+STYLESHEET);
+	myScene.getStylesheets().add(DEFAULT_RESOURCE_PACKAGE+STYLESHEET);
 	stage.setScene(myScene);
 	stage.show();
 	
