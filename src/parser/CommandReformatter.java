@@ -1,7 +1,11 @@
 package parser;
 
 import parser.regularExpressions.ProgramParser;
-
+/**
+ * Reformats command by removing new lines, etc.
+ * @author Jacob Weiss
+ *
+ */
 public class CommandReformatter {
 	private final String NEWLINE = "Newline";
 	private final String WHITESPACE = "Whitespace";
