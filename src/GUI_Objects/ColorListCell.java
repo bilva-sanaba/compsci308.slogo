@@ -12,6 +12,7 @@ public class ColorListCell extends ListCell<String>{
         setGraphic(null);
         setText(null);
         if(item!=null){
+        	System.out.println(item);
             Color color = Color.valueOf(item);
             Rectangle rect=new Rectangle();
             //Values chosen to match regular button height for asthetic purposes

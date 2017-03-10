@@ -5,6 +5,7 @@ import java.util.List;
 
 import GUI.GUI;
 import GUI_Objects.ButtonMaker;
+import GUI_Objects.Palette;
 import model.configuration.CompositeTurtleState;
 import model.configuration.SingleTurtleState;
 import model.configuration.Trajectory;
@@ -45,8 +46,8 @@ public class TurtleAnimator extends TurtleViewManager{
 	private double currentRotate=0;
 	private double currentOpacity=1.0;
 	private boolean skipFirst = false;
-	public TurtleAnimator(TurtleView t, GraphicsContext gc) {
-		super(t, gc);
+	public TurtleAnimator(TurtleView t, GraphicsContext gc,Palette p) {
+		super(t, gc,p);
 		penSize = DEFAULT_PEN_SIZE;
 		createSpeedSlider();
 		createSpeedChooser();
@@ -127,8 +128,8 @@ public class TurtleAnimator extends TurtleViewManager{
 	}
 	protected PathTransition moveLocations(SingleTurtleState uts, double screenWidth, double screenHeight, double X, double Y) {
 		
-		double penX=uts.getX()+screenWidth/2;
-		double penY=-uts.getY()+screenHeight/2;
+		double penX=uts.getX()+GUI.BACKGROUND_WIDTH/2;
+		double penY=-uts.getY()+GUI.BACKGROUND_HEIGHT/2;
 		
 		myTurtleView.setPen(uts.isPenDown());
 		if (currentXPos!=penX || currentYPos!=penY){
@@ -159,8 +160,8 @@ public class TurtleAnimator extends TurtleViewManager{
 					}
 
 					// draw line
-					graphics.setStroke(myTurtleView.getPenColor());
-					graphics.setLineWidth(penSize);
+					graphics.setStroke(getPenColor(uts));
+					graphics.setLineWidth(uts.getPenSize());
 					graphics.strokeLine(oldLocation.x, oldLocation.y, x, y);
 
 					// update old location with current one

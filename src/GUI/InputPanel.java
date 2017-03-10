@@ -63,17 +63,17 @@ public class InputPanel {
 	private TurtleViewManager tvm;
 	private TurtleComboBox tcb;
 	private ButtonMaker buttonMaker= new ButtonMaker();
-
+	private Palette myPalette;
 	private HBox topButtons;
 	private TextAreaWriter textAreaWriter;
 	private Button runButton;
-public InputPanel(TurtleViewManager TVM, List<Button> otherButtons,Shape background, double width, double height,Default myDefault,TextAreaWriter t,Button rb){
+public InputPanel(TurtleViewManager TVM, List<Button> otherButtons,Shape background, Default myDefault,TextAreaWriter t,Button rb, Palette p){
 	runButton=rb;
-
+	myPalette = p;
 	tvm=TVM;
 	textAreaWriter=t;
 	returnPanel = initInputPanel(otherButtons);
-	returnPanel.setPrefSize(width, height/4);
+	returnPanel.setPrefSize(GUI.GUI_WIDTH,GUI.GUI_HEIGHT/4);
 	addBackgroundButton(background);
 	addOtherBoxes();
 	addPenButton(myDefault);
@@ -113,7 +113,7 @@ private void addOtherBoxes(){
  inputPanel.getChildren().add(theBoxes);
    theBoxes.getChildren().add(turtleChoice);
    theBoxes.getChildren().add(createLanguageBox());
-   theBoxes.getChildren().add(new Palette().getPalette());
+   theBoxes.getChildren().add(myPalette.getPalette());
 }
 private void addPenButton(Default myDefault){
 	pb = new PenColorPicker(tvm,myDefault,textAreaWriter,currentLanguage);
@@ -125,6 +125,9 @@ private  void placePenButton(){
 	topButtons.getChildren().addAll(pb.getChooser());
 	inputPanel.setConstraints(topButtons,0,2);
 	 inputPanel.getChildren().add(topButtons);
+}
+public Palette getMyPalette(){
+	return myPalette;
 }
 private PenSizeChooser createPenButton(){
 	PenSizeChooser p = new PenSizeTextInput(tvm);

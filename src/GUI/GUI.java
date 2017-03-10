@@ -13,6 +13,7 @@ import java.util.Map;
 
 import GUI_Objects.ButtonMaker;
 import GUI_Objects.InputHandler;
+import GUI_Objects.Palette;
 import GUI_Objects.WASDMover;
 import GUI_TurtleMovers.TurtleAnimator;
 import GUI_TurtleMovers.TurtleDotMover;
@@ -72,6 +73,7 @@ public class GUI {
 	private Map<Integer, TurtleViewManager> activeTurtles;
 	private UnmodifiableWorld currentWorld;
 	public InputHandler inputHandler=new WASDMover();
+	private Palette myPalette = new Palette();
 	public static final int GUI_WIDTH = GUI_Configuration.SCENE_WIDTH; 
 	public static final int GUI_HEIGHT = GUI_Configuration.SCENE_HEIGHT-120;
 	public static final double BACKGROUND_WIDTH = GUI_WIDTH*5/8;
@@ -119,7 +121,7 @@ public class GUI {
 		createCanvas();
 	}
 	private void createInputPanel(){
-		realInput = new InputPanel(tvm, otherButtons,background,GUI_WIDTH,GUI_HEIGHT,myDefault,textAreaWriter,runButton);
+		realInput = new InputPanel(tvm, otherButtons,background, myDefault,textAreaWriter,runButton,myPalette);
 		bottomPanel.setCenter(realInput.getBottomPanel());
 		myRoot.setBottom(bottomPanel);
 	}
@@ -127,7 +129,7 @@ public class GUI {
 		rightScreen.getChildren().add(rp.getPanel());
 	}
 	private void initializeTurtle(){
-		tvm = new TurtleRegularMover(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
+		tvm = new TurtleAnimator(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc,myPalette);
 		activeTurtles = new HashMap<Integer, TurtleViewManager>();
 		activeTurtles.put(0, tvm);
 		configureStateDisplay(tvm);
@@ -185,21 +187,23 @@ public class GUI {
 		currentWorld=w;
 		rp.getScrollPane().addText();
 		Trajectory updates = w.getTrajectoryUpdates();
-
+		if (updates.getLast()!=null){
+			System.out.println(updates.getLast());
 		for(SingleTurtleState turtle: updates.getLast()){
-		
 			if(!activeTurtles.keySet().contains(turtle.getID())){
 				TurtleView myHomie = new TurtleView(myDefault.getImageString(),myDefault.getPenColor());
-				
-				TurtleViewManager newTurtle = new TurtleRegularMover(myHomie,gc);
+				TurtleViewManager newTurtle = new TurtleAnimator(myHomie,gc,myPalette);
 				placeTurtle(newTurtle);
 				activeTurtles.put(turtle.getID(), newTurtle);
 				configureStateDisplay(newTurtle);
 			}
 		}
-		
 		TurtleUpdater tu = new TurtleUpdater();
 		tu.moveTurtles(updates,activeTurtles);
+		}
+		
+		DisplayUpdater du = new DisplayUpdater();
+		du.updatePalette(currentWorld, myPalette);
 		
 		textArea.clear();
 	}
