@@ -27,6 +27,7 @@ public class LeftPanel {
 			a.showAndWait();
 		}
 		returnPanel.getChildren().add(variableScrollPane.getScrollPane());
+		returnPanel.getStyleClass().add("pane");
 	}
 	public Pane getPanel(){
 		return returnPanel;
