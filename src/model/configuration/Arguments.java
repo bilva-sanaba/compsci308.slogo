@@ -1,4 +1,4 @@
-package model;
+package model.configuration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,7 +6,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import model.commands.CommandException;
+import model.Token;
+import model.TokenType;
+import model.exceptions.CommandException;
 import model.tokens.Command;
 import model.tokens.Constant;
 import model.tokens.TList;
@@ -74,6 +76,7 @@ public class Arguments implements Iterable<Token>{
 	 * @param t
 	 */
 	public Token getLast(){
+		if(arguments.size() == 0) return new Constant(0);
 		return arguments.get(numArgs() - 1);
 	}
 	

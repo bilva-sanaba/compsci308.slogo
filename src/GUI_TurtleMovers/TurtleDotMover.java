@@ -1,5 +1,9 @@
 package GUI_TurtleMovers;
 
+<<<<<<< HEAD
+=======
+import model.configuration.UnmodifiableTurtleComposite;
+>>>>>>> edd25a6f6311d728826777ed673bf913f280208c
 
 import configuration.SingleTurtleState;
 import javafx.scene.canvas.GraphicsContext;

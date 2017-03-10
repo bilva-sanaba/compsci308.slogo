@@ -19,10 +19,10 @@ public class RightPanel {
 	private Button play;
 	private double width;
 	private double height;
-	private TextArea myTextArea;
+	private TextAreaWriter myTextArea;
 	
 	
-	public RightPanel(TextArea ta, Button run, double w, double h){
+	public RightPanel(TextAreaWriter ta, Button run, double w, double h){
 		play=run;
 		myTextArea=ta;
 		width=w;
@@ -32,6 +32,7 @@ public class RightPanel {
 
 		
 		returnPanel.getChildren().add(commandScrollPane.getScrollPane());
+		returnPanel.getStyleClass().add("pane");
 		
 	}
 	

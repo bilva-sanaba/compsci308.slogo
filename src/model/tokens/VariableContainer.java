@@ -2,9 +2,10 @@ package model.tokens;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Set;
 
-import model.commands.CommandException;
+import model.exceptions.CommandException;
+
+import java.util.Set;
 
 /**
  * Container for Variable Objects
@@ -28,7 +29,10 @@ public class VariableContainer {
 	 * @param original
 	 */
 	public VariableContainer(VariableContainer original){
-		variables = new HashMap<>(original.variables);
+		variables = new HashMap<>();
+		for(Entry<String, Constant> e : original.variables.entrySet()){
+			variables.put(e.getKey(), new Constant(e.getValue().getVal()));
+		}
 	}
 	
 	/**
@@ -38,7 +42,6 @@ public class VariableContainer {
 	 */
 	public void set(Variable v, Constant c){
 		variables.put(v.getName(), c);
-		System.out.println(variables.size());
 	}
 	
 	/**

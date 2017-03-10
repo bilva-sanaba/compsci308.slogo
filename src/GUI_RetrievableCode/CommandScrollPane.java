@@ -1,5 +1,6 @@
 package GUI_RetrievableCode;
 
+import GUI.TextAreaWriter;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -13,9 +14,9 @@ public class CommandScrollPane {
 	private Group root;
 private ScrollPane myScrollPane;
 private int startingHeight;
-private TextArea textArea;
+private TextAreaWriter textArea;
 private Button run;
-public CommandScrollPane(TextArea t, Button play){
+public CommandScrollPane(TextAreaWriter t, Button play){
 	root=new Group();
 	 textArea=t; 
 	myScrollPane=new ScrollPane();

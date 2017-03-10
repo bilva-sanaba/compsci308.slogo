@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Stack;
 
 import model.TokenType;
-import model.commands.CommandException;
 import model.commands.CommandFactory;
+import model.exceptions.CommandException;
 import model.tokens.Command;
 import model.tokens.TList;
 import parser.regularExpressions.ProgramParser;
@@ -82,28 +82,33 @@ public class SlogoParser {
 				i = endListIndex + startListIndex;
 			}
 			else{
-				tokenNode = factory.genTokenNode(parentNode, word, unlimitedParam); //will be global
+				tokenNode = factory.genTokenNode(root, word, unlimitedParam); //will be global //EDIT: parentNode
 			}
 			root.addChild(tokenNode);
 			
 			if(tokenNode.getToken().getType() == TokenType.COMMAND){
 				parentNode=root;
 				root=tokenNode;
+				System.out.println("XXX");
 			}
 			
-			if(root.getToken().getType() == TokenType.COMMAND && root.getChildren().size()==((Command)root.getToken()).getNumArgs()){
-				String commandString = commandList.get(0);
-				boolean nullCommand = ((Command)root.getToken()).isNullCommand();
-				if(!(unlimitedParam && factory.getInfiniteArgsCommands().contains(commandString))){
-					root=parentNode;
-					if(unlimitedParam && i<commandList.size()-1 && !nullCommand){
-						tokenNode = factory.genTokenNode(parentNode, commandString, unlimitedParam);
-						root.addChild(tokenNode);
-						parentNode=root; 
-						root=tokenNode; 
+			if(root.getToken().getType() == TokenType.COMMAND){
+				Command rootCommand = (Command)root.getToken();
+				if(root.getChildren().size()==rootCommand.getNumArgs() && !rootCommand.hasUnlimitedArgs()){
+					String commandString = commandList.get(0);
+					System.out.println(commandString);
+					if(!(unlimitedParam && factory.getInfiniteArgsCommands().contains(commandString))){
+						root=parentNode; //sets root to fd EDIT: head
+						//System.out.println(x);
+						if(unlimitedParam && i<commandList.size()-1 && !rootCommand.isNullCommand()){
+							tokenNode = factory.genTokenNode(parentNode, commandString, unlimitedParam);
+							root.addChild(tokenNode);
+							parentNode=root; 
+							root=tokenNode; 
+						}
 					}
-				}
-			}		
+				}	
+			}
 			
 			stringCursor+=commandList.get(i).length() + SPACE.length(); //add 1 for the space character
 		}
@@ -132,9 +137,6 @@ public class SlogoParser {
 				stack.pop();
 			}
 			if(stack.isEmpty()){
-				if(i==1){
-					throw new CommandException("List is empty");
-				}
 				return i;
 			}
 		}
@@ -153,9 +155,6 @@ public class SlogoParser {
 				stack.pop();
 			}
 			if(stack.isEmpty()){
-				if(i==1){
-					throw new CommandException("List is empty");
-				}
 				return i;
 			}
 		}

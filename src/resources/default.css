@@ -7,7 +7,7 @@
 
 .button {
     -fx-text-fill: #FF0000;
-    -fx-background-color: #FF6666;
+    -fx-background-color: #B3E6E6;
     -fx-border-radius: 10;
     -fx-border-color:#FF0000;
     -fx-background-radius: 10;
@@ -19,7 +19,7 @@
 
 .combo-box-base {
     -fx-text-base-color: #FF0000;
-    -fx-background-color: #FF6666;
+    -fx-background-color: #B3E6E6;
     -fx-border-color: #FF0000;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
@@ -29,7 +29,7 @@
 }
 
 .pane {
-    -fx-background-color: #FF6666
+    -fx-background-color: #B3E6E6;
 }
 .label {
     -fx-font-size: 8pt;

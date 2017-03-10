@@ -1,9 +1,9 @@
 package model.tokens;
 
-import model.Arguments;
-import model.Scope;
 import model.Token;
-import model.commands.CommandException;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.exceptions.CommandException;
 
 /**
  * Token: Command
@@ -41,5 +41,11 @@ public interface Command extends Token {
 	 */
 
 	public boolean isNullCommand();
+	
+	/**
+	 * Tests for unlimited args
+	 */
+	
+	public boolean hasUnlimitedArgs();
 }
 

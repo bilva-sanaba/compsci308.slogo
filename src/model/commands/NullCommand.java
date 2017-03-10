@@ -1,9 +1,10 @@
 package model.commands;
 
-import model.Arguments;
-import model.Scope;
 import model.Token;
 import model.TokenType;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.exceptions.CommandException;
 import model.tokens.Command;
 
 /**
@@ -49,6 +50,12 @@ public class NullCommand implements Command {
 	
 	public boolean isNullCommand(){
 		return true;
+	}
+
+	@Override
+	public boolean hasUnlimitedArgs() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

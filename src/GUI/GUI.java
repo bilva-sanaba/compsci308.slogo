@@ -8,6 +8,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import GUI_Objects.ButtonMaker;
 import GUI_Objects.InputHandler;
@@ -17,6 +18,7 @@ import GUI_TurtleMovers.TurtleDotMover;
 import GUI_TurtleMovers.TurtleRegularMover;
 import GUI_TurtleMovers.TurtleView;
 import GUI_TurtleMovers.TurtleViewManager;
+import configuration.SingleTurtleState;
 import configuration.Trajectory;
 import error.SlogoAlert;
 import javafx.scene.control.Label;
@@ -64,6 +66,7 @@ public class GUI {
 	private List<Button> otherButtons;
 	private ButtonMaker buttonMaker = new ButtonMaker();
 	BorderPane bottomPanel=new BorderPane();
+	private Map<Integer, TurtleViewManager> activeTurtles;
 	public InputHandler inputHandler=new WASDMover();
 	public static final int GUI_WIDTH = GUI_Configuration.SCENE_WIDTH; 
 	public static final int GUI_HEIGHT = GUI_Configuration.SCENE_HEIGHT-120;
@@ -115,6 +118,7 @@ public class GUI {
 	}
 	private void initializeTurtle(){
 		tvm = new TurtleRegularMover(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
+		activeTurtles.put(1, tvm);
 		tvm.getImage().setOnMouseEntered(e->showStates(getStateLabels()));
 		tvm.getImage().setOnMouseExited(e->removeStates());
 	}
@@ -167,7 +171,13 @@ public class GUI {
 	}
 	public void handleRunButton(UnmodifiableWorld w){
 		rp.getScrollPane().addText();
-		TurtleUpdater.moveTurtles(w);
+		for(SingleTurtleState turtle:w.getTrajectoryUpdates().getLast()){
+			if(!activeTurtles.keySet().contains(turtle.getID())){
+				TurtleViewManager newTurtle = new TurtleRegularMover(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()),gc);
+				activeTurtles.put(turtle.getID(), newTurtle);
+			}
+		}
+		TurtleUpdater.moveTurtles(w,activeTurtles);
 		tvm.moveTurtle(w,background.getBoundsInLocal().getWidth(),background.getBoundsInLocal().getHeight());
 		textArea.clear();
 	}

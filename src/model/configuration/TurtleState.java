@@ -1,4 +1,4 @@
-package configuration;
+package model.configuration;
 
 /**
  * Holds state of turtle. This includes:
@@ -42,9 +42,23 @@ public interface TurtleState {
 	 */
 	public boolean isShowing();
 	
+	/**
+	 * Returns true if turtles is active
+	 * @return
+	 */
 	public boolean isActive();
 	
+	/**
+	 * Returns turtle's integer ID number
+	 * @return
+	 */
 	public int getID();
+
+	public int getPenSize();
+	
+	public int getShape();
+	
+	public int getPenColor();
 	
 	// - - - - - - - - - - - - - - - - Methods below will be inaccessable when unmodifiable
 	
@@ -84,6 +98,12 @@ public interface TurtleState {
 	public double setTowards(double x, double y);
 	
 	public void setActive(boolean active);
+	
+	public void setPenSize(int index);
+	
+	public void setShape(int index);
+	
+	public void setPenColor(int index);
 	
 	/**
 	 * Compares to another TurtleState

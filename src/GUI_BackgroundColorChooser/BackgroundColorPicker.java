@@ -1,6 +1,8 @@
 package GUI_BackgroundColorChooser;
 
 import ColorChoosers.BackgroundColorChooser;
+import GUI.Language;
+import GUI.TextAreaWriter;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ColorPicker;
@@ -12,8 +14,8 @@ import javafx.scene.shape.Shape;
 public class BackgroundColorPicker extends BackgroundColorChooser{
 	
 	
-	public BackgroundColorPicker(Shape background){
-		super(background);
+	public BackgroundColorPicker(Shape background,TextAreaWriter t,Language l){
+		super(background,t,l);
 		colorPicker = new ColorPicker(Color.WHITE);
 		displays.add(colorPicker);
 		((ComboBoxBase<Color>) colorPicker).setOnAction(new EventHandler() {
@@ -22,7 +24,7 @@ public class BackgroundColorPicker extends BackgroundColorChooser{
 			}
     });
 	}
-	protected Paint generateColor(){
+	protected Color generateColor(){
 		return ((ComboBoxBase<Color>) colorPicker).getValue();
 	}
 }

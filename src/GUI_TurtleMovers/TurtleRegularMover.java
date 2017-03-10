@@ -1,7 +1,5 @@
 package GUI_TurtleMovers;
-import configuration.SingleTurtleState;
-import configuration.Trajectory;
-import configuration.UnmodifiableTurtleComposite;
+
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -9,6 +7,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
+import model.configuration.SingleTurtleState;
+import model.configuration.Trajectory;
+import model.configuration.UnmodifiableTurtleComposite;
 public class TurtleRegularMover extends TurtleViewManager{
     public static final int DEFAULT_FPS = 10;
     public static final double MILLIS_PER_SECOND = 1000;

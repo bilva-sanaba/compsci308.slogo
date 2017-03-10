@@ -4,14 +4,17 @@ package GUI_TurtleMovers;
 import java.util.ArrayList;
 import java.util.List;
 
-import configuration.CompositeTurtleState;
-import configuration.SingleTurtleState;
-import configuration.Trajectory;
-import configuration.UnmodifiableTurtleComposite;
+
+import model.configuration.CompositeTurtleState;
+import model.configuration.SingleTurtleState;
+
+
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import model.configuration.Trajectory;
+import model.configuration.UnmodifiableTurtleComposite;
 
 public abstract class TurtleViewManager {
 	protected TurtleView myTurtleView;

@@ -6,9 +6,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import configuration.SingleTurtleState;
-import configuration.Trajectory;
 import model.commands.CommandFactory;
+import model.configuration.SingleTurtleState;
+import model.configuration.Trajectory;
+import model.configuration.TurtleManager;
 import model.tokens.VariableContainer;
 
 /**
@@ -139,6 +140,8 @@ public class World implements UnmodifiableWorld{
 	public String toString(){
 		String w = "*********World********\n";
 		w += turtles.getTrajectory();
+		w += variables;
+		w += commands;
 		w += "**********************\n";
 		return w;
 	}

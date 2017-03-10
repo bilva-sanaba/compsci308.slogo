@@ -1,10 +1,10 @@
 package model.commands.advancedCommands;
 
-import model.Arguments;
-import model.Scope;
 import model.Token;
 import model.commands.AbstractCommand;
-import model.commands.CommandException;
+import model.configuration.Arguments;
+import model.configuration.Scope;
+import model.exceptions.CommandException;
 import model.tokens.Constant;
 import model.tokens.TList;
 import model.tokens.Variable;
@@ -30,10 +30,10 @@ public class DoTimes extends AbstractCommand {
 		TList actions = args.getTList(1);
 
 		Variable var = myArgs.getVariable(0);
-		int limit = (int) myArgs.getDouble(1);
+		int limit = (int) myArgs.getDouble(1); // rounds down to nearest in
 		
 		double returns = 0;
-		for(int i = 1; i <= limit; i++){
+		for(int i = 1; i <= limit; i++){ // upper limit inclusive
 			vars.set(var, new Constant(i));
 			Arguments returnArgs = actions.evaluateContents(scope);
 			returns = returnArgs.getDouble(returnArgs.numArgs() - 1);

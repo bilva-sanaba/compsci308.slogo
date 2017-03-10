@@ -5,18 +5,20 @@ import java.util.List;
 import java.util.Random;
 
 import ColorChoosers.ColorChooser;
+import GUI.Language;
+import GUI.TextAreaWriter;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 public class RainbowBackgroundColorButton extends BackgroundColorButton{
-	public RainbowBackgroundColorButton(Shape rect) {
-		super(rect);
+	public RainbowBackgroundColorButton(Shape rect,TextAreaWriter t,Language l) {
+		super(rect,t,l);
 	}
 
 	@Override
-	protected Paint generateColor() {
+	protected Color generateColor() {
 		Random rand = new Random();
 		return ColorChooser.Rainbow.get(rand.nextInt(ColorChooser.Rainbow.size()));
 	}

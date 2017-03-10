@@ -5,10 +5,10 @@ import java.util.List;
 
 import GUI.GUI;
 import GUI_Objects.ButtonMaker;
-import configuration.CompositeTurtleState;
-import configuration.SingleTurtleState;
-import configuration.Trajectory;
-import configuration.UnmodifiableTurtleComposite;
+import model.configuration.CompositeTurtleState;
+import model.configuration.SingleTurtleState;
+import model.configuration.Trajectory;
+import model.configuration.UnmodifiableTurtleComposite;
 import javafx.animation.FadeTransition;
 import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
@@ -29,9 +29,11 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import model.configuration.Trajectory;
+import model.configuration.UnmodifiableTurtleComposite;
 
 public class TurtleAnimator extends TurtleViewManager{
-	private static final int DEFAULT_SPEED = 4000;
+	private static final int DEFAULT_SPEED = 1500;
 	private int speed=DEFAULT_SPEED;
 	private ButtonMaker buttonMaker = new ButtonMaker();
 	private Slider slider;
@@ -65,8 +67,8 @@ public class TurtleAnimator extends TurtleViewManager{
 //	}
 	private void createSpeedSlider() {
 		speedLabel = buttonMaker.createLabel("Animation Speed : " + Integer.toString(DEFAULT_SPEED) + " milliseconds");
-		slider = new Slider(1, 8000, 4000);
-		slider.setMajorTickUnit(1000);
+		slider = new Slider(DEFAULT_SPEED/30, 2*DEFAULT_SPEED, DEFAULT_SPEED);
+		slider.setMajorTickUnit(DEFAULT_SPEED/3);
 		slider.setShowTickMarks(true);
 		slider.setSnapToTicks(true);
 		extraButtons.add(speedLabel);
@@ -91,7 +93,7 @@ public class TurtleAnimator extends TurtleViewManager{
 			}
 			if (skipFirst){
 				PathTransition pt = moveLocations(uts, screenWidth, screenHeight,currentXPos,currentYPos);
-				RotateTransition rt = rotates(uts,screenWidth);
+				RotateTransition rt = rotates(uts);
 				FadeTransition ft = changeVisibilitys(uts,screenWidth);
 				if (pt!=null){
 					x.getChildren().add(pt);
@@ -176,7 +178,7 @@ public class TurtleAnimator extends TurtleViewManager{
 	}				            
 
 
-	protected RotateTransition rotates(SingleTurtleState uts, double width) {
+	protected RotateTransition rotates(SingleTurtleState uts) {
 		
 		if (uts.getHeading()!=currentRotate){
 			RotateTransition rt = new RotateTransition(Duration.millis(speed),myTurtleView.getImage());

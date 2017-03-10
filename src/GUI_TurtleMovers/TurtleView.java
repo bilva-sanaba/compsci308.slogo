@@ -1,9 +1,9 @@
 package GUI_TurtleMovers;
-import configuration.Trajectory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import model.configuration.Trajectory;
 
 public class TurtleView {
 	private ImageView Turtle_Image;
