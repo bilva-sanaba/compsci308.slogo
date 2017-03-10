@@ -32,7 +32,7 @@ public class SetPalette extends AbstractCommand {
 
 	@Override
 	public Scope getScopeRequest() {
-		return new Scope(false, false, false, true);
+		return new Scope(false, false, true, true);
 	}
 
 	@Override
