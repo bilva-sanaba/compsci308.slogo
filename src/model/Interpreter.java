@@ -60,7 +60,6 @@ public class Interpreter {
 			
 		}
 	
-		
 		return root.getToken().evaluate(returnArgs, getScopeFromRequest(root, scope));
 	}
 	

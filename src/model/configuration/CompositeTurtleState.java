@@ -89,6 +89,22 @@ public class CompositeTurtleState implements TurtleState, UnmodifiableTurtleComp
 		return getHeadActiveTurtle().getID();
 	}
 	
+
+	@Override
+	public int getPenSize() {
+		return getHeadActiveTurtle().getPenSize();
+	}
+
+	@Override
+	public int getShape() {
+		return getHeadActiveTurtle().getShape();
+	}
+
+	@Override
+	public int getPenColor() {
+		return getHeadActiveTurtle().getPenColor();
+	}
+	
 	/** 
 	 * Returns modifiable copy of state
 	 */
@@ -139,6 +155,20 @@ public class CompositeTurtleState implements TurtleState, UnmodifiableTurtleComp
 		}
 		return distance;
 	}
+	
+	public double right(double degrees){
+		for(TurtleState t : getActiveTurtleStates()){
+			t.right(degrees);
+		}
+		return degrees;
+	}
+	
+	public double left(double degrees){
+		for(TurtleState t : getActiveTurtleStates()){
+			t.left(degrees);
+		}
+		return degrees;
+	}
 
 	@Override
 	public double setTowards(double x, double y) {
@@ -151,17 +181,23 @@ public class CompositeTurtleState implements TurtleState, UnmodifiableTurtleComp
 	
 	@Override
 	public void setPenSize(int index) {
-		getHeadActiveTurtle().setPenSize(index);
+		for(TurtleState t : getActiveTurtleStates()){
+			t.setPenSize(index);
+		}
 	}
 
 	@Override
 	public void setShape(int index) {
-		getHeadActiveTurtle().setShape(index);
+		for(TurtleState t : getActiveTurtleStates()){
+			t.setShape(index);
+		}
 	}
 
 	@Override
 	public void setPenColor(int index) {
-		getHeadActiveTurtle().setPenColor(index);
+		for(TurtleState t : getActiveTurtleStates()){
+			t.setPenColor(index);
+		}
 	}
 	
 	/*
@@ -245,18 +281,4 @@ public class CompositeTurtleState implements TurtleState, UnmodifiableTurtleComp
 		return;
 	}
 
-	@Override
-	public int getPenSize() {
-		return getHeadActiveTurtle().getPenSize();
-	}
-
-	@Override
-	public int getShape() {
-		return getHeadActiveTurtle().getShape();
-	}
-
-	@Override
-	public int getPenColor() {
-		return getHeadActiveTurtle().getPenColor();
-	}
 }

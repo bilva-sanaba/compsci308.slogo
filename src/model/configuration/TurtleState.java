@@ -59,6 +59,11 @@ public interface TurtleState {
 	public int getShape();
 	
 	public int getPenColor();
+
+	public double right(double degrees);
+	
+	public double left(double degrees);
+	
 	
 	// - - - - - - - - - - - - - - - - Methods below will be inaccessable when unmodifiable
 	

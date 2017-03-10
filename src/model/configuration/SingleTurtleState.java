@@ -19,7 +19,6 @@ public class SingleTurtleState implements TurtleState{
 	private boolean penDown, showing;
 	private boolean isActive;
 	private int penSize;
-	private int shapeshape;
 	private int shape;
 	private int penColor;
 	
@@ -178,7 +177,7 @@ public class SingleTurtleState implements TurtleState{
 	 * Useful for printing states
 	 */
 	public String toString(){
-		return String.format("\tpos: (%f, %f)\n\theading: %f\n\tpen down:%b\n\tshowing: %b\tactive: %b\n" , x, y, heading, penDown, showing, isActive);
+		return String.format("\tpos: (%f, %f)\n\theading: %f\n\tpen down:%b\n\tshowing: %b\n\tactive: %b\n\tpen color: %d\n" , x, y, heading, penDown, showing, isActive, penColor);
 	}
 	
 	/*
@@ -241,5 +240,15 @@ public class SingleTurtleState implements TurtleState{
 	@Override
 	public void setPenColor(int index) {
 		penColor = index;
+	}
+
+	@Override
+	public double right(double degrees) {
+		return this.setHeading(this.getHeading() + degrees);
+	}
+
+	@Override
+	public double left(double degrees) {
+		return this.setHeading(this.getHeading() - degrees);
 	}
 }
