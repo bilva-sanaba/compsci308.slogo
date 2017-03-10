@@ -91,19 +91,16 @@ public class SlogoParser {
 				root=tokenNode;
 			}
 			
-			if(root.getToken().getType() == TokenType.COMMAND){
-				Command rootCommand = (Command)root.getToken();
-				if(root.getChildren().size()==rootCommand.getNumArgs() && !rootCommand.hasUnlimitedArgs()){
-					String commandString = commandList.get(0);
-					if(!(unlimitedParam && factory.getInfiniteArgsCommands().contains(commandString))){
-						root=parentNode; 
-						parentNode = root.getParent();
-						if(unlimitedParam && i<commandList.size()-1 && !rootCommand.isNullCommand()){
-							tokenNode = factory.genTokenNode(parentNode, commandString, unlimitedParam);
-							root.addChild(tokenNode);
-							parentNode=root; 
-							root=tokenNode; 
-						}
+			if(root.getToken().getType() == TokenType.COMMAND && numArgsSatisfied(root)){
+				String commandString = commandList.get(0);
+				if(!commandTakesInfiniteArgs(unlimitedParam, commandString)){
+					root=parentNode; 
+					parentNode = root.getParent();
+					if(unlimitedParam && i<commandList.size()-1 && !((Command)root).isNullCommand()){
+						tokenNode = factory.genTokenNode(parentNode, commandString, unlimitedParam);
+						root.addChild(tokenNode);
+						parentNode=root; 
+						root=tokenNode; 
 					}
 				}	
 			}
@@ -173,6 +170,15 @@ public class SlogoParser {
 			}
 		}
 		return result;
+	}
+	
+	private boolean numArgsSatisfied(TokenNode root){
+		Command rootCommand = (Command)root.getToken();
+		return root.getChildren().size()==rootCommand.getNumArgs() && !rootCommand.hasUnlimitedArgs();
+	}
+	
+	private boolean commandTakesInfiniteArgs(boolean unlimitedParam, String commandString){
+		return unlimitedParam && factory.getInfiniteArgsCommands().contains(commandString);
 	}
 	
 	public void setLanguage(String language){
