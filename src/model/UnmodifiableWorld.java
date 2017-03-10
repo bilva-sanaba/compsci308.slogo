@@ -46,4 +46,6 @@ public interface UnmodifiableWorld {
 	 * Returns all user-set commands
 	 */
 	public Collection<String> getCommandNames();
+
+	public Collection<Integer> getActiveTurtleIndicies();
 }
