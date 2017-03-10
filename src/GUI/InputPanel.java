@@ -13,7 +13,13 @@ import xml.Default;
 import ColorChoosers.BackgroundColorChooser;
 import ColorChoosers.PenColorChooser;
 import GUI_BackgroundColorChooser.BackgroundColorWriteBox;
+
+import GUI_Objects.ButtonMaker;
+import GUI_Objects.PenSizeChooser;
+import GUI_Objects.PenSizeTextInput;
+
 import GUI_Objects.Palette;
+
 import GUI_PenColorButton.PenColorPicker;
 import GUI_PenColorButton.RandomPenColorButton;
 import GUI_RetrievableCode.CommandScrollPane;
@@ -56,11 +62,14 @@ public class InputPanel {
 	private static final int BUTTON_SPACING = 20;
 	private TurtleViewManager tvm;
 	private TurtleComboBox tcb;
+	private ButtonMaker buttonMaker= new ButtonMaker();
+
 	private HBox topButtons;
 	private TextAreaWriter textAreaWriter;
 	private Button runButton;
 public InputPanel(TurtleViewManager TVM, List<Button> otherButtons,Shape background, double width, double height,Default myDefault,TextAreaWriter t,Button rb){
 	runButton=rb;
+
 	tvm=TVM;
 	textAreaWriter=t;
 	returnPanel = initInputPanel(otherButtons);
@@ -77,7 +86,7 @@ public Pane getBottomPanel(){
 }
 private Pane initInputPanel(List<Button> otherButtons) {
  	BorderPane bottomPanel = new BorderPane();
-    Button help=createButton("Help",e -> handleHelpButton());
+    Button help=buttonMaker.createButton("Help",e -> handleHelpButton());
     bottomPanel.setCenter(inputPanel);
     Pane controlButtons = new HBox(BUTTON_SPACING);
     controlButtons.getChildren().addAll(otherButtons);
@@ -85,7 +94,7 @@ private Pane initInputPanel(List<Button> otherButtons) {
     inputPanel.setConstraints(controlButtons,0,0);
     inputPanel.getChildren().add(controlButtons);
     bottomPanel.getStyleClass().add("pane");
-    bottomPanel.setMinHeight(GUI_Configuration.SCENE_WIDTH*3/16);
+    //bottomPanel.setMinHeight(GUI_Configuration.SCENE_WIDTH*3/16);
     return bottomPanel;
 }
 private void addBackgroundButton(Shape background){
@@ -117,24 +126,25 @@ private  void placePenButton(){
 	inputPanel.setConstraints(topButtons,0,2);
 	 inputPanel.getChildren().add(topButtons);
 }
-public static Label createLabel(String text) {
-    Label label = new Label(text);
-    label.setTextFill(Color.BLACK);
-    return label;
-    
+private PenSizeChooser createPenButton(){
+	PenSizeChooser p = new PenSizeTextInput(tvm);
+	return p;
 }
+
 private void addExtraButtons(){
 	List<Node> extraButtons = new ArrayList<Node>();
+	Node penButton = createPenButton().getPenButtons();
 	extraButtons.addAll(tvm.getExtraButtons());
-	if (extraButtons.size()==3){
+	if (extraButtons.size()==2){
 		inputPanel.setConstraints(extraButtons.get(0),0,5);
 		inputPanel.setConstraints(extraButtons.get(1),0,4);
-		inputPanel.setConstraints(extraButtons.get(2),0,6);
+		inputPanel.setConstraints(penButton,0,6);
 	}
-	if (extraButtons.size()==1){
-		inputPanel.setConstraints(extraButtons.get(0),0,4);
+	if (extraButtons.size()==0){
+		inputPanel.setConstraints(penButton,0,4);
 	}
 	 inputPanel.getChildren().addAll(extraButtons);
+	 inputPanel.getChildren().add(penButton);
 }
 
 private ComboBox<String> createLanguageBox() {
@@ -188,15 +198,7 @@ private ComboBox<String> createComboBox(List<String> items) {
     cb.getSelectionModel().selectFirst();
     return cb;
 }
-private Button createButton(String label, EventHandler<ActionEvent> e) {
-    Button b = new Button();
-    b.setText(label);
-    b.setOnAction(e);
-    return b;
-}
 private void handleHelpButton(){
-	
-	 
     Group root = new Group();
     WebView browser = new WebView();
     Scene helpScene = new Scene(root);

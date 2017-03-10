@@ -38,7 +38,7 @@ public class Controller {
 		model.setLanguage(gui.getCurrentLanguage());
 		System.out.println(gui.getCurrentLanguage());
 		try {
-			gui.handleRunButton(model.getTrajectory(text));
+			gui.handleRunButton(model.getWorld(text));
 		} catch (CommandException|NumberFormatException e){
 			SlogoAlert alert=new SlogoAlert("Learn to Code: https://www.codeschool.com/",e.getMessage());
 			alert.showAlert();

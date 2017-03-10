@@ -4,18 +4,22 @@ package GUI;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import GUI_Objects.ButtonMaker;
+import GUI_Objects.InputHandler;
+import GUI_Objects.WASDMover;
 import GUI_TurtleMovers.TurtleAnimator;
+import GUI_TurtleMovers.TurtleDotMover;
 import GUI_TurtleMovers.TurtleRegularMover;
 import GUI_TurtleMovers.TurtleView;
 import GUI_TurtleMovers.TurtleViewManager;
+
 import error.SlogoAlert;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -39,6 +43,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import model.Model;
+import model.UnmodifiableWorld;
+import model.World;
+import model.configuration.SingleTurtleState;
 import model.configuration.Trajectory;
 import xml.Default;
 import xml.XML;
@@ -46,7 +53,7 @@ import xml.XMLWriter;
 
 public class GUI {
 	private BorderPane myRoot = new BorderPane();
-	private TextAreaWriter textAreaWriter;
+	private TextArea textArea=new TextArea();
 	private Canvas canvas;
 	private InputPanel realInput;
 	private GraphicsContext gc;
@@ -60,10 +67,15 @@ public class GUI {
 	private TurtleViewManager tvm;
 	private List<Button> otherButtons;
 	private ButtonMaker buttonMaker = new ButtonMaker();
+	private TextAreaWriter textAreaWriter;
 	BorderPane bottomPanel=new BorderPane();
-	public static final int SCENE_WIDTH = GUI_Configuration.SCENE_WIDTH; 
-	public static final int SCENE_HEIGHT = GUI_Configuration.SCENE_HEIGHT-120;
-
+	private Map<Integer, TurtleViewManager> activeTurtles;
+	public InputHandler inputHandler=new WASDMover();
+	public static final int GUI_WIDTH = GUI_Configuration.SCENE_WIDTH; 
+	public static final int GUI_HEIGHT = GUI_Configuration.SCENE_HEIGHT-120;
+	public static final double BACKGROUND_WIDTH = GUI_WIDTH*5/8;
+	public static final double BACKGROUND_HEIGHT =GUI_HEIGHT*12/17;
+	
 	public static final String DEFAULT_FILE="data/Defaults.xml";
 
 	private List<Label> stateLabels;
@@ -82,45 +94,25 @@ public class GUI {
 		initializeMainScreen();
 		initializeTurtle();
 		createInputPanel();
-		placeTurtle();
+		placeTurtle(tvm);
 	}
-	private void placeTurtle(){
-		drawTurtle();
+	private void placeTurtle(TurtleViewManager tvm){
+		drawTurtle(tvm);
 		wrapperPane.getChildren().add(tvm.getImage());
 	}
 	public void handleKeyInput(KeyCode code){
 		if (tvm.isActive()){
-			if (code == KeyCode.W){
-				textAreaWriter.setText("fd 100");
-				runButton.fire();
-			}
-			if (code == KeyCode.S){
-				textAreaWriter.setText("back 100");
-				runButton.fire();
-			}
-			if (code == KeyCode.A){
-				textAreaWriter.setText("left 90");
-				runButton.fire();
-			}
-			if (code == KeyCode.D){
-				textAreaWriter.setText("right 90");
-				runButton.fire();
-			}
+			inputHandler.handleKeyInput(code,textArea,runButton);
 		}
 	}
 	private void initializeMainScreen(){
-		background=new Rectangle(SCENE_WIDTH*5/8,SCENE_HEIGHT*12/17,Color.valueOf(myDefault.getBackgroundColor()));
-
-
+		background=new Rectangle(BACKGROUND_WIDTH,BACKGROUND_HEIGHT,Color.valueOf(myDefault.getBackgroundColor()));
 		wrapperPane.setClip(new Rectangle(background.getLayoutX(),background.getLayoutY(),background.getBoundsInLocal().getWidth(),background.getBoundsInLocal().getHeight()));
 		wrapperPane.getChildren().add(background);
 		createCanvas();
 	}
 	private void createInputPanel(){
-		RunButtonFire fire=(b)->b.fire();
-		//try to use lambdas to do this instead of passing the whole button
-		
-		realInput = new InputPanel(tvm, otherButtons,background,SCENE_WIDTH,SCENE_HEIGHT,myDefault,textAreaWriter,runButton);
+		realInput = new InputPanel(tvm, otherButtons,background,GUI_WIDTH,GUI_HEIGHT,myDefault,textAreaWriter,runButton);
 		bottomPanel.setCenter(realInput.getBottomPanel());
 		myRoot.setBottom(bottomPanel);
 	}
@@ -129,6 +121,8 @@ public class GUI {
 	}
 	private void initializeTurtle(){
 		tvm = new TurtleRegularMover(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
+		activeTurtles = new HashMap<Integer, TurtleViewManager>();
+		activeTurtles.put(0, tvm);
 		tvm.getImage().setOnMouseEntered(e->showStates(getStateLabels()));
 		tvm.getImage().setOnMouseExited(e->removeStates());
 	}
@@ -138,12 +132,11 @@ public class GUI {
 	private void showStates(List<Label> turtleStates){	
 		wrapperPane.getChildren().addAll(turtleStates);
 		stateLabels=turtleStates;
-		
 	}
 	private void removeStates(){
 		wrapperPane.getChildren().removeAll(stateLabels);
 	}
-	private void drawTurtle(){	
+	private void drawTurtle(TurtleViewManager tvm){	
 		tvm.setX(background.getBoundsInLocal().getWidth()/2);
 		tvm.setY(background.getBoundsInLocal().getHeight()/2);
 	}
@@ -153,19 +146,19 @@ public class GUI {
 		wrapperPane.getChildren().add(canvas);	
 	}
 	private void createTextArea(){
-		TextArea textArea = new TextArea();
-		 textAreaWriter=new TextAreaWriter(textArea);
+		textArea = new TextArea();
 		//Ratio chosen to impose symmetry,
-		textArea.setMaxWidth(SCENE_WIDTH/3);
-		textArea.setMinWidth(SCENE_WIDTH/3);
+		textAreaWriter = new TextAreaWriter(textArea);
+		textArea.setMaxWidth(GUI_WIDTH/3);
+		textArea.setMinWidth(GUI_WIDTH/3);
 		textArea.setPromptText("Enter Code Here");
 		bottomPanel.setLeft(textArea);
 		myRoot.setBottom(bottomPanel);
 	}
 	private void createRoot() {
 		createTextArea();
-		lp = new LeftPanel(SCENE_WIDTH,SCENE_HEIGHT,model);
-		rp = new RightPanel(textAreaWriter, runButton, SCENE_WIDTH,SCENE_HEIGHT);	
+		lp = new LeftPanel(GUI_WIDTH,GUI_HEIGHT,model);
+		rp = new RightPanel(textAreaWriter, runButton, GUI_WIDTH,GUI_HEIGHT);	
 		myRoot.setCenter(wrapperPane);
 		myRoot.setLeft(lp.getPanel());	
 		myRoot.setRight(rightScreen);
@@ -179,59 +172,47 @@ public class GUI {
 		return realInput.getCurrentLanguage();
 	}
 	public String getText(){
-		return textAreaWriter.getText();
+		return textArea.getText();
 	}
-	public void handleRunButton(Trajectory T){
+	public void handleRunButton(UnmodifiableWorld w){
 		rp.getScrollPane().addText();
-		tvm.moveTurtle(T,background.getBoundsInLocal().getWidth(),background.getBoundsInLocal().getHeight());
-		textAreaWriter.clear();
+		Trajectory updates = w.getTrajectoryUpdates();
+		//System.out.println(w.getTrajectoryUpdates().getLast());
+		
+		for(SingleTurtleState turtle: updates.getLast()){
+		
+			if(!activeTurtles.keySet().contains(turtle.getID())){
+				TurtleView myHomie = new TurtleView(myDefault.getImageString(),myDefault.getPenColor());
+				
+				TurtleViewManager newTurtle = new TurtleRegularMover(myHomie,gc);
+				placeTurtle(newTurtle);
+				activeTurtles.put(turtle.getID(), newTurtle);
+			}
+		}
+		
+		TurtleUpdater tu = new TurtleUpdater();
+		tu.moveTurtles(updates,activeTurtles);
+		
+		textArea.clear();
 	}
 	private void createButtons(){
 		Button play = runButton;
 		Button clear = buttonMaker.createButton("Clear", e -> {
-			textAreaWriter.clear();
-			textAreaWriter.setText("clear");
+			textArea.clear();
+			textArea.setText("clear");
 			gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
 			
 		});   
-		Button loadPref= buttonMaker.createButton("Load Preferences",e-> handleLoadPref());
+		Button load= buttonMaker.createButton("Load Preferences",e-> handleLoad());
 		Button save=buttonMaker.createButton("Save Preferences",e->handleSave());
-		Button loadCommand=buttonMaker.createButton("Load Command", e->handleLoadCommand());
 		Button newW=newTab;
-		otherButtons = Arrays	.asList(play, clear,newW,loadPref,save,loadCommand);
+		otherButtons = Arrays	.asList(play, clear,newW,load,save);
 	}
 	private void handleSave(){	
 		XMLWriter xmlWriter=new XMLWriter(myDefault);
 		xmlWriter.getXML(realInput.getCurrentTurtleImage(), background.getFill(), realInput.getCurrentPenColor(), realInput.getCurrentLanguage());
 	}
-	
-	private void handleLoadCommand(){
-		FileChooser fileChooser=new FileChooser();
-		fileChooser.setTitle("Select Command File");
-		fileChooser.getExtensionFilters().addAll(new ExtensionFilter(".logo files","*.logo"));
-		fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-		Stage ownerWindow = new Stage();
-		File file = fileChooser.showOpenDialog(ownerWindow);
-		try{
-			FileReader f=new FileReader(file);
-			BufferedReader buf = new BufferedReader(f); 
-			String line = buf.readLine(); 
-			StringBuilder sb = new StringBuilder();
-			while(line != null){ 
-				sb.append(line).append("\n"); 
-				line = buf.readLine(); 
-				}
-			String fileAsString = sb.toString();
-			textAreaWriter.setText(fileAsString);
-			
-			
-		}
-		catch(Exception e){
-			SlogoAlert alert=new SlogoAlert("Not a valid file",e.getMessage());
-			alert.showAlert();
-		}
-	}
-	private void handleLoadPref() {
+	private void handleLoad() {
 		FileChooser fileChooser=new FileChooser();
 		fileChooser.setTitle("Select xml Default File");
 		fileChooser.getExtensionFilters().addAll(new ExtensionFilter(".xml files","*.xml"));

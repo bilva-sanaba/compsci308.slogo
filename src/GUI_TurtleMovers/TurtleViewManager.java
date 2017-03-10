@@ -4,6 +4,11 @@ package GUI_TurtleMovers;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import model.configuration.CompositeTurtleState;
+import model.configuration.SingleTurtleState;
+
+
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
@@ -18,6 +23,7 @@ public abstract class TurtleViewManager {
 	protected List<Node> extraButtons;
     public static final int DEFAULT_FPS = 10;
     public static final double MILLIS_PER_SECOND = 1000;
+    protected double penSize;
     
 	public TurtleViewManager(TurtleView t,GraphicsContext gc){
 		myTurtleView=t;
@@ -52,20 +58,23 @@ public abstract class TurtleViewManager {
 			labels.get(i).setLayoutY(10*i);
 		}
 	}
-	public void moveTurtle(Trajectory T,double screenWidth, double screenHeight){
-		for(UnmodifiableTurtleComposite uts:T){
+	public void moveTurtle(SingleTurtleTrajectory T,double screenWidth, double screenHeight){
+		for(SingleTurtleState uts:T){
 			draw(uts,screenWidth,screenHeight);
 			moveLocation(uts,screenWidth,screenHeight);
 			rotate(uts);
 			changeVisibility(uts);
 		}
 	}
-	protected abstract void draw(UnmodifiableTurtleComposite uts,double screenWidth, double screenHeight);
-	protected abstract void moveLocation(UnmodifiableTurtleComposite uts,double screenWidth, double screenHeight);
-	protected abstract void rotate(UnmodifiableTurtleComposite uts);
-	protected abstract void changeVisibility(UnmodifiableTurtleComposite uts);
+	protected abstract void draw(SingleTurtleState uts,double screenWidth, double screenHeight);
+	protected abstract void moveLocation(SingleTurtleState uts,double screenWidth, double screenHeight);
+	protected abstract void rotate(SingleTurtleState uts);
+	protected abstract void changeVisibility(SingleTurtleState uts);
 	
-	
+	protected static class Location {
+		double x;
+		double y;
+	}
 	public void setX(double xLoc){
 		myTurtleView.getImage().setX(xLoc-myTurtleView.getImage().getBoundsInLocal().getWidth()/2);
 	}
@@ -77,6 +86,9 @@ public abstract class TurtleViewManager {
 	}
 	public boolean getPenBool(){
 		return myTurtleView.getPen();
+	}
+	public void setPenSize(double size){
+		penSize =size;
 	}
 	public ImageView getImage(){
 		return myTurtleView.getImage();

@@ -5,6 +5,10 @@ import java.util.List;
 
 import GUI.GUI;
 import GUI_Objects.ButtonMaker;
+import model.configuration.CompositeTurtleState;
+import model.configuration.SingleTurtleState;
+import model.configuration.Trajectory;
+import model.configuration.UnmodifiableTurtleComposite;
 import javafx.animation.FadeTransition;
 import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
@@ -35,40 +39,32 @@ public class TurtleAnimator extends TurtleViewManager{
 	private Slider slider;
 	private Label speedLabel;
 	private static final double DEFAULT_PEN_SIZE = 4;
-	private double penSize = DEFAULT_PEN_SIZE;
 	private TextField penSizeButton;
 	private double currentXPos;
 	private double currentYPos;
 	private double currentRotate=0;
 	private double currentOpacity=1.0;
 	private boolean skipFirst = false;
-	private SequentialTransition xy = new SequentialTransition();
 	public TurtleAnimator(TurtleView t, GraphicsContext gc) {
 		super(t, gc);
+		penSize = DEFAULT_PEN_SIZE;
 		createSpeedSlider();
 		createSpeedChooser();
-		createPenSizeChooser();
-		xy.play();
 	}
-	private static class Location {
-		double x;
-		double y;
-	}
-	private void createPenSizeChooser(){
-		penSizeButton = new TextField();
-		penSizeButton.setPromptText("Enter Pen Size");
-		penSizeButton.setOnAction(e -> {
-        	try{
-        		penSize = Double.parseDouble(penSizeButton.getText());
-        		penSizeButton.setText("");
-        	}catch(IllegalArgumentException y){
-        		
-        	}
-        	catch(NullPointerException i){}
-        });
-		extraButtons.add(penSizeButton);
-		
-	}
+//	private void createPenSizeChooser(){
+//		penSizeButton = new TextField();
+//		penSizeButton.setPromptText("Enter Pen Size");
+//		penSizeButton.setOnAction(e -> {
+//        	try{
+//        		penSize = Double.parseDouble(penSizeButton.getText());
+//        		penSizeButton.setText("");
+//        	}catch(IllegalArgumentException y){
+//        		
+//        	}
+//        	catch(NullPointerException i){}
+//        });
+//		extraButtons.add(penSizeButton);
+//	}
 	private void createSpeedSlider() {
 		speedLabel = buttonMaker.createLabel("Animation Speed : " + Integer.toString(DEFAULT_SPEED) + " milliseconds");
 		slider = new Slider(DEFAULT_SPEED/30, 2*DEFAULT_SPEED, DEFAULT_SPEED);
@@ -79,6 +75,8 @@ public class TurtleAnimator extends TurtleViewManager{
 		extraButtons.add(slider);
 	}
 	private void createSpeedChooser() {
+
+
 		slider.valueProperty().addListener((observable, oldValue, newValue) -> {
 			slider.setValue(newValue.intValue());
 			speedLabel.setText(String.format("Animation Speed : " + Integer.toString(newValue.intValue()) + " milliseconds"));
@@ -86,16 +84,16 @@ public class TurtleAnimator extends TurtleViewManager{
 		});
 	}
 	@Override
-	public void moveTurtle(Trajectory T,double screenWidth, double screenHeight){
+	public void moveTurtle(SingleTurtleTrajectory T,double screenWidth, double screenHeight){
 		SequentialTransition x = new SequentialTransition();
-		for (UnmodifiableTurtleComposite uts : T){
+		for (SingleTurtleState uts : T){
 			if (!skipFirst){
 				currentXPos=myTurtleView.getImage().getX()+myTurtleView.getImage().getTranslateX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2;
 				currentYPos=myTurtleView.getImage().getY()+myTurtleView.getImage().getTranslateY()+myTurtleView.getImage().getBoundsInLocal().getHeight()/2;
 			}
 			if (skipFirst){
 				PathTransition pt = moveLocations(uts, screenWidth, screenHeight,currentXPos,currentYPos);
-				RotateTransition rt = rotates(uts,screenWidth);
+				RotateTransition rt = rotates(uts);
 				FadeTransition ft = changeVisibilitys(uts,screenWidth);
 				if (pt!=null){
 					x.getChildren().add(pt);
@@ -109,28 +107,25 @@ public class TurtleAnimator extends TurtleViewManager{
 			}
 			skipFirst=true;
 		}
-		x.setOnFinished(e->{xy.getChildren().remove(x); xy.play();});
-		xy.getChildren().add(x);
-		System.out.println(x);
-		xy.play();
+		x.play();
 	}
 	@Override
-	protected void draw(UnmodifiableTurtleComposite uts, double screenWidth, double screenHeight) {
+	protected void draw(SingleTurtleState uts, double screenWidth, double screenHeight) {
 		//no function because drawing is simultaneous with movement
 	}
 	@Override
-	protected void moveLocation(UnmodifiableTurtleComposite uts, double screenWidth, double screenHeight){
+	protected void moveLocation(SingleTurtleState uts, double screenWidth, double screenHeight){
 
 	}
 	@Override
-	protected void rotate(UnmodifiableTurtleComposite uts){
+	protected void rotate(SingleTurtleState uts){
 
 	}
 	@Override
-	protected void changeVisibility(UnmodifiableTurtleComposite uts){
+	protected void changeVisibility(SingleTurtleState uts){
 
 	}
-	protected PathTransition moveLocations(UnmodifiableTurtleComposite uts, double screenWidth, double screenHeight, double X, double Y) {
+	protected PathTransition moveLocations(SingleTurtleState uts, double screenWidth, double screenHeight, double X, double Y) {
 		
 		double penX=uts.getX()+screenWidth/2;
 		double penY=-uts.getY()+screenHeight/2;
@@ -183,7 +178,7 @@ public class TurtleAnimator extends TurtleViewManager{
 	}				            
 
 
-	protected RotateTransition rotates(UnmodifiableTurtleComposite uts, double width) {
+	protected RotateTransition rotates(SingleTurtleState uts) {
 		
 		if (uts.getHeading()!=currentRotate){
 			RotateTransition rt = new RotateTransition(Duration.millis(speed),myTurtleView.getImage());
@@ -195,7 +190,7 @@ public class TurtleAnimator extends TurtleViewManager{
 		return null;
 	}
 
-	protected FadeTransition changeVisibilitys(UnmodifiableTurtleComposite uts,double width) {
+	protected FadeTransition changeVisibilitys(SingleTurtleState uts,double width) {
 		double newOpacity=0;
 		if (uts.isShowing()){
 			newOpacity=1.0;
