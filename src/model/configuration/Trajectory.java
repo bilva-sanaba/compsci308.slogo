@@ -82,7 +82,6 @@ public class Trajectory implements Iterable<UnmodifiableTurtleComposite> {
 		fullTrajectory.clear();
 		trajectoryAdditions.clear();
 		addLast(new CompositeTurtleState(new SingleTurtleState(0))); // adds one state at index 0
-
 	}
 	
 	/**
