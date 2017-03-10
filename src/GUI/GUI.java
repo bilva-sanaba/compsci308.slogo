@@ -46,7 +46,7 @@ import xml.XMLWriter;
 
 public class GUI {
 	private BorderPane myRoot = new BorderPane();
-	private TextArea textArea=new TextArea();
+	private TextAreaWriter textAreaWriter;
 	private Canvas canvas;
 	private InputPanel realInput;
 	private GraphicsContext gc;
@@ -91,19 +91,19 @@ public class GUI {
 	public void handleKeyInput(KeyCode code){
 		if (tvm.isActive()){
 			if (code == KeyCode.W){
-				textArea.setText("fd 100");
+				textAreaWriter.setText("fd 100");
 				runButton.fire();
 			}
 			if (code == KeyCode.S){
-				textArea.setText("back 100");
+				textAreaWriter.setText("back 100");
 				runButton.fire();
 			}
 			if (code == KeyCode.A){
-				textArea.setText("left 90");
+				textAreaWriter.setText("left 90");
 				runButton.fire();
 			}
 			if (code == KeyCode.D){
-				textArea.setText("right 90");
+				textAreaWriter.setText("right 90");
 				runButton.fire();
 			}
 		}
@@ -117,7 +117,10 @@ public class GUI {
 		createCanvas();
 	}
 	private void createInputPanel(){
-		realInput = new InputPanel(tvm, otherButtons,background,SCENE_WIDTH,SCENE_HEIGHT,myDefault);
+		RunButtonFire fire=(b)->b.fire();
+		//try to use lambdas to do this instead of passing the whole button
+		
+		realInput = new InputPanel(tvm, otherButtons,background,SCENE_WIDTH,SCENE_HEIGHT,myDefault,textAreaWriter,runButton);
 		bottomPanel.setCenter(realInput.getBottomPanel());
 		myRoot.setBottom(bottomPanel);
 	}
@@ -125,7 +128,7 @@ public class GUI {
 		rightScreen.getChildren().add(rp.getPanel());
 	}
 	private void initializeTurtle(){
-		tvm = new TurtleRegularMover(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
+		tvm = new TurtleAnimator(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
 		tvm.getImage().setOnMouseEntered(e->showStates(getStateLabels()));
 		tvm.getImage().setOnMouseExited(e->removeStates());
 	}
@@ -150,7 +153,8 @@ public class GUI {
 		wrapperPane.getChildren().add(canvas);	
 	}
 	private void createTextArea(){
-		textArea = new TextArea();
+		TextArea textArea = new TextArea();
+		 textAreaWriter=new TextAreaWriter(textArea);
 		//Ratio chosen to impose symmetry,
 		textArea.setMaxWidth(SCENE_WIDTH/3);
 		textArea.setMinWidth(SCENE_WIDTH/3);
@@ -161,7 +165,7 @@ public class GUI {
 	private void createRoot() {
 		createTextArea();
 		lp = new LeftPanel(SCENE_WIDTH,SCENE_HEIGHT,model);
-		rp = new RightPanel(textArea, runButton, SCENE_WIDTH,SCENE_HEIGHT);	
+		rp = new RightPanel(textAreaWriter, runButton, SCENE_WIDTH,SCENE_HEIGHT);	
 		myRoot.setCenter(wrapperPane);
 		myRoot.setLeft(lp.getPanel());	
 		myRoot.setRight(rightScreen);
@@ -175,18 +179,18 @@ public class GUI {
 		return realInput.getCurrentLanguage();
 	}
 	public String getText(){
-		return textArea.getText();
+		return textAreaWriter.getText();
 	}
 	public void handleRunButton(Trajectory T){
 		rp.getScrollPane().addText();
 		tvm.moveTurtle(T,background.getBoundsInLocal().getWidth(),background.getBoundsInLocal().getHeight());
-		textArea.clear();
+		textAreaWriter.clear();
 	}
 	private void createButtons(){
 		Button play = runButton;
 		Button clear = buttonMaker.createButton("Clear", e -> {
-			textArea.clear();
-			textArea.setText("clear");
+			textAreaWriter.clear();
+			textAreaWriter.setText("clear");
 			gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
 			
 		});   
@@ -218,7 +222,7 @@ public class GUI {
 				line = buf.readLine(); 
 				}
 			String fileAsString = sb.toString();
-			textArea.setText(fileAsString);
+			textAreaWriter.setText(fileAsString);
 			
 			
 		}

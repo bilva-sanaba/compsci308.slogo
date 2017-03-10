@@ -19,6 +19,6 @@ public abstract class ColorChooser {
 	public List<Node> getChooser(){
 		return displays;
 	}
-	protected abstract Paint generateColor();
+	protected abstract Color generateColor();
 	protected abstract void setColor();
 }
