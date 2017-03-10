@@ -1,7 +1,6 @@
 package model.commands.turtleQueries;
 
 import model.commands.turtleCommands.NoParamCommand;
-import model.commands.turtleCommands.TurtleCommand;
 import model.configuration.Arguments;
 import model.configuration.Scope;
 import model.configuration.Trajectory;
@@ -28,7 +27,6 @@ public class IsShowing extends NoParamCommand {
 
 	@Override
 	public String getID() {
-		// TODO Auto-generated method stub
 		return "IsShowing";
 	}
 
