@@ -59,6 +59,8 @@ public class SlogoModel implements Model {
 		Scope scope = new Scope(globalCommands, globalVariables, turtleTrajectory, world, new Scope(true, true, true, true));	
 		TokenNode root = parser.parse(commands);
 		
+		System.out.println("CMD: " + root.getChildren().get(0).getChildren());
+		
 		for(TokenNode cmd: root.getChildren()){
 			i.evaluateTree(cmd, scope);
 		}

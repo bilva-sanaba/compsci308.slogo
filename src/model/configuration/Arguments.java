@@ -47,7 +47,7 @@ public class Arguments implements Iterable<Token>{
 	}
 	
 	public Arguments(){
-		this(new Token[0]);
+		arguments = new ArrayList<Token>();
 	}
 	
 	public Arguments(Token t){
