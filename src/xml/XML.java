@@ -23,10 +23,6 @@ public class XML {
 
 	//Elements expected to be in every xml file
     public static final String TYPE_ATTRIBUTE = "type";
-    public static final String IMAGE_ELEMENT = "image";
-    public static final String BACKGROUNDCOLOR_ELEMENT="backgroundColor";
-    public static final String PENCOLOR_ELEMENT="penColor";
-    public static final String LANGUAGE_ELEMENT="language";
     // keep only one documentBuilder because it is expensive to make and can reset it before parsing
     private static final DocumentBuilder DOCUMENT_BUILDER = getDocumentBuilder();
     /**
