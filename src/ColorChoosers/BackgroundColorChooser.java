@@ -5,28 +5,27 @@ import java.util.ResourceBundle;
 import GUI.Language;
 import GUI.TextAreaWriter;
 import GUI_Objects.ButtonMaker;
+import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
 public abstract class BackgroundColorChooser extends ColorChooser{
 	protected Shape background;
 	protected ButtonMaker buttonMaker = new ButtonMaker();
-	private TextAreaWriter textAreaWriter;
 	private Language myLanguage;
 	private ResourceBundle myResources;
 	public static final String DEFAULT_RESOURCE_BUNDLE="resources.languages/";
-	public BackgroundColorChooser(Shape rect,TextAreaWriter t,Language l){
-		super();
+	public BackgroundColorChooser(Shape rect,TextAreaWriter t,Language l,Button runButton){
+		super(runButton,t);
 		background=rect;
 		displays.add(buttonMaker.createLabel("Pick Background Color: "));
-		textAreaWriter=t;
 		myLanguage=l;
 		myResources=ResourceBundle.getBundle(DEFAULT_RESOURCE_BUNDLE+myLanguage.getLanguage());
 	}
 	
 	protected void setColor(){
 		 background.setFill(generateColor());
-		 textAreaWriter.setText(getText()); 
+		 myTextAreaWriter.setText(getText()); 
 		 
 	 }
 	protected String getText(){

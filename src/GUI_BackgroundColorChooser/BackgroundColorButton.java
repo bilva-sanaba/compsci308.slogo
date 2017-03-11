@@ -10,8 +10,8 @@ import javafx.scene.control.ButtonBase;
 import javafx.scene.shape.Shape;
 
 public abstract class BackgroundColorButton extends BackgroundColorChooser {
-	public BackgroundColorButton(Shape rect,TextAreaWriter t,Language l) {
-		super(rect,t,l);
+	public BackgroundColorButton(Shape rect,TextAreaWriter t,Language l,Button runButton) {
+		super(rect,t,l,runButton);
 		colorPicker = new Button("Randomize Background Color");
 		displays.add(colorPicker);
 		((ButtonBase) colorPicker).setOnAction(new EventHandler() {

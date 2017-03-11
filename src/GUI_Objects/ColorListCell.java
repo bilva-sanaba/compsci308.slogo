@@ -12,14 +12,14 @@ public class ColorListCell extends ListCell<String>{
         setGraphic(null);
         setText(null);
         if(item!=null){
-            Color color = Color.valueOf(item);
+            Color color = Color.valueOf(item.split(":")[1]);
             Rectangle rect=new Rectangle();
             //Values chosen to match regular button height for asthetic purposes
             rect.setWidth(20);
             rect.setHeight(20);
             rect.setFill(color);
             setGraphic(rect);
-            setText(Integer.toString(this.getIndex())+": "+item);
+            setText(item);
         }
     }
 }

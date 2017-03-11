@@ -9,6 +9,10 @@ public class DisplayUpdater {
 		palette.setPalette(w.getPalleteUpdates());
 	}
 	public void updateBackground(UnmodifiableWorld w, Shape background, Palette palette){
-		 background.setFill(palette.evalPalette(w.getBackground()));
+		 if (palette.evalPalette(w.getBackground())!=null){
+			 if (w.isBackgroundSet()){
+			 background.setFill(palette.evalPalette(w.getBackground()));
+			 }
+		 };
 	}
 }

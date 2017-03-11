@@ -13,8 +13,8 @@ import javafx.scene.shape.Shape;
 
 public abstract class BackgroundColorComboBox extends BackgroundColorChooser{
 	
-	BackgroundColorComboBox(Shape rect,TextAreaWriter t,Language l){
-	super(rect,t,l);
+	BackgroundColorComboBox(Shape rect,TextAreaWriter t,Language l,Button runButton){
+	super(rect,t,l,runButton);
 	colorPicker = new ComboBox<String>();
 	displays.add(colorPicker);
 	((ComboBox<String>) colorPicker).setOnAction(new EventHandler() {

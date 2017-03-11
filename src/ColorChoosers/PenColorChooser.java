@@ -6,6 +6,7 @@ import GUI.Language;
 import GUI.TextAreaWriter;
 import GUI_TurtleMovers.TurtleRegularMover;
 import GUI_TurtleMovers.TurtleViewManager;
+import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import xml.Default;
@@ -16,9 +17,8 @@ public abstract class PenColorChooser extends ColorChooser {
 		private ResourceBundle myResources;
 		private Language myLanguage;
 		public static final String DEFAULT_RESOURCE_BUNDLE="resources.languages/";
-		public PenColorChooser(TurtleViewManager tvm,Default d,TextAreaWriter t,Language l){
-			super();
-			System.out.println(t);
+		public PenColorChooser(TurtleViewManager tvm,Default d,TextAreaWriter t,Language l,Button runButton){
+			super(runButton,t);
 			myTextArea=t;
 			myTVM = tvm;
 			 myTVM.getTurtleView().setPenColor(Color.valueOf(d.getPenColor()));

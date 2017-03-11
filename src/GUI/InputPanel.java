@@ -98,7 +98,7 @@ private Pane initInputPanel(List<Button> otherButtons) {
     return bottomPanel;
 }
 private void addBackgroundButton(Shape background){
-	BackgroundColorChooser cb = new BackgroundColorWriteBox(background,textAreaWriter,currentLanguage);
+	BackgroundColorChooser cb = new BackgroundColorWriteBox(background,textAreaWriter,currentLanguage,runButton);
 	HBox topButtons = new HBox(BUTTON_SPACING);
 	topButtons.getChildren().addAll(cb.getChooser());
 	inputPanel.setConstraints(topButtons,0,3);
@@ -116,7 +116,7 @@ private void addOtherBoxes(){
    theBoxes.getChildren().add(myPalette.getPalette());
 }
 private void addPenButton(Default myDefault){
-	pb = new PenColorPicker(tvm,myDefault,textAreaWriter,currentLanguage);
+	pb = new PenColorPicker(tvm,myDefault,textAreaWriter,currentLanguage,runButton);
 	placePenButton();
 	 
 }

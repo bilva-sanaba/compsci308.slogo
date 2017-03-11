@@ -11,8 +11,8 @@ import javafx.scene.control.ButtonBase;
 import xml.Default;
 
 public abstract class PenColorButton extends PenColorChooser{
-	public PenColorButton(TurtleViewManager tvm,Default d,TextAreaWriter t,Language l) {
-		super(tvm,d,t,l);
+	public PenColorButton(TurtleViewManager tvm,Default d,TextAreaWriter t,Language l,Button runButton) {
+		super(tvm,d,t,l,runButton);
 		colorPicker = new Button("Randomize Pen Color");
 		displays.add(colorPicker);
 		((ButtonBase) colorPicker).setOnAction(new EventHandler() {
