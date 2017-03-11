@@ -20,9 +20,9 @@ import java.util.HashMap;
 	    
 	    
 	    public static final List<String> DATA_FIELDS =  Arrays.asList(new String[] {
-	        "image",
+	        "imageList",
 	        "backgroundColor",
-	        "penColor",
+	        
 	        "language"
 	       
 	    });
@@ -58,11 +58,9 @@ import java.util.HashMap;
 	    public String getBackgroundColor(){
 	    	return myDataValues.get("backgroundColor");
 	    }
-	    public String getPenColor(){
-	    	return myDataValues.get("penColor");
-	    }
-	    public String getImageString(){
-	    	return myDataValues.get("image");
+	    
+	    public List<String> getImageString(){
+	    	return Arrays.asList(myDataValues.get("imageList").split(" "));
 	    }
 	    @Override
 	    public String toString () {

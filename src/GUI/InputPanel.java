@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import resources.*;
 import xml.Default;
@@ -17,7 +18,7 @@ import GUI_BackgroundColorChooser.BackgroundColorWriteBox;
 import GUI_Objects.ButtonMaker;
 import GUI_Objects.PenSizeChooser;
 import GUI_Objects.PenSizeTextInput;
-
+import GUI_Objects.PenToggle;
 import GUI_Objects.Palette;
 
 import GUI_PenColorButton.PenColorPicker;
@@ -52,6 +53,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 public class InputPanel {
+	private BackgroundColorChooser cb;
 	private Pane returnPanel;
 	private GridPane inputPanel = new GridPane();
 	private Language currentLanguage = new Language("English");
@@ -75,7 +77,7 @@ public InputPanel(TurtleViewManager TVM, List<Button> otherButtons,Shape backgro
 	returnPanel = initInputPanel(otherButtons);
 	returnPanel.setPrefSize(GUI.GUI_WIDTH,GUI.GUI_HEIGHT/3);
 	addBackgroundButton(background);
-	addOtherBoxes();
+	addOtherBoxes(myDefault);
 	addPenButton(myDefault);
 	addExtraButtons();
 	setLanguage(myDefault.getLanguage());
@@ -101,15 +103,15 @@ private Pane initInputPanel(List<Button> otherButtons) {
     return bottomPanel;
 }
 private void addBackgroundButton(Shape background){
-	BackgroundColorChooser cb = new BackgroundColorWriteBox(textAreaWriter,currentLanguage,runButton,myPalette);
+	cb = new BackgroundColorWriteBox(textAreaWriter,currentLanguage,runButton,myPalette);
 	HBox topButtons = new HBox(BUTTON_SPACING);
 	topButtons.getChildren().addAll(cb.getChooser());
 	inputPanel.setConstraints(topButtons,0,3);
     inputPanel.getChildren().add(topButtons);
 }
-private void addOtherBoxes(){
+private void addOtherBoxes(Default myDefault){
 	//try to use lambdas for this
-  tcb = new TurtleComboBox(textAreaWriter,currentLanguage,runButton);
+  tcb = new TurtleComboBox(textAreaWriter,currentLanguage,runButton, myDefault);
  ComboBox<String>turtleChoice=tcb.getTurtleChooser();
  Pane theBoxes = new HBox(BUTTON_SPACING);
  inputPanel.setConstraints(theBoxes,0,1);
@@ -132,25 +134,35 @@ private  void placePenButton(){
 public Palette getMyPalette(){
 	return myPalette;
 }
-private PenSizeChooser createPenButton(){
-	PenSizeChooser p = new PenSizeTextInput(tvm);
+private PenSizeChooser createPenSizeButton(){
+	PenSizeChooser p = new PenSizeTextInput(textAreaWriter,runButton);
+	return p;
+}
+private PenToggle createPenToggle(){
+	PenToggle p = new PenToggle(textAreaWriter,runButton);
 	return p;
 }
 
 private void addExtraButtons(){
 	List<Node> extraButtons = new ArrayList<Node>();
-	Node penButton = createPenButton().getPenButtons();
+	Node penButton = createPenSizeButton().getPenButtons();
+	Node penToggle = createPenToggle().getToggleButton();
+	HBox penButtons = new HBox(penButton,penToggle);
 	extraButtons.addAll(tvm.getExtraButtons());
+	
 	if (extraButtons.size()==2){
 		inputPanel.setConstraints(extraButtons.get(0),0,5);
 		inputPanel.setConstraints(extraButtons.get(1),0,4);
-		inputPanel.setConstraints(penButton,0,6);
+//		inputPanel.setConstraints(penButton,0,6);
+		inputPanel.setConstraints(penButtons, 0,6);
 	}
 	if (extraButtons.size()==0){
-		inputPanel.setConstraints(penButton,0,4);
+//		inputPanel.setConstraints(penButton,0,4);
+		inputPanel.setConstraints(penButtons, 0,4);
 	}
+	inputPanel.getChildren().add(penButtons);
 	 inputPanel.getChildren().addAll(extraButtons);
-	 inputPanel.getChildren().add(penButton);
+//	 inputPanel.getChildren().add(penButton);
 }
 
 private ComboBox<String> createLanguageBox() {
@@ -163,30 +175,31 @@ private ComboBox<String> createLanguageBox() {
 }
 public void updateDefaults(Default d) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
 	setLanguage(d.getLanguage());
-	updatePenColor(d);
 	updateImage(d);
+	updateBackgroundColor(d);
 }
 public String getCurrentTurtleImage(){
 	return tcb.getTurtleChooser().getSelectionModel().getSelectedItem();
 }
-public Paint getCurrentPenColor(){
-	return tvm.getTurtleView().getPenColor();
+private void updateBackgroundColor(Default d){
+	
+	Color color=Color.valueOf(d.getBackgroundColor());
+	ResourceBundle myResources=ResourceBundle.getBundle(PenColorChooser.DEFAULT_RESOURCE_BUNDLE+currentLanguage.getLanguage());
+	String command=myResources.getString("SetPalette").split("\\|")[0];
+	command+=(" "+Integer.toString(myPalette.getPalette().getItems().size()+1)+ " ");
+	command+=(Double.toString(color.getRed()*255)+" ");
+	command+=(Double.toString(color.getGreen()*255)+" ");
+	command+=(Double.toString(color.getBlue()*255)+" ");
+	command+=(myResources.getString("SetBackground").split("\\|")[0]);
+	command+=(" "+Integer.toString(myPalette.getPalette().getItems().size()+1));
+	textAreaWriter.setText(command);
+	runButton.fire();
 }
-private Object makeClass(Class<?> clazz, TurtleViewManager t,Default d,TextAreaWriter taw,Language l) throws InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
-	Constructor<?> ctor = clazz.getDeclaredConstructor( Default.class,TextAreaWriter.class,Language.class,Button.class,Palette.class);
-	Object o = ctor.newInstance( d,taw,l,runButton,myPalette);
-	return o;
-}
-private void updatePenColor(Default d) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
 
-	Class<?>clazz=Class.forName(pb.getClass().getName());
-	topButtons.getChildren().clear();
-	pb=(PenColorChooser)makeClass(clazz,tvm,d,textAreaWriter,currentLanguage);
-	placePenButton();
-	tvm.getTurtleView().setPenColor(Color.valueOf(d.getPenColor()));
-}
+
+
 private void updateImage(Default d){
-	tcb.getTurtleChooser().getSelectionModel().select(d.getImageString());
+	tcb.getTurtleChooser().getSelectionModel().select(d.getImageString().get(0));
 }
 private void setLanguage(String language){
 	currentLanguage.setLanguage(language);

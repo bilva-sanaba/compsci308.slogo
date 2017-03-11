@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
+import xml.Default;
 import javafx.scene.image.Image;
 public class TurtleComboBox {
 	private TextAreaWriter myTextArea;
@@ -22,14 +23,12 @@ public class TurtleComboBox {
 	private ResourceBundle myResources;
 	private Button runButton;
 	public static final String DEFAULT_RESOURCE_BUNDLE="resources.languages/";
-	public TurtleComboBox(TextAreaWriter t,Language l,Button rb){
+	public TurtleComboBox(TextAreaWriter t,Language l,Button rb,Default d){
 		myTextArea=t;
 		myLanguage=l;
 		runButton=rb;
 		turtleChoice = new ComboBox<String>();
-		turtleChoice.getItems().add("turtle.gif");
-		turtleChoice.getItems().add("turtle2.gif");
-		turtleChoice.getItems().add("Turtle.png");
+		turtleChoice.getItems().addAll(d.getImageString());
 		turtleChoice.setPromptText("Choose Turtle");
 		turtleChoice.setCellFactory(c-> new TurtleListCell());
 		turtleChoice.setButtonCell(new TurtleListCell());
@@ -51,7 +50,7 @@ private String getText(String newString){
 	
 	String command=(myResources.getString("SetShape").split("\\|")[0]);
 	command+=" ";
-	command+=Integer.toString(turtleChoice.getSelectionModel().getSelectedIndex()+1);
+	command+=Integer.toString(turtleChoice.getSelectionModel().getSelectedIndex());
 	return command;
 }
 }
