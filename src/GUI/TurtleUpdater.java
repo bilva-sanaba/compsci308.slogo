@@ -25,7 +25,9 @@ public class TurtleUpdater {
 ////		System.out.println(worldTrajectories.getLast());
 		Map<Integer,SingleTurtleTrajectory> myMoves = Adapter.getSingleTrajectories(w);
 		
+
 		for (int i : myMoves.keySet()){
+
 			myTurtles.get(i).moveTurtle(myMoves.get(i),GUI.BACKGROUND_WIDTH,GUI.BACKGROUND_HEIGHT);	
 		}	
 }

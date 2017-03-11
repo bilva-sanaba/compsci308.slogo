@@ -4,7 +4,10 @@ package GUI;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -48,6 +51,7 @@ import model.UnmodifiableWorld;
 import model.World;
 import model.configuration.SingleTurtleState;
 import model.configuration.Trajectory;
+import model.exceptions.CommandException;
 import xml.Default;
 import xml.XML;
 import xml.XMLWriter;
@@ -82,13 +86,11 @@ public class GUI {
 	public static final String DEFAULT_FILE="data/Defaults.xml";
 
 	private List<Label> stateLabels;
-	private Model model;
 	private XML xml;
 	private Default myDefault;
-	public GUI(Button b,Button n, Model m){
+	public GUI(Button b,Button n){
 		runButton = b;
 		newTab=n;
-		model=m;
 		xml=new XML(DEFAULT_FILE);
 		myDefault=xml.getDefaults();
 		createButtons();
@@ -129,7 +131,9 @@ public class GUI {
 		rightScreen.getChildren().add(rp.getPanel());
 	}
 	private void initializeTurtle(){
+
 		tvm = new TurtleAnimator(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc,myPalette);
+
 		activeTurtles = new HashMap<Integer, TurtleViewManager>();
 		activeTurtles.put(0, tvm);
 		configureStateDisplay(tvm);
@@ -166,7 +170,7 @@ public class GUI {
 	}
 	private void createRoot() {
 		createTextArea();
-		lp = new LeftPanel(GUI_WIDTH,GUI_HEIGHT,model);
+		lp = new LeftPanel(GUI_WIDTH,GUI_HEIGHT,currentWorld);
 		rp = new RightPanel(textAreaWriter, runButton, GUI_WIDTH,GUI_HEIGHT);	
 		myRoot.setCenter(wrapperPane);
 		myRoot.setLeft(lp.getPanel());	
@@ -183,16 +187,24 @@ public class GUI {
 	public String getText(){
 		return textArea.getText();
 	}
-	public void handleRunButton(UnmodifiableWorld w){
+
+	private Object makeClass(Class<?>clazz,TurtleView myHomie,Palette p) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		Constructor<?> ctor = clazz.getDeclaredConstructor(TurtleView.class,GraphicsContext.class,Palette.class);
+		Object o = ctor.newInstance(myHomie, gc,p);
+		return o;
+	}
+
+	public void handleRunButton(UnmodifiableWorld w) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, CommandException{
 		currentWorld=w;
 		rp.getScrollPane().addText();
 		Trajectory updates = w.getTrajectoryUpdates();
 		if (updates.getLast()!=null){
-			System.out.println(updates.getLast());
+			
 			for(SingleTurtleState turtle: updates.getLast()){
 				if(!activeTurtles.keySet().contains(turtle.getID())){
 					TurtleView myHomie = new TurtleView(myDefault.getImageString(),myDefault.getPenColor());
-					TurtleViewManager newTurtle = new TurtleAnimator(myHomie,gc,myPalette);
+					Class<?>clazz=Class.forName(activeTurtles.get(0).getClass().getName());
+					TurtleViewManager newTurtle = (TurtleViewManager) makeClass(clazz,myHomie,myPalette);
 					placeTurtle(newTurtle);
 					activeTurtles.put(turtle.getID(), newTurtle);
 					configureStateDisplay(newTurtle);
@@ -200,14 +212,21 @@ public class GUI {
 			}
 			TurtleUpdater tu = new TurtleUpdater();
 			tu.moveTurtles(updates,activeTurtles);
+			
 		}
-
+		updateVariables();
+		updateUserCommands();
 		DisplayUpdater du = new DisplayUpdater();
 		du.updatePalette(currentWorld, myPalette);
 		du.updateBackground(currentWorld, background, myPalette);
 		textArea.clear();
 	}
-
+	private void updateVariables() throws CommandException{
+		lp.updateVariables(currentWorld);
+	}
+	private void updateUserCommands() throws CommandException{
+		lp.updateCommands(currentWorld);
+	}
 	private void createButtons(){
 		Button play = runButton;
 		Button clear = buttonMaker.createButton("Clear", e -> {
@@ -218,8 +237,36 @@ public class GUI {
 		});   
 		Button load= buttonMaker.createButton("Load Preferences",e-> handleLoad());
 		Button save=buttonMaker.createButton("Save Preferences",e->handleSave());
+		Button loadCommand=buttonMaker.createButton("Load Command", e->handleLoadCommand());
 		Button newW=newTab;
-		otherButtons = Arrays	.asList(play, clear,newW,load,save);
+		otherButtons = Arrays	.asList(play, clear,newW,load,save,loadCommand);
+	}
+	private void handleLoadCommand(){
+		FileChooser fileChooser=new FileChooser();
+		fileChooser.setTitle("Select Command File");
+		fileChooser.getExtensionFilters().addAll(new ExtensionFilter(".logo files","*.logo"));
+		fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+		Stage ownerWindow = new Stage();
+		File file = fileChooser.showOpenDialog(ownerWindow);
+		try{
+			FileReader f=new FileReader(file);
+			BufferedReader buf = new BufferedReader(f); 
+			String line = buf.readLine(); 
+			StringBuilder sb = new StringBuilder();
+			while(line != null){ 
+				sb.append(line).append("\n"); 
+				line = buf.readLine(); 
+				}
+			String fileAsString = sb.toString();
+			textArea.setText(fileAsString);
+			textAreaWriter.setText(fileAsString);
+			
+			
+		}
+		catch(Exception e){
+			SlogoAlert alert=new SlogoAlert("Not a valid file",e.getMessage());
+			alert.showAlert();
+		}
 	}
 	private void handleSave(){	
 		XMLWriter xmlWriter=new XMLWriter(myDefault);

@@ -1,3 +1,5 @@
+import java.lang.reflect.InvocationTargetException;
+
 import GUI.GUI;
 import GUI.GUI_Configuration;
 import error.SlogoAlert;
@@ -26,20 +28,24 @@ public class Controller {
 		SlogoModel model = new SlogoModel();
 		Button r = new Button("Run");
 		Button newTab=new Button("New Workspace");
-		GUI gui=new GUI(r,newTab, model);
-		r.setOnAction(e -> onRun(gui, model));
+		GUI gui=new GUI(r,newTab);
+		r.setOnAction(e -> {
+			
+				onRun(gui, model);
+			
+		});
 		
 		newTab.setOnAction(e-> onTab(myGUIBuilder));
 		return gui;
 		
 	}
-	private void onRun(GUI gui,SlogoModel model){
+	private void onRun(GUI gui,SlogoModel model) {
 		String text = gui.getText();
 		model.setLanguage(gui.getCurrentLanguage());
 		System.out.println(gui.getCurrentLanguage());
 		try {
 			gui.handleRunButton(model.getWorld(text));
-		} catch (CommandException|NumberFormatException e){
+		} catch (Exception e){
 			SlogoAlert alert=new SlogoAlert("Learn to Code: https://www.codeschool.com/",e.getMessage());
 			alert.showAlert();
 		}

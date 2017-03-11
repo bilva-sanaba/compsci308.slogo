@@ -29,7 +29,9 @@ public VariableScrollPane() {
 	myScrollPane.setContent(root);
 	startingHeight=0;
 }
-public void add(Map<String,Double>variables){
+public void update(Map<String,Double>variables){
+	root=new Group();
+	myScrollPane.setContent(root);
 	myVariables=variables;
 for(String s:myVariables.keySet()){
 		
