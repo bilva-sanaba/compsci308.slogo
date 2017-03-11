@@ -12,8 +12,8 @@ import resources.*;
 import xml.Default;
 import gui.ButtonMaker;
 import gui.GUI;
-import gui.TextAreaWriter;
 import gui.executables.FireableButton;
+import gui.executables.TextAreaWriter;
 import gui.executables.background.BackgroundColorChooser;
 import gui.executables.background.BackgroundColorWriteBox;
 import gui.executables.boxes.Palette;
@@ -63,7 +63,7 @@ public class InputPanel {
 	private ComboBox<String> languages;
 	private PenColorChooser pb;
 	private static final String HELP_WINDOW_TITLE="Syntax";
-	private static final String HELP_URL="resources/help.html";
+	private static final String HELP_URL="/resources/help.html";
 	private static final int BUTTON_SPACING = 20;
 	private TurtleViewManager tvm;
 	private TurtleComboBox tcb;
@@ -75,6 +75,7 @@ public class InputPanel {
 	private FireableButton fireButton;
 public InputPanel(TurtleViewManager TVM, List<Button> otherButtons,Shape background, Default myDefault,TextAreaWriter t,Button rb, Palette p){
 	runButton=rb;
+	fireButton = new FireableButton(runButton);
 	myPalette = p;
 	tvm=TVM;
 	textAreaWriter=t;

@@ -1,8 +1,8 @@
 package gui.executables.penproperties;
 
-import gui.TextAreaWriter;
 import gui.executables.ExecutableButton;
 import gui.executables.FireableButton;
+import gui.executables.TextAreaWriter;
 import gui.language.Language;
 import gui.movement.TurtleViewManager;
 import javafx.scene.Node;

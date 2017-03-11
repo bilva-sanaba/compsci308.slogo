@@ -18,6 +18,7 @@ import parser.tokenNodes.TokenNodeFactory;
 
 /**
  * The parser for user SLogo commands. We read the command and convert it into a tree
+ * The tree is then consequently read in the model
  * @author Jacob Weiss
  *
  */
@@ -87,25 +88,25 @@ public class SlogoParser {
 			root.addChild(tokenNode);
 			
 			if(tokenNode.getToken().getType() == TokenType.COMMAND){
-				parentNode=root;
+				parentNode=root; //move down tree
 				root=tokenNode;
 			}
 			
-			if(root.getToken().getType() == TokenType.COMMAND && numArgsSatisfied(root)){
+			if(root.getToken().getType() == TokenType.COMMAND && numArgsSatisfied(root)){ //check if command's args are filled
 				String commandString = commandList.get(0);
-				if(!commandTakesInfiniteArgs(unlimitedParam, commandString)){
-					root=parentNode; 
+				if(!commandTakesInfiniteArgs(unlimitedParam, commandString)){ //check if command does not take infinite args
+					root=parentNode; //move up tree
 					parentNode = root.getParent();
-					if(unlimitedParam && i<commandList.size()-1 && !((Command)root).isNullCommand()){
+					if(unlimitedParam && i<commandList.size()-1 && !((Command)root).isNullCommand()){ //if params are specified and unlimited params
 						tokenNode = factory.genTokenNode(parentNode, commandString, unlimitedParam);
-						root.addChild(tokenNode);
-						parentNode=root; 
+						root.addChild(tokenNode); //distribute command
+						parentNode=root; //move down tree
 						root=tokenNode; 
 					}
 				}	
 			}
 			
-			stringCursor+= word.length() + SPACE.length(); //add 1 for the space character
+			stringCursor+= word.length() + SPACE.length();
 		}
 		return head;
 	}

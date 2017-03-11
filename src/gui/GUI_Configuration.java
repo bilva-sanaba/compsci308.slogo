@@ -9,8 +9,8 @@ import javafx.stage.Stage;
 import model.Model;
 
 public class GUI_Configuration {
-	public static final int SCENE_WIDTH = 1200; 
-	public static final int SCENE_HEIGHT = 800;
+	public static final int SCENE_WIDTH = 1050; 
+	public static final int SCENE_HEIGHT = 700;
 	public static final String DEFAULT_RESOURCE_PACKAGE="resources/";
 	public static final String STYLESHEET="default.css";
 TabPane window=new TabPane();

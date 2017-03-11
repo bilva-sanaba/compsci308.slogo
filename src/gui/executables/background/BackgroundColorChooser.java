@@ -3,9 +3,9 @@ package gui.executables.background;
 import java.util.ResourceBundle;
 
 import gui.ButtonMaker;
-import gui.TextAreaWriter;
 import gui.executables.ColorChooser;
 import gui.executables.FireableButton;
+import gui.executables.TextAreaWriter;
 import gui.executables.boxes.Palette;
 import gui.language.Language;
 import javafx.scene.control.Button;

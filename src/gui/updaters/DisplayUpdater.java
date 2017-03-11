@@ -1,7 +1,8 @@
-package gui;
+package gui.updaters;
 
 import java.util.Map;
 
+import gui.GUI;
 import gui.executables.boxes.Palette;
 import gui.movement.TurtleViewManager;
 import javafx.scene.canvas.GraphicsContext;

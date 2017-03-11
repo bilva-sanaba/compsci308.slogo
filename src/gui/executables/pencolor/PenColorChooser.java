@@ -2,9 +2,9 @@ package gui.executables.pencolor;
 
 import java.util.ResourceBundle;
 
-import gui.TextAreaWriter;
 import gui.executables.ColorChooser;
 import gui.executables.FireableButton;
+import gui.executables.TextAreaWriter;
 import gui.executables.boxes.Palette;
 import gui.language.Language;
 import gui.movement.TurtleRegularMover;

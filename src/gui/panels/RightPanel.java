@@ -1,8 +1,8 @@
 package gui.panels;
 
 import gui.ButtonMaker;
-import gui.TextAreaWriter;
 import gui.executables.FireableButton;
+import gui.executables.TextAreaWriter;
 import gui.panels.dynamic.CommandScrollPane;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;

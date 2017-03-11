@@ -1,4 +1,4 @@
-package gui;
+package gui.executables.boxes;
 
 import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;

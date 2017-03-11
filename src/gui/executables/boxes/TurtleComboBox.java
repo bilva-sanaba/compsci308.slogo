@@ -5,10 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import gui.TextAreaWriter;
-import gui.TurtleListCell;
 import gui.executables.ExecutableButton;
 import gui.executables.FireableButton;
+import gui.executables.TextAreaWriter;
 import gui.language.Language;
 import gui.movement.TurtleViewManager;
 import javafx.scene.control.Button;

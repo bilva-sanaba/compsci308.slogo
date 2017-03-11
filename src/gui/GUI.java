@@ -16,6 +16,7 @@ import java.util.Map;
 
 import error.SlogoAlert;
 import gui.executables.FireableButton;
+import gui.executables.TextAreaWriter;
 import gui.executables.boxes.Palette;
 import gui.executables.keymouse.ClickHandler;
 import gui.executables.keymouse.InputHandler;
@@ -29,6 +30,8 @@ import gui.movement.TurtleViewManager;
 import gui.panels.InputPanel;
 import gui.panels.LeftPanel;
 import gui.panels.RightPanel;
+import gui.updaters.DisplayUpdater;
+import gui.updaters.TurtleUpdater;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.event.ActionEvent;

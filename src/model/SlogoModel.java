@@ -51,6 +51,21 @@ public class SlogoModel implements Model {
 //		System.out.println(world); // Uncomment this to test functionality of model
 		return (UnmodifiableWorld) world;
 	}
+	
+	// This method should not be used after front-end implements multiple turtles.
+
+	public Trajectory getTrajectory(String commands) throws CommandException{
+		Interpreter i = new Interpreter();
+		Scope scope = new Scope(globalCommands, globalVariables, turtleTrajectory, world, new Scope(true, true, true, true));	
+		TokenNode root = parser.parse(commands);
+		
+		for(TokenNode cmd: root.getChildren()){
+			i.evaluateTree(cmd, scope);
+		}
+		
+		System.out.println(world); // Uncomment this to test functionality of model
+		return turtleTrajectory.getMostRecentAdditions();
+	}
 
 	@Override
 	public void setLanguage(String language) {

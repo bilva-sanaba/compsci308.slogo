@@ -2,9 +2,9 @@ package gui.executables.keymouse;
 
 import java.util.Map;
 
-import gui.TextAreaWriter;
 import gui.executables.ExecutableButton;
 import gui.executables.FireableButton;
+import gui.executables.TextAreaWriter;
 import gui.language.Language;
 import gui.movement.TurtleView;
 import gui.movement.TurtleViewManager;

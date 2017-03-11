@@ -3,7 +3,6 @@ package gui.executables;
 import java.util.ResourceBundle;
 
 import gui.ButtonMaker;
-import gui.TextAreaWriter;
 import gui.language.Language;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;

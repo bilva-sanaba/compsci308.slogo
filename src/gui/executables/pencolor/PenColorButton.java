@@ -1,7 +1,7 @@
 package gui.executables.pencolor;
 
-import gui.TextAreaWriter;
 import gui.executables.FireableButton;
+import gui.executables.TextAreaWriter;
 import gui.executables.boxes.Palette;
 import gui.language.Language;
 import gui.movement.TurtleViewManager;

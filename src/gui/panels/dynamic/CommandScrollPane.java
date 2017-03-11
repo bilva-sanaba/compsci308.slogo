@@ -1,7 +1,7 @@
 package gui.panels.dynamic;
 
-import gui.TextAreaWriter;
 import gui.executables.FireableButton;
+import gui.executables.TextAreaWriter;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;

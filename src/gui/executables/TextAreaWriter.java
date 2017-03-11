@@ -1,4 +1,4 @@
-package gui;
+package gui.executables;
 
 import javafx.scene.control.TextArea;
 

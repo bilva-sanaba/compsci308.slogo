@@ -2,8 +2,8 @@ package gui.executables.background;
 
 import java.util.Random;
 
-import gui.TextAreaWriter;
 import gui.executables.FireableButton;
+import gui.executables.TextAreaWriter;
 import gui.executables.boxes.Palette;
 import gui.language.Language;
 import javafx.scene.control.Button;

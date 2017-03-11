@@ -1,10 +1,11 @@
-package gui;
+package gui.updaters;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gui.GUI;
 import gui.movement.TurtleRegularMover;
 import gui.movement.TurtleViewManager;
 import gui.movement.utility.Adapter;
@@ -14,7 +15,7 @@ import model.configuration.Trajectory;
 
 public class TurtleUpdater {
 	private Map<Integer,TurtleViewManager> myTurtles;
-	TurtleUpdater(){
+	public TurtleUpdater(){
 		
 	}
 	public void moveTurtles(Trajectory w,Map<Integer,TurtleViewManager> a){

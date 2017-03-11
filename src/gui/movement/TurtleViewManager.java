@@ -63,7 +63,7 @@ public abstract class TurtleViewManager {
 	public List<Label> getStateLabels(){
 		double currentXPos=+myTurtleView.getImage().getX()+myTurtleView.getImage().getTranslateX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2-gui.GUI.BACKGROUND_WIDTH/2;
 		double currentYPos=+myTurtleView.getImage().getY()+myTurtleView.getImage().getTranslateY()+myTurtleView.getImage().getBoundsInLocal().getHeight()/2-gui.GUI.BACKGROUND_HEIGHT/2;
-		Label coordinateLabel=new Label("X:"+currentXPos+"  Y:"+currentYPos);
+		Label coordinateLabel=new Label("X:"+currentXPos+"  Y:"+(-currentYPos));
 		Label headingLabel=new Label(""+myTurtleView.getImage().getRotate()%360);
 		Label penUpLabel=new Label("" +getPenBool());
 		ArrayList<Label>stateLabels=new ArrayList<Label>();

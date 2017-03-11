@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import gui.TextAreaWriter;
 import gui.executables.boxes.Palette;
 import gui.language.Language;
 import javafx.scene.Node;
