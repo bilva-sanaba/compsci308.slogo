@@ -4,7 +4,9 @@ package GUI;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -235,8 +237,36 @@ public class GUI {
 		});   
 		Button load= buttonMaker.createButton("Load Preferences",e-> handleLoad());
 		Button save=buttonMaker.createButton("Save Preferences",e->handleSave());
+		Button loadCommand=buttonMaker.createButton("Load Command", e->handleLoadCommand());
 		Button newW=newTab;
-		otherButtons = Arrays	.asList(play, clear,newW,load,save);
+		otherButtons = Arrays	.asList(play, clear,newW,load,save,loadCommand);
+	}
+	private void handleLoadCommand(){
+		FileChooser fileChooser=new FileChooser();
+		fileChooser.setTitle("Select Command File");
+		fileChooser.getExtensionFilters().addAll(new ExtensionFilter(".logo files","*.logo"));
+		fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+		Stage ownerWindow = new Stage();
+		File file = fileChooser.showOpenDialog(ownerWindow);
+		try{
+			FileReader f=new FileReader(file);
+			BufferedReader buf = new BufferedReader(f); 
+			String line = buf.readLine(); 
+			StringBuilder sb = new StringBuilder();
+			while(line != null){ 
+				sb.append(line).append("\n"); 
+				line = buf.readLine(); 
+				}
+			String fileAsString = sb.toString();
+			textArea.setText(fileAsString);
+			textAreaWriter.setText(fileAsString);
+			
+			
+		}
+		catch(Exception e){
+			SlogoAlert alert=new SlogoAlert("Not a valid file",e.getMessage());
+			alert.showAlert();
+		}
 	}
 	private void handleSave(){	
 		XMLWriter xmlWriter=new XMLWriter(myDefault);
