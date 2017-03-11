@@ -1,3 +1,6 @@
+/**
+ * class which stores all information on the turtles image and tail
+ */
 package gui.movement;
 
 
@@ -30,6 +33,7 @@ public abstract class TurtleViewManager {
     public static final double MILLIS_PER_SECOND = 1000;
     protected int extraButtonCount;
     protected double penSize;
+    protected boolean shouldDraw = true;
     protected Palette myPalette;
     
 	public TurtleViewManager(TurtleView t,GraphicsContext gc, Palette p){
@@ -37,17 +41,19 @@ public abstract class TurtleViewManager {
 		graphics = gc;
 		myPalette = p;
 		extraButtons = new ArrayList<Node>();
-//		activeClick();
+
 	}
-//	public boolean isActive(){
-//		return active;
-//	}
+	/**
+	 * needed to return any extra buttons a specific implementation may want for display on GUI
+	 * @return
+	 */
 	public List<Node> getExtraButtons(){
 		return extraButtons;
 	}
-//	private void activeClick(){
-//		myTurtleView.getImage().setOnMouseClicked(e -> active=!active);
-//	}
+	/**
+	 * needed similarily to above
+	 * @return
+	 */
 	public int getButtonCount(){
 		return extraButtonCount;
 	}
@@ -57,9 +63,17 @@ public abstract class TurtleViewManager {
 		}
 		return myPalette.evalPalette(1);
 	}
+	/**
+	 * Needed to allow tvm to updates turtle image based on the palette
+	 * @param tcb
+	 */
 	public void addTurtleComboBox(TurtleComboBox tcb){
 		myTCB=tcb;
 	}
+	/**
+	 * Needed for GUI to display info on certain state
+	 * @return
+	 */
 	public List<Label> getStateLabels(){
 		double currentXPos=+myTurtleView.getImage().getX()+myTurtleView.getImage().getTranslateX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2-gui.GUI.BACKGROUND_WIDTH/2;
 		double currentYPos=+myTurtleView.getImage().getY()+myTurtleView.getImage().getTranslateY()+myTurtleView.getImage().getBoundsInLocal().getHeight()/2-gui.GUI.BACKGROUND_HEIGHT/2;
@@ -78,6 +92,12 @@ public abstract class TurtleViewManager {
 			labels.get(i).setLayoutY(10*i);
 		}
 	}
+	/**
+	 * Basic movement method
+	 * @param T
+	 * @param screenWidth
+	 * @param screenHeight
+	 */
 	public void moveTurtle(SingleTurtleTrajectory T,double screenWidth, double screenHeight){
 		for(SingleTurtleState uts:T){
 			draw(uts,screenWidth,screenHeight);
@@ -101,24 +121,51 @@ public abstract class TurtleViewManager {
 		double x;
 		double y;
 	}
+	/**
+	 * moves Turtles Image to location X
+	 * @param xLoc
+	 */
 	public void setX(double xLoc){
 		myTurtleView.getImage().setX(xLoc-myTurtleView.getImage().getBoundsInLocal().getWidth()/2);
 	}
+	/**
+	 * moves Turtles Image to location Y
+	 * @param yLoc
+	 */
 	public void setY(double yLoc){
 		myTurtleView.getImage().setY(yLoc-myTurtleView.getImage().getBoundsInLocal().getHeight()/2);
 	}
+	/**
+	 * Rotates turtles Image
+	 */
 	public void getRotate(){
 		myTurtleView.getImage().getRotate();
 	}
+	/**
+	 * Unnecessary penBool should have been stored in this class to  avoid this method
+	 * @return
+	 */
 	public boolean getPenBool(){
 		return myTurtleView.getPen();
 	}
+	/**
+	 * Needed by pensize button to set pen size
+	 * @param size
+	 */
 	public void setPenSize(double size){
 		penSize =size;
 	}
+	/**
+	 * Should be encapsulated better so that this could have been avoided
+	 * @return
+	 */
 	public ImageView getImage(){
 		return myTurtleView.getImage();
 	}
+	/**
+	 * Returns class encapsulating image
+	 * @return
+	 */
 	public TurtleView getTurtleView(){
 		return myTurtleView;
 	}

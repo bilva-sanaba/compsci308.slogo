@@ -1,3 +1,6 @@
+/**
+ * same as animated class but with flashing movement
+ */
 package gui.movement;
 
 import gui.executables.boxes.Palette;

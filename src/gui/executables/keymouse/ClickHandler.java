@@ -1,3 +1,6 @@
+/**
+ * Class which takes a list of TVMs and makes them clickable. When clicked they are activated
+ */
 package gui.executables.keymouse;
 
 import java.util.Map;
@@ -19,6 +22,10 @@ public class ClickHandler extends ExecutableButton {
 			activeTurtles.get(id).getImage().setOnMouseClicked(e -> activate(id));	
 		}
 	}
+	/**
+	 * Each time new turtles are created in GUI their clickability must be initialized
+	 * @param activeTurtles
+	 */
 	public void update(Map<Integer, TurtleViewManager> activeTurtles) {
 		for (int id : activeTurtles.keySet()){
 			activeTurtles.get(id).getImage().setOnMouseClicked(e -> activate(id));	

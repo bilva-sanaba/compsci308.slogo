@@ -1,3 +1,6 @@
+/**
+ * Class which creates a button which can run command to toggle penup and pendown
+ */
 package gui.executables.penproperties;
 
 import gui.executables.ExecutableButton;
@@ -16,6 +19,10 @@ public class PenToggle extends ExecutableButton{
 		super(t,r,l);
 		createPenToggleButton();
 	}
+	/**
+	 * needed by GUI to display Node
+	 * @return
+	 */
 	public Node getToggleButton(){
 		return penToggleButton;
 	}

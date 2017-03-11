@@ -23,4 +23,3 @@ public class TurtleListCell extends ListCell<String> {
 	        }
 	    }
 	 }
-

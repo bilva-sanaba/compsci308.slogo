@@ -1,3 +1,6 @@
+/**
+ * Class which takes a turtle trajectory and moves an image on screen
+ */
 package gui.movement;
 
 import java.util.ArrayList;
@@ -50,10 +53,12 @@ public class TurtleAnimator extends TurtleViewManager{
 		super(t, gc,p);
 		penSize = DEFAULT_PEN_SIZE;
 		extraButtons = mySlider.getButtons();
-		extraButtonCount=2;
+		extraButtonCount=extraButtons.size();
 	}
 
-
+	/**
+	 * called by the GUI in order to update turtle Image
+	 */
 	@Override
 	public void moveTurtle(SingleTurtleTrajectory T,double screenWidth, double screenHeight){
 		SequentialTransition x = new SequentialTransition();
@@ -104,10 +109,13 @@ public class TurtleAnimator extends TurtleViewManager{
 		
 		myTurtleView.setPen(uts.isPenDown());
 		if (currentXPos!=penX || currentYPos!=penY){
+			if (shouldDraw){
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(currentXPos,currentYPos), new LineTo(penX,penY));
 		PathTransition pt = new PathTransition(Duration.millis(mySlider.getSpeed()), path, myTurtleView.getImage());
 		if (myTurtleView.getPen()){
+			
+				System.out.println(shouldDraw);
 			pt.currentTimeProperty().addListener( new ChangeListener<Duration>() {
 				Location oldLocation = null;
 
@@ -144,6 +152,7 @@ public class TurtleAnimator extends TurtleViewManager{
 		currentXPos=penX;
 		currentYPos=penY;
 		return pt;
+		}
 		}
 		return null;
 

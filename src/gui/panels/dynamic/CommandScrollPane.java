@@ -25,7 +25,10 @@ public CommandScrollPane(TextAreaWriter t, FireableButton play){
 	startingHeight=0;
 	run=play;
 }
-
+/**
+ * Needed by Panels to display scroll pane
+ * @return
+ */
 public ScrollPane getScrollPane(){
 	return myScrollPane;
 }
