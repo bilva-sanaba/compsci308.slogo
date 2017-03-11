@@ -33,7 +33,7 @@ public void clearScrollPane(){
 public void addText(){
 	String myString=textArea.getText();
 	Text t=new Text(myString);
-	 t.setWrappingWidth(myScrollPane.getWidth()*.9);
+	 t.setWrappingWidth(myScrollPane.getWidth()*.6);
 	 RetrievableStackPane entry=new RetrievableStackPane(myString);
 	 Rectangle r=new Rectangle();
 	 r.setFill(Color.WHITE);

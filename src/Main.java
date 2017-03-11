@@ -1,4 +1,5 @@
 
+import Controller.Controller;
 import GUI.GUI;
 import javafx.application.Application;
 import javafx.scene.control.Button;

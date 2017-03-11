@@ -1,5 +1,7 @@
 package GUI_Objects;
 
+import GUI.ExecutableButton;
+import GUI.Language;
 import GUI.TextAreaWriter;
 import GUI_TurtleMovers.TurtleViewManager;
 import javafx.scene.Node;
@@ -7,15 +9,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-public abstract class PenSizeChooser {
-	private static final double DEFAULT_PEN_SIZE = 4;
-	protected double penSize = DEFAULT_PEN_SIZE;
+public abstract class PenSizeChooser extends ExecutableButton {
 	protected Node penSizeButton;
-	protected TextAreaWriter myTextAreaWriter;
-	protected Button runButton;
-	PenSizeChooser(TextAreaWriter t, Button rb){
-		myTextAreaWriter=t;
-		runButton=rb;
+	PenSizeChooser(TextAreaWriter t, Button rb,Language l ){
+		super(t,rb,l);
 		createPenSizeChooser();
 	}
 	public Node getPenButtons(){

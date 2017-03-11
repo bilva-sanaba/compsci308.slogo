@@ -130,11 +130,11 @@ public Palette getMyPalette(){
 	return myPalette;
 }
 private PenSizeChooser createPenSizeButton(){
-	PenSizeChooser p = new PenSizeTextInput(textAreaWriter,runButton);
+	PenSizeChooser p = new PenSizeTextInput(textAreaWriter,runButton,currentLanguage);
 	return p;
 }
 private PenToggle createPenToggle(){
-	PenToggle p = new PenToggle(textAreaWriter,runButton);
+	PenToggle p = new PenToggle(textAreaWriter,runButton,currentLanguage);
 	return p;
 }
 

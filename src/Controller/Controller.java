@@ -1,3 +1,4 @@
+package Controller;
 import java.lang.reflect.InvocationTargetException;
 
 import GUI.GUI;
@@ -10,6 +11,7 @@ import model.SlogoModel;
 import model.exceptions.CommandException;
 
 public class Controller {
+	public static final String DEFAULT_RESOURCE_BUNDLE="resources.languages/";
 	private GUI_Configuration myGUIBuilder;
 	int counter;
 	//private SlogoModel model;

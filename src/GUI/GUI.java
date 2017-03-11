@@ -102,7 +102,7 @@ public class GUI {
 		initializeTurtle();
 		createInputPanel();
 		placeTurtle(tvm);
-		clickHandler = new ClickHandler(textAreaWriter,runButton,activeTurtles);
+		clickHandler = new ClickHandler(textAreaWriter,runButton,new Language(realInput.getCurrentLanguage()),activeTurtles);
 	}
 	private void placeTurtle(TurtleViewManager tvm){
 		drawTurtle(tvm);
@@ -222,9 +222,7 @@ public class GUI {
 		updateVariables();
 		updateUserCommands();
 		DisplayUpdater du = new DisplayUpdater();
-		du.updatePalette(currentWorld, myPalette);
-		du.updateBackground(currentWorld, background, myPalette);
-		du.checkClear(currentWorld, gc, activeTurtles);
+		du.updateDisplay(w, myPalette, background, gc, activeTurtles);
 		textArea.clear();
 	}
 	private void updateVariables() throws CommandException{
