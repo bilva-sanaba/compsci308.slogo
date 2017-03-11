@@ -152,6 +152,7 @@ public class SingleTurtleState implements TurtleState{
 		setPosition(newX, newY);
 		return distance;
 	}
+
 	
 	/**
 	 * Sets turtle heading toward certain point

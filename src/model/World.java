@@ -27,6 +27,7 @@ public class World implements UnmodifiableWorld{
 	private int backgroundIndex;
 	private boolean shouldClear;
 	private Map<Integer, ArrayList<Integer>> paletteUpdates;
+	
 
 	
 	public World(Trajectory turtleTrajectory, VariableContainer variables, CommandFactory commands){
