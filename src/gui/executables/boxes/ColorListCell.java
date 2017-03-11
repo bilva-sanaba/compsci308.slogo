@@ -5,7 +5,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-
+/**
+ * ListCell used for ComboBox's CellFactory
+ * @author Alex
+ *
+ */
 public class ColorListCell extends ListCell<String>{
 	protected void updateItem(String item, boolean empty){
         super.updateItem(item, empty);

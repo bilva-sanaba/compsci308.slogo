@@ -7,7 +7,11 @@ import javafx.scene.control.TabPane;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import model.Model;
-
+/**
+ * Class that gets displayed on scene, using tabpane to allow for display of multiple GUIs
+ * @author Alex
+ *
+ */
 public class GUI_Configuration {
 	public static final int SCENE_WIDTH = 1050; 
 	public static final int SCENE_HEIGHT = 700;
@@ -23,6 +27,11 @@ public GUI_Configuration(GUI gui,Stage stage){
 	stage.show();
 	
 }
+/**
+ * 
+ * @param gui  GUI to be dsiplayed
+ * @param counter which instance of GUI this tab represents, for differentiation purposes
+ */
 public void addTab(GUI gui,int counter){
 	GUITab tab=new GUITab(gui,counter);
 	window.getTabs().add(tab);
