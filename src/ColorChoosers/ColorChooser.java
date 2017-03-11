@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import GUI.TextAreaWriter;
+import GUI_Objects.Palette;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
@@ -15,10 +16,12 @@ public abstract class ColorChooser {
 	protected Node colorPicker;
 	protected List<Node> displays;
 	protected Button runButton;
+	protected Palette myPalette;
 	protected TextAreaWriter myTextAreaWriter;
 	
-	public ColorChooser(Button rb,TextAreaWriter t){
+	public ColorChooser(Button rb,TextAreaWriter t, Palette p){
 		displays = new ArrayList<Node>();
+		myPalette=p;
 		runButton=rb;
 		myTextAreaWriter=t;
 	}

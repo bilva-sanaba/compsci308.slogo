@@ -3,6 +3,7 @@ package GUI_PenColorButton;
 import ColorChoosers.PenColorChooser;
 import GUI.Language;
 import GUI.TextAreaWriter;
+import GUI_Objects.Palette;
 import GUI_TurtleMovers.TurtleRegularMover;
 import GUI_TurtleMovers.TurtleViewManager;
 import javafx.event.Event;
@@ -17,8 +18,8 @@ import javafx.scene.paint.Paint;
 import xml.Default;
 
 public class PenColorPicker extends PenColorChooser{
-	public PenColorPicker(TurtleViewManager tvm,Default myDefault,TextAreaWriter t,Language l,Button runButton){
-		super(tvm,myDefault, t, l,runButton);
+	public PenColorPicker(Default myDefault,TextAreaWriter t,Language l,Button runButton,Palette p){
+		super(myDefault, t, l,runButton,p);
 		colorPicker = new ColorPicker(Color.valueOf(myDefault.getPenColor()));
 		displays.add(new Label("Pick Pen Color: "));
 		displays.add(colorPicker);
