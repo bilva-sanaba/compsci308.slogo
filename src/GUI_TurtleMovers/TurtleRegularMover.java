@@ -5,6 +5,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
@@ -55,8 +56,10 @@ protected void draw(SingleTurtleState uts,double screenWidth, double screenHeigh
 		graphics.setStroke(getPenColor(uts));
 		graphics.setLineWidth(uts.getPenSize());
 		graphics.strokeLine(oldX, oldY, penX, penY);
+		
 	}
 }
+
 
 protected void rotate(SingleTurtleState uts){
 	double newHeading=uts.getHeading();

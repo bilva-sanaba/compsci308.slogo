@@ -38,6 +38,14 @@ public class TurtleView {
 	public void setPenUp(){
 		penDown=false;
 	}
+	public void setShape(String s){
+		ImageView newValue=new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(s)));
+		setX(getImage().getX()+getImage().getBoundsInLocal().getWidth()/2);
+		setY(getImage().getY()+getImage().getBoundsInLocal().getHeight()/2);
+		Turtle_Image.setImage(newValue.getImage());
+		setY(getImage().getY()-getImage().getBoundsInLocal().getHeight()/2);
+		setX(getImage().getX()-getImage().getBoundsInLocal().getWidth()/2);
+	}
 	public boolean getPen(){
 		return penDown;
 	}

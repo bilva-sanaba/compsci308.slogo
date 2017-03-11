@@ -57,12 +57,12 @@ public class XMLWriter {
 	    	myDefault=d;
 	    }
  //Prepares the Document in a DocumentBuilder by appending elements and attributes
-	public void getXML(String imageString,Paint backgroundColor,Paint penColor,String language){
+	public void getXML(List<String> imageString,Paint backgroundColor,String language){
 		Document doc=DOCUMENT_BUILDER.newDocument();
 	Element root=doc.createElement(TYPE_ATTRIBUTE); 
 	doc.appendChild(root);
 	setAttributes( root, doc);
-	XMLData xmlData=new XMLData(imageString,backgroundColor,penColor,language);
+	XMLData xmlData=new XMLData(imageString,backgroundColor,language);
 	Map<String,String>xmlMap=xmlData.getParameters();
 	for(String s:xmlMap.keySet()){
 		Element element=doc.createElement(s);
