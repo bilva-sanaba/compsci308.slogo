@@ -25,7 +25,6 @@ public abstract class BackgroundColorChooser extends ColorChooser{
 	protected void setColor(){
 		 myTextAreaWriter.setText(getText()); 
 		 runButton.fire();
-		 
 	 }
 	protected String getText(){
 	//move to factory

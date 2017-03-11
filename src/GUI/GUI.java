@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import GUI_Objects.ButtonMaker;
+import GUI_Objects.ClickHandler;
 import GUI_Objects.InputHandler;
 import GUI_Objects.Palette;
 import GUI_Objects.WASDMover;
@@ -76,8 +77,9 @@ public class GUI {
 	BorderPane bottomPanel=new BorderPane();
 	private Map<Integer, TurtleViewManager> activeTurtles;
 	private UnmodifiableWorld currentWorld;
-	public InputHandler inputHandler=new WASDMover();
+	private InputHandler inputHandler = new WASDMover();
 	private Palette myPalette = new Palette();
+	private ClickHandler clickHandler;
 	public static final int GUI_WIDTH = GUI_Configuration.SCENE_WIDTH; 
 	public static final int GUI_HEIGHT = GUI_Configuration.SCENE_HEIGHT-120;
 	public static final double BACKGROUND_WIDTH = GUI_WIDTH*5/8;
@@ -100,6 +102,7 @@ public class GUI {
 		initializeTurtle();
 		createInputPanel();
 		placeTurtle(tvm);
+		clickHandler = new ClickHandler(textAreaWriter,runButton,activeTurtles);
 	}
 	private void placeTurtle(TurtleViewManager tvm){
 		drawTurtle(tvm);
@@ -203,10 +206,12 @@ public class GUI {
 			for(SingleTurtleState turtle: updates.getLast()){
 				if(!activeTurtles.keySet().contains(turtle.getID())){
 					TurtleView myHomie = new TurtleView(myDefault.getImageString(),myDefault.getPenColor());
+					
 					Class<?>clazz=Class.forName(activeTurtles.get(0).getClass().getName());
 					TurtleViewManager newTurtle = (TurtleViewManager) makeClass(clazz,myHomie,myPalette);
 					placeTurtle(newTurtle);
 					activeTurtles.put(turtle.getID(), newTurtle);
+					clickHandler.update(activeTurtles);
 					configureStateDisplay(newTurtle);
 				}
 			}
@@ -219,6 +224,7 @@ public class GUI {
 		DisplayUpdater du = new DisplayUpdater();
 		du.updatePalette(currentWorld, myPalette);
 		du.updateBackground(currentWorld, background, myPalette);
+		du.checkClear(currentWorld, gc, activeTurtles);
 		textArea.clear();
 	}
 	private void updateVariables() throws CommandException{
@@ -233,6 +239,7 @@ public class GUI {
 			textArea.clear();
 			textArea.setText("clear");
 			gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
+			runButton.fire();
 
 		});   
 		Button load= buttonMaker.createButton("Load Preferences",e-> handleLoad());
