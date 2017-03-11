@@ -35,11 +35,11 @@ for(String s:commands){
 	StackPane entry=new StackPane();
 	FlowPane textPane=new FlowPane();	
 	
-		Text text=new Text(s);
+		RetrievableStackPane stackpane=new RetrievableStackPane(s);
 		
 		
 		 
-		 textPane.getChildren().add(text);
+		 textPane.getChildren().add(stackpane.getStackPane());
 		
 		 entry.setMaxWidth(myScrollPane.getPrefWidth()-1);
 		 entry.getChildren().add(textPane);

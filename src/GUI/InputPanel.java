@@ -73,7 +73,7 @@ public InputPanel(TurtleViewManager TVM, List<Button> otherButtons,Shape backgro
 	tvm=TVM;
 	textAreaWriter=t;
 	returnPanel = initInputPanel(otherButtons);
-	returnPanel.setPrefSize(GUI.GUI_WIDTH,GUI.GUI_HEIGHT/4);
+	returnPanel.setPrefSize(GUI.GUI_WIDTH,GUI.GUI_HEIGHT/3);
 	addBackgroundButton(background);
 	addOtherBoxes();
 	addPenButton(myDefault);
@@ -81,6 +81,9 @@ public InputPanel(TurtleViewManager TVM, List<Button> otherButtons,Shape backgro
 	setLanguage(myDefault.getLanguage());
 	
 	}
+public TurtleComboBox getTurtleComboBox(){
+	return tcb;
+}
 public Pane getBottomPanel(){
 	return returnPanel;
 }
@@ -106,7 +109,7 @@ private void addBackgroundButton(Shape background){
 }
 private void addOtherBoxes(){
 	//try to use lambdas for this
-  tcb = new TurtleComboBox(tvm,textAreaWriter,currentLanguage,runButton);
+  tcb = new TurtleComboBox(textAreaWriter,currentLanguage,runButton);
  ComboBox<String>turtleChoice=tcb.getTurtleChooser();
  Pane theBoxes = new HBox(BUTTON_SPACING);
  inputPanel.setConstraints(theBoxes,0,1);
@@ -170,11 +173,12 @@ public Paint getCurrentPenColor(){
 	return tvm.getTurtleView().getPenColor();
 }
 private Object makeClass(Class<?> clazz, TurtleViewManager t,Default d,TextAreaWriter taw,Language l) throws InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
-	Constructor<?> ctor = clazz.getDeclaredConstructor(TurtleViewManager.class, Default.class,TextAreaWriter.class,Language.class);
-	Object o = ctor.newInstance(t, d,taw,l);
+	Constructor<?> ctor = clazz.getDeclaredConstructor( Default.class,TextAreaWriter.class,Language.class,Button.class,Palette.class);
+	Object o = ctor.newInstance( d,taw,l,runButton,myPalette);
 	return o;
 }
 private void updatePenColor(Default d) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
+
 	Class<?>clazz=Class.forName(pb.getClass().getName());
 	topButtons.getChildren().clear();
 	pb=(PenColorChooser)makeClass(clazz,tvm,d,textAreaWriter,currentLanguage);

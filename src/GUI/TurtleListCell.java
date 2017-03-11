@@ -15,11 +15,11 @@ public class TurtleListCell extends ListCell<String> {
 	            imageView.setFitWidth(20);
 	            imageView.setFitHeight(20);
 	            setGraphic(imageView);
-	            setText(Integer.toString(this.getIndex()+1));
+	            setText(Integer.toString(this.getIndex()));
 	        }
 	    }
 	 public int getImageIndex(){
-		 return this.getIndex()+1;
+		 return this.getIndex();
 	 }
 	 }
 

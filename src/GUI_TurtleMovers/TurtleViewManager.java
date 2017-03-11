@@ -4,6 +4,7 @@ package GUI_TurtleMovers;
 import java.util.ArrayList;
 import java.util.List;
 
+import GUI.TurtleComboBox;
 import GUI_Objects.Palette;
 import model.configuration.CompositeTurtleState;
 import model.configuration.SingleTurtleState;
@@ -12,6 +13,7 @@ import model.configuration.SingleTurtleState;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import model.configuration.Trajectory;
@@ -22,6 +24,7 @@ public abstract class TurtleViewManager {
 	protected boolean active;
 	protected GraphicsContext graphics;
 	protected List<Node> extraButtons;
+	protected TurtleComboBox myTCB;
     public static final int DEFAULT_FPS = 10;
     public static final double MILLIS_PER_SECOND = 1000;
     protected double penSize;
@@ -49,9 +52,12 @@ public abstract class TurtleViewManager {
 		}
 		return myPalette.evalPalette(1);
 	}
+	public void addTurtleComboBox(TurtleComboBox tcb){
+		myTCB=tcb;
+	}
 	public List<Label> getStateLabels(){
-		double currentXPos=+myTurtleView.getImage().getX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2-GUI.GUI.BACKGROUND_WIDTH/2;
-		double currentYPos=+myTurtleView.getImage().getY()+myTurtleView.getImage().getBoundsInLocal().getHeight()/2-GUI.GUI.BACKGROUND_HEIGHT/2;
+		double currentXPos=+myTurtleView.getImage().getX()+myTurtleView.getImage().getTranslateX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2-GUI.GUI.BACKGROUND_WIDTH/2;
+		double currentYPos=+myTurtleView.getImage().getY()+myTurtleView.getImage().getTranslateY()+myTurtleView.getImage().getBoundsInLocal().getHeight()/2-GUI.GUI.BACKGROUND_HEIGHT/2;
 		Label coordinateLabel=new Label("X:"+currentXPos+"  Y:"+currentYPos);
 		Label headingLabel=new Label(""+myTurtleView.getImage().getRotate()%360);
 		Label penUpLabel=new Label("" +getPenBool());
@@ -73,7 +79,13 @@ public abstract class TurtleViewManager {
 			moveLocation(uts,screenWidth,screenHeight);
 			rotate(uts);
 			changeVisibility(uts);
+			setShape(uts);
+			
 		}
+	}
+	protected void setShape(SingleTurtleState uts){
+		//myTCB.getTurtleChooser().getSelectionModel().select(uts.getShape());
+		myTurtleView.setShape(myTCB.getTurtleChooser().getItems().get(uts.getShape()));
 	}
 	protected abstract void draw(SingleTurtleState uts,double screenWidth, double screenHeight);
 	protected abstract void moveLocation(SingleTurtleState uts,double screenWidth, double screenHeight);

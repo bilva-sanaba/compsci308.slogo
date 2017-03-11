@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import GUI.GUI;
+import GUI.TurtleComboBox;
 import GUI_Objects.ButtonMaker;
 import GUI_Objects.Palette;
 import model.configuration.CompositeTurtleState;
@@ -88,6 +89,7 @@ public class TurtleAnimator extends TurtleViewManager{
 	public void moveTurtle(SingleTurtleTrajectory T,double screenWidth, double screenHeight){
 		SequentialTransition x = new SequentialTransition();
 		for (SingleTurtleState uts : T){
+			this.setShape(uts);
 			if (!skipFirst){
 				currentXPos=myTurtleView.getImage().getX()+myTurtleView.getImage().getTranslateX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2;
 				currentYPos=myTurtleView.getImage().getY()+myTurtleView.getImage().getTranslateY()+myTurtleView.getImage().getBoundsInLocal().getHeight()/2;

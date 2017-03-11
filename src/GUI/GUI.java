@@ -125,6 +125,7 @@ public class GUI {
 	private void createInputPanel(){
 		realInput = new InputPanel(tvm, otherButtons,background, myDefault,textAreaWriter,runButton,myPalette);
 		bottomPanel.setCenter(realInput.getBottomPanel());
+		tvm.addTurtleComboBox(realInput.getTurtleComboBox());
 		myRoot.setBottom(bottomPanel);
 	}
 	private void initializeRightScreen(){
@@ -141,6 +142,7 @@ public class GUI {
 	private List<Label> getStateLabels(TurtleViewManager tvm){
 		return tvm.getStateLabels();
 	}
+	
 	private void showStates(List<Label> turtleStates){	
 		wrapperPane.getChildren().addAll(turtleStates);
 		stateLabels=turtleStates;
@@ -205,6 +207,7 @@ public class GUI {
 					TurtleView myHomie = new TurtleView(myDefault.getImageString(),myDefault.getPenColor());
 					Class<?>clazz=Class.forName(activeTurtles.get(0).getClass().getName());
 					TurtleViewManager newTurtle = (TurtleViewManager) makeClass(clazz,myHomie,myPalette);
+					newTurtle.addTurtleComboBox(realInput.getTurtleComboBox());
 					placeTurtle(newTurtle);
 					activeTurtles.put(turtle.getID(), newTurtle);
 					configureStateDisplay(newTurtle);
@@ -232,7 +235,7 @@ public class GUI {
 		Button clear = buttonMaker.createButton("Clear", e -> {
 			textArea.clear();
 			textArea.setText("clear");
-			gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
+			gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());	
 
 		});   
 		Button load= buttonMaker.createButton("Load Preferences",e-> handleLoad());
