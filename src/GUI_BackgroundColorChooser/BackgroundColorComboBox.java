@@ -20,7 +20,7 @@ public abstract class BackgroundColorComboBox extends BackgroundColorChooser{
 	displays.add(colorPicker);
 	((ComboBox<String>) colorPicker).setOnAction(new EventHandler() {
 		public void handle(Event t) {
-			setColor();               
+			activate();               
 		}
 });
 	}

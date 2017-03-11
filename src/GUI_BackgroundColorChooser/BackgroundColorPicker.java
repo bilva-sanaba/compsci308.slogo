@@ -1,5 +1,7 @@
 package GUI_BackgroundColorChooser;
 
+import java.util.ResourceBundle;
+
 import ColorChoosers.BackgroundColorChooser;
 import GUI.Language;
 import GUI.TextAreaWriter;
@@ -14,11 +16,9 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 
 public class BackgroundColorPicker extends BackgroundColorChooser{
-	
-	
 	public BackgroundColorPicker(TextAreaWriter t,Language l,Button runButton, Palette p){
 		super(t,l,runButton,p);
-		colorPicker = new ColorPicker(Color.WHITE);
+		colorPicker = new ColorPicker(Color.web(paletteResource.getString("1")));
 		displays.add(colorPicker);
 		((ComboBoxBase<Color>) colorPicker).setOnAction(new EventHandler() {
 			public void handle(Event t) {

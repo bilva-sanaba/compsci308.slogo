@@ -13,12 +13,7 @@ import javafx.scene.shape.Shape;
 public abstract class BackgroundColorButton extends BackgroundColorChooser {
 	public BackgroundColorButton(TextAreaWriter t,Language l,Button runButton, Palette p) {
 		super(t,l,runButton,p);
-		colorPicker = new Button("Randomize Background Color");
+		colorPicker = myButtonMaker.createButton("Randomize Background Color", e -> activate());
 		displays.add(colorPicker);
-		((ButtonBase) colorPicker).setOnAction(new EventHandler() {
-			public void handle(Event t) {
-				setColor();               
-			}
-    });
 	}
 }

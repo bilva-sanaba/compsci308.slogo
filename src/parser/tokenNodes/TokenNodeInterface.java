@@ -5,7 +5,8 @@ import java.util.List;
 import model.Token;
 
 /**
- * 
+ * Interface for TokenNode
+ * TokenNode object consists of its parent, List of children and current Token
  * @author Jacob Weiss
  *
  */
