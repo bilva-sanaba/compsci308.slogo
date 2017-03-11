@@ -16,10 +16,6 @@ public abstract class PenColorButton extends PenColorChooser{
 		super(d,t,l,runButton,p);
 		colorPicker = new Button("Randomize Pen Color");
 		displays.add(colorPicker);
-		((ButtonBase) colorPicker).setOnAction(new EventHandler() {
-			public void handle(Event t) {
-				setColor();               
-			}
-    });
-	}
+		((ButtonBase) colorPicker).setOnAction(e -> activate());
+}
 }

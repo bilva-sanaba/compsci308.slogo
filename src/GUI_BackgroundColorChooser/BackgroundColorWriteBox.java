@@ -19,24 +19,30 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 public class BackgroundColorWriteBox extends BackgroundColorComboBox {
-	private Color p;
+	private Color currentColor;
 	private TextField inputText;
+	private SimpleObjectProperty<ObservableList<String>> words;
 	public BackgroundColorWriteBox(TextAreaWriter t,Language l,Button runButton, Palette p){
 		super(t,l,runButton,p);
-		doStuff();
+		initializeButtons();
 		displays.add(1,inputText);
 	}
-	private void doStuff(){
-	SimpleObjectProperty<ObservableList<String>> words = 
-        new SimpleObjectProperty<>(FXCollections.observableArrayList());
+	private void initializeButtons(){
+		createBinding();
+		createTextField();
+		createComboBox();
+	}
+	private void createBinding(){
+		words = new SimpleObjectProperty<>(FXCollections.observableArrayList());
         ((ComboBox<String>) colorPicker).itemsProperty().bind(words);
-        ((ComboBox<String>) colorPicker).setPromptText("Select Background Color");
-        inputText = new TextField();
+	}
+	private void createTextField(){
+		inputText = new TextField();
         inputText.setPromptText("Enter Background Color");
         inputText.setOnAction(e -> {
         	try{
-        		p = Color.web(inputText.getText());
-        		setColor();
+        		currentColor = Color.web(inputText.getText());
+        		activate();
         		((ComboBox<String>) colorPicker).getOnAction();
         		words.getValue().add(inputText.getText());
         		inputText.setText("");
@@ -46,15 +52,18 @@ public class BackgroundColorWriteBox extends BackgroundColorComboBox {
         	}
         	catch(NullPointerException i){}
         });
-   
+	}
+	private void createComboBox(){
+        ((ComboBox<String>) colorPicker).setPromptText("Select Background Color");  
         ((ComboBox<String>)colorPicker).valueProperty().addListener((x, y, newValue) -> {
-			p=Color.web(newValue);	
+			currentColor=Color.web(newValue);	
 			((ComboBox<String>) colorPicker).getOnAction();
 		});
 	}
+	
 	@Override
 	protected Color generateColor() {
-		return p;
+		return currentColor;
 	}
 
 }

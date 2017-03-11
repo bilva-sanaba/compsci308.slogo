@@ -20,16 +20,11 @@ import xml.Default;
 public class PenColorPicker extends PenColorChooser{
 	public PenColorPicker(Default myDefault,TextAreaWriter t,Language l,Button runButton,Palette p){
 		super(myDefault, t, l,runButton,p);
-		colorPicker = new ColorPicker(Color.valueOf("black"));
-		displays.add(new Label("Pick Pen Color: "));
+		colorPicker = new ColorPicker(Color.web(paletteResource.getString("1")));
+		displays.add(myButtonMaker.createLabel("Pick Pen Color: "));
 		displays.add(colorPicker);
-		((ComboBoxBase<Color>) colorPicker).setOnAction(new EventHandler() {
-			public void handle(Event t) {
-				setColor();               
-			}
-    });
+		((ComboBoxBase<Color>) colorPicker).setOnAction(e -> activate());
 	}
-
 	public Node getButton(){
 		return colorPicker;
 	}

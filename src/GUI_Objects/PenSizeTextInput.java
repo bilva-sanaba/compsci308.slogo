@@ -1,14 +1,16 @@
 package GUI_Objects;
 
+import GUI.Language;
 import GUI.TextAreaWriter;
 import GUI_TurtleMovers.TurtleViewManager;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 public class PenSizeTextInput extends PenSizeChooser {
-
-	public PenSizeTextInput(TextAreaWriter t, Button rb) {
-		super(t,rb);
+	private static final double DEFAULT_PEN_SIZE = 4;
+	protected double penSize = DEFAULT_PEN_SIZE;
+	public PenSizeTextInput(TextAreaWriter t, Button rb,Language l) {
+		super(t,rb,l);
 	}
 
 	@Override
@@ -17,16 +19,18 @@ public class PenSizeTextInput extends PenSizeChooser {
 		((TextField) penSizeButton).setPromptText("Enter Pen Size");
 		((TextField) penSizeButton).setOnAction(e -> {
 	    	try{
-	    		 myTextAreaWriter.setText(getText()); 
-	    		 runButton.fire();
+	    		 activate();
+	    		 ((TextField) penSizeButton).clear();
 	    	}catch(IllegalArgumentException y){
 	    		
 	    	}
 	    	catch(NullPointerException i){}
 		});
 	}
-	private String getText(){
-		return "setpensize "+((TextField) penSizeButton).getText();
+	protected String getText(){
+		String command=myResources.getString("SetPenSize").split("\\|")[0];
+		command+=" "+((TextField) penSizeButton).getText();
+		return command;
 	}
 }
 		

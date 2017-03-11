@@ -135,11 +135,11 @@ public Palette getMyPalette(){
 	return myPalette;
 }
 private PenSizeChooser createPenSizeButton(){
-	PenSizeChooser p = new PenSizeTextInput(textAreaWriter,runButton);
+	PenSizeChooser p = new PenSizeTextInput(textAreaWriter,runButton,currentLanguage);
 	return p;
 }
 private PenToggle createPenToggle(){
-	PenToggle p = new PenToggle(textAreaWriter,runButton);
+	PenToggle p = new PenToggle(textAreaWriter,runButton,currentLanguage);
 	return p;
 }
 
@@ -184,7 +184,7 @@ public String getCurrentTurtleImage(){
 private void updateBackgroundColor(Default d){
 	
 	Color color=Color.valueOf(d.getBackgroundColor());
-	ResourceBundle myResources=ResourceBundle.getBundle(PenColorChooser.DEFAULT_RESOURCE_BUNDLE+currentLanguage.getLanguage());
+	ResourceBundle myResources=ResourceBundle.getBundle(Controller.Controller.DEFAULT_RESOURCE_BUNDLE+currentLanguage.getLanguage());
 	String command=myResources.getString("SetPalette").split("\\|")[0];
 	command+=(" "+Integer.toString(myPalette.getPalette().getItems().size()+1)+ " ");
 	command+=(Double.toString(color.getRed()*255)+" ");
