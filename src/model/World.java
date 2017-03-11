@@ -22,6 +22,8 @@ public class World implements UnmodifiableWorld{
 	private TurtleManager turtles;
 	private VariableContainer variables;
 	private CommandFactory commands;
+
+	private boolean isBackgroundSet=false;
 	private int backgroundIndex;
 	private boolean shouldClear;
 	private Map<Integer, ArrayList<Integer>> paletteUpdates;
@@ -90,6 +92,7 @@ public class World implements UnmodifiableWorld{
 	 */
 	public void setBackground(int newColor){
 		backgroundIndex = newColor;
+		isBackgroundSet = true;
 	}
 	
 	/**
@@ -99,7 +102,12 @@ public class World implements UnmodifiableWorld{
 	public int getBackground(){
 		return backgroundIndex;
 	}
-	
+	/**
+	 * 
+	 */
+	public boolean isBackgroundSet(){
+		return isBackgroundSet;
+	}
 	/**
 	 * Adds new pallete index
 	 */

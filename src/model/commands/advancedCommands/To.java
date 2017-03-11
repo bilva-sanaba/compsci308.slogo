@@ -20,7 +20,7 @@ public class To extends AbstractCommand {
 
 	@Override
 	public double execute(Arguments args, Scope scope) throws CommandException {
-		commandName = args.getCommand(0).getID(); 	 // Command Name
+		commandName = args.getCommand(0).getID();// Command Name
 		TList parameters = args.getTList(1);		 // Variable Names
 		TList contents = args.getTList(2);	// Full commands with variables
 
@@ -68,11 +68,8 @@ public class To extends AbstractCommand {
 	 */
 	@Override
 	public Arguments getDefaultArgs() {
-		Arguments args = new Arguments();
-		args.add(new TemplateCommand("fake"));
-		args.add(new TList());
-		args.add(new TList());
-		return args;
+		Token[] def = {new TemplateCommand("fake"), new TList(), new TList()};
+		return new Arguments(def);
 	}
 
 	@Override

@@ -19,8 +19,7 @@ public interface Model {
 	/*
 	 * This method should no longer be used when Front-end is adjusted for multiple turtles
 	 */
-	public Trajectory getTrajectory(String commands) throws CommandException;
-	
+
 	/**
 	 * Returns world of turtles and background
 	 */

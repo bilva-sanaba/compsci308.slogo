@@ -28,7 +28,7 @@ public class Controller {
 		SlogoModel model = new SlogoModel();
 		Button r = new Button("Run");
 		Button newTab=new Button("New Workspace");
-		GUI gui=new GUI(r,newTab, model);
+		GUI gui=new GUI(r,newTab);
 		r.setOnAction(e -> {
 			
 				onRun(gui, model);

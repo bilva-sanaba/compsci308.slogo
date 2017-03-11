@@ -1,5 +1,6 @@
 package GUI_TurtleMovers;
 
+import GUI_Objects.Palette;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -15,10 +16,11 @@ public class TurtleRegularMover extends TurtleViewManager{
     public static final double MILLIS_PER_SECOND = 1000;
 	private double penSize = DEFAULT_PEN_SIZE;
 	private TextField penSizeButton;
+	
 	private static final double DEFAULT_PEN_SIZE = 4;
     
-	public TurtleRegularMover(TurtleView t,GraphicsContext gc){
-		super(t,gc);
+	public TurtleRegularMover(TurtleView t,GraphicsContext gc,Palette p){
+		super(t,gc,p);
 	}
 
 protected void moveLocation(SingleTurtleState uts,double screenWidth, double screenHeight){
@@ -50,11 +52,12 @@ protected void draw(SingleTurtleState uts,double screenWidth, double screenHeigh
 		double penX=uts.getX()+screenWidth/2;
 		double penY=-uts.getY()+screenHeight/2;
 		
-		graphics.setStroke(myTurtleView.getPenColor());
-		graphics.setLineWidth(penSize);
+		graphics.setStroke(getPenColor(uts));
+		graphics.setLineWidth(uts.getPenSize());
 		graphics.strokeLine(oldX, oldY, penX, penY);
 	}
 }
+
 protected void rotate(SingleTurtleState uts){
 	double newHeading=uts.getHeading();
 	myTurtleView.getImage().setRotate(newHeading);
