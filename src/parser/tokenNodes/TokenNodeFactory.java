@@ -19,7 +19,9 @@ import model.tokens.Constant;
 import model.tokens.Variable;
 import parser.regularExpressions.ProgramParser;
 /**
- * 
+ * Determines the type of tokenNode that is added
+ * checks for null command that follows TO
+ * error checking for syntax and undefined commands
  * @author Jacob Weiss
  *
  */
