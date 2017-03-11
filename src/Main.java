@@ -1,6 +1,6 @@
 
-import Controller.Controller;
-import GUI.GUI;
+import controller.Controller;
+import gui.GUI;
 import javafx.application.Application;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
