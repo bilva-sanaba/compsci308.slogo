@@ -37,10 +37,17 @@ public class RightPanel {
 		returnPanel.getStyleClass().add("pane");
 		
 	}
-	
+	/**
+	 * USed by GUI to  display right panel
+	 * @return
+	 */
 	public Pane getPanel(){
 		return returnPanel;
 	}
+	/**
+	 * Needed to execute commands in scrollpane
+	 * @return
+	 */
 	public CommandScrollPane getScrollPane(){
 		return commandScrollPane;
 	}

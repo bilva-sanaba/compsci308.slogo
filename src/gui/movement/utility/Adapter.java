@@ -13,6 +13,11 @@ public class Adapter {
 public Adapter(){
 	
 }
+/**
+ * Converts backend data into data front end can use
+ * @param t
+ * @return
+ */
 public static Map<Integer,SingleTurtleTrajectory>getSingleTrajectories(Trajectory t){
 	Map<Integer, SingleTurtleTrajectory> map=new HashMap<Integer,SingleTurtleTrajectory>();
 	UnmodifiableTurtleComposite last=t.getLast();

@@ -18,6 +18,11 @@ public class TurtleUpdater {
 	public TurtleUpdater(){
 		
 	}
+	/**
+	 * Moves turtles and states
+	 * @param w
+	 * @param a
+	 */
 	public void moveTurtles(Trajectory w,Map<Integer,TurtleViewManager> a){
 		myTurtles = a;
 //		Trajectory worldTrajectories= w.getTrajectoryUpdates();

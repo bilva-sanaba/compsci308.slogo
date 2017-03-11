@@ -1,3 +1,6 @@
+/**
+ * Abstract class which allows different sets of key instructions.
+ */
 package gui.executables.keymouse;
 
 import gui.executables.FireableButton;

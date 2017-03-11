@@ -1,3 +1,6 @@
+/**
+ * Abstract class for background color buttons has label initialized
+ */
 package gui.executables.background;
 
 import gui.executables.FireableButton;
