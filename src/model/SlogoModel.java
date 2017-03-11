@@ -53,7 +53,7 @@ public class SlogoModel implements Model {
 	}
 	
 	// This method should not be used after front-end implements multiple turtles.
-	@Override
+
 	public Trajectory getTrajectory(String commands) throws CommandException{
 		Interpreter i = new Interpreter();
 		Scope scope = new Scope(globalCommands, globalVariables, turtleTrajectory, world, new Scope(true, true, true, true));	
