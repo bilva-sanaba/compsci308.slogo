@@ -18,8 +18,6 @@ public class TurtleListCell extends ListCell<String> {
 	            setText(Integer.toString(this.getIndex()));
 	        }
 	    }
-	 public int getImageIndex(){
-		 return this.getIndex();
-	 }
+
 	 }
 

@@ -9,6 +9,10 @@ public RetrievableStackPane(String s){
 	myString=s;
 	myStackPane=new StackPane();
 }
+/**
+ * For panel display
+ * @return
+ */
 public StackPane getStackPane(){
 	return myStackPane;
 }

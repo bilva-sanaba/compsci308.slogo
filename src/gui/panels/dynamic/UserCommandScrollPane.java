@@ -49,9 +49,16 @@ for(String s:commands){
 	}
 
 }
+/**
+ * For panel display
+ * @return
+ */
 public ScrollPane getScrollPane(){
 	return myScrollPane;
 }
+/**
+ * For GUI to clear screen
+ */
 public void clearScrollPane(){
 	root.getChildren().clear();
 }

@@ -16,6 +16,10 @@ public abstract class PenSizeChooser extends ExecutableButton {
 		super(t,rb,l);
 		createPenSizeChooser();
 	}
+	/**
+	 * Method needed for displaying button in GUI
+	 * @return
+	 */
 	public Node getPenButtons(){
 		return penSizeButton;
 	}

@@ -88,9 +88,17 @@ public InputPanel(TurtleViewManager TVM, List<Button> otherButtons,Shape backgro
 	setLanguage(myDefault.getLanguage());
 	
 	}
+/**
+ * Needed by GUI to appropriately update TVM
+ * @return
+ */
 public TurtleComboBox getTurtleComboBox(){
 	return tcb;
 }
+/**
+ * Used by GUI to add panel
+ * @return
+ */
 public Pane getBottomPanel(){
 	return returnPanel;
 }
@@ -155,6 +163,7 @@ private void addExtraButtons(){
 	HBox penButtons = new HBox(penButton,penToggle);
 	extraButtons.addAll(tvm.getExtraButtons());
 	inputPanel.setConstraints(penButtons, 0,4);
+	System.out.println(tvm.getButtonCount());
 	for (int i=0; i < tvm.getButtonCount();i++){
 		inputPanel.setConstraints(extraButtons.get(i),0,6-i);
 	}
@@ -170,6 +179,17 @@ private ComboBox<String> createLanguageBox() {
 	languages=languageBox;
 	return languageBox;
 }
+/**
+ * Used so save preferences can function
+ * @param d
+ * @throws ClassNotFoundException
+ * @throws InstantiationException
+ * @throws IllegalAccessException
+ * @throws NoSuchMethodException
+ * @throws SecurityException
+ * @throws IllegalArgumentException
+ * @throws InvocationTargetException
+ */
 public void updateDefaults(Default d) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
 	setLanguage(d.getLanguage());
 	updateImage(d);
@@ -202,6 +222,10 @@ private void setLanguage(String language){
 	currentLanguage.setLanguage(language);
 	languages.getSelectionModel().select(language);
 }
+/**
+ * used so GUI can get current Language so  that controller can call it to send to backend
+ * @return
+ */
 public String getCurrentLanguage(){
 	return currentLanguage.getLanguage();
 }

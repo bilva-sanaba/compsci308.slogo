@@ -42,9 +42,18 @@ public class LeftPanel {
 		returnPanel.getChildren().add(commandScrollPane.getScrollPane());
 		returnPanel.getStyleClass().add("pane");
 	}
+	/**
+	 * Used by Gui to display left panel
+	 * @return
+	 */
 	public Pane getPanel(){
 		return returnPanel;
 	}
+	/**Used to update list of commands in GUI display
+	 * 
+	 * @param world
+	 * @throws CommandException
+	 */
 	public void updateCommands(UnmodifiableWorld world) throws CommandException{
 		myWorld=world;
 		Collection<String>commands=world.getCommandNames();

@@ -1,3 +1,6 @@
+/**
+ * Main abstract class for pen color choosers, defines how new colors will be set through commands
+ */
 package gui.executables.pencolor;
 
 import java.util.ResourceBundle;
