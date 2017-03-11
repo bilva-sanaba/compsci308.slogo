@@ -60,7 +60,7 @@ public class InputPanel {
 	private ComboBox<String> languages;
 	private PenColorChooser pb;
 	private static final String HELP_WINDOW_TITLE="Syntax";
-	private static final String HELP_URL="resources/help.html";
+	private static final String HELP_URL="/resources/help.html";
 	private static final int BUTTON_SPACING = 20;
 	private TurtleViewManager tvm;
 	private TurtleComboBox tcb;
