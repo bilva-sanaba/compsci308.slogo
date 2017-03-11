@@ -29,8 +29,8 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import GUI.TurtleComboBox;
 import error.SlogoAlert;
+import gui.executables.boxes.TurtleComboBox;
 
 import java.util.ArrayList;
 import java.util.Arrays;
