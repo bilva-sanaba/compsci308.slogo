@@ -5,7 +5,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import model.configuration.SingleTurtleState;
-
+/**
+ * Data class which stores info for where a turtle will go
+ * @author Bilva
+ *
+ */
 public class SingleTurtleTrajectory implements Iterable<SingleTurtleState> {
 	 	
 	 	ArrayList<SingleTurtleState> fullTrajectory;
