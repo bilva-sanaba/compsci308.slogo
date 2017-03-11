@@ -22,6 +22,7 @@ public class World implements UnmodifiableWorld{
 	private TurtleManager turtles;
 	private VariableContainer variables;
 	private CommandFactory commands;
+
 	private boolean isBackgroundSet=false;
 	private int backgroundIndex;
 	private boolean shouldClear;
