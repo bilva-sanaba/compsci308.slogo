@@ -3,7 +3,11 @@ package gui.executables.boxes;
 import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
+/**
+ * ListCell for TurtleComboBox's CellFactory property
+ * @author Alex
+ *
+ */
 public class TurtleListCell extends ListCell<String> {
 	 protected void updateItem(String item, boolean empty){
 	        super.updateItem(item, empty);
@@ -18,6 +22,4 @@ public class TurtleListCell extends ListCell<String> {
 	            setText(Integer.toString(this.getIndex()));
 	        }
 	    }
-
 	 }
-

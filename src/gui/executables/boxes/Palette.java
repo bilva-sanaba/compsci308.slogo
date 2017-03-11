@@ -7,7 +7,11 @@ import java.util.ResourceBundle;
 
 import javafx.scene.control.ComboBox;
 import javafx.scene.paint.Color;
-
+/**
+ * Function-less ComboBox displaying current accessible color palette
+ * @author Alex
+ *
+ */
 public class Palette {
 	private ComboBox<String> myPaletteBox=new ComboBox<String>();
 	private Map<Integer, String> myPalette = new HashMap<Integer, String>();
@@ -24,9 +28,19 @@ public class Palette {
 		myPaletteBox.setPromptText("Color Palette");
 
 	}
+	/**
+	 * 
+	 * @return ComboBox containg available color palette
+	 */
 	public ComboBox<String> getPalette(){
 		return myPaletteBox;
 	}
+	/**
+	 * Configures ComboBox to display new palette
+	 * 
+	 * @param newPalette Map containing Integer keys ArrayList rgb representation of
+	 * Color 
+	 */
 	public void setPalette(Map<Integer, ArrayList<Integer>> newPalette){
 		for (Integer x : newPalette.keySet()){
 			if (myPalette.containsKey(x)){
@@ -40,6 +54,11 @@ public class Palette {
 		myPaletteBox.getItems().clear();
 		myPaletteBox.getItems().addAll(myPalette.values());
 	}
+	/**
+	 * 
+	 * @param index for evaluation
+	 * @return Color corresponding to index
+	 */
 	public Color evalPalette(int index){
 		
 		if (myPalette.containsKey(index)){

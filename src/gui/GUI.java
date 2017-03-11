@@ -1,4 +1,4 @@
-package gui;
+package GUI;
 
 
 import javafx.scene.canvas.Canvas;
@@ -116,6 +116,10 @@ public class GUI {
 		drawTurtle(tvm);
 		wrapperPane.getChildren().add(tvm.getImage());
 	}
+	/**
+	 * Processes keystrokes and takes appropriate actions
+	 * @param code contains the Key pressed 
+	 */
 	public void handleKeyInput(KeyCode code){
 		if (currentWorld!=null){
 			inputHandler.handleKeyInput(code,textArea,fireableButton,currentWorld);
@@ -192,24 +196,40 @@ public class GUI {
 		myRoot.setLeft(lp.getPanel());	
 		myRoot.setRight(rightScreen);
 	}
+	/**
+	 * Generates a tab containing all Nodes in GUI
+	 * @return tab containing all nodes in GUI
+	 */
 	public Tab getTab(){
 		Tab tab=new Tab();
 		tab.setContent(myRoot);
 		return tab;
 	}
+	/**
+	 * 
+	 * @return String representation of GUI's current language
+	 */
 	public String getCurrentLanguage(){
 		return realInput.getCurrentLanguage();
 	}
+	/**
+	 * 
+	 * @return String entered into GUI's text area
+	 */
 	public String getText(){
 		return textArea.getText();
 	}
-
+	
 	private Object makeClass(Class<?>clazz,TurtleView myHomie,Palette p) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		Constructor<?> ctor = clazz.getDeclaredConstructor(TurtleView.class,GraphicsContext.class,Palette.class);
 		Object o = ctor.newInstance(myHomie, gc,p);
 		return o;
 	}
-
+/**
+ * Takes a world variable from Model and updates relevant states using new world
+ * @param w world variable from model
+ * 
+ */
 	public void handleRunButton(UnmodifiableWorld w) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, CommandException{
 		currentWorld=w;
 		rp.getScrollPane().addText();

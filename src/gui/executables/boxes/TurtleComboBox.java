@@ -20,6 +20,11 @@ import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import xml.Default;
 import javafx.scene.image.Image;
+/**
+ * ComboBox allowing user to select desired shape of Turtle
+ * @author Alex
+ *
+ */
 public class TurtleComboBox extends ExecutableButton{
 	private ComboBox<String> turtleChoice;
 	public static final String DEFAULT_RESOURCE_BUNDLE="resources.languages/";
@@ -35,6 +40,10 @@ public class TurtleComboBox extends ExecutableButton{
 		});
 		
 	}
+	/**
+	 * 
+	 * @return ComboBox containing shape choices
+	 */
 	public ComboBox<String> getTurtleChooser(){
 		return turtleChoice;
 	}

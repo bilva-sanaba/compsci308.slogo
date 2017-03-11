@@ -3,7 +3,7 @@ API Changes
 ## Outer View:
 	*add changes here*
 ## Inner View:
-	*add changes here*
+
 ## Outer Model:
 	
 ### Model
