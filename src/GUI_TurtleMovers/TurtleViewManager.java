@@ -32,17 +32,17 @@ public abstract class TurtleViewManager {
 		graphics = gc;
 		myPalette = p;
 		extraButtons = new ArrayList<Node>();
-		activeClick();
+//		activeClick();
 	}
-	public boolean isActive(){
-		return active;
-	}
+//	public boolean isActive(){
+//		return active;
+//	}
 	public List<Node> getExtraButtons(){
 		return extraButtons;
 	}
-	private void activeClick(){
-		myTurtleView.getImage().setOnMouseClicked(e -> active=!active);
-	}
+//	private void activeClick(){
+//		myTurtleView.getImage().setOnMouseClicked(e -> active=!active);
+//	}
 	protected Color getPenColor(SingleTurtleState uts){
 		if (myPalette.evalPalette(uts.getPenColor())!=null){
 			return myPalette.evalPalette(uts.getPenColor());

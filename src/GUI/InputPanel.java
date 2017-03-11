@@ -17,7 +17,7 @@ import GUI_BackgroundColorChooser.BackgroundColorWriteBox;
 import GUI_Objects.ButtonMaker;
 import GUI_Objects.PenSizeChooser;
 import GUI_Objects.PenSizeTextInput;
-
+import GUI_Objects.PenToggle;
 import GUI_Objects.Palette;
 
 import GUI_PenColorButton.PenColorPicker;
@@ -129,25 +129,35 @@ private  void placePenButton(){
 public Palette getMyPalette(){
 	return myPalette;
 }
-private PenSizeChooser createPenButton(){
-	PenSizeChooser p = new PenSizeTextInput(tvm);
+private PenSizeChooser createPenSizeButton(){
+	PenSizeChooser p = new PenSizeTextInput(textAreaWriter,runButton);
+	return p;
+}
+private PenToggle createPenToggle(){
+	PenToggle p = new PenToggle(textAreaWriter,runButton);
 	return p;
 }
 
 private void addExtraButtons(){
 	List<Node> extraButtons = new ArrayList<Node>();
-	Node penButton = createPenButton().getPenButtons();
+	Node penButton = createPenSizeButton().getPenButtons();
+	Node penToggle = createPenToggle().getToggleButton();
+	HBox penButtons = new HBox(penButton,penToggle);
 	extraButtons.addAll(tvm.getExtraButtons());
+	
 	if (extraButtons.size()==2){
 		inputPanel.setConstraints(extraButtons.get(0),0,5);
 		inputPanel.setConstraints(extraButtons.get(1),0,4);
-		inputPanel.setConstraints(penButton,0,6);
+//		inputPanel.setConstraints(penButton,0,6);
+		inputPanel.setConstraints(penButtons, 0,6);
 	}
 	if (extraButtons.size()==0){
-		inputPanel.setConstraints(penButton,0,4);
+//		inputPanel.setConstraints(penButton,0,4);
+		inputPanel.setConstraints(penButtons, 0,4);
 	}
+	inputPanel.getChildren().add(penButtons);
 	 inputPanel.getChildren().addAll(extraButtons);
-	 inputPanel.getChildren().add(penButton);
+//	 inputPanel.getChildren().add(penButton);
 }
 
 private ComboBox<String> createLanguageBox() {
