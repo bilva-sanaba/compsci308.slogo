@@ -4,7 +4,10 @@ package GUI;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,7 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 import GUI_Objects.ButtonMaker;
+import GUI_Objects.ClickHandler;
 import GUI_Objects.InputHandler;
+import GUI_Objects.Palette;
 import GUI_Objects.WASDMover;
 import GUI_TurtleMovers.TurtleAnimator;
 import GUI_TurtleMovers.TurtleDotMover;
@@ -47,6 +52,7 @@ import model.UnmodifiableWorld;
 import model.World;
 import model.configuration.SingleTurtleState;
 import model.configuration.Trajectory;
+import model.exceptions.CommandException;
 import xml.Default;
 import xml.XML;
 import xml.XMLWriter;
@@ -71,22 +77,22 @@ public class GUI {
 	BorderPane bottomPanel=new BorderPane();
 	private Map<Integer, TurtleViewManager> activeTurtles;
 	private UnmodifiableWorld currentWorld;
-	public InputHandler inputHandler=new WASDMover();
+	private InputHandler inputHandler = new WASDMover();
+	private Palette myPalette = new Palette();
+	private ClickHandler clickHandler;
 	public static final int GUI_WIDTH = GUI_Configuration.SCENE_WIDTH; 
 	public static final int GUI_HEIGHT = GUI_Configuration.SCENE_HEIGHT-120;
 	public static final double BACKGROUND_WIDTH = GUI_WIDTH*5/8;
 	public static final double BACKGROUND_HEIGHT =GUI_HEIGHT*12/17;
-	
+
 	public static final String DEFAULT_FILE="data/Defaults.xml";
 
 	private List<Label> stateLabels;
-	private Model model;
 	private XML xml;
 	private Default myDefault;
-	public GUI(Button b,Button n, Model m){
+	public GUI(Button b,Button n){
 		runButton = b;
 		newTab=n;
-		model=m;
 		xml=new XML(DEFAULT_FILE);
 		myDefault=xml.getDefaults();
 		createButtons();
@@ -96,6 +102,7 @@ public class GUI {
 		initializeTurtle();
 		createInputPanel();
 		placeTurtle(tvm);
+		clickHandler = new ClickHandler(textAreaWriter,runButton,activeTurtles);
 	}
 	private void placeTurtle(TurtleViewManager tvm){
 		drawTurtle(tvm);
@@ -119,7 +126,7 @@ public class GUI {
 		createCanvas();
 	}
 	private void createInputPanel(){
-		realInput = new InputPanel(tvm, otherButtons,background,GUI_WIDTH,GUI_HEIGHT,myDefault,textAreaWriter,runButton);
+		realInput = new InputPanel(tvm, otherButtons,background, myDefault,textAreaWriter,runButton,myPalette);
 		bottomPanel.setCenter(realInput.getBottomPanel());
 		myRoot.setBottom(bottomPanel);
 	}
@@ -127,7 +134,9 @@ public class GUI {
 		rightScreen.getChildren().add(rp.getPanel());
 	}
 	private void initializeTurtle(){
-		tvm = new TurtleRegularMover(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc);
+
+		tvm = new TurtleAnimator(new TurtleView(myDefault.getImageString(),myDefault.getPenColor()), gc,myPalette);
+
 		activeTurtles = new HashMap<Integer, TurtleViewManager>();
 		activeTurtles.put(0, tvm);
 		configureStateDisplay(tvm);
@@ -164,7 +173,7 @@ public class GUI {
 	}
 	private void createRoot() {
 		createTextArea();
-		lp = new LeftPanel(GUI_WIDTH,GUI_HEIGHT,model);
+		lp = new LeftPanel(GUI_WIDTH,GUI_HEIGHT,currentWorld);
 		rp = new RightPanel(textAreaWriter, runButton, GUI_WIDTH,GUI_HEIGHT);	
 		myRoot.setCenter(wrapperPane);
 		myRoot.setLeft(lp.getPanel());	
@@ -181,41 +190,90 @@ public class GUI {
 	public String getText(){
 		return textArea.getText();
 	}
-	public void handleRunButton(UnmodifiableWorld w){
+
+	private Object makeClass(Class<?>clazz,TurtleView myHomie,Palette p) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		Constructor<?> ctor = clazz.getDeclaredConstructor(TurtleView.class,GraphicsContext.class,Palette.class);
+		Object o = ctor.newInstance(myHomie, gc,p);
+		return o;
+	}
+
+	public void handleRunButton(UnmodifiableWorld w) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, CommandException{
 		currentWorld=w;
 		rp.getScrollPane().addText();
 		Trajectory updates = w.getTrajectoryUpdates();
-
-		for(SingleTurtleState turtle: updates.getLast()){
-		
-			if(!activeTurtles.keySet().contains(turtle.getID())){
-				TurtleView myHomie = new TurtleView(myDefault.getImageString(),myDefault.getPenColor());
-				
-				TurtleViewManager newTurtle = new TurtleRegularMover(myHomie,gc);
-				placeTurtle(newTurtle);
-				activeTurtles.put(turtle.getID(), newTurtle);
-				configureStateDisplay(newTurtle);
+		if (updates.getLast()!=null){
+			
+			for(SingleTurtleState turtle: updates.getLast()){
+				if(!activeTurtles.keySet().contains(turtle.getID())){
+					TurtleView myHomie = new TurtleView(myDefault.getImageString(),myDefault.getPenColor());
+					
+					Class<?>clazz=Class.forName(activeTurtles.get(0).getClass().getName());
+					TurtleViewManager newTurtle = (TurtleViewManager) makeClass(clazz,myHomie,myPalette);
+					placeTurtle(newTurtle);
+					activeTurtles.put(turtle.getID(), newTurtle);
+					clickHandler.update(activeTurtles);
+					configureStateDisplay(newTurtle);
+				}
 			}
+			TurtleUpdater tu = new TurtleUpdater();
+			tu.moveTurtles(updates,activeTurtles);
+			
 		}
-		
-		TurtleUpdater tu = new TurtleUpdater();
-		tu.moveTurtles(updates,activeTurtles);
-		
+		updateVariables();
+		updateUserCommands();
+		DisplayUpdater du = new DisplayUpdater();
+		du.updatePalette(currentWorld, myPalette);
+		du.updateBackground(currentWorld, background, myPalette);
+		du.checkClear(currentWorld, gc, activeTurtles);
 		textArea.clear();
 	}
-
+	private void updateVariables() throws CommandException{
+		lp.updateVariables(currentWorld);
+	}
+	private void updateUserCommands() throws CommandException{
+		lp.updateCommands(currentWorld);
+	}
 	private void createButtons(){
 		Button play = runButton;
 		Button clear = buttonMaker.createButton("Clear", e -> {
 			textArea.clear();
 			textArea.setText("clear");
 			gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
-			
+			runButton.fire();
+
 		});   
 		Button load= buttonMaker.createButton("Load Preferences",e-> handleLoad());
 		Button save=buttonMaker.createButton("Save Preferences",e->handleSave());
+		Button loadCommand=buttonMaker.createButton("Load Command", e->handleLoadCommand());
 		Button newW=newTab;
-		otherButtons = Arrays	.asList(play, clear,newW,load,save);
+		otherButtons = Arrays	.asList(play, clear,newW,load,save,loadCommand);
+	}
+	private void handleLoadCommand(){
+		FileChooser fileChooser=new FileChooser();
+		fileChooser.setTitle("Select Command File");
+		fileChooser.getExtensionFilters().addAll(new ExtensionFilter(".logo files","*.logo"));
+		fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+		Stage ownerWindow = new Stage();
+		File file = fileChooser.showOpenDialog(ownerWindow);
+		try{
+			FileReader f=new FileReader(file);
+			BufferedReader buf = new BufferedReader(f); 
+			String line = buf.readLine(); 
+			StringBuilder sb = new StringBuilder();
+			while(line != null){ 
+				sb.append(line).append("\n"); 
+				line = buf.readLine(); 
+				}
+			String fileAsString = sb.toString();
+			textArea.setText(fileAsString);
+			textAreaWriter.setText(fileAsString);
+			
+			
+		}
+		catch(Exception e){
+			SlogoAlert alert=new SlogoAlert("Not a valid file",e.getMessage());
+			alert.showAlert();
+		}
 	}
 	private void handleSave(){	
 		XMLWriter xmlWriter=new XMLWriter(myDefault);
@@ -234,19 +292,19 @@ public class GUI {
 			updateDefaults();
 		}
 		catch(Exception e){;
-			SlogoAlert alert=new SlogoAlert("Not a valid file",e.getMessage());
-			alert.showAlert();
+		SlogoAlert alert=new SlogoAlert("Not a valid file",e.getMessage());
+		alert.showAlert();
 		}
 	}
 	private void updateDefaults() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
 		updateInputPanel();
-			
+
 		updateBackground();
 	}
 	private void updateBackground(){
 		background.setFill(Color.valueOf(myDefault.getBackgroundColor()));
 	}
-	
+
 	private void updateInputPanel() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
 		realInput.updateDefaults(myDefault);
 	}

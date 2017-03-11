@@ -5,6 +5,7 @@ import java.util.List;
 
 import GUI.GUI;
 import GUI_Objects.ButtonMaker;
+import GUI_Objects.Palette;
 import model.configuration.CompositeTurtleState;
 import model.configuration.SingleTurtleState;
 import model.configuration.Trajectory;
@@ -33,11 +34,7 @@ import model.configuration.Trajectory;
 import model.configuration.UnmodifiableTurtleComposite;
 
 public class TurtleAnimator extends TurtleViewManager{
-	private static final int DEFAULT_SPEED = 1500;
-	private int speed=DEFAULT_SPEED;
 	private ButtonMaker buttonMaker = new ButtonMaker();
-	private Slider slider;
-	private Label speedLabel;
 	private static final double DEFAULT_PEN_SIZE = 4;
 	private TextField penSizeButton;
 	private double currentXPos;
@@ -45,44 +42,14 @@ public class TurtleAnimator extends TurtleViewManager{
 	private double currentRotate=0;
 	private double currentOpacity=1.0;
 	private boolean skipFirst = false;
-	public TurtleAnimator(TurtleView t, GraphicsContext gc) {
-		super(t, gc);
+	private SpeedSlider mySlider= new SpeedSlider();
+	public TurtleAnimator(TurtleView t, GraphicsContext gc,Palette p) {
+		super(t, gc,p);
 		penSize = DEFAULT_PEN_SIZE;
-		createSpeedSlider();
-		createSpeedChooser();
+		extraButtons = mySlider.getButtons();
 	}
-//	private void createPenSizeChooser(){
-//		penSizeButton = new TextField();
-//		penSizeButton.setPromptText("Enter Pen Size");
-//		penSizeButton.setOnAction(e -> {
-//        	try{
-//        		penSize = Double.parseDouble(penSizeButton.getText());
-//        		penSizeButton.setText("");
-//        	}catch(IllegalArgumentException y){
-//        		
-//        	}
-//        	catch(NullPointerException i){}
-//        });
-//		extraButtons.add(penSizeButton);
-//	}
-	private void createSpeedSlider() {
-		speedLabel = buttonMaker.createLabel("Animation Speed : " + Integer.toString(DEFAULT_SPEED) + " milliseconds");
-		slider = new Slider(DEFAULT_SPEED/30, 2*DEFAULT_SPEED, DEFAULT_SPEED);
-		slider.setMajorTickUnit(DEFAULT_SPEED/3);
-		slider.setShowTickMarks(true);
-		slider.setSnapToTicks(true);
-		extraButtons.add(speedLabel);
-		extraButtons.add(slider);
-	}
-	private void createSpeedChooser() {
 
 
-		slider.valueProperty().addListener((observable, oldValue, newValue) -> {
-			slider.setValue(newValue.intValue());
-			speedLabel.setText(String.format("Animation Speed : " + Integer.toString(newValue.intValue()) + " milliseconds"));
-			speed = newValue.intValue();
-		});
-	}
 	@Override
 	public void moveTurtle(SingleTurtleTrajectory T,double screenWidth, double screenHeight){
 		SequentialTransition x = new SequentialTransition();
@@ -127,14 +94,14 @@ public class TurtleAnimator extends TurtleViewManager{
 	}
 	protected PathTransition moveLocations(SingleTurtleState uts, double screenWidth, double screenHeight, double X, double Y) {
 		
-		double penX=uts.getX()+screenWidth/2;
-		double penY=-uts.getY()+screenHeight/2;
+		double penX=uts.getX()+GUI.BACKGROUND_WIDTH/2;
+		double penY=-uts.getY()+GUI.BACKGROUND_HEIGHT/2;
 		
 		myTurtleView.setPen(uts.isPenDown());
 		if (currentXPos!=penX || currentYPos!=penY){
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(currentXPos,currentYPos), new LineTo(penX,penY));
-		PathTransition pt = new PathTransition(Duration.millis(speed), path, myTurtleView.getImage());
+		PathTransition pt = new PathTransition(Duration.millis(mySlider.getSpeed()), path, myTurtleView.getImage());
 		if (myTurtleView.getPen()){
 			pt.currentTimeProperty().addListener( new ChangeListener<Duration>() {
 				Location oldLocation = null;
@@ -159,8 +126,8 @@ public class TurtleAnimator extends TurtleViewManager{
 					}
 
 					// draw line
-					graphics.setStroke(myTurtleView.getPenColor());
-					graphics.setLineWidth(penSize);
+					graphics.setStroke(getPenColor(uts));
+					graphics.setLineWidth(uts.getPenSize());
 					graphics.strokeLine(oldLocation.x, oldLocation.y, x, y);
 
 					// update old location with current one
@@ -181,7 +148,7 @@ public class TurtleAnimator extends TurtleViewManager{
 	protected RotateTransition rotates(SingleTurtleState uts) {
 		
 		if (uts.getHeading()!=currentRotate){
-			RotateTransition rt = new RotateTransition(Duration.millis(speed),myTurtleView.getImage());
+			RotateTransition rt = new RotateTransition(Duration.millis(mySlider.getSpeed()),myTurtleView.getImage());
 			rt.setFromAngle(currentRotate);
 			rt.setToAngle(uts.getHeading());
 			currentRotate=uts.getHeading();
@@ -196,7 +163,7 @@ public class TurtleAnimator extends TurtleViewManager{
 			newOpacity=1.0;
 		}
 		if (currentOpacity!=newOpacity){
-			FadeTransition ft1 = new FadeTransition(Duration.millis(speed), myTurtleView.getImage());
+			FadeTransition ft1 = new FadeTransition(Duration.millis(mySlider.getSpeed()), myTurtleView.getImage());
 			ft1.setToValue(newOpacity);
 			currentOpacity=newOpacity;
 			return ft1;

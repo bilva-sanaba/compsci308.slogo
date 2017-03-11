@@ -1,12 +1,14 @@
 package GUI_Objects;
 
+import GUI.TextAreaWriter;
 import GUI_TurtleMovers.TurtleViewManager;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 public class PenSizeTextInput extends PenSizeChooser {
 
-	public PenSizeTextInput(TurtleViewManager tvm) {
-		super(tvm);
+	public PenSizeTextInput(TextAreaWriter t, Button rb) {
+		super(t,rb);
 	}
 
 	@Override
@@ -15,13 +17,16 @@ public class PenSizeTextInput extends PenSizeChooser {
 		((TextField) penSizeButton).setPromptText("Enter Pen Size");
 		((TextField) penSizeButton).setOnAction(e -> {
 	    	try{
-	    		myTVM.setPenSize(Double.parseDouble(((TextField) penSizeButton).getText()));
-	    		((TextField) penSizeButton).setText("");
+	    		 myTextAreaWriter.setText(getText()); 
+	    		 runButton.fire();
 	    	}catch(IllegalArgumentException y){
 	    		
 	    	}
 	    	catch(NullPointerException i){}
 		});
+	}
+	private String getText(){
+		return "setpensize "+((TextField) penSizeButton).getText();
 	}
 }
 		
