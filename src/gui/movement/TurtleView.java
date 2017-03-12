@@ -4,17 +4,20 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import model.configuration.Trajectory;
-
+/**
+ * Class which encapsulates the image of the turtle 
+ * (currently has a get image method but all uses should be changed to using another public method)
+ * @author Bilva
+ *
+ */
 public class TurtleView {
 	private ImageView Turtle_Image;
 	private boolean penDown;
-	private boolean visible;
 	private Paint penColor; 
 	public TurtleView(String s,String c){
 		Image image = new Image(getClass().getClassLoader().getResourceAsStream(s));
 		Turtle_Image = new ImageView(image);
 		penDown=true;
-		visible=true;
 		penColor=Color.valueOf(c);
 	}
 	public Paint getPenColor(){
@@ -35,9 +38,7 @@ public class TurtleView {
 	public void setPen(boolean x){
 		penDown=x;
 	}
-	public void setPenUp(){
-		penDown=false;
-	}
+
 	public void setShape(String s){
 		ImageView newValue=new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(s)));
 		setX(getImage().getX()+getImage().getBoundsInLocal().getWidth()/2);
@@ -51,11 +52,5 @@ public class TurtleView {
 	}
 	public void setVisibility(boolean v){
 		Turtle_Image.setVisible(v);
-	}
-
-	public void move(Trajectory T){
-	}
-	public void setPenColor(Paint p){
-		penColor=p;
 	}
 }

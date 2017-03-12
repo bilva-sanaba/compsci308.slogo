@@ -38,7 +38,12 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import model.configuration.Trajectory;
 import model.configuration.UnmodifiableTurtleComposite;
-
+/**
+ * Subclass of TurtleView Manager, has methods to move the image of the turtle to appropriate locations with animation
+ * when given a list of turtle states to iterate through 
+ * @author Bilva
+ *
+ */
 public class TurtleAnimator extends TurtleViewManager{
 	private ButtonMaker buttonMaker = new ButtonMaker();
 	private static final double DEFAULT_PEN_SIZE = 4;
@@ -57,7 +62,7 @@ public class TurtleAnimator extends TurtleViewManager{
 	}
 
 	/**
-	 * called by the GUI in order to update turtle Image
+	 * When called by the GUI this moves the turtle to appropriate locations
 	 */
 	@Override
 	public void moveTurtle(SingleTurtleTrajectory T,double screenWidth, double screenHeight){
@@ -102,65 +107,64 @@ public class TurtleAnimator extends TurtleViewManager{
 	protected void changeVisibility(SingleTurtleState uts){
 
 	}
-	protected PathTransition moveLocations(SingleTurtleState uts, double screenWidth, double screenHeight, double X, double Y) {
-		
+	private PathTransition moveLocations(SingleTurtleState uts, double screenWidth, double screenHeight, double X, double Y) {
+
 		double penX=uts.getX()+GUI.BACKGROUND_WIDTH/2;
 		double penY=-uts.getY()+GUI.BACKGROUND_HEIGHT/2;
-		
+
 		myTurtleView.setPen(uts.isPenDown());
 		if (currentXPos!=penX || currentYPos!=penY){
 			if (shouldDraw){
-		Path path = new Path();
-		path.getElements().addAll(new MoveTo(currentXPos,currentYPos), new LineTo(penX,penY));
-		PathTransition pt = new PathTransition(Duration.millis(mySlider.getSpeed()), path, myTurtleView.getImage());
-		if (myTurtleView.getPen()){
-			
-				System.out.println(shouldDraw);
-			pt.currentTimeProperty().addListener( new ChangeListener<Duration>() {
-				Location oldLocation = null;
+				Path path = new Path();
+				path.getElements().addAll(new MoveTo(currentXPos,currentYPos), new LineTo(penX,penY));
+				PathTransition pt = new PathTransition(Duration.millis(mySlider.getSpeed()), path, myTurtleView.getImage());
+				if (myTurtleView.getPen()){
 
-				/**
-				 * Draw a line from the old location to the new location
-				 */
-				@Override
-				public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
-					ImageView pen = myTurtleView.getImage(); 
-					// get current location
-					double x = myTurtleView.getImage().getX()+myTurtleView.getImage().getTranslateX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2;
-					double y =myTurtleView.getImage().getY()+myTurtleView.getImage().getTranslateY()+myTurtleView.getImage().getBoundsInLocal().getHeight()/2;
-					//				System.out.println(x);
+					System.out.println(shouldDraw);
+					pt.currentTimeProperty().addListener( new ChangeListener<Duration>() {
+						Location oldLocation = null;
 
-					// initialize the location
-					if( oldLocation == null) {
-						oldLocation = new Location();
-						oldLocation.x = x;
-						oldLocation.y = y;
-						return;
-					}
+						/**
+						 * Draw a line from the old location to the new location
+						 */
+						@Override
+						public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+							ImageView pen = myTurtleView.getImage(); 
+							// get current location
+							double x = myTurtleView.getImage().getX()+myTurtleView.getImage().getTranslateX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2;
+							double y =myTurtleView.getImage().getY()+myTurtleView.getImage().getTranslateY()+myTurtleView.getImage().getBoundsInLocal().getHeight()/2;
+							//				System.out.println(x);
 
-					// draw line
-					graphics.setStroke(getPenColor(uts));
-					graphics.setLineWidth(uts.getPenSize());
-					graphics.strokeLine(oldLocation.x, oldLocation.y, x, y);
+							// initialize the location
+							if( oldLocation == null) {
+								oldLocation = new Location();
+								oldLocation.x = x;
+								oldLocation.y = y;
+								return;
+							}
 
-					// update old location with current one
-					oldLocation.x = x;
-					oldLocation.y = y;
+							// draw line
+							graphics.setStroke(getPenColor(uts));
+							graphics.setLineWidth(uts.getPenSize());
+							graphics.strokeLine(oldLocation.x, oldLocation.y, x, y);
+
+							// update old location with current one
+							oldLocation.x = x;
+							oldLocation.y = y;
+						}
+					});
 				}
-			});
-		}
-		currentXPos=penX;
-		currentYPos=penY;
-		return pt;
-		}
+				currentXPos=penX;
+				currentYPos=penY;
+				return pt;
+			}
 		}
 		return null;
-
 	}				            
 
 
-	protected RotateTransition rotates(SingleTurtleState uts) {
-		
+	private RotateTransition rotates(SingleTurtleState uts) {
+
 		if (uts.getHeading()!=currentRotate){
 			RotateTransition rt = new RotateTransition(Duration.millis(mySlider.getSpeed()),myTurtleView.getImage());
 			rt.setFromAngle(currentRotate);
@@ -171,7 +175,7 @@ public class TurtleAnimator extends TurtleViewManager{
 		return null;
 	}
 
-	protected FadeTransition changeVisibilitys(SingleTurtleState uts,double width) {
+	private FadeTransition changeVisibilitys(SingleTurtleState uts,double width) {
 		double newOpacity=0;
 		if (uts.isShowing()){
 			newOpacity=1.0;

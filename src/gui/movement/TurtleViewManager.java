@@ -1,6 +1,3 @@
-/**
- * class which stores all information on the turtles image and tail
- */
 package gui.movement;
 
 
@@ -22,20 +19,30 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import model.configuration.Trajectory;
 import model.configuration.UnmodifiableTurtleComposite;
-
+/**
+ * Abstract class to move the TurtleImage
+ * @author Bilva
+ * @author Alex
+ *
+ */
 public abstract class TurtleViewManager {
 	protected TurtleView myTurtleView;
 	protected boolean active;
 	protected GraphicsContext graphics;
 	protected List<Node> extraButtons;
 	protected TurtleComboBox myTCB;
-    public static final int DEFAULT_FPS = 10;
-    public static final double MILLIS_PER_SECOND = 1000;
-    protected int extraButtonCount;
-    protected double penSize;
-    protected boolean shouldDraw = true;
-    protected Palette myPalette;
-    
+	public static final int DEFAULT_FPS = 10;
+	public static final double MILLIS_PER_SECOND = 1000;
+	protected int extraButtonCount;
+	protected double penSize;
+	protected boolean shouldDraw = true;
+	protected Palette myPalette;
+	/**
+	 * 
+	 * @param t Image of turtle
+	 * @param gc GraphicsContext of Canvas being drawn on
+	 * @param p Palette containing color associations to index
+	 */
 	public TurtleViewManager(TurtleView t,GraphicsContext gc, Palette p){
 		myTurtleView=t;
 		graphics = gc;
@@ -44,14 +51,14 @@ public abstract class TurtleViewManager {
 
 	}
 	/**
-	 * needed to return any extra buttons a specific implementation may want for display on GUI
-	 * @return
+	 * Depending on the type of TVM instantiated different type of buttons need to be added to GUI
+	 * @return List of Buttons to be added to GUI depending 
 	 */
 	public List<Node> getExtraButtons(){
 		return extraButtons;
 	}
 	/**
-	 * needed similarily to above
+	 * For simplicity, method allows for easier layout determination in InputPanel
 	 * @return
 	 */
 	public int getButtonCount(){
@@ -71,8 +78,8 @@ public abstract class TurtleViewManager {
 		myTCB=tcb;
 	}
 	/**
-	 * Needed for GUI to display info on certain state
-	 * @return
+	 * Needed for GUI to Display info on a TVM state when hovered over
+	 * @return list of labels 
 	 */
 	public List<Label> getStateLabels(){
 		double currentXPos=+myTurtleView.getImage().getX()+myTurtleView.getImage().getTranslateX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2-gui.GUI.BACKGROUND_WIDTH/2;
@@ -93,10 +100,10 @@ public abstract class TurtleViewManager {
 		}
 	}
 	/**
-	 * Basic movement method
-	 * @param T
-	 * @param screenWidth
-	 * @param screenHeight
+	 * In superclass, method called to move turtle image to appropriate location
+	 * @param T class containing information on all next states of a turtle
+	 * @param screenWidth Width of screen 
+	 * @param screenHeight Height of screen
 	 */
 	public void moveTurtle(SingleTurtleTrajectory T,double screenWidth, double screenHeight){
 		for(SingleTurtleState uts:T){
@@ -105,7 +112,7 @@ public abstract class TurtleViewManager {
 			rotate(uts);
 			changeVisibility(uts);
 			setShape(uts);
-			
+
 		}
 	}
 	protected void setShape(SingleTurtleState uts){
@@ -116,7 +123,7 @@ public abstract class TurtleViewManager {
 	protected abstract void moveLocation(SingleTurtleState uts,double screenWidth, double screenHeight);
 	protected abstract void rotate(SingleTurtleState uts);
 	protected abstract void changeVisibility(SingleTurtleState uts);
-	
+
 	protected static class Location {
 		double x;
 		double y;

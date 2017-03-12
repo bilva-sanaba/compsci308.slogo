@@ -54,7 +54,12 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-
+/**
+ * Creates InputPanel to be displayed on GUI
+ * @author Bilva
+ * @author Alex
+ *
+ */
 public class InputPanel {
 	private BackgroundColorChooser cb;
 	private Pane returnPanel;
@@ -73,182 +78,188 @@ public class InputPanel {
 	private TextAreaWriter textAreaWriter;
 	private Button runButton;
 	private FireableButton fireButton;
-public InputPanel(TurtleViewManager TVM, List<Button> otherButtons,Shape background, Default myDefault,TextAreaWriter t,Button rb, Palette p){
-	runButton=rb;
-	fireButton = new FireableButton(runButton);
-	myPalette = p;
-	tvm=TVM;
-	textAreaWriter=t;
-	returnPanel = initInputPanel(otherButtons);
-	returnPanel.setPrefSize(GUI.GUI_WIDTH,GUI.GUI_HEIGHT/3);
-	addBackgroundButton(background);
-	addOtherBoxes(myDefault);
-	addPenButton(myDefault);
-	addExtraButtons();
-	setLanguage(myDefault.getLanguage());
-	
+	/**
+	 * Creates the input panel to be displayed in GUI
+	 * @param Instance of original Turtle in GUI
+	 * @param otherButtons buttons created in GUI which must be displayed in inputpanel
+	 * @param myDefault Default preferences
+	 * @param t Texta area box to be displayed
+	 * @param rb Runbutton to be added to Input panel display
+	 * @param p Palette of Colors for colobuttons
+	 */
+	public InputPanel(TurtleViewManager TVM, List<Button> otherButtons, Default myDefault,TextAreaWriter t,Button rb, Palette p){
+		runButton=rb;
+		fireButton = new FireableButton(runButton);
+		myPalette = p;
+		tvm=TVM;
+		textAreaWriter=t;
+		returnPanel = initInputPanel(otherButtons);
+		returnPanel.setPrefSize(GUI.GUI_WIDTH,GUI.GUI_HEIGHT/3);
+		addBackgroundButton();
+		addOtherBoxes(myDefault);
+		addPenButton();
+		addExtraButtons();
+		setLanguage(myDefault.getLanguage());
+
 	}
-/**
- * Needed by GUI to appropriately update TVM
- * @return
- */
-public TurtleComboBox getTurtleComboBox(){
-	return tcb;
-}
-/**
- * Used by GUI to add panel
- * @return
- */
-public Pane getBottomPanel(){
-	return returnPanel;
-}
-private Pane initInputPanel(List<Button> otherButtons) {
- 	BorderPane bottomPanel = new BorderPane();
-    Button help=buttonMaker.createButton("Help",e -> handleHelpButton());
-    bottomPanel.setCenter(inputPanel);
-    Pane controlButtons = new HBox(BUTTON_SPACING);
-    controlButtons.getChildren().addAll(otherButtons);
-    controlButtons.getChildren().add(help);
-    inputPanel.setConstraints(controlButtons,0,0);
-    inputPanel.getChildren().add(controlButtons);
-    bottomPanel.getStyleClass().add("pane");
-    //bottomPanel.setMinHeight(GUI_Configuration.SCENE_WIDTH*3/16);
-    return bottomPanel;
-}
-private void addBackgroundButton(Shape background){
-	cb = new BackgroundColorWriteBox(textAreaWriter,currentLanguage,fireButton,myPalette);
-	HBox topButtons = new HBox(BUTTON_SPACING);
-	topButtons.getChildren().addAll(cb.getChooser());
-	inputPanel.setConstraints(topButtons,0,3);
-    inputPanel.getChildren().add(topButtons);
-}
-private void addOtherBoxes(Default myDefault){
-	//try to use lambdas for this
-  tcb = new TurtleComboBox(textAreaWriter,currentLanguage,fireButton, myDefault);
- ComboBox<String>turtleChoice=tcb.getTurtleChooser();
- Pane theBoxes = new HBox(BUTTON_SPACING);
- inputPanel.setConstraints(theBoxes,0,1);
- inputPanel.getChildren().add(theBoxes);
-   theBoxes.getChildren().add(turtleChoice);
-   theBoxes.getChildren().add(createLanguageBox());
-   theBoxes.getChildren().add(myPalette.getPalette());
-}
-private void addPenButton(Default myDefault){
-	pb = new PenColorPicker(myDefault,textAreaWriter,currentLanguage,fireButton,myPalette);
-	placePenButton();
-	 
-}
-private  void placePenButton(){
-	 topButtons = new HBox(BUTTON_SPACING);
-	topButtons.getChildren().addAll(pb.getChooser());
-	inputPanel.setConstraints(topButtons,0,2);
-	 inputPanel.getChildren().add(topButtons);
-}
-public Palette getMyPalette(){
-	return myPalette;
-}
-private PenSizeChooser createPenSizeButton(){
-	PenSizeChooser p = new PenSizeTextInput(textAreaWriter,fireButton,currentLanguage);
-	return p;
-}
-private PenToggle createPenToggle(){
-	PenToggle p = new PenToggle(textAreaWriter,fireButton,currentLanguage);
-	return p;
-}
-
-private void addExtraButtons(){
-	List<Node> extraButtons = new ArrayList<Node>();
-	Node penButton = createPenSizeButton().getPenButtons();
-	Node penToggle = createPenToggle().getToggleButton();
-	HBox penButtons = new HBox(penButton,penToggle);
-	extraButtons.addAll(tvm.getExtraButtons());
-	inputPanel.setConstraints(penButtons, 0,4);
-	System.out.println(tvm.getButtonCount());
-	for (int i=0; i < tvm.getButtonCount();i++){
-		inputPanel.setConstraints(extraButtons.get(i),0,6-i);
+	/**
+	 * Needed by GUI to appropriately update TVM
+	 * @return
+	 */
+	public TurtleComboBox getTurtleComboBox(){
+		return tcb;
 	}
-	inputPanel.getChildren().add(penButtons);
-	 inputPanel.getChildren().addAll(extraButtons);
-}
+	/**
+	 * Used by GUI to add panel
+	 * @return Pane 
+	 */
+	public Pane getBottomPanel(){
+		return returnPanel;
+	}
+	private Pane initInputPanel(List<Button> otherButtons) {
+		BorderPane bottomPanel = new BorderPane();
+		Button help=buttonMaker.createButton("Help",e -> handleHelpButton());
+		bottomPanel.setCenter(inputPanel);
+		Pane controlButtons = new HBox(BUTTON_SPACING);
+		controlButtons.getChildren().addAll(otherButtons);
+		controlButtons.getChildren().add(help);
+		inputPanel.setConstraints(controlButtons,0,0);
+		inputPanel.getChildren().add(controlButtons);
+		bottomPanel.getStyleClass().add("pane");
+		//bottomPanel.setMinHeight(GUI_Configuration.SCENE_WIDTH*3/16);
+		return bottomPanel;
+	}
+	private void addBackgroundButton(){
+		cb = new BackgroundColorWriteBox(textAreaWriter,currentLanguage,fireButton,myPalette);
+		HBox topButtons = new HBox(BUTTON_SPACING);
+		topButtons.getChildren().addAll(cb.getChooser());
+		inputPanel.setConstraints(topButtons,0,3);
+		inputPanel.getChildren().add(topButtons);
+	}
+	private void addOtherBoxes(Default myDefault){
+		//try to use lambdas for this
+		tcb = new TurtleComboBox(textAreaWriter,currentLanguage,fireButton, myDefault);
+		ComboBox<String>turtleChoice=tcb.getTurtleChooser();
+		Pane theBoxes = new HBox(BUTTON_SPACING);
+		inputPanel.setConstraints(theBoxes,0,1);
+		inputPanel.getChildren().add(theBoxes);
+		theBoxes.getChildren().add(turtleChoice);
+		theBoxes.getChildren().add(createLanguageBox());
+		theBoxes.getChildren().add(myPalette.getPalette());
+	}
+	private void addPenButton(){
+		pb = new PenColorPicker(textAreaWriter,currentLanguage,fireButton,myPalette);
+		placePenButton();
 
-private ComboBox<String> createLanguageBox() {
-	List<String> Languages = (new LanguageFactory()).getLanguages();
-	ComboBox<String> languageBox = createComboBox(Languages, (observable, oldValue, newValue) -> {
-        setLanguage(Languages.get((newValue.intValue())));
-        });
-	languages=languageBox;
-	return languageBox;
-}
-/**
- * Used so save preferences can function
- * @param d
- * @throws ClassNotFoundException
- * @throws InstantiationException
- * @throws IllegalAccessException
- * @throws NoSuchMethodException
- * @throws SecurityException
- * @throws IllegalArgumentException
- * @throws InvocationTargetException
- */
-public void updateDefaults(Default d) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
-	setLanguage(d.getLanguage());
-	updateImage(d);
-	updateBackgroundColor(d);
-}
-public String getCurrentTurtleImage(){
-	return tcb.getTurtleChooser().getSelectionModel().getSelectedItem();
-}
-private void updateBackgroundColor(Default d){
-	
-	Color color=Color.valueOf(d.getBackgroundColor());
-	ResourceBundle myResources=ResourceBundle.getBundle(controller.Controller.DEFAULT_RESOURCE_BUNDLE+currentLanguage.getLanguage());
-	String command=myResources.getString("SetPalette").split("\\|")[0];
-	command+=(" "+Integer.toString(myPalette.getPalette().getItems().size()+1)+ " ");
-	command+=(Double.toString(color.getRed()*255)+" ");
-	command+=(Double.toString(color.getGreen()*255)+" ");
-	command+=(Double.toString(color.getBlue()*255)+" ");
-	command+=(myResources.getString("SetBackground").split("\\|")[0]);
-	command+=(" "+Integer.toString(myPalette.getPalette().getItems().size()+1));
-	textAreaWriter.setText(command);
-	fireButton.fire();
-}
+	}
+	private  void placePenButton(){
+		topButtons = new HBox(BUTTON_SPACING);
+		topButtons.getChildren().addAll(pb.getChooser());
+		inputPanel.setConstraints(topButtons,0,2);
+		inputPanel.getChildren().add(topButtons);
+	}
 
 
+	private PenSizeChooser createPenSizeButton(){
+		PenSizeChooser p = new PenSizeTextInput(textAreaWriter,fireButton,currentLanguage);
+		return p;
+	}
+	private PenToggle createPenToggle(){
+		PenToggle p = new PenToggle(textAreaWriter,fireButton,currentLanguage);
+		return p;
+	}
 
-private void updateImage(Default d){
-	tcb.getTurtleChooser().getSelectionModel().select(d.getImageString().get(0));
-}
-private void setLanguage(String language){
-	currentLanguage.setLanguage(language);
-	languages.getSelectionModel().select(language);
-}
-/**
- * used so GUI can get current Language so  that controller can call it to send to backend
- * @return
- */
-public String getCurrentLanguage(){
-	return currentLanguage.getLanguage();
-}
-private ComboBox<String> createComboBox(List<String> items, ChangeListener<? super Number> listener) {
-    ComboBox<String> cb = createComboBox(items);
-    cb.getSelectionModel().selectedIndexProperty().addListener(listener);
-    return cb;
-}
-private ComboBox<String> createComboBox(List<String> items) {
-    ComboBox<String> cb = new ComboBox<String>(FXCollections.observableArrayList(items));
-    cb.getSelectionModel().selectFirst();
-    return cb;
-}
-private void handleHelpButton(){
-    Group root = new Group();
-    WebView browser = new WebView();
-    Scene helpScene = new Scene(root);
-    Stage helpStage = new Stage();
-    helpStage.setTitle(HELP_WINDOW_TITLE);
-    helpStage.setScene(helpScene);
-    URL url = getClass().getResource(HELP_URL);
-    browser.getEngine().load(url.toExternalForm());
-    root.getChildren().add(browser);
-    helpStage.show();
-}
+	private void addExtraButtons(){
+		List<Node> extraButtons = new ArrayList<Node>();
+		Node penButton = createPenSizeButton().getPenButtons();
+		Node penToggle = createPenToggle().getToggleButton();
+		HBox penButtons = new HBox(penButton,penToggle);
+		extraButtons.addAll(tvm.getExtraButtons());
+		inputPanel.setConstraints(penButtons, 0,4);
+		System.out.println(tvm.getButtonCount());
+		for (int i=0; i < tvm.getButtonCount();i++){
+			inputPanel.setConstraints(extraButtons.get(i),0,6-i);
+		}
+		inputPanel.getChildren().add(penButtons);
+		inputPanel.getChildren().addAll(extraButtons);
+	}
+
+	private ComboBox<String> createLanguageBox() {
+		List<String> Languages = (new LanguageFactory()).getLanguages();
+		ComboBox<String> languageBox = createComboBox(Languages, (observable, oldValue, newValue) -> {
+			setLanguage(Languages.get((newValue.intValue())));
+		});
+		languages=languageBox;
+		return languageBox;
+	}
+	/**
+	 * Used so save preferences can function
+	 * @param d
+	 * @throws ClassNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
+	public void updateDefaults(Default d) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
+		setLanguage(d.getLanguage());
+		updateImage(d);
+		updateBackgroundColor(d);
+	}
+	public String getCurrentTurtleImage(){
+		return tcb.getTurtleChooser().getSelectionModel().getSelectedItem();
+	}
+	private void updateBackgroundColor(Default d){
+
+		Color color=Color.valueOf(d.getBackgroundColor());
+		ResourceBundle myResources=ResourceBundle.getBundle(controller.Controller.DEFAULT_RESOURCE_BUNDLE+currentLanguage.getLanguage());
+		String command=myResources.getString("SetPalette").split("\\|")[0];
+		command+=(" "+Integer.toString(myPalette.getPalette().getItems().size()+1)+ " ");
+		command+=(Double.toString(color.getRed()*255)+" ");
+		command+=(Double.toString(color.getGreen()*255)+" ");
+		command+=(Double.toString(color.getBlue()*255)+" ");
+		command+=(myResources.getString("SetBackground").split("\\|")[0]);
+		command+=(" "+Integer.toString(myPalette.getPalette().getItems().size()+1));
+		textAreaWriter.setText(command);
+		fireButton.fire();
+	}
+
+	private void updateImage(Default d){
+		tcb.getTurtleChooser().getSelectionModel().select(d.getImageString().get(0));
+	}
+	private void setLanguage(String language){
+		currentLanguage.setLanguage(language);
+		languages.getSelectionModel().select(language);
+	}
+	/**
+	 * used so GUI can get current Language so  that controller can call it to send to backend
+	 * @return
+	 */
+	public String getCurrentLanguage(){
+		return currentLanguage.getLanguage();
+	}
+	private ComboBox<String> createComboBox(List<String> items, ChangeListener<? super Number> listener) {
+		ComboBox<String> cb = createComboBox(items);
+		cb.getSelectionModel().selectedIndexProperty().addListener(listener);
+		return cb;
+	}
+	private ComboBox<String> createComboBox(List<String> items) {
+		ComboBox<String> cb = new ComboBox<String>(FXCollections.observableArrayList(items));
+		cb.getSelectionModel().selectFirst();
+		return cb;
+	}
+	private void handleHelpButton(){
+		Group root = new Group();
+		WebView browser = new WebView();
+		Scene helpScene = new Scene(root);
+		Stage helpStage = new Stage();
+		helpStage.setTitle(HELP_WINDOW_TITLE);
+		helpStage.setScene(helpScene);
+		URL url = getClass().getResource(HELP_URL);
+		browser.getEngine().load(url.toExternalForm());
+		root.getChildren().add(browser);
+		helpStage.show();
+	}
 }

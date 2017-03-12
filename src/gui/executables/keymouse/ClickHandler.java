@@ -1,6 +1,3 @@
-/**
- * Class which takes a list of TVMs and makes them clickable. When clicked they are activated
- */
 package gui.executables.keymouse;
 
 import java.util.Map;
@@ -13,8 +10,20 @@ import gui.movement.TurtleView;
 import gui.movement.TurtleViewManager;
 import model.UnmodifiableWorld;
 
+/**
+ * Class which makes all existing turtles clickable and when a turtle is clicked it becomes the active turtle
+ * @author Bilva
+ *
+ */
 public class ClickHandler extends ExecutableButton {
 	private Map<Integer, TurtleViewManager> existingTurtles;
+	/**
+	 * Loops through all existing turtles and makes them clickable
+	 * @param rb Fireable runbutton
+	 * @param t Encapsulating object of command textArea
+	 * @param l Encapsulation of current language in workspace
+	 * @param activeTurtles object storing a list of all turtles that exist and their ids
+	 */
 	public ClickHandler (TextAreaWriter textAreaWriter,FireableButton rb,Language l,Map<Integer, TurtleViewManager>activeTurtles){
 		super(textAreaWriter,rb,l);
 		existingTurtles=activeTurtles;
@@ -23,7 +32,7 @@ public class ClickHandler extends ExecutableButton {
 		}
 	}
 	/**
-	 * Each time new turtles are created in GUI their clickability must be initialized
+	 * Each time the list of existing Turtles is changed the turtles can be made clickable
 	 * @param activeTurtles
 	 */
 	public void update(Map<Integer, TurtleViewManager> activeTurtles) {
@@ -31,12 +40,12 @@ public class ClickHandler extends ExecutableButton {
 			activeTurtles.get(id).getImage().setOnMouseClicked(e -> activate(id));	
 		}
 	}
-	
+
 	private void activate(int id){
 		myTextAreaWriter.setText(getText(id)); 
 		runButton.fire();
 	}
-	
+
 	private String getText(int id){
 		String command=myResources.getString("Tell").split("\\|")[0];
 		command+=" [ " + Integer.toString(id) + " ]" ;

@@ -14,7 +14,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
-
+/**
+ * Class which creates Panel to be displayed on right side of display
+ * @author Bilva
+ *
+ */
 public class RightPanel {
 	private CommandScrollPane commandScrollPane;
 	private Pane returnPanel = new Pane();
@@ -22,20 +26,15 @@ public class RightPanel {
 	private double width;
 	private double height;
 	private TextAreaWriter myTextArea;
-	
-	
+
 	public RightPanel(TextAreaWriter ta, FireableButton run, double w, double h){
 		play=run;
 		myTextArea=ta;
 		width=w;
 		height =h;
-		
 		createScrollPane();
-
-		
 		returnPanel.getChildren().add(commandScrollPane.getScrollPane());
 		returnPanel.getStyleClass().add("pane");
-		
 	}
 	/**
 	 * USed by GUI to  display right panel

@@ -11,10 +11,14 @@ import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import xml.Default;
-
+/**
+ * Subclass of PenColorButton which implements it as a rng color
+ * @author Bilva
+ *
+ */
 public class RandomPenColorButton extends PenColorButton{
-	public RandomPenColorButton(Default d,TextAreaWriter t,Language l,FireableButton runButton,Palette p) {
-		super(d,t,l,runButton,p);
+	public RandomPenColorButton(TextAreaWriter t,Language l,FireableButton runButton,Palette p) {
+		super(t,l,runButton,p);
 	}
 	private double randomInt(){
 		Random rand = new Random();

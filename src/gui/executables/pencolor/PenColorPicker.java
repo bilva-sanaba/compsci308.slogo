@@ -16,17 +16,18 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import xml.Default;
-
+/**
+ * Subclass of PenColorChooser which implements it as JavaFX color picker
+ * @author Bilva
+ *
+ */
 public class PenColorPicker extends PenColorChooser{
-	public PenColorPicker(Default myDefault,TextAreaWriter t,Language l,FireableButton runButton,Palette p){
-		super(myDefault, t, l,runButton,p);
+	public PenColorPicker(TextAreaWriter t,Language l,FireableButton runButton,Palette p){
+		super( t, l,runButton,p);
 		colorPicker = new ColorPicker(Color.web(paletteResource.getString("1")));
 		displays.add(myButtonMaker.createLabel("Pick Pen Color: "));
 		displays.add(colorPicker);
 		((ComboBoxBase<Color>) colorPicker).setOnAction(e -> activate());
-	}
-	public Node getButton(){
-		return colorPicker;
 	}
 	protected Color generateColor() {
 		return ((ComboBoxBase<Color>) colorPicker).getValue();

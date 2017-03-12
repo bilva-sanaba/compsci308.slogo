@@ -9,16 +9,16 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Shape;
 import model.UnmodifiableWorld;
 /**
- * Updates turtle image
+ * Class which updates all of the display components ie palette, background, and clearing
  * @author Bilva
  *
  */
 public class DisplayUpdater {
 	/**
 	 * Takes in needed parameters to change all GUI components through backend commands
-	 * @param w
-	 * @param palette
-	 * @param background
+	 * @param w Current World displayed
+	 * @param palette Current Palette of colors
+	 * @param background World background objects
 	 * @param gc
 	 * @param activeTurtles
 	 */
@@ -27,16 +27,16 @@ public class DisplayUpdater {
 		updateBackground(w, background, palette);
 		checkClear(w, gc, activeTurtles);
 	}
-	
+
 	public void updatePalette(UnmodifiableWorld w,Palette palette){
 		palette.setPalette(w.getPalleteUpdates());
 	}
 	public void updateBackground(UnmodifiableWorld w, Shape background, Palette palette){
-		 if (palette.evalPalette(w.getBackground())!=null){
-			 if (w.isBackgroundSet()){
-			 background.setFill(palette.evalPalette(w.getBackground()));
-			 }
-		 };
+		if (palette.evalPalette(w.getBackground())!=null){
+			if (w.isBackgroundSet()){
+				background.setFill(palette.evalPalette(w.getBackground()));
+			}
+		};
 	}
 	public void checkClear(UnmodifiableWorld w, GraphicsContext gc, Map<Integer, TurtleViewManager> activeTurtles){
 		if (w.shouldClear()){
