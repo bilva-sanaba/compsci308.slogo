@@ -14,8 +14,19 @@ import javafx.scene.control.ComboBoxBase;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
-
+/**
+ *  Subclass of BackgroundColorChooser which implements it as a JavaFX ColorPicker
+ * @author Bilva
+ *
+ */
 public class BackgroundColorPicker extends BackgroundColorChooser{
+	/**
+	 * 
+	 * @param rb Fireable runbutton
+	 * @param t Encapsulating object of command textArea
+	 * @param l Encapsulation of current language in workspace
+	 * @param p Object storing data structure with current color palette representation
+	 */
 	public BackgroundColorPicker(TextAreaWriter t,Language l,FireableButton runButton, Palette p){
 		super(t,l,runButton,p);
 		colorPicker = new ColorPicker(Color.web(paletteResource.getString("1")));

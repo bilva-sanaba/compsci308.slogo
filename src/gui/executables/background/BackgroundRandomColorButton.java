@@ -11,7 +11,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-
+/**
+ * Subclass of BackgroundColorButton which creates a random color when clicked
+ * @author Bilva
+ *
+ */
 public class BackgroundRandomColorButton extends BackgroundColorButton{
 	
 	public BackgroundRandomColorButton(TextAreaWriter t,Language l,FireableButton runButton, Palette p) {

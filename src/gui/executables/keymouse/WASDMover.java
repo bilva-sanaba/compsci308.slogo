@@ -8,7 +8,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import model.UnmodifiableWorld;
-
+/**
+ * Subclass of InputHandler which handles key inputs by running various command lines
+ * @author Bilva
+ *
+ */
 public class WASDMover extends InputHandler {
 	/**
 	 * runs these commands given certain Keycodes. 
@@ -31,13 +35,5 @@ public class WASDMover extends InputHandler {
 			textArea.setText("right 90");
 			runButton.fire();
 		}
-	}
-	private String collectionToString(Collection<Integer> x){
-		String returnString = "[ ";
-		for (Integer i : x){
-			returnString = returnString + i.toString() + " ";
-		}
-		returnString = returnString + "]";
-		return returnString;
 	}
 }

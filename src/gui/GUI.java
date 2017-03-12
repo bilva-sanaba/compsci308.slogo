@@ -1,9 +1,6 @@
 package gui;
-
-
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -13,7 +10,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import error.SlogoAlert;
 import gui.executables.FireableButton;
 import gui.executables.TextAreaWriter;
@@ -23,8 +19,6 @@ import gui.executables.keymouse.InputHandler;
 import gui.executables.keymouse.WASDMover;
 import gui.language.Language;
 import gui.movement.TurtleAnimator;
-import gui.movement.TurtleDotMover;
-import gui.movement.TurtleRegularMover;
 import gui.movement.TurtleView;
 import gui.movement.TurtleViewManager;
 import gui.panels.InputPanel;
@@ -34,16 +28,9 @@ import gui.updaters.DisplayUpdater;
 import gui.updaters.TurtleUpdater;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -53,9 +40,7 @@ import javafx.scene.shape.Shape;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
-import model.Model;
 import model.UnmodifiableWorld;
-import model.World;
 import model.configuration.SingleTurtleState;
 import model.configuration.Trajectory;
 import model.exceptions.CommandException;
@@ -63,6 +48,12 @@ import xml.Default;
 import xml.XML;
 import xml.XMLWriter;
 
+/**
+ * This is the class which creates the display for each workspace created.
+ * @author Bilva
+ * @author Alex
+ *
+ */
 public class GUI {
 	private BorderPane myRoot = new BorderPane();
 	private TextArea textArea=new TextArea();
@@ -82,7 +73,7 @@ public class GUI {
 	private ButtonMaker buttonMaker = new ButtonMaker();
 	private TextAreaWriter textAreaWriter;
 	BorderPane bottomPanel=new BorderPane();
-	private Map<Integer, TurtleViewManager> activeTurtles;
+	private Map<Integer, TurtleViewManager> existingTurtles;
 	private UnmodifiableWorld currentWorld;
 	private InputHandler inputHandler = new WASDMover();
 	private Palette myPalette = new Palette();
@@ -97,6 +88,11 @@ public class GUI {
 	private List<Label> stateLabels;
 	private XML xml;
 	private Default myDefault;
+	/**
+	 * When created a GUI is created in a new workspace with a turtle at the center
+	 * @param b Button which will be placed in the GUI and when fired run the handleRunButton method
+	 * @param n Button which will be placed in the GUI and when fired create a new workspace
+	 */
 	public GUI(Button b,Button n){
 		runButton = b;
 		fireableButton = new FireableButton(runButton);
@@ -110,7 +106,13 @@ public class GUI {
 		initializeTurtle();
 		createInputPanel();
 		placeTurtle(tvm);
-		clickHandler = new ClickHandler(textAreaWriter,fireableButton,new Language(realInput.getCurrentLanguage()),activeTurtles);
+		initializeClickHandler();
+	}
+	/**
+	 * Creates an object which allows for actions to occur when a turtle is clicked
+	 */
+	private void initializeClickHandler(){
+		clickHandler = new ClickHandler(textAreaWriter,fireableButton,new Language(realInput.getCurrentLanguage()),existingTurtles);
 	}
 	private void placeTurtle(TurtleViewManager tvm){
 		drawTurtle(tvm);
@@ -125,12 +127,10 @@ public class GUI {
 			inputHandler.handleKeyInput(code,textArea,fireableButton,currentWorld);
 		}
 	}
-
 	private void configureStateDisplay(TurtleViewManager tvm){
 		tvm.getImage().setOnMouseEntered(e->showStates(getStateLabels(tvm)));
 		tvm.getImage().setOnMouseExited(e->removeStates(tvm));
 	}
-
 	private void initializeMainScreen(){
 		background=new Rectangle(BACKGROUND_WIDTH,BACKGROUND_HEIGHT,Color.valueOf(myDefault.getBackgroundColor()));
 		wrapperPane.setClip(new Rectangle(background.getLayoutX(),background.getLayoutY(),background.getBoundsInLocal().getWidth(),background.getBoundsInLocal().getHeight()));
@@ -141,7 +141,7 @@ public class GUI {
 		return Color.valueOf(myDefault.getBackgroundColor()).invert().toString();
 	}
 	private void createInputPanel(){
-		realInput = new InputPanel(tvm, otherButtons,background, myDefault,textAreaWriter,runButton,myPalette);
+		realInput = new InputPanel(tvm, otherButtons,myDefault,textAreaWriter,runButton,myPalette);
 		bottomPanel.setCenter(realInput.getBottomPanel());
 		tvm.addTurtleComboBox(realInput.getTurtleComboBox());
 		myRoot.setBottom(bottomPanel);
@@ -153,14 +153,14 @@ public class GUI {
 
 		tvm = new TurtleAnimator(new TurtleView(myDefault.getImageString().get(0),getPenColorString(myDefault.getBackgroundColor())), gc,myPalette);
 
-		activeTurtles = new HashMap<Integer, TurtleViewManager>();
-		activeTurtles.put(0, tvm);
+		existingTurtles = new HashMap<Integer, TurtleViewManager>();
+		existingTurtles.put(0, tvm);
 		configureStateDisplay(tvm);
 	}
 	private List<Label> getStateLabels(TurtleViewManager tvm){
 		return tvm.getStateLabels();
 	}
-	
+
 	private void showStates(List<Label> turtleStates){	
 		wrapperPane.getChildren().addAll(turtleStates);
 		stateLabels=turtleStates;
@@ -219,44 +219,46 @@ public class GUI {
 	public String getText(){
 		return textArea.getText();
 	}
-	
+
 	private Object makeClass(Class<?>clazz,TurtleView myHomie,Palette p) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		Constructor<?> ctor = clazz.getDeclaredConstructor(TurtleView.class,GraphicsContext.class,Palette.class);
 		Object o = ctor.newInstance(myHomie, gc,p);
 		return o;
 	}
-/**
- * Takes a world variable from Model and updates relevant states using new world
- * @param w world variable from model
- * 
- */
+	/**
+	 * Takes a world variable from Model and updates relevant states using new world
+	 * Updates include adding text to command scroll pane, updating turtle states, creating new turtles,
+	 * updating variable and user command display, and updating background color, pensize, and pencolor. 
+	 * @param w world variable from model
+	 * 
+	 */
 	public void handleRunButton(UnmodifiableWorld w) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, CommandException{
 		currentWorld=w;
 		rp.getScrollPane().addText();
 		Trajectory updates = w.getTrajectoryUpdates();
 		if (updates.getLast()!=null){
-			
+
 			for(SingleTurtleState turtle: updates.getLast()){
-				if(!activeTurtles.keySet().contains(turtle.getID())){
+				if(!existingTurtles.keySet().contains(turtle.getID())){
 					TurtleView myHomie = new TurtleView(myDefault.getImageString().get(0),getPenColorString(myDefault.getBackgroundColor()));
-					
-					Class<?>clazz=Class.forName(activeTurtles.get(0).getClass().getName());
+
+					Class<?>clazz=Class.forName(existingTurtles.get(0).getClass().getName());
 					TurtleViewManager newTurtle = (TurtleViewManager) makeClass(clazz,myHomie,myPalette);
 					newTurtle.addTurtleComboBox(realInput.getTurtleComboBox());
 					placeTurtle(newTurtle);
-					activeTurtles.put(turtle.getID(), newTurtle);
-					clickHandler.update(activeTurtles);
+					existingTurtles.put(turtle.getID(), newTurtle);
+					clickHandler.update(existingTurtles);
 					configureStateDisplay(newTurtle);
 				}
 			}
 			TurtleUpdater tu = new TurtleUpdater();
-			tu.moveTurtles(updates,activeTurtles);
-			
+			tu.moveTurtles(updates,existingTurtles);
+
 		}
 		updateVariables();
 		updateUserCommands();
 		DisplayUpdater du = new DisplayUpdater();
-		du.updateDisplay(w, myPalette, background, gc, activeTurtles);
+		du.updateDisplay(w, myPalette, background, gc, existingTurtles);
 		textArea.clear();
 	}
 	private void updateVariables() throws CommandException{
@@ -297,12 +299,12 @@ public class GUI {
 			while(line != null){ 
 				sb.append(line).append("\n"); 
 				line = buf.readLine(); 
-				}
+			}
 			String fileAsString = sb.toString();
 			textArea.setText(fileAsString);
 			textAreaWriter.setText(fileAsString);
-			
-			
+
+
 		}
 		catch(Exception e){
 			SlogoAlert alert=new SlogoAlert("Not a valid file",e.getMessage());
@@ -334,7 +336,7 @@ public class GUI {
 		updateInputPanel();
 
 	}
-	
+
 
 	private void updateInputPanel() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
 		realInput.updateDefaults(myDefault);

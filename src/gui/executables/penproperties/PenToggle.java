@@ -1,6 +1,4 @@
-/**
- * Class which creates a button which can run command to toggle penup and pendown
- */
+
 package gui.executables.penproperties;
 
 import gui.executables.ExecutableButton;
@@ -10,7 +8,13 @@ import gui.language.Language;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-
+/**
+ * Subclass of ExecutableButton which when run changes penup to pendown and viceversa
+ * Abstract version could be made to facilitate different types of penup pen down button variants
+ * (such as a seperate button for pen up and pen down)
+ * @author Bilva
+ *
+ */
 public class PenToggle extends ExecutableButton{
 
 	private Button penToggleButton;
@@ -30,7 +34,7 @@ public class PenToggle extends ExecutableButton{
 	private void createPenToggleButton() {
 		penToggleButton = myButtonMaker.createButton("Toggle Pen", e -> activate());
 	}
-	
+
 	protected String getText(){
 		toggle = !toggle;
 		if (toggle){

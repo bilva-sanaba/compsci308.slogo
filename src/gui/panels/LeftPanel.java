@@ -18,7 +18,11 @@ import model.exceptions.CommandException;
 import model.tokens.Constant;
 import model.tokens.Variable;
 import model.tokens.VariableContainer;
-
+/**
+ * Class which creates what will be displayed in LeftPanel
+ * @author Bilva
+ *
+ */
 public class LeftPanel {
 	private VariableScrollPane variableScrollPane;
 	private UserCommandScrollPane commandScrollPane;
@@ -29,7 +33,7 @@ public class LeftPanel {
 		try {
 			createVariableScroller(width,height);
 		} catch ( CommandException e) {
-		
+
 			//do nothing, this wil happen when the world variable is null;
 		}
 		returnPanel.getChildren().add(variableScrollPane.getScrollPane());
@@ -37,7 +41,7 @@ public class LeftPanel {
 			createCommandScroller(width,height);
 		}
 		catch(CommandException e){
-			
+
 		}
 		returnPanel.getChildren().add(commandScrollPane.getScrollPane());
 		returnPanel.getStyleClass().add("pane");
@@ -60,34 +64,30 @@ public class LeftPanel {
 		commandScrollPane.update(commands);
 	}
 	private void createCommandScroller(double width,double height) throws CommandException{
-		
-		
 		commandScrollPane=new UserCommandScrollPane();
 		commandScrollPane.getScrollPane().setPrefSize(width/8,height*.35);
 		commandScrollPane.getScrollPane().setLayoutX(0);
 		commandScrollPane.getScrollPane().setLayoutY(height*.35);
 		if(myWorld!=null){
 			Collection<String> commands=myWorld.getCommandNames();
-			
-		commandScrollPane.update(commands);
+			commandScrollPane.update(commands);
 		}
 	}
-		
+
 	public void updateVariables(UnmodifiableWorld world) throws CommandException{
-		
 		myWorld=world;
 		HashMap<String,Double>map=new HashMap<String,Double>();
 		for(String variable:myWorld.getVariables().getVariableNames()){
 			map.put(variable, myWorld.getVariables().get(new Variable(variable)).getVal());
-	}
-	variableScrollPane.update(map);
+		}
+		variableScrollPane.update(map);
 	}
 	private void createVariableScroller(double width, double height) throws CommandException{	
 		HashMap<String,Double>map=new HashMap<String,Double>();
 		if(myWorld!=null){
-		for(String variable:myWorld.getVariables().getVariableNames()){
-			map.put(variable, myWorld.getVariables().get(new Variable(variable)).getVal());
-		}
+			for(String variable:myWorld.getVariables().getVariableNames()){
+				map.put(variable, myWorld.getVariables().get(new Variable(variable)).getVal());
+			}
 		}
 		variableScrollPane=new VariableScrollPane();
 		variableScrollPane.getScrollPane().setPrefSize(width/8,height*.35);

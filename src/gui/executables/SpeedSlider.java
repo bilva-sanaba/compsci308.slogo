@@ -8,7 +8,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-
+/**
+ * A GUI object which does not follow the ExecutableButton pattern but instead changes parameters which only the
+ * front end needs access to
+ * @author Bilva
+ *
+ */
 public class SpeedSlider {
 	private static final int DEFAULT_SPEED = 1000;
 	private int speed=DEFAULT_SPEED;
@@ -22,7 +27,7 @@ public class SpeedSlider {
 	}
 	/**
 	 * Needed so TVM can get the speed it should be at. 
-	 * @return
+	 * @return speed that an animation should last
 	 */
 	public int getSpeed(){
 		return speed;
@@ -43,6 +48,10 @@ public class SpeedSlider {
 			speed = newValue.intValue();
 		});
 	}
+	/**
+	 * Used so that the GUI can display these elements
+	 * @return List of all nodes (Label and slider) that will be displayed in the GUI
+	 */
 	public List<Node> getButtons(){
 		return extraButtons;
 	}

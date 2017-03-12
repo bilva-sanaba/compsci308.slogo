@@ -8,7 +8,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextField;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
-
+/**
+ * Was originally a class that moved the turtle and also placed a dot in its location
+ * Deleted because of errors after updates and time constraints
+ * @author Bilva
+ *
+ */
 public class TurtleDotMover extends TurtleViewManager {
 
 	public TurtleDotMover(TurtleView t, GraphicsContext gc, Palette p) {

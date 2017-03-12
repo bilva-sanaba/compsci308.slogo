@@ -18,11 +18,24 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-
+/**
+ *  Subclass of BackgroundColorChooser which implements it as Textbox for color entry
+ *  as well as a combobox which displays enter colors
+ * @author Bilva
+ *
+ */
 public class BackgroundColorWriteBox extends BackgroundColorComboBox {
 	private Color currentColor;
 	private TextField inputText;
 	private SimpleObjectProperty<ObservableList<String>> words;
+	/**
+	 * Creates textfield and combobox with binding
+	 * Both objects change the currentColor which is what is sent for display
+	 * @param rb Fireable runbutton
+	 * @param t Encapsulating object of command textArea
+	 * @param l Encapsulation of current language in workspace
+	 * @param p Object storing data structure with current color palette representation
+	 */
 	public BackgroundColorWriteBox(TextAreaWriter t,Language l,FireableButton runButton, Palette p){
 		super(t,l,runButton,p);
 		initializeButtons();

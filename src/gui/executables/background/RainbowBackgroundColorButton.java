@@ -15,6 +15,11 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
+/**
+ * Subclass of RainbowBackgroundColorButton which creates a random color from the rainbow when clicked
+ * @author Bilva
+ *
+ */
 public class RainbowBackgroundColorButton extends BackgroundColorButton{
 	public RainbowBackgroundColorButton(TextAreaWriter t,Language l,FireableButton runButton, Palette p) {
 		super(t,l,runButton,p);

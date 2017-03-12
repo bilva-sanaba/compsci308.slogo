@@ -1,6 +1,4 @@
-/**
- * Abstract class for background color buttons has label initialized
- */
+
 package gui.executables.background;
 
 import gui.executables.FireableButton;
@@ -12,7 +10,11 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.shape.Shape;
-
+/**
+ * Abstract extension of BackgroundColorChooser which implements it as a button
+ * @author Bilva
+ *
+ */
 public abstract class BackgroundColorButton extends BackgroundColorChooser {
 	public BackgroundColorButton(TextAreaWriter t,Language l,FireableButton runButton, Palette p) {
 		super(t,l,runButton,p);
