@@ -4,6 +4,7 @@ package gui.movement;
 import java.util.ArrayList;
 import java.util.List;
 
+import gui.executables.SpeedSlider;
 import gui.executables.boxes.Palette;
 import gui.executables.boxes.TurtleComboBox;
 import gui.movement.utility.SingleTurtleTrajectory;
@@ -37,6 +38,7 @@ public abstract class TurtleViewManager {
 	protected double penSize;
 	protected boolean shouldDraw = true;
 	protected Palette myPalette;
+	protected SpeedSlider mySlider= new SpeedSlider();
 	/**
 	 * 
 	 * @param t Image of turtle
@@ -68,7 +70,7 @@ public abstract class TurtleViewManager {
 		if (myPalette.evalPalette(uts.getPenColor())!=null){
 			return myPalette.evalPalette(uts.getPenColor());
 		}
-		return myPalette.evalPalette(1);
+		return myTurtleView.getDefaultPenColor();
 	}
 	/**
 	 * Needed to allow tvm to updates turtle image based on the palette
@@ -77,15 +79,21 @@ public abstract class TurtleViewManager {
 	public void addTurtleComboBox(TurtleComboBox tcb){
 		myTCB=tcb;
 	}
+	public void addSpeedSlider(SpeedSlider slider){
+		mySlider= slider;
+	}
+	public SpeedSlider getSlider(){
+		return mySlider;
+	}
 	/**
 	 * Needed for GUI to Display info on a TVM state when hovered over
 	 * @return list of labels 
 	 */
 	public List<Label> getStateLabels(){
-		double currentXPos=+myTurtleView.getImage().getX()+myTurtleView.getImage().getTranslateX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2-gui.GUI.BACKGROUND_WIDTH/2;
-		double currentYPos=+myTurtleView.getImage().getY()+myTurtleView.getImage().getTranslateY()+myTurtleView.getImage().getBoundsInLocal().getHeight()/2-gui.GUI.BACKGROUND_HEIGHT/2;
+		double currentXPos=getCurrentX();
+		double currentYPos=getCurrentY();
 		Label coordinateLabel=new Label("X:"+currentXPos+"  Y:"+(-currentYPos));
-		Label headingLabel=new Label(""+myTurtleView.getImage().getRotate()%360);
+		Label headingLabel=new Label(""+getCurrentHeading());
 		Label penUpLabel=new Label("" +getPenBool());
 		ArrayList<Label>stateLabels=new ArrayList<Label>();
 		stateLabels.add(coordinateLabel);
@@ -116,7 +124,6 @@ public abstract class TurtleViewManager {
 		}
 	}
 	protected void setShape(SingleTurtleState uts){
-		//myTCB.getTurtleChooser().getSelectionModel().select(uts.getShape());
 		myTurtleView.setShape(myTCB.getTurtleChooser().getItems().get(uts.getShape()));
 	}
 	protected abstract void draw(SingleTurtleState uts,double screenWidth, double screenHeight);
@@ -133,27 +140,22 @@ public abstract class TurtleViewManager {
 	 * @param xLoc
 	 */
 	public void setX(double xLoc){
-		myTurtleView.getImage().setX(xLoc-myTurtleView.getImage().getBoundsInLocal().getWidth()/2);
+		getImage().setX(xLoc-getWidth()/2);
 	}
 	/**
 	 * moves Turtles Image to location Y
 	 * @param yLoc
 	 */
 	public void setY(double yLoc){
-		myTurtleView.getImage().setY(yLoc-myTurtleView.getImage().getBoundsInLocal().getHeight()/2);
+		getImage().setY(yLoc-getHeight()/2);
 	}
-	/**
-	 * Rotates turtles Image
-	 */
-	public void getRotate(){
-		myTurtleView.getImage().getRotate();
-	}
+
 	/**
 	 * Unnecessary penBool should have been stored in this class to  avoid this method
 	 * @return
 	 */
-	public boolean getPenBool(){
-		return myTurtleView.getPen();
+	private boolean getPenBool(){
+		return shouldDraw;
 	}
 	/**
 	 * Needed by pensize button to set pen size
@@ -163,17 +165,43 @@ public abstract class TurtleViewManager {
 		penSize =size;
 	}
 	/**
-	 * Should be encapsulated better so that this could have been avoided
-	 * @return
+	 * Returns Image of TurtleView needed for display
+	 * @return Turtle Image
 	 */
 	public ImageView getImage(){
 		return myTurtleView.getImage();
 	}
-	/**
-	 * Returns class encapsulating image
-	 * @return
-	 */
-	public TurtleView getTurtleView(){
-		return myTurtleView;
+	private double getCurrentX(){
+		return getImage().getX()+getImage().getTranslateX()+getImage().getBoundsInLocal().getWidth()/2-gui.GUI.BACKGROUND_WIDTH/2;
+	}
+	private double getCurrentY(){
+		return getImage().getY()+getImage().getTranslateY()+getImage().getBoundsInLocal().getHeight()/2-gui.GUI.BACKGROUND_HEIGHT/2;
+	}
+	protected double getX(){
+		return getImage().getX();
+	}
+	protected double getY(){
+		return getImage().getY();
+	}
+	protected double getCurrentHeading(){
+		return getImage().getRotate()%360;
+	}
+	protected double getWidth(){
+		return getImage().getBoundsInLocal().getWidth();
+	}
+	protected double getHeight(){
+		return getImage().getBoundsInLocal().getHeight();
+	}
+	protected void setImageX(double xCoor){
+		getImage().setX(xCoor);
+	}
+	protected void setImageY(double yCoor){
+		getImage().setY(yCoor);
+	}
+	protected void setHeading(double heading){
+		getImage().setRotate(heading);
+	}
+	protected void setVisibility(boolean v){
+		getImage().setVisible(v);
 	}
 }

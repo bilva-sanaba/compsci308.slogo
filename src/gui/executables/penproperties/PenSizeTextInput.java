@@ -27,7 +27,7 @@ public class PenSizeTextInput extends PenSizeChooser {
 		((TextField) penSizeButton).setPromptText("Enter Pen Size");
 		((TextField) penSizeButton).setOnAction(e -> {
 			try{
-				activate();
+				executeCommand();
 				((TextField) penSizeButton).clear();
 			}catch(IllegalArgumentException y){
 
@@ -40,7 +40,7 @@ public class PenSizeTextInput extends PenSizeChooser {
 	 * Not done currently as there was only time for one implementation
 	 */
 	protected String getText(){
-		String command=myResources.getString("SetPenSize").split("\\|")[0];
+		String command=myCommandResources.getString("SetPenSize").split("\\|")[0];
 		command+=" "+((TextField) penSizeButton).getText();
 		return command;
 	}

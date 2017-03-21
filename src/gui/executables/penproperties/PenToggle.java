@@ -32,16 +32,16 @@ public class PenToggle extends ExecutableButton{
 	}
 
 	private void createPenToggleButton() {
-		penToggleButton = myButtonMaker.createButton("Toggle Pen", e -> activate());
+		penToggleButton = myButtonMaker.createButton("Toggle Pen", e -> executeCommand());
 	}
 
 	protected String getText(){
 		toggle = !toggle;
 		if (toggle){
-			String command=myResources.getString("PenDown").split("\\|")[0];
+			String command=myCommandResources.getString("PenDown").split("\\|")[0];
 			return command;
 		}else{
-			String command=myResources.getString("PenUp").split("\\|")[0];
+			String command=myCommandResources.getString("PenUp").split("\\|")[0];
 			return command;
 		}
 	}

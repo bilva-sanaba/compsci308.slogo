@@ -1,32 +1,25 @@
 package gui.executables.background;
-
+import java.util.ArrayList;
+import java.util.Collection;
 import gui.executables.FireableButton;
 import gui.executables.TextAreaWriter;
 import gui.executables.boxes.Palette;
 import gui.language.Language;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 /**
  *  Subclass of BackgroundColorChooser which implements it as Textbox for color entry
  *  as well as a combobox which displays enter colors
  * @author Bilva
- *
  */
 public class BackgroundColorWriteBox extends BackgroundColorComboBox {
 	private Color currentColor;
 	private TextField inputText;
+	private Collection<String> usedColor = new ArrayList<String>();
 	private SimpleObjectProperty<ObservableList<String>> words;
 	/**
 	 * Creates textfield and combobox with binding
@@ -52,32 +45,30 @@ public class BackgroundColorWriteBox extends BackgroundColorComboBox {
 	}
 	private void createTextField(){
 		inputText = new TextField();
-        inputText.setPromptText("Enter Background Color");
+        inputText.setPromptText(myButtonResources.getString("BackgroundTextField"));
         inputText.setOnAction(e -> {
         	try{
         		currentColor = Color.web(inputText.getText());
-        		activate();
+        		executeCommand();
         		((ComboBox<String>) colorPicker).getOnAction();
-        		words.getValue().add(inputText.getText());
+        		if (!usedColor.contains(inputText.getText())){
+        			words.getValue().add(inputText.getText());
+        			usedColor.add(inputText.getText());
+        		}
         		inputText.setText("");
         	}
-        	catch(IllegalArgumentException y){
-        		
-        	}
+        	catch(IllegalArgumentException y){}
         	catch(NullPointerException i){}
         });
 	}
 	private void createComboBox(){
-        ((ComboBox<String>) colorPicker).setPromptText("Select Background Color");  
         ((ComboBox<String>)colorPicker).valueProperty().addListener((x, y, newValue) -> {
 			currentColor=Color.web(newValue);	
 			((ComboBox<String>) colorPicker).getOnAction();
 		});
 	}
-	
 	@Override
 	protected Color generateColor() {
 		return currentColor;
 	}
-
 }

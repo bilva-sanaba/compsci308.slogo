@@ -26,7 +26,7 @@ public abstract class BackgroundColorChooser extends ColorChooser{
 	 */
 	public BackgroundColorChooser(TextAreaWriter t,Language l,FireableButton runButton,  Palette p){
 		super(runButton,t,l, p);
-		displays.add(myButtonMaker.createLabel("Pick Background Color: "));
+		displays.add(myButtonMaker.createLabel(myButtonResources.getString("BackgroundLabel")));
 	}
 	/**
 	 * Text entered is the text needed for setting a background to a new color
@@ -34,14 +34,13 @@ public abstract class BackgroundColorChooser extends ColorChooser{
 	 */
 	protected String getText(){
 		Color color=generateColor();
-		String command=myResources.getString("SetPalette").split("\\|")[0];
+		String command=myCommandResources.getString("SetPalette").split("\\|")[0];
 		command+=(" "+Integer.toString(myPalette.getPalette().getItems().size()+1)+ " ");
 		command+=(Double.toString(color.getRed()*255)+" ");
 		command+=(Double.toString(color.getGreen()*255)+" ");
 		command+=(Double.toString(color.getBlue()*255)+" ");
-		command+=(myResources.getString("SetBackground").split("\\|")[0]);
+		command+=(myCommandResources.getString("SetBackground").split("\\|")[0]);
 		command+=(" "+Integer.toString(myPalette.getPalette().getItems().size()+1)+" ");
 		return command;
-
 	}
 }

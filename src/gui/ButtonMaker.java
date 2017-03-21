@@ -11,7 +11,6 @@ import javafx.scene.paint.Color;
  *
  */
 public class ButtonMaker {
-	private static final Color TEXT_COLOR = Color.BLACK; 
 	/**
 	 * @param label String intended to be displayed on button
 	 * @param e Lambda expression containing method that should be executed on click; 
@@ -20,7 +19,6 @@ public class ButtonMaker {
 	public Button createButton(String label, EventHandler<ActionEvent> e) {
 		Button b = new Button();
 		b.setText(label);
-		b.setTextFill(TEXT_COLOR);
 		b.setOnAction(e);
 		return b;
 	}
@@ -31,7 +29,6 @@ public class ButtonMaker {
 	 */
 	public Label createLabel(String text) {
 		Label label = new Label(text);
-		label.setTextFill(TEXT_COLOR);
 		return label;  
 	}
 }

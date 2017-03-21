@@ -27,7 +27,7 @@ public class PenColorPicker extends PenColorChooser{
 		colorPicker = new ColorPicker(Color.web(paletteResource.getString("1")));
 		displays.add(myButtonMaker.createLabel("Pick Pen Color: "));
 		displays.add(colorPicker);
-		((ComboBoxBase<Color>) colorPicker).setOnAction(e -> activate());
+		((ComboBoxBase<Color>) colorPicker).setOnAction(e -> executeCommand());
 	}
 	protected Color generateColor() {
 		return ((ComboBoxBase<Color>) colorPicker).getValue();

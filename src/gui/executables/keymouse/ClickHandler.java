@@ -43,11 +43,11 @@ public class ClickHandler extends ExecutableButton {
 
 	private void activate(int id){
 		myTextAreaWriter.setText(getText(id)); 
-		runButton.fire();
+		myRunButton.fire();
 	}
 
 	private String getText(int id){
-		String command=myResources.getString("Tell").split("\\|")[0];
+		String command=myCommandResources.getString("Tell").split("\\|")[0];
 		command+=" [ " + Integer.toString(id) + " ]" ;
 		return command;
 	}

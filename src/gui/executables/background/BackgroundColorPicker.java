@@ -31,7 +31,7 @@ public class BackgroundColorPicker extends BackgroundColorChooser{
 		super(t,l,runButton,p);
 		colorPicker = new ColorPicker(Color.web(paletteResource.getString("1")));
 		displays.add(colorPicker);
-		((ComboBoxBase<Color>) colorPicker).setOnAction(e -> activate());
+		((ComboBoxBase<Color>) colorPicker).setOnAction(e -> executeCommand());
 	}
 	protected Color generateColor(){
 		return ((ComboBoxBase<Color>) colorPicker).getValue();

@@ -45,15 +45,12 @@ import model.configuration.UnmodifiableTurtleComposite;
  *
  */
 public class TurtleAnimator extends TurtleViewManager{
-	private ButtonMaker buttonMaker = new ButtonMaker();
 	private static final double DEFAULT_PEN_SIZE = 4;
-	private TextField penSizeButton;
 	private double currentXPos;
 	private double currentYPos;
 	private double currentRotate=0;
 	private double currentOpacity=1.0;
 	private boolean skipFirst = false;
-	private SpeedSlider mySlider= new SpeedSlider();
 	public TurtleAnimator(TurtleView t, GraphicsContext gc,Palette p) {
 		super(t, gc,p);
 		penSize = DEFAULT_PEN_SIZE;
@@ -74,7 +71,7 @@ public class TurtleAnimator extends TurtleViewManager{
 				currentYPos=myTurtleView.getImage().getY()+myTurtleView.getImage().getTranslateY()+myTurtleView.getImage().getBoundsInLocal().getHeight()/2;
 			}
 			if (skipFirst){
-				PathTransition pt = moveLocations(uts, screenWidth, screenHeight,currentXPos,currentYPos);
+				PathTransition pt = moveLocations(uts, screenWidth, screenHeight);
 				RotateTransition rt = rotates(uts);
 				FadeTransition ft = changeVisibilitys(uts,screenWidth);
 				if (pt!=null){
@@ -107,23 +104,17 @@ public class TurtleAnimator extends TurtleViewManager{
 	protected void changeVisibility(SingleTurtleState uts){
 
 	}
-	private PathTransition moveLocations(SingleTurtleState uts, double screenWidth, double screenHeight, double X, double Y) {
-
+	private PathTransition moveLocations(SingleTurtleState uts, double screenWidth, double screenHeight) {
 		double penX=uts.getX()+GUI.BACKGROUND_WIDTH/2;
 		double penY=-uts.getY()+GUI.BACKGROUND_HEIGHT/2;
-
-		myTurtleView.setPen(uts.isPenDown());
+		shouldDraw = uts.isPenDown();
 		if (currentXPos!=penX || currentYPos!=penY){
-			if (shouldDraw){
 				Path path = new Path();
 				path.getElements().addAll(new MoveTo(currentXPos,currentYPos), new LineTo(penX,penY));
 				PathTransition pt = new PathTransition(Duration.millis(mySlider.getSpeed()), path, myTurtleView.getImage());
-				if (myTurtleView.getPen()){
-
-					System.out.println(shouldDraw);
+				if (uts.isPenDown()){
 					pt.currentTimeProperty().addListener( new ChangeListener<Duration>() {
 						Location oldLocation = null;
-
 						/**
 						 * Draw a line from the old location to the new location
 						 */
@@ -142,12 +133,10 @@ public class TurtleAnimator extends TurtleViewManager{
 								oldLocation.y = y;
 								return;
 							}
-
 							// draw line
 							graphics.setStroke(getPenColor(uts));
 							graphics.setLineWidth(uts.getPenSize());
 							graphics.strokeLine(oldLocation.x, oldLocation.y, x, y);
-
 							// update old location with current one
 							oldLocation.x = x;
 							oldLocation.y = y;
@@ -158,13 +147,11 @@ public class TurtleAnimator extends TurtleViewManager{
 				currentYPos=penY;
 				return pt;
 			}
-		}
 		return null;
 	}				            
 
 
 	private RotateTransition rotates(SingleTurtleState uts) {
-
 		if (uts.getHeading()!=currentRotate){
 			RotateTransition rt = new RotateTransition(Duration.millis(mySlider.getSpeed()),myTurtleView.getImage());
 			rt.setFromAngle(currentRotate);

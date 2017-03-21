@@ -36,7 +36,7 @@ public class TurtleComboBox extends ExecutableButton{
 		turtleChoice.setCellFactory(c-> new TurtleListCell());
 		turtleChoice.setButtonCell(new TurtleListCell());
 	turtleChoice.valueProperty().addListener((x, y, newValue) -> {
-		activate();
+		executeCommand();
 		});
 		
 	}
@@ -49,9 +49,9 @@ public class TurtleComboBox extends ExecutableButton{
 	}
 
 protected String getText(){
-	myResources=ResourceBundle.getBundle(DEFAULT_RESOURCE_BUNDLE+myLanguage.getLanguage());
+	myCommandResources=ResourceBundle.getBundle(DEFAULT_RESOURCE_BUNDLE+myLanguage.getLanguage());
 	
-	String command=(myResources.getString("SetShape").split("\\|")[0]);
+	String command=(myCommandResources.getString("SetShape").split("\\|")[0]);
 	command+=" ";
 	command+=Integer.toString(turtleChoice.getSelectionModel().getSelectedIndex());
 	return command;

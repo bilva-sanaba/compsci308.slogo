@@ -1,5 +1,6 @@
 package controller;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ResourceBundle;
 
 import error.SlogoAlert;
 import gui.GUI;
@@ -20,6 +21,7 @@ import model.exceptions.CommandException;
  */
 public class Controller {
 	public static final String DEFAULT_RESOURCE_BUNDLE="resources.languages/";
+	public static final ResourceBundle BUTTON_RESOURCE_BUNDLE = ResourceBundle.getBundle("resources/ButtonNames");
 	private GUI_Configuration myGUIBuilder;
 	private int counter;
 	private Alert alert;

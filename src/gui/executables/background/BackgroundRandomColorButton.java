@@ -6,11 +6,7 @@ import gui.executables.FireableButton;
 import gui.executables.TextAreaWriter;
 import gui.executables.boxes.Palette;
 import gui.language.Language;
-import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 /**
  * Subclass of BackgroundColorButton which creates a random color when clicked
  * @author Bilva

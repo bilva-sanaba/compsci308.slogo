@@ -36,12 +36,12 @@ public abstract class PenColorChooser extends ColorChooser {
 	 */
 	protected String getText(){
 		Color color=generateColor();
-		String command=myResources.getString("SetPalette").split("\\|")[0];
+		String command=myCommandResources.getString("SetPalette").split("\\|")[0];
 		command+=(" "+Integer.toString(myPalette.getPalette().getItems().size()+1)+ " ");
 		command+=(Double.toString(color.getRed()*255)+" ");
 		command+=(Double.toString(color.getGreen()*255)+" ");
 		command+=(Double.toString(color.getBlue()*255)+" ");
-		command+=(myResources.getString("SetPenColor").split("\\|")[0]);
+		command+=(myCommandResources.getString("SetPenColor").split("\\|")[0]);
 		command+=(" "+Integer.toString(myPalette.getPalette().getItems().size()+1));
 		return command;
 	}

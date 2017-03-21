@@ -1,25 +1,17 @@
-
 package gui.executables;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import gui.executables.boxes.Palette;
 import gui.language.Language;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 /**
  * Abstract extension of the ExecutableButton, specifically for buttons whose text relies on knowing the current palette
  * of the workspace
  * @author Bilva
- *
  */
 public abstract class ColorChooser extends ExecutableButton {
-	public static final List<Color> Rainbow = Arrays.asList(Color.RED,Color.BLUE,Color.ORANGE,Color.YELLOW,Color.GREEN,Color.INDIGO, Color.VIOLET);
 	public static final String PALETTE_RESOURCES = "resources/defaultPalette";
 	protected ResourceBundle paletteResource=ResourceBundle.getBundle(PALETTE_RESOURCES);
 	protected Node colorPicker;

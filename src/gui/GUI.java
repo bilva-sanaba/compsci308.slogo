@@ -19,6 +19,7 @@ import gui.executables.keymouse.InputHandler;
 import gui.executables.keymouse.WASDMover;
 import gui.language.Language;
 import gui.movement.TurtleAnimator;
+import gui.movement.TurtleRegularMover;
 import gui.movement.TurtleView;
 import gui.movement.TurtleViewManager;
 import gui.panels.InputPanel;
@@ -245,6 +246,7 @@ public class GUI {
 					Class<?>clazz=Class.forName(existingTurtles.get(0).getClass().getName());
 					TurtleViewManager newTurtle = (TurtleViewManager) makeClass(clazz,myHomie,myPalette);
 					newTurtle.addTurtleComboBox(realInput.getTurtleComboBox());
+					newTurtle.addSpeedSlider(tvm.getSlider());
 					placeTurtle(newTurtle);
 					existingTurtles.put(turtle.getID(), newTurtle);
 					clickHandler.update(existingTurtles);
