@@ -48,24 +48,22 @@ public class SlogoParser {
 	
 	public TokenNode parse(String command) throws CommandException{
 		command = cReformat.reformatCommand(command);
-		return makeTree(new TokenNode(null, new TList()), command, false);
+		return makeTree(new TokenNode(null, new TList()), fillList(command), false);
 	}
 	
-	private TokenNode makeTree(TokenNode tNode, String command, boolean unlimitedParam) throws CommandException{
-		ArrayList<String> commandList = fillList(command);
+	private TokenNode makeTree(TokenNode tNode, ArrayList<String> commandList, boolean unlimitedParam) throws CommandException{
 		TokenNode root = tNode;
 		TokenNode parentNode = new TListNode(null, new TList());
 		TokenNode head=root;
-		int stringCursor = 0;
 
 		for(int i=0; i<commandList.size(); i++){
 			String word = commandList.get(i).trim();
+			System.out.println("word: " + word);
 			String wordType = parser.getSymbol(word);
+			System.out.println("wordType: " + wordType);
 			TokenNode tokenNode;
 			if(wordType.equals(LISTSTART) || wordType.equals(GROUPSTART)){
-				int startIndex = command.substring(0, stringCursor).length() + command.substring(stringCursor).indexOf(word); //puts to end of list //EDIT
 				int startListIndex = i;
-				int endIndex = startIndex + getEndStringIndex(command.substring(startIndex), word);
 				ArrayList<String> subList = createSubList(startListIndex, commandList);
 				int endListIndex = getEndListIndex(subList, word);
 				boolean unlimited;
@@ -79,7 +77,7 @@ public class SlogoParser {
 					unlimited = true;
 					newRoot = root;
 				}
-				tokenNode = makeTree(newRoot, command.substring(startIndex + SPACE.length(), endIndex), unlimited);
+				tokenNode = makeTree(newRoot, makeNewCommandList(subList, endListIndex), unlimited);
 				i = endListIndex + startListIndex;
 			}
 			else{
@@ -97,16 +95,15 @@ public class SlogoParser {
 				if(!commandTakesInfiniteArgs(unlimitedParam, commandString)){ //check if command does not take infinite args
 					root=parentNode; //move up tree
 					parentNode = root.getParent();
-					if(unlimitedParam && i<commandList.size()-1 && !((Command)root).isNullCommand()){ //if params are specified and unlimited params
+					if(root.getToken().getType() == TokenType.COMMAND && unlimitedParam && i<commandList.size()-1 && !((Command)root.getToken()).isNullCommand()){ //if params are specified and unlimited params
 						tokenNode = factory.genTokenNode(parentNode, commandString, unlimitedParam);
 						root.addChild(tokenNode); //distribute command
 						parentNode=root; //move down tree
 						root=tokenNode; 
 					}
-				}	
+				}
 			}
-			
-			stringCursor+= word.length() + SPACE.length();
+			System.out.println(commandList.size() + " , " + i);
 		}
 		return head;
 	}
@@ -119,24 +116,6 @@ public class SlogoParser {
 			}
 		}
 		return ans;
-	}
-
-	private int getEndStringIndex(String command, String t) throws CommandException{
-		Stack<String> stack = new Stack<String>();
-		stack.push(t);
-		String end = startToEnd.get(parser.getSymbol(t));
-		for(int i = 1; i < command.length(); i++){
-			if(command.substring(i, i+1).equals(t)){
-				stack.push(command.substring(i, i+1));
-			}
-			else if(parser.getSymbol(command.substring(i, i+1)).equals(end)){
-				stack.pop();
-			}
-			if(stack.isEmpty()){
-				return i;
-			}
-		}
-		throw new CommandException("List never closes");
 	}
 	
 	private int getEndListIndex(ArrayList<String> commandList, String t) throws CommandException{
@@ -155,6 +134,14 @@ public class SlogoParser {
 			}
 		}
 		throw new CommandException("List never closes");
+	}
+	
+	private ArrayList<String> makeNewCommandList(ArrayList<String> subList, int endListIndex){
+		ArrayList<String> result = new ArrayList<String>();
+		for(int i=1; i< endListIndex; i++){
+			result.add(subList.get(i));
+		}
+		return result;
 	}
 	
 	private ArrayList<String> fillList(String command){
