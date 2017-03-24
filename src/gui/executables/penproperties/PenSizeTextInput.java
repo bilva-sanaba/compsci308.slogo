@@ -1,3 +1,6 @@
+/**
+ * button which can be used to retrieve a pen size in the GUI
+ */
 package gui.executables.penproperties;
 
 import gui.executables.FireableButton;

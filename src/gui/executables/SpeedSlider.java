@@ -20,6 +20,10 @@ public class SpeedSlider {
 		createSpeedSlider();
 		createSpeedChooser();	
 	}
+	/**
+	 * Needed so TVM can get the speed it should be at. 
+	 * @return
+	 */
 	public int getSpeed(){
 		return speed;
 	}

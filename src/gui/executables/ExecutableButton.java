@@ -1,3 +1,6 @@
+/**
+ * Large superclass for all clickable objects that enter text into a text area and run it 
+ */
 package gui.executables;
 
 import java.util.ResourceBundle;

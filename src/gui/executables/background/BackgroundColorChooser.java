@@ -18,10 +18,6 @@ public abstract class BackgroundColorChooser extends ColorChooser{
 		displays.add(myButtonMaker.createLabel("Pick Background Color: "));
 	}
 
-	protected void setColor(){
-		myTextAreaWriter.setText(getText()); 
-		runButton.fire();
-	}
 	protected String getText(){
 		Color color=generateColor();
 		String command=myResources.getString("SetPalette").split("\\|")[0];

@@ -1,4 +1,4 @@
-package gui;
+package gui2;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

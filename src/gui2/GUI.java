@@ -1,4 +1,4 @@
-package GUI;
+package gui2;
 
 
 import javafx.scene.canvas.Canvas;
@@ -269,7 +269,7 @@ public class GUI {
 		Button play = runButton;
 		Button clear = buttonMaker.createButton("Clear", e -> {
 			textArea.clear();
-			textArea.setText("clear");
+			textArea.setText("clearscreen");
 
 			gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
 			runButton.fire();

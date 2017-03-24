@@ -1,5 +1,19 @@
 package gui.executables.boxes;
-
+//this code is part of my masterpiece
+//The palette represents the defined colors the user can access with back-end commands
+//The palette is represented by a view-only ComboBox, clicking it does nothing
+//I wanted the ComboBox to display the color to the user instead of merely a String, ideally through a rectangle of the color
+//However, ComboBoxes are not properly equipped to support Nodes, and are liable to cause them to disappear upon
+//selection or duplication 
+//Thus, a listcell was created as a factory for the combobox
+//This factory uses Color.valueOf() on a string representation of a color (either colorweb or rgb)
+//and generates a new rectangle whose fill attribute is of the corresponding color
+// the combobox sets this factory through a lambda expression generating a new ColorListCell
+//The initial palette is contained entirely in a resource file, allowing for easy modification of the default palette
+//the setPalette public method allows the back-end to dynamically alter the color corresponding to any index
+//This includes defining new colors for previously undefined indices.
+//The evalPalette public method returns the color corresponding to a given index, and returns null if the color is 
+//undefined (allowing for error handling elsewhere
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

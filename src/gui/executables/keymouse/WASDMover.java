@@ -10,6 +10,9 @@ import javafx.scene.input.KeyCode;
 import model.UnmodifiableWorld;
 
 public class WASDMover extends InputHandler {
+	/**
+	 * runs these commands given certain Keycodes. 
+	 */
 	@Override
 	public void handleKeyInput(KeyCode code, TextArea textArea, FireableButton runButton, UnmodifiableWorld world) {
 		if (code == KeyCode.W){

@@ -29,6 +29,10 @@ public VariableScrollPane() {
 	myScrollPane.setContent(root);
 	startingHeight=0;
 }
+/**
+ * needed by GUI in order to update current variables on display
+ * @param variables
+ */
 public void update(Map<String,Double>variables){
 	root=new Group();
 	myScrollPane.setContent(root);
@@ -53,6 +57,10 @@ for(String s:myVariables.keySet()){
 	}
 
 }
+/**
+ * Needed for display
+ * @return
+ */
 public ScrollPane getScrollPane(){
 	return myScrollPane;
 }

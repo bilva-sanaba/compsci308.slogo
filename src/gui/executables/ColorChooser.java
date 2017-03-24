@@ -1,3 +1,4 @@
+
 package gui.executables;
 
 import java.util.ArrayList;
@@ -19,12 +20,22 @@ public abstract class ColorChooser extends ExecutableButton {
 	protected Node colorPicker;
 	protected List<Node> displays;
 	protected Palette myPalette;
-	
+	/**
+	 * Extends an executable button specifically allows updates with reference to a palette
+	 * @param rb
+	 * @param t
+	 * @param l
+	 * @param p
+	 */
 	public ColorChooser(FireableButton rb,TextAreaWriter t, Language l, Palette p){
 		super(t,rb,l);
 		displays = new ArrayList<Node>();
 		myPalette=p;
 	}
+	/**
+	 * method needed for GUI to display Node
+	 * @return
+	 */
 	public List<Node> getChooser(){
 		return displays;
 	}

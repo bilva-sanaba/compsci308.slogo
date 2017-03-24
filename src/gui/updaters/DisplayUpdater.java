@@ -8,13 +8,26 @@ import gui.movement.TurtleViewManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Shape;
 import model.UnmodifiableWorld;
-
+/**
+ * Updates turtle image
+ * @author Bilva
+ *
+ */
 public class DisplayUpdater {
+	/**
+	 * Takes in needed parameters to change all GUI components through backend commands
+	 * @param w
+	 * @param palette
+	 * @param background
+	 * @param gc
+	 * @param activeTurtles
+	 */
 	public void updateDisplay(UnmodifiableWorld w, Palette palette, Shape background, GraphicsContext gc, Map<Integer, TurtleViewManager> activeTurtles){
 		updatePalette(w,palette);
 		updateBackground(w, background, palette);
 		checkClear(w, gc, activeTurtles);
 	}
+	
 	public void updatePalette(UnmodifiableWorld w,Palette palette){
 		palette.setPalette(w.getPalleteUpdates());
 	}
@@ -27,13 +40,11 @@ public class DisplayUpdater {
 	}
 	public void checkClear(UnmodifiableWorld w, GraphicsContext gc, Map<Integer, TurtleViewManager> activeTurtles){
 		if (w.shouldClear()){
-			gc.clearRect(0,0,GUI.BACKGROUND_WIDTH,GUI.BACKGROUND_HEIGHT);
 			for (TurtleViewManager t : activeTurtles.values()){
-				t.getImage().setX(GUI.BACKGROUND_WIDTH/2);
-				t.getImage().setY(GUI.BACKGROUND_HEIGHT/2);
+				t.setX(GUI.BACKGROUND_WIDTH/2);
+				t.setY(GUI.BACKGROUND_HEIGHT/2);
 			}
+			gc.clearRect(0,0,GUI.BACKGROUND_WIDTH,GUI.BACKGROUND_HEIGHT);
 		}
-		
-		
 	}
 }
