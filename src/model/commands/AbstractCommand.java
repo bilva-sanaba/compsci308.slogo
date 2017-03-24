@@ -8,6 +8,21 @@ import model.exceptions.CommandException;
 import model.tokens.Command;
 import model.tokens.Constant;
 
+/*
+ * This entire class is part of my Masterpiece
+ * 
+ * The purpose of this class is to add a base functionality 
+ * to all commands that inherit it. This drastically reduces
+ * the amount of code needed to implement new commands. 
+ * 
+ * One interesting use of a class like this is that I can
+ * use it to perform error checking on all command sub-classes
+ * without repeating code. The "evaluate" method first checks to
+ * see if the arguments input to the command fit the correct structure
+ * of the sub-command. It then looks to the sub-class to complete the 
+ * command execution. This means that sub-classes do not have to perform
+ * error checking on Argument types and orders.
+ */
 public abstract class AbstractCommand implements Command{
 	/**
 	 * Returns number of arguments command requires
@@ -67,7 +82,6 @@ public abstract class AbstractCommand implements Command{
 	 */
 	public abstract Arguments getDefaultArgs();
 	
-	
 	/**
 	 * Returns scope request of command. This prevents from recieving
 	 * information that they don't need
@@ -80,10 +94,16 @@ public abstract class AbstractCommand implements Command{
 	 */
 	public abstract String getID();
 	
+	/**
+	 * Returns whether command has unlimited arguments
+	 */
 	public boolean hasUnlimitedArgs(){
 		return false;
 	}
 	
+	/**
+	 * Returns whether command is a Null Command
+	 */
 	public boolean isNullCommand(){
 		return false;
 	}

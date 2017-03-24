@@ -9,6 +9,35 @@ import java.util.ResourceBundle;
 import model.exceptions.CommandException;
 import model.tokens.Command;
 
+
+/*
+ * Masterpiece
+ * Dhruv K Patel
+ * 
+ * This class is at the center of my masterpiece, which highlights the structure I created
+ * for deploying commands. In this class, I use a Factory design pattern paired with 
+ * reflection to instantiate and track Command classes. This means that once a Command class
+ * is created, only one line in a resource file needs to be added to make the Command fully
+ * functional.
+ * 
+ * The other classes in my masterpiece include:
+ * 		- model.commands.AbstractCommand
+ * 		- model.commands.turtleCommands.TurtleCommand
+ * 		- model.commands.turtleCommands.OneParamCommand
+ * 		- model.commands.turtleCommands.Left
+ * 
+ * One interesting addition into specifically this class is that commands don't depend on state.
+ * This means that the factory only needs to hold one instance of each command, and it reduces
+ * dependencies between other parts of the code (since commands can be used twice for different 
+ * things).
+ * 
+ * Another interesting is that the "toString()" methods used in this class and subclasses are
+ * formatted in a way that represent the actual state well. This is very useful for testing
+ * code.
+ * 
+ * I will put more information about this structure in each of the other classes in my masterpiece.
+ */
+
 /**
  * Creates commands from a Command ID.
  * Will automatically register initialize all
@@ -97,7 +126,6 @@ public class CommandFactory {
 	 */
 	public String toString(){
 		String s = "Commands:\n";
-//		for(String cmd : registeredCommands.keySet()) s += String.format("\t %s: \"%s\"\n", cmd, registeredCommands.get(cmd).getID());
 		for(String cmd : runtimeAddedCommands) s += String.format("\t %s: \"%s\"\n", cmd, cmd);
 
 		return s;
