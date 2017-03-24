@@ -22,9 +22,5 @@ public class TurtleListCell extends ListCell<String> {
 	            setText(Integer.toString(this.getIndex()));
 	        }
 	    }
-<<<<<<< HEAD
-=======
 
->>>>>>> b84e6c183a3a10efba72120cad1334e910875d23
 	 }
-
