@@ -4,7 +4,7 @@
 //     whenever the comboBox is interacted with, and also labels the node combobox
 // It highlights good design as all implementations of the backgroundchooser which use a combobox would need this code
 //     so by pushing it to a super class, duplicate code is reduced and extendability is more possible with less code
-// It also reduces duplicate code by creating a combobox using the buttonmaker class which uses the factory design pattern. 
+// It also reduces duplicate code by creating a combobox using the buttonmaker class which uses the factory design pattern 
 // 12 lines
 package gui.executables.background;
 import gui.executables.FireableButton;
