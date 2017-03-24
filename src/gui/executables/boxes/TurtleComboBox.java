@@ -48,9 +48,8 @@ public class TurtleComboBox extends ExecutableButton{
 		return turtleChoice;
 	}
 
-protected String getText(){
+protected String getCommand(){
 	myCommandResources=ResourceBundle.getBundle(DEFAULT_RESOURCE_BUNDLE+myLanguage.getLanguage());
-	
 	String command=(myCommandResources.getString("SetShape").split("\\|")[0]);
 	command+=" ";
 	command+=Integer.toString(turtleChoice.getSelectionModel().getSelectedIndex());

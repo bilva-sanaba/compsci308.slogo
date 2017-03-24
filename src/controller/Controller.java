@@ -21,7 +21,12 @@ import model.exceptions.CommandException;
  */
 public class Controller {
 	public static final String DEFAULT_RESOURCE_BUNDLE="resources.languages/";
-	public static final ResourceBundle BUTTON_RESOURCE_BUNDLE = ResourceBundle.getBundle("resources/ButtonNames");
+	private static final String PALETTE_RESOURCES = "resources/defaultPalette";
+	private static final String ALERT_RESOURCES = "resources/Alerts";
+	private static final String BUTTON_RESOURCES = "resources/ButtonNames";
+	public static final ResourceBundle BUTTON_RESOURCE_BUNDLE = ResourceBundle.getBundle(BUTTON_RESOURCES);
+	public static final  ResourceBundle ALERT_RESOURCE_BUNDLE = ResourceBundle.getBundle(ALERT_RESOURCES);
+	public static final  ResourceBundle PALETTE_RESOURCE_BUNDLE=ResourceBundle.getBundle(PALETTE_RESOURCES);
 	private GUI_Configuration myGUIBuilder;
 	private int counter;
 	private Alert alert;
@@ -37,9 +42,7 @@ public class Controller {
 		Button r = new Button("Run");
 		Button newTab=new Button("New Workspace");
 		GUI gui=new GUI(r,newTab);
-		r.setOnAction(e -> {
-			onRun(gui, model);
-		});
+		r.setOnAction(e -> onRun(gui, model));
 		newTab.setOnAction(e-> onTab(myGUIBuilder));
 		return gui;
 	}

@@ -92,19 +92,21 @@ public class SlogoParser {
 				root=tokenNode;
 			}
 			
-			if(root.getToken().getType() == TokenType.COMMAND && numArgsSatisfied(root)){ //check if command's args are filled
+			if(root.getToken().getType() == TokenType.COMMAND && numArgsSatisfied(root)){
+				Command rootCommand = (Command)root.getToken();
 				String commandString = commandList.get(0);
-				if(!commandTakesInfiniteArgs(unlimitedParam, commandString)){ //check if command does not take infinite args
-					root=parentNode; //move up tree
+				if(!(commandTakesInfiniteArgs(unlimitedParam, commandString))){
+					root=parentNode;
 					parentNode = root.getParent();
-					if(unlimitedParam && i<commandList.size()-1 && !((Command)root).isNullCommand()){ //if params are specified and unlimited params
+					if(unlimitedParam && i<commandList.size()-1 && !rootCommand.isNullCommand()){
 						tokenNode = factory.genTokenNode(parentNode, commandString, unlimitedParam);
-						root.addChild(tokenNode); //distribute command
-						parentNode=root; //move down tree
+						root.addChild(tokenNode);
+						parentNode=root; 
 						root=tokenNode; 
 					}
-				}	
-			}
+				}
+			}	
+		
 			
 			stringCursor+= word.length() + SPACE.length();
 		}

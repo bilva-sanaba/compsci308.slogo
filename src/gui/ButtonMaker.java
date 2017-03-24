@@ -3,10 +3,12 @@ package gui;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 /**
- * Class used to create different buttons and labels
+ * Factory class used to create different buttons and labels
+ * 
  * @author Bilva
  *
  */
@@ -30,5 +32,11 @@ public class ButtonMaker {
 	public Label createLabel(String text) {
 		Label label = new Label(text);
 		return label;  
+	}
+	public ComboBox<String> createComboBox(String label, EventHandler<ActionEvent> e){
+		ComboBox<String> myComboBox = new ComboBox<String>();
+		myComboBox.setOnAction(e);    
+		myComboBox.setPromptText(label);
+		return myComboBox;
 	}
 }

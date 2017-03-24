@@ -1,21 +1,17 @@
 package gui.panels;
-
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import resources.*;
 import xml.Default;
 import gui.ButtonMaker;
 import gui.GUI;
 import gui.executables.FireableButton;
 import gui.executables.TextAreaWriter;
-import gui.executables.background.BackgroundColorChooser;
-import gui.executables.background.BackgroundColorWriteBox;
+import gui.executables.background.BackgroundChooser;
+import gui.executables.background.BackgroundWriteBox;
+import gui.executables.background.StandardBackgroundButton;
 import gui.executables.boxes.Palette;
 import gui.executables.boxes.TurtleComboBox;
 import gui.executables.pencolor.PenColorChooser;
@@ -27,31 +23,18 @@ import gui.executables.penproperties.PenToggle;
 import gui.language.Language;
 import gui.language.LanguageFactory;
 import gui.movement.TurtleViewManager;
-import gui.panels.dynamic.CommandScrollPane;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Shape;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 /**
@@ -61,7 +44,7 @@ import javafx.stage.Stage;
  *
  */
 public class InputPanel {
-	private BackgroundColorChooser cb;
+	private BackgroundChooser backgroundChooser;
 	private Pane returnPanel;
 	private GridPane inputPanel = new GridPane();
 	private Language currentLanguage = new Language("English");
@@ -95,12 +78,13 @@ public class InputPanel {
 		textAreaWriter=t;
 		returnPanel = initInputPanel(otherButtons);
 		returnPanel.setPrefSize(GUI.GUI_WIDTH,GUI.GUI_HEIGHT/3);
+		//try changing line below to new StandardBackgroundButton(textAreaWriter,currentLanguage,fireButton,myPalette);
+		backgroundChooser = new StandardBackgroundButton(textAreaWriter,currentLanguage,fireButton,myPalette);
 		addBackgroundButton();
 		addOtherBoxes(myDefault);
 		addPenButton();
 		addExtraButtons();
 		setLanguage(myDefault.getLanguage());
-
 	}
 	/**
 	 * Needed by GUI to appropriately update TVM
@@ -130,9 +114,8 @@ public class InputPanel {
 		return bottomPanel;
 	}
 	private void addBackgroundButton(){
-		cb = new BackgroundColorWriteBox(textAreaWriter,currentLanguage,fireButton,myPalette);
 		HBox topButtons = new HBox(BUTTON_SPACING);
-		topButtons.getChildren().addAll(cb.getChooser());
+		topButtons.getChildren().addAll(backgroundChooser.getChooser());
 		inputPanel.setConstraints(topButtons,0,3);
 		inputPanel.getChildren().add(topButtons);
 	}

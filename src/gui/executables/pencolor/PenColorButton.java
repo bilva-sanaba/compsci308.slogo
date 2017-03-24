@@ -27,6 +27,6 @@ public abstract class PenColorButton extends PenColorChooser{
 	public PenColorButton(TextAreaWriter t,Language l,FireableButton runButton,Palette p) {
 		super(t,l,runButton,p);
 		colorPicker = myButtonMaker.createButton("Randomize Pen Color", e->executeCommand());
-		displays.add(colorPicker);
+		displayedNodes.add(colorPicker);
 	}
 }

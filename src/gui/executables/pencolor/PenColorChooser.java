@@ -10,6 +10,7 @@ import gui.executables.boxes.Palette;
 import gui.language.Language;
 import gui.movement.TurtleRegularMover;
 import gui.movement.TurtleViewManager;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -20,6 +21,7 @@ import xml.Default;
  *
  */
 public abstract class PenColorChooser extends ColorChooser {
+	protected Node colorPicker;
 	/**
 	 * 
 	 * @param rb Fireable runbutton
@@ -34,15 +36,10 @@ public abstract class PenColorChooser extends ColorChooser {
 	 * creates text that is run in command. creates it as text needed to change pencolor
 	 * with the color changed to determined by generateColor()
 	 */
-	protected String getText(){
-		Color color=generateColor();
-		String command=myCommandResources.getString("SetPalette").split("\\|")[0];
-		command+=(" "+Integer.toString(myPalette.getPalette().getItems().size()+1)+ " ");
-		command+=(Double.toString(color.getRed()*255)+" ");
-		command+=(Double.toString(color.getGreen()*255)+" ");
-		command+=(Double.toString(color.getBlue()*255)+" ");
+	protected String additionalCommands(Color color){
+		String command = "";
 		command+=(myCommandResources.getString("SetPenColor").split("\\|")[0]);
-		command+=(" "+Integer.toString(myPalette.getPalette().getItems().size()+1));
+		command+=getColorIndex(color);
 		return command;
 	}
 

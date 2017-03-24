@@ -1,5 +1,6 @@
 package gui.executables.pencolor;
 
+import controller.Controller;
 import gui.executables.FireableButton;
 import gui.executables.TextAreaWriter;
 import gui.executables.boxes.Palette;
@@ -24,9 +25,9 @@ import xml.Default;
 public class PenColorPicker extends PenColorChooser{
 	public PenColorPicker(TextAreaWriter t,Language l,FireableButton runButton,Palette p){
 		super( t, l,runButton,p);
-		colorPicker = new ColorPicker(Color.web(paletteResource.getString("1")));
-		displays.add(myButtonMaker.createLabel("Pick Pen Color: "));
-		displays.add(colorPicker);
+		colorPicker = new ColorPicker(Color.web(Controller.PALETTE_RESOURCE_BUNDLE.getString("1")));
+		displayedNodes.add(myButtonMaker.createLabel("Pick Pen Color: "));
+		displayedNodes.add(colorPicker);
 		((ComboBoxBase<Color>) colorPicker).setOnAction(e -> executeCommand());
 	}
 	protected Color generateColor() {

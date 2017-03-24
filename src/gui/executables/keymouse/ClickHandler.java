@@ -1,6 +1,7 @@
 package gui.executables.keymouse;
 
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import gui.executables.ExecutableButton;
 import gui.executables.FireableButton;
@@ -45,14 +46,15 @@ public class ClickHandler extends ExecutableButton {
 		myTextAreaWriter.setText(getText(id)); 
 		myRunButton.fire();
 	}
-
+	
 	private String getText(int id){
+		myCommandResources=ResourceBundle.getBundle(controller.Controller.DEFAULT_RESOURCE_BUNDLE+myLanguage.getLanguage());
 		String command=myCommandResources.getString("Tell").split("\\|")[0];
 		command+=" [ " + Integer.toString(id) + " ]" ;
 		return command;
 	}
 	@Override
-	protected String getText() {
+	protected String getCommand() {
 		return null;
 	}
 }

@@ -35,7 +35,7 @@ public class PenToggle extends ExecutableButton{
 		penToggleButton = myButtonMaker.createButton("Toggle Pen", e -> executeCommand());
 	}
 
-	protected String getText(){
+	protected String getCommand(){
 		toggle = !toggle;
 		if (toggle){
 			String command=myCommandResources.getString("PenDown").split("\\|")[0];

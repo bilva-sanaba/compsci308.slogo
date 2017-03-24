@@ -83,9 +83,7 @@ public class GUI {
 	public static final int GUI_HEIGHT = GUI_Configuration.SCENE_HEIGHT-120;
 	public static final double BACKGROUND_WIDTH = GUI_WIDTH*5/8;
 	public static final double BACKGROUND_HEIGHT =GUI_HEIGHT*12/17;
-
 	public static final String DEFAULT_FILE="data/Defaults.xml";
-
 	private List<Label> stateLabels;
 	private XML xml;
 	private Default myDefault;
@@ -151,9 +149,7 @@ public class GUI {
 		rightScreen.getChildren().add(rp.getPanel());
 	}
 	private void initializeTurtle(){
-
 		tvm = new TurtleAnimator(new TurtleView(myDefault.getImageString().get(0),getPenColorString(myDefault.getBackgroundColor())), gc,myPalette);
-
 		existingTurtles = new HashMap<Integer, TurtleViewManager>();
 		existingTurtles.put(0, tvm);
 		configureStateDisplay(tvm);
@@ -161,7 +157,6 @@ public class GUI {
 	private List<Label> getStateLabels(TurtleViewManager tvm){
 		return tvm.getStateLabels();
 	}
-
 	private void showStates(List<Label> turtleStates){	
 		wrapperPane.getChildren().addAll(turtleStates);
 		stateLabels=turtleStates;
@@ -169,7 +164,6 @@ public class GUI {
 	private void removeStates(TurtleViewManager tvm){
 		wrapperPane.getChildren().removeAll(stateLabels);
 	}
-
 	private void drawTurtle(TurtleViewManager tvm){	
 		tvm.setX(background.getBoundsInLocal().getWidth()/2);
 		tvm.setY(background.getBoundsInLocal().getHeight()/2);
@@ -220,7 +214,6 @@ public class GUI {
 	public String getText(){
 		return textArea.getText();
 	}
-
 	private Object makeClass(Class<?>clazz,TurtleView myHomie,Palette p) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		Constructor<?> ctor = clazz.getDeclaredConstructor(TurtleView.class,GraphicsContext.class,Palette.class);
 		Object o = ctor.newInstance(myHomie, gc,p);
@@ -238,11 +231,9 @@ public class GUI {
 		rp.getScrollPane().addText();
 		Trajectory updates = w.getTrajectoryUpdates();
 		if (updates.getLast()!=null){
-
 			for(SingleTurtleState turtle: updates.getLast()){
 				if(!existingTurtles.keySet().contains(turtle.getID())){
 					TurtleView myHomie = new TurtleView(myDefault.getImageString().get(0),getPenColorString(myDefault.getBackgroundColor()));
-
 					Class<?>clazz=Class.forName(existingTurtles.get(0).getClass().getName());
 					TurtleViewManager newTurtle = (TurtleViewManager) makeClass(clazz,myHomie,myPalette);
 					newTurtle.addTurtleComboBox(realInput.getTurtleComboBox());
@@ -255,7 +246,6 @@ public class GUI {
 			}
 			TurtleUpdater tu = new TurtleUpdater();
 			tu.moveTurtles(updates,existingTurtles);
-
 		}
 		updateVariables();
 		updateUserCommands();
@@ -274,11 +264,8 @@ public class GUI {
 		Button clear = buttonMaker.createButton("Clear", e -> {
 			textArea.clear();
 			textArea.setText("clearscreen");
-
 			gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
 			runButton.fire();
-
-
 		});   
 		Button load= buttonMaker.createButton("Load Preferences",e-> handleLoad());
 		Button save=buttonMaker.createButton("Save Preferences",e->handleSave());
@@ -305,8 +292,6 @@ public class GUI {
 			String fileAsString = sb.toString();
 			textArea.setText(fileAsString);
 			textAreaWriter.setText(fileAsString);
-
-
 		}
 		catch(Exception e){
 			SlogoAlert alert=new SlogoAlert("Not a valid file",e.getMessage());
@@ -336,10 +321,7 @@ public class GUI {
 	}
 	private void updateDefaults() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
 		updateInputPanel();
-
 	}
-
-
 	private void updateInputPanel() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
 		realInput.updateDefaults(myDefault);
 	}

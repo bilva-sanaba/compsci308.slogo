@@ -39,7 +39,7 @@ public class PenSizeTextInput extends PenSizeChooser {
 	 * This code should be moved up to superclass with a little modification
 	 * Not done currently as there was only time for one implementation
 	 */
-	protected String getText(){
+	protected String getCommand(){
 		String command=myCommandResources.getString("SetPenSize").split("\\|")[0];
 		command+=" "+((TextField) penSizeButton).getText();
 		return command;

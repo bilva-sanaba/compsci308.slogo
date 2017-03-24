@@ -60,7 +60,6 @@ public class Palette {
 	 * @return Color corresponding to index
 	 */
 	public Color evalPalette(int index){
-		
 		if (myPalette.containsKey(index)){
 			return Color.valueOf(myPalette.get(index).split(":")[1]);
 		}
@@ -73,5 +72,44 @@ public class Palette {
 		}
 		returnString = returnString.substring(0, returnString.length()-1)+")";
 		return returnString;
+	}
+	/**
+	 * Needed by various classes to determine if a color is in a palette
+	 * @param color
+	 * @return
+	 */
+	public boolean inPalette(Color color){
+		for (String c : myPalette.values()){
+			if (color.equals(Color.web(c.split(":")[1]))){
+				return true;
+			}
+		}
+		return false;
+	}
+	/**
+	 * Needed by various classes to determine the index of a color
+	 * @param color
+	 * @return
+	 */
+	public int getColorIndex(Color color){
+		for (Integer index : myPalette.keySet()){
+			if (color.equals(Color.web(myPalette.get(index).split(":")[1]))){
+				return index;
+			}
+		}
+		return 0;
+	}
+	/**
+	 * Needed to determine what index a color can be mapped to when added
+	 * @return
+	 */
+	public int getNextAvailableIndex(){
+		int availableIndex = 1;
+		while(true){
+			if (!myPalette.keySet().contains(availableIndex)){
+				return availableIndex;
+			}
+			availableIndex++;
+		}
 	}
 }

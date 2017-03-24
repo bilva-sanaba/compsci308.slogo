@@ -28,17 +28,17 @@ public class DisplayUpdater {
 		checkClear(w, gc, activeTurtles);
 	}
 
-	public void updatePalette(UnmodifiableWorld w,Palette palette){
+	private void updatePalette(UnmodifiableWorld w,Palette palette){
 		palette.setPalette(w.getPalleteUpdates());
 	}
-	public void updateBackground(UnmodifiableWorld w, Shape background, Palette palette){
+	private void updateBackground(UnmodifiableWorld w, Shape background, Palette palette){
 		if (palette.evalPalette(w.getBackground())!=null){
 			if (w.isBackgroundSet()){
 				background.setFill(palette.evalPalette(w.getBackground()));
 			}
 		};
 	}
-	public void checkClear(UnmodifiableWorld w, GraphicsContext gc, Map<Integer, TurtleViewManager> activeTurtles){
+	private void checkClear(UnmodifiableWorld w, GraphicsContext gc, Map<Integer, TurtleViewManager> activeTurtles){
 		if (w.shouldClear()){
 			for (TurtleViewManager t : activeTurtles.values()){
 				t.setX(GUI.BACKGROUND_WIDTH/2);
