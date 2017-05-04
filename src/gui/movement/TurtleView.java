@@ -12,18 +12,22 @@ import model.configuration.Trajectory;
  */
 public class TurtleView {
 	private ImageView Turtle_Image;
+	private Image tImage;
 	private boolean penDown;
 	private Paint penColor; 
 	public TurtleView(String s,String c){
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream(s));
-		Turtle_Image = new ImageView(image);
+		tImage = new Image(getClass().getClassLoader().getResourceAsStream(s));
+		Turtle_Image = new ImageView(tImage);
 		penDown=true;
 		penColor=Color.valueOf(c);
 	}
 	public Paint getPenColor(){
 		return penColor;
 	}
-	public ImageView getImage(){
+	public Image getImage(){
+		return tImage;
+	}
+	public ImageView getImageView(){
 		return Turtle_Image;
 	}
 	public void setX(double xCoor){
@@ -41,11 +45,11 @@ public class TurtleView {
 
 	public void setShape(String s){
 		ImageView newValue=new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(s)));
-		setX(getImage().getX()+getImage().getBoundsInLocal().getWidth()/2);
-		setY(getImage().getY()+getImage().getBoundsInLocal().getHeight()/2);
+		setX(getImageView().getX()+getImageView().getBoundsInLocal().getWidth()/2);
+		setY(getImageView().getY()+getImageView().getBoundsInLocal().getHeight()/2);
 		Turtle_Image.setImage(newValue.getImage());
-		setY(getImage().getY()-getImage().getBoundsInLocal().getHeight()/2);
-		setX(getImage().getX()-getImage().getBoundsInLocal().getWidth()/2);
+		setY(getImageView().getY()-getImageView().getBoundsInLocal().getHeight()/2);
+		setX(getImageView().getX()-getImageView().getBoundsInLocal().getWidth()/2);
 	}
 	public boolean getPen(){
 		return penDown;

@@ -29,6 +29,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
@@ -44,21 +45,32 @@ import model.configuration.UnmodifiableTurtleComposite;
  * @author Bilva
  *
  */
+/**
+ * SLogoAddition
+ * @jwei528
+ */
 public class TurtleAnimator extends TurtleViewManager{
 	private ButtonMaker buttonMaker = new ButtonMaker();
 	private static final double DEFAULT_PEN_SIZE = 4;
+	private static final double TURTLEWIDTH = 8;
+	private static final double TURTLEHEIGHT=6;
 	private TextField penSizeButton;
 	private double currentXPos;
 	private double currentYPos;
 	private double currentRotate=0;
 	private double currentOpacity=1.0;
+	private boolean currentStamp=false;
+	private boolean clearStamp=false;
 	private boolean skipFirst = false;
+	private boolean check=false;
 	private SpeedSlider mySlider= new SpeedSlider();
+	private List<ImageConfig> stampList;
 	public TurtleAnimator(TurtleView t, GraphicsContext gc,Palette p) {
 		super(t, gc,p);
 		penSize = DEFAULT_PEN_SIZE;
 		extraButtons = mySlider.getButtons();
 		extraButtonCount=extraButtons.size();
+		stampList = new ArrayList<ImageConfig>();
 	}
 
 	/**
@@ -67,11 +79,14 @@ public class TurtleAnimator extends TurtleViewManager{
 	@Override
 	public void moveTurtle(SingleTurtleTrajectory T,double screenWidth, double screenHeight){
 		SequentialTransition x = new SequentialTransition();
+		System.out.println("CHECKONE:" + T.getLast().getStamp());
+		stamp(T.getLast());//CHECK
+		System.out.println("CHECKTWO:" + T.getLast().getStamp());
 		for (SingleTurtleState uts : T){
 			this.setShape(uts);
 			if (!skipFirst){
-				currentXPos=myTurtleView.getImage().getX()+myTurtleView.getImage().getTranslateX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2;
-				currentYPos=myTurtleView.getImage().getY()+myTurtleView.getImage().getTranslateY()+myTurtleView.getImage().getBoundsInLocal().getHeight()/2;
+				currentXPos=myTurtleView.getImageView().getX()+myTurtleView.getImageView().getTranslateX()+myTurtleView.getImageView().getBoundsInLocal().getWidth()/2;
+				currentYPos=myTurtleView.getImageView().getY()+myTurtleView.getImageView().getTranslateY()+myTurtleView.getImageView().getBoundsInLocal().getHeight()/2;
 			}
 			if (skipFirst){
 				PathTransition pt = moveLocations(uts, screenWidth, screenHeight,currentXPos,currentYPos);
@@ -88,12 +103,14 @@ public class TurtleAnimator extends TurtleViewManager{
 				}
 			}
 			skipFirst=true;
+			//T.getLast().setStamp(false);
+			
 		}
 		x.play();
 	}
 	@Override
 	protected void draw(SingleTurtleState uts, double screenWidth, double screenHeight) {
-		//no function because drawing is simultaneous with movement
+		//no function because drawing is simultaneous with movement	
 	}
 	@Override
 	protected void moveLocation(SingleTurtleState uts, double screenWidth, double screenHeight){
@@ -111,16 +128,17 @@ public class TurtleAnimator extends TurtleViewManager{
 
 		double penX=uts.getX()+GUI.BACKGROUND_WIDTH/2;
 		double penY=-uts.getY()+GUI.BACKGROUND_HEIGHT/2;
-
+		
+		
 		myTurtleView.setPen(uts.isPenDown());
 		if (currentXPos!=penX || currentYPos!=penY){
 			if (shouldDraw){
 				Path path = new Path();
 				path.getElements().addAll(new MoveTo(currentXPos,currentYPos), new LineTo(penX,penY));
-				PathTransition pt = new PathTransition(Duration.millis(mySlider.getSpeed()), path, myTurtleView.getImage());
+				PathTransition pt = new PathTransition(Duration.millis(mySlider.getSpeed()), path, myTurtleView.getImageView());
 				if (myTurtleView.getPen()){
 
-					System.out.println(shouldDraw);
+					//System.out.println(shouldDraw);
 					pt.currentTimeProperty().addListener( new ChangeListener<Duration>() {
 						Location oldLocation = null;
 
@@ -129,12 +147,16 @@ public class TurtleAnimator extends TurtleViewManager{
 						 */
 						@Override
 						public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
-							ImageView pen = myTurtleView.getImage(); 
+							ImageView pen = myTurtleView.getImageView(); 
+							
+							
 							// get current location
-							double x = myTurtleView.getImage().getX()+myTurtleView.getImage().getTranslateX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2;
-							double y =myTurtleView.getImage().getY()+myTurtleView.getImage().getTranslateY()+myTurtleView.getImage().getBoundsInLocal().getHeight()/2;
+							double x = myTurtleView.getImageView().getX()+myTurtleView.getImageView().getTranslateX()+myTurtleView.getImageView().getBoundsInLocal().getWidth()/2;
+							double y =myTurtleView.getImageView().getY()+myTurtleView.getImageView().getTranslateY()+myTurtleView.getImageView().getBoundsInLocal().getHeight()/2;
 							//				System.out.println(x);
 
+
+							
 							// initialize the location
 							if( oldLocation == null) {
 								oldLocation = new Location();
@@ -142,15 +164,74 @@ public class TurtleAnimator extends TurtleViewManager{
 								oldLocation.y = y;
 								return;
 							}
-
+							
 							// draw line
 							graphics.setStroke(getPenColor(uts));
 							graphics.setLineWidth(uts.getPenSize());
-							graphics.strokeLine(oldLocation.x, oldLocation.y, x, y);
-
+							graphics.strokeLine(oldLocation.x, oldLocation.y, x, y);	
+						
+							
+							/*
+							//SLogoAddition
+							Double nx = X-TURTLEWIDTH;
+							Double ny = Y-TURTLEHEIGHT;
+							System.out.println("getStamp:" + uts.getStamp());
+							if(uts.getStamp()){
+								currentStamp=true;
+								clearStamp=false;
+								System.out.println("currentStamp: " + currentStamp);
+							}
+							
+							if(!uts.getStamp()){
+								clearStamp=true;
+								currentStamp=false;
+								System.out.println("CHECKCLEAR");
+							}
+							
+							
+							//stamp
+							//System.out.println(currentStamp);
+							if(uts.getStamp()){
+								//System.out.println("ENTERSANDMAN");
+								graphics.save();
+								Rotate r = new Rotate(currentRotate, nx, ny);
+								graphics.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+								
+								Image iTurtle = myTurtleView.getImage();
+								graphics.drawImage(iTurtle, nx, ny);
+								//System.out.println(x);
+								//System.out.println(y);
+								//uts.setStamp(false);
+								//currentStamp=false;
+								stampList.add(new ImageConfig(iTurtle, nx, ny));
+								graphics.restore();
+							}
+							//System.out.println("SIZE: " + stampList.size());
+							
+							
+							//clearstamps
+							System.out.println("CLEARSTAMP: " + clearStamp);
+							if(clearStamp && !currentStamp){
+								//System.out.println("BALLS");
+								for(ImageConfig i: stampList){
+									Double iX = i.getImage().getHeight();
+									Double iY = i.getImage().getWidth();
+									Double iTopX = i.getX();
+									Double iTopY = i.getY();
+									graphics.clearRect(iTopX, iTopY, iX, iY);
+								}
+								stampList.clear();
+								currentStamp=true; //check
+								clearStamp=false;
+								//System.out.println("BAALSSLLSLSLSLSL");
+							}
+							*/
+							
 							// update old location with current one
 							oldLocation.x = x;
 							oldLocation.y = y;
+							
+							
 						}
 					});
 				}
@@ -160,13 +241,66 @@ public class TurtleAnimator extends TurtleViewManager{
 			}
 		}
 		return null;
-	}				            
+	}	
+	
+	
+	private void stamp(SingleTurtleState uts){
+		//SLogoAddition
+		Double turtleX= myTurtleView.getImageView().getX()+myTurtleView.getImageView().getTranslateX()+myTurtleView.getImageView().getBoundsInLocal().getWidth()/2;
+		Double turtleY = myTurtleView.getImageView().getY()+myTurtleView.getImageView().getTranslateY()+myTurtleView.getImageView().getBoundsInLocal().getHeight()/2;
+		Double x = turtleX-TURTLEWIDTH;
+		Double y = turtleY-TURTLEHEIGHT;
+		System.out.println("getStamp:" + uts.getStamp());
+		if(uts.getStamp()){
+			currentStamp=true;
+			clearStamp=false;
+			System.out.println("currentStamp: " + currentStamp);
+		}
+		
+		if(!uts.getStamp()){
+			clearStamp=true;
+		}
+		
+		//stamp
+		System.out.println("currentStamp:" + currentStamp);
+		if(currentStamp){
+			System.out.println("ENTERSANDMAN");
+			graphics.save();
+			Rotate r = new Rotate(currentRotate, x, y);
+			graphics.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+			
+			Image iTurtle = myTurtleView.getImage();
+			graphics.drawImage(iTurtle, x, y);
+			System.out.println(x);
+			System.out.println(y);
+			uts.setStamp(false);
+			currentStamp=false;
+			stampList.add(new ImageConfig(iTurtle, x, y));
+			graphics.restore();
+		}
+		
+		//clearstamps
+		System.out.println("StampList: " + stampList);
+		if(clearStamp && stampList.size()>0){
+			System.out.println("BALLS");
+			for(ImageConfig i: stampList){
+				Double iX = i.getImage().getHeight();
+				Double iY = i.getImage().getWidth();
+				Double iTopX = i.getX();
+				Double iTopY = i.getY();
+				graphics.clearRect(iTopX, iTopY, iX, iY);
+			}
+			stampList.clear();
+			currentStamp=true; //check
+		}
+		System.out.println("CurrS: " + uts.getStamp());
+	}
 
 
 	private RotateTransition rotates(SingleTurtleState uts) {
 
 		if (uts.getHeading()!=currentRotate){
-			RotateTransition rt = new RotateTransition(Duration.millis(mySlider.getSpeed()),myTurtleView.getImage());
+			RotateTransition rt = new RotateTransition(Duration.millis(mySlider.getSpeed()),myTurtleView.getImageView());
 			rt.setFromAngle(currentRotate);
 			rt.setToAngle(uts.getHeading());
 			currentRotate=uts.getHeading();
@@ -181,7 +315,7 @@ public class TurtleAnimator extends TurtleViewManager{
 			newOpacity=1.0;
 		}
 		if (currentOpacity!=newOpacity){
-			FadeTransition ft1 = new FadeTransition(Duration.millis(mySlider.getSpeed()), myTurtleView.getImage());
+			FadeTransition ft1 = new FadeTransition(Duration.millis(mySlider.getSpeed()), myTurtleView.getImageView());
 			ft1.setToValue(newOpacity);
 			currentOpacity=newOpacity;
 			return ft1;

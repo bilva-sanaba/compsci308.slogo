@@ -11,6 +11,11 @@ package model.configuration;
  * This class also can contain commands to run on the turtles.
  * @author DhruvKPatel
  */
+/**
+ * SLogo Addition
+ * @author jwei528
+ *
+ */
 public interface TurtleState { 
 
 	/**
@@ -49,6 +54,11 @@ public interface TurtleState {
 	public boolean isActive();
 	
 	/**
+	 * Returns true if stamp is true
+	 */
+	public boolean getStamp();
+	
+	/**
 	 * Returns turtle's integer ID number
 	 * @return
 	 */
@@ -84,6 +94,11 @@ public interface TurtleState {
 	 */
 	public boolean setShowing(boolean newShowing);
 
+	/**
+	 * Sets stamp
+	 */
+	public void setStamp(boolean newStamp);
+	
 	/**
 	 * Sets heading
 	 */

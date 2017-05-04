@@ -16,6 +16,11 @@ import java.util.Map.Entry;
  * @author DhruvKPatel
  *
  */
+/**
+ * SLogo Addition
+ * @author jwei528
+ *
+ */
 public class CompositeTurtleState implements TurtleState, UnmodifiableTurtleComposite, Iterable<SingleTurtleState> {
 	private Map<Integer, SingleTurtleState> singleTurtles;
 
@@ -279,6 +284,16 @@ public class CompositeTurtleState implements TurtleState, UnmodifiableTurtleComp
 	@Override
 	public void setActive(boolean active) {
 		return;
+	}
+
+	@Override
+	public boolean getStamp() {
+		return getHeadActiveTurtle().getStamp();
+	}
+
+	@Override
+	public void setStamp(boolean newStamp) {
+		getHeadActiveTurtle().setStamp(newStamp);
 	}
 
 }

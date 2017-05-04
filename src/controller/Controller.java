@@ -58,7 +58,6 @@ public class Controller {
 			counter++;
 			GUI nextGUI=initializeGUI();
 			g.addTab(nextGUI,counter);
-
 		}
 		catch(CommandException e1){
 			SlogoAlert alert=new SlogoAlert("Unable to make new Workspace",e1.getMessage());

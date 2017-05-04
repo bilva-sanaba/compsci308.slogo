@@ -13,6 +13,11 @@ package model.configuration;
  * This class also can contain commands to run on the turtles.
  * @author DhruvKPatel
  */
+/**
+ * SLogo Addition
+ * @author jwei528
+ *
+ */
 public class SingleTurtleState implements TurtleState{
 	private int id;
 	private double x, y, heading;
@@ -21,6 +26,7 @@ public class SingleTurtleState implements TurtleState{
 	private int penSize;
 	private int shape;
 	private int penColor;
+	private boolean isStamp;
 	
 	/**
 	 * Constructs new turtle state with given parameters
@@ -30,7 +36,7 @@ public class SingleTurtleState implements TurtleState{
 	 * @param penDown
 	 * @param showing
 	 */
-	public SingleTurtleState(double x, double y, double heading, boolean penDown, boolean showing, int id, boolean isActive, int penSize, int shape, int penColor){
+	public SingleTurtleState(double x, double y, double heading, boolean penDown, boolean showing, int id, boolean isActive, int penSize, int shape, int penColor, boolean isStamp){
 		this.x = x;
 		this.y = y;
 		this.heading = heading;
@@ -41,6 +47,7 @@ public class SingleTurtleState implements TurtleState{
 		this.penSize = penSize;
 		this.shape = shape;
 		this.penColor = penColor;
+		this.isStamp = isStamp;
 	}
 	
 	/**
@@ -48,14 +55,14 @@ public class SingleTurtleState implements TurtleState{
 	 * x = 0, y = 0, heading = 0, pen is down, is showing
 	 */
 	public SingleTurtleState(int id){
-		this(0, 0, 0, true, true, id, true, 0, 0, 0);
+		this(0, 0, 0, true, true, id, true, 0, 0, 0, false);
 	}
 	
 	/**
 	 * Copies state
 	 */
 	public SingleTurtleState(SingleTurtleState s){
-		this(s.x, s.y, s.heading, s.penDown, s.showing, s.id, s.isActive, s.penSize, s.shape, s.penColor);
+		this(s.x, s.y, s.heading, s.penDown, s.showing, s.id, s.isActive, s.penSize, s.shape, s.penColor, s.isStamp);
 	}
 	
 	/**
@@ -254,5 +261,15 @@ public class SingleTurtleState implements TurtleState{
 	@Override
 	public double left(double degrees) {
 		return this.setHeading(this.getHeading() - degrees);
+	}
+
+	@Override
+	public boolean getStamp() {
+		return isStamp;
+	}
+
+	@Override
+	public void setStamp(boolean newStamp) {
+		isStamp = newStamp;
 	}
 }

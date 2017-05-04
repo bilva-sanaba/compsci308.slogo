@@ -82,10 +82,10 @@ public abstract class TurtleViewManager {
 	 * @return list of labels 
 	 */
 	public List<Label> getStateLabels(){
-		double currentXPos=+myTurtleView.getImage().getX()+myTurtleView.getImage().getTranslateX()+myTurtleView.getImage().getBoundsInLocal().getWidth()/2-gui.GUI.BACKGROUND_WIDTH/2;
-		double currentYPos=+myTurtleView.getImage().getY()+myTurtleView.getImage().getTranslateY()+myTurtleView.getImage().getBoundsInLocal().getHeight()/2-gui.GUI.BACKGROUND_HEIGHT/2;
+		double currentXPos=+myTurtleView.getImageView().getX()+myTurtleView.getImageView().getTranslateX()+myTurtleView.getImageView().getBoundsInLocal().getWidth()/2-gui.GUI.BACKGROUND_WIDTH/2;
+		double currentYPos=+myTurtleView.getImageView().getY()+myTurtleView.getImageView().getTranslateY()+myTurtleView.getImageView().getBoundsInLocal().getHeight()/2-gui.GUI.BACKGROUND_HEIGHT/2;
 		Label coordinateLabel=new Label("X:"+currentXPos+"  Y:"+(-currentYPos));
-		Label headingLabel=new Label(""+myTurtleView.getImage().getRotate()%360);
+		Label headingLabel=new Label(""+myTurtleView.getImageView().getRotate()%360);
 		Label penUpLabel=new Label("" +getPenBool());
 		ArrayList<Label>stateLabels=new ArrayList<Label>();
 		stateLabels.add(coordinateLabel);
@@ -133,20 +133,20 @@ public abstract class TurtleViewManager {
 	 * @param xLoc
 	 */
 	public void setX(double xLoc){
-		myTurtleView.getImage().setX(xLoc-myTurtleView.getImage().getBoundsInLocal().getWidth()/2);
+		myTurtleView.getImageView().setX(xLoc-myTurtleView.getImageView().getBoundsInLocal().getWidth()/2);
 	}
 	/**
 	 * moves Turtles Image to location Y
 	 * @param yLoc
 	 */
 	public void setY(double yLoc){
-		myTurtleView.getImage().setY(yLoc-myTurtleView.getImage().getBoundsInLocal().getHeight()/2);
+		myTurtleView.getImageView().setY(yLoc-myTurtleView.getImageView().getBoundsInLocal().getHeight()/2);
 	}
 	/**
 	 * Rotates turtles Image
 	 */
 	public void getRotate(){
-		myTurtleView.getImage().getRotate();
+		myTurtleView.getImageView().getRotate();
 	}
 	/**
 	 * Unnecessary penBool should have been stored in this class to  avoid this method
@@ -167,7 +167,7 @@ public abstract class TurtleViewManager {
 	 * @return
 	 */
 	public ImageView getImage(){
-		return myTurtleView.getImage();
+		return myTurtleView.getImageView();
 	}
 	/**
 	 * Returns class encapsulating image

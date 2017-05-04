@@ -1,3 +1,5 @@
+//This entire file is part of my masterpiece
+//JACOB WEISS
 package parser.tokenNodes;
 
 import java.util.ArrayList;
@@ -22,6 +24,9 @@ import parser.regularExpressions.ProgramParser;
  * Determines the type of tokenNode that is added
  * checks for null command that follows TO
  * error checking for syntax and undefined commands
+ * 
+ * Masterpiece:
+ * Checking for unlimited parameters command used in masterpiece
  * @author Jacob Weiss
  *
  */

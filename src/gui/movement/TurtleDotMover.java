@@ -43,7 +43,9 @@ public class TurtleDotMover extends TurtleViewManager {
 	protected void changeVisibility(SingleTurtleState uts) {
 		// TODO Auto-generated method stub
 		
-	}}
+	}
+
+}
 //	  public static final int DEFAULT_FPS = 10;
 //	    public static final double MILLIS_PER_SECOND = 1000;
 //		private double penSize = DEFAULT_PEN_SIZE;
