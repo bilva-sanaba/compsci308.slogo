@@ -1,0 +1,5 @@
+#Estimation: before looking at the old code:
+###How long do you think it will take you to complete this new feature?
+This addition should take my approximately an hour to complete. 
+###How many files will you need to add or update? Why?
+In order to add this view to the screen I will have to change the input panel. I have to pass in all turtles to the input panel now so that the input panel can modify any of them. The GUI class will have to be changed to pass in this list. The input panel will have to be changed to take this parameter. The input panel will have to be added so that my node for this new view will be included. Finally, I will have to make a class to create the node which will open the view of all turtles and the appropriate smaller classes to allow users to change the turtle image.
