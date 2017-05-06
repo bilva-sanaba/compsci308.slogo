@@ -1,0 +1,93 @@
+[33mcommit 9a03139a77caa53593a34de0af62a7b96c542324[m
+Author: ALEXANDER BLUMENSTOCK <ab546@duke.edu>
+Date:   Thu Feb 23 17:48:08 2017 -0500
+
+    Alex's API Review
+
+[33mcommit 32de6e9b990bb80e145dba06c22bc4cd79f4f7ca[m
+Author: ALEXANDER BLUMENSTOCK <ab546@duke.edu>
+Date:   Thu Feb 23 17:40:39 2017 -0500
+
+    Alex's API Review
+
+[33mcommit bb8ab26fc68d91e45059c0ddd57a2188bb0931b5[m
+Merge: 9dcb45a 677639d
+Author: Bilva Sanaba <bilva.sanaba@duke.edu>
+Date:   Thu Feb 23 00:12:26 2017 -0500
+
+    Merge branch 'Jacob' into 'master'
+    
+    Jacob
+    
+    See merge request !2
+
+[33mcommit 9dcb45a6c3c2add42bd01cddcfd871576e953440[m
+Merge: 16f25f9 05fb9d5
+Author: Bilva Sanaba <bilva.sanaba@duke.edu>
+Date:   Thu Feb 23 00:11:49 2017 -0500
+
+    Merge branch 'Dhruv' into 'master'
+    
+    added configurations for model-view communication
+    
+    See merge request !1
+
+[33mcommit 677639d0ae19b77b1dbcceadd07059b78cd2a2bf[m
+Author: Jacob Weiss <jacob.weiss@duke.edu>
+Date:   Wed Feb 22 22:48:02 2017 -0500
+
+    Updated parser
+
+[33mcommit 1f78f693b22e57af2c672f840d41684f76fdb6f7[m
+Author: Jacob Weiss <jacob.weiss@duke.edu>
+Date:   Wed Feb 22 22:15:11 2017 -0500
+
+    Updated parser
+
+[33mcommit 3df74cd1566f861b9f815d07b9febb445285060c[m
+Author: Jacob Weiss <jacob.weiss@duke.edu>
+Date:   Wed Feb 22 22:14:00 2017 -0500
+
+    Updated parser
+
+[33mcommit 540656fd914958bd9b64f01e8f982abc4eb12a43[m
+Author: Jacob Weiss <jacob.weiss@duke.edu>
+Date:   Wed Feb 22 21:58:39 2017 -0500
+
+    Completed tree creation in parser
+
+[33mcommit 0917d710f786611e8243e314766dbd58e55bf0e6[m
+Author: Jacob Weiss <jacob.weiss@duke.edu>
+Date:   Wed Feb 22 21:44:56 2017 -0500
+
+    Working on parser
+
+[33mcommit 05fb9d5b7ef677f7b3f60b43408c1c5a319bfd19[m
+Author: Dhruv K Patel <dkp13@duke.edu>
+Date:   Wed Feb 22 21:09:53 2017 -0500
+
+    added configurations for model-view communication
+
+[33mcommit 16f25f9d9edfd8dc3a66f061ed0591ed2b37d9c2[m
+Author: Jacob Weiss <jacob.weiss@duke.edu>
+Date:   Tue Feb 21 01:58:58 2017 -0500
+
+    Design Document
+
+[33mcommit f0af26395c33766abd314ad3e12301b7c37c13f1[m
+Author: Dhruv Patel <dhruv.patel@duke.edu>
+Date:   Thu Feb 16 18:05:40 2017 -0500
+
+    Update API_Exercise.md
+
+[33mcommit a0784575ac63977577817287b46cc5b84aeed28b[m
+Author: Dhruv Patel <dhruv.patel@duke.edu>
+Date:   Thu Feb 16 18:05:16 2017 -0500
+
+    API plan added
+
+[33mcommit 666999f30f8fc7a5223db8b98e1f2ea8558b2f1f[m
+Author: Robert C. Duvall <robertcduvall@gmail.com>
+Date:   Thu Feb 16 17:14:30 2017 -0500
+
+    Added initial project files
