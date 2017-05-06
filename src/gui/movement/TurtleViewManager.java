@@ -37,6 +37,7 @@ public abstract class TurtleViewManager {
 	protected double penSize;
 	protected boolean shouldDraw = true;
 	protected Palette myPalette;
+	private Integer shapeSize;
 	/**
 	 * 
 	 * @param t Image of turtle
@@ -76,6 +77,7 @@ public abstract class TurtleViewManager {
 	 */
 	public void addTurtleComboBox(TurtleComboBox tcb){
 		myTCB=tcb;
+		shapeSize= myTCB.getTurtleChooser().getItems().size();
 	}
 	/**
 	 * Needed for GUI to Display info on a TVM state when hovered over
@@ -175,5 +177,11 @@ public abstract class TurtleViewManager {
 	 */
 	public TurtleView getTurtleView(){
 		return myTurtleView;
+	}
+	/**
+	 * returns number of possible shapes that turtle can be changed to
+	 */
+	public Integer getPossibleShapes(){
+		return shapeSize;
 	}
 }

@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import resources.*;
@@ -24,12 +25,16 @@ import gui.executables.pencolor.RandomPenColorButton;
 import gui.executables.penproperties.PenSizeChooser;
 import gui.executables.penproperties.PenSizeTextInput;
 import gui.executables.penproperties.PenToggle;
+import gui.executables.turtleimage.IDisplayNode;
+import gui.executables.turtleimage.TurtleImageButton;
 import gui.language.Language;
 import gui.language.LanguageFactory;
 import gui.movement.TurtleViewManager;
 import gui.panels.dynamic.CommandScrollPane;
+import javafx.beans.property.MapProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -78,6 +83,7 @@ public class InputPanel {
 	private TextAreaWriter textAreaWriter;
 	private Button runButton;
 	private FireableButton fireButton;
+	private MapProperty<Integer, TurtleViewManager> turtles;
 	/**
 	 * Creates the input panel to be displayed in GUI
 	 * @param Instance of original Turtle in GUI
@@ -87,14 +93,15 @@ public class InputPanel {
 	 * @param rb Runbutton to be added to Input panel display
 	 * @param p Palette of Colors for colobuttons
 	 */
-	public InputPanel(TurtleViewManager TVM, List<Button> otherButtons, Default myDefault,TextAreaWriter t,Button rb, Palette p){
+	public InputPanel(MapProperty<Integer,TurtleViewManager> TVM, List<Button> otherButtons, Default myDefault,TextAreaWriter t,Button rb, Palette p){
 		runButton=rb;
 		fireButton = new FireableButton(runButton);
 		myPalette = p;
-		tvm=TVM;
+		tvm=TVM.get(0);
 		textAreaWriter=t;
 		returnPanel = initInputPanel(otherButtons);
 		returnPanel.setPrefSize(GUI.GUI_WIDTH,GUI.GUI_HEIGHT/3);
+		turtles = TVM;
 		addBackgroundButton();
 		addOtherBoxes(myDefault);
 		addPenButton();
@@ -173,7 +180,8 @@ public class InputPanel {
 		List<Node> extraButtons = new ArrayList<Node>();
 		Node penButton = createPenSizeButton().getPenButtons();
 		Node penToggle = createPenToggle().getToggleButton();
-		HBox penButtons = new HBox(penButton,penToggle);
+		IDisplayNode tib = new TurtleImageButton(turtles,textAreaWriter,fireButton,currentLanguage);
+		HBox penButtons = new HBox(penButton,penToggle,tib.getNode());
 		extraButtons.addAll(tvm.getExtraButtons());
 		inputPanel.setConstraints(penButtons, 0,4);
 		System.out.println(tvm.getButtonCount());
