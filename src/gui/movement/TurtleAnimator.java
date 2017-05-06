@@ -59,10 +59,10 @@ public class TurtleAnimator extends TurtleViewManager{
 	private double currentYPos;
 	private double currentRotate=0;
 	private double currentOpacity=1.0;
-	private boolean currentStamp=false;
+	private int currentStampCount=0;
 	private boolean clearStamp=false;
 	private boolean skipFirst = false;
-	private boolean check=false;
+	private boolean addStamp=false;
 	private SpeedSlider mySlider= new SpeedSlider();
 	private List<ImageConfig> stampList;
 	public TurtleAnimator(TurtleView t, GraphicsContext gc,Palette p) {
@@ -79,11 +79,9 @@ public class TurtleAnimator extends TurtleViewManager{
 	@Override
 	public void moveTurtle(SingleTurtleTrajectory T,double screenWidth, double screenHeight){
 		SequentialTransition x = new SequentialTransition();
-		System.out.println("CHECKONE:" + T.getLast().getStamp());
-		stamp(T.getLast());//CHECK
-		System.out.println("CHECKTWO:" + T.getLast().getStamp());
 		for (SingleTurtleState uts : T){
 			this.setShape(uts);
+			stamp(T.getLast());
 			if (!skipFirst){
 				currentXPos=myTurtleView.getImageView().getX()+myTurtleView.getImageView().getTranslateX()+myTurtleView.getImageView().getBoundsInLocal().getWidth()/2;
 				currentYPos=myTurtleView.getImageView().getY()+myTurtleView.getImageView().getTranslateY()+myTurtleView.getImageView().getBoundsInLocal().getHeight()/2;
@@ -103,7 +101,6 @@ public class TurtleAnimator extends TurtleViewManager{
 				}
 			}
 			skipFirst=true;
-			//T.getLast().setStamp(false);
 			
 		}
 		x.play();
@@ -171,63 +168,6 @@ public class TurtleAnimator extends TurtleViewManager{
 							graphics.strokeLine(oldLocation.x, oldLocation.y, x, y);	
 						
 							
-							/*
-							//SLogoAddition
-							Double nx = X-TURTLEWIDTH;
-							Double ny = Y-TURTLEHEIGHT;
-							System.out.println("getStamp:" + uts.getStamp());
-							if(uts.getStamp()){
-								currentStamp=true;
-								clearStamp=false;
-								System.out.println("currentStamp: " + currentStamp);
-							}
-							
-							if(!uts.getStamp()){
-								clearStamp=true;
-								currentStamp=false;
-								System.out.println("CHECKCLEAR");
-							}
-							
-							
-							//stamp
-							//System.out.println(currentStamp);
-							if(uts.getStamp()){
-								//System.out.println("ENTERSANDMAN");
-								graphics.save();
-								Rotate r = new Rotate(currentRotate, nx, ny);
-								graphics.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
-								
-								Image iTurtle = myTurtleView.getImage();
-								graphics.drawImage(iTurtle, nx, ny);
-								//System.out.println(x);
-								//System.out.println(y);
-								//uts.setStamp(false);
-								//currentStamp=false;
-								stampList.add(new ImageConfig(iTurtle, nx, ny));
-								graphics.restore();
-							}
-							//System.out.println("SIZE: " + stampList.size());
-							
-							
-							//clearstamps
-							System.out.println("CLEARSTAMP: " + clearStamp);
-							if(clearStamp && !currentStamp){
-								//System.out.println("BALLS");
-								for(ImageConfig i: stampList){
-									Double iX = i.getImage().getHeight();
-									Double iY = i.getImage().getWidth();
-									Double iTopX = i.getX();
-									Double iTopY = i.getY();
-									graphics.clearRect(iTopX, iTopY, iX, iY);
-								}
-								stampList.clear();
-								currentStamp=true; //check
-								clearStamp=false;
-								//System.out.println("BAALSSLLSLSLSLSL");
-							}
-							*/
-							
-							// update old location with current one
 							oldLocation.x = x;
 							oldLocation.y = y;
 							
@@ -250,39 +190,30 @@ public class TurtleAnimator extends TurtleViewManager{
 		Double turtleY = myTurtleView.getImageView().getY()+myTurtleView.getImageView().getTranslateY()+myTurtleView.getImageView().getBoundsInLocal().getHeight()/2;
 		Double x = turtleX-TURTLEWIDTH;
 		Double y = turtleY-TURTLEHEIGHT;
-		System.out.println("getStamp:" + uts.getStamp());
-		if(uts.getStamp()){
-			currentStamp=true;
-			clearStamp=false;
-			System.out.println("currentStamp: " + currentStamp);
+		
+		if(uts.getStampCount()>currentStampCount){
+			currentStampCount++;
+			addStamp=true;
 		}
 		
-		if(!uts.getStamp()){
+		if(uts.getStampCount()==0){
 			clearStamp=true;
 		}
 		
-		//stamp
-		System.out.println("currentStamp:" + currentStamp);
-		if(currentStamp){
-			System.out.println("ENTERSANDMAN");
+		if(addStamp){
 			graphics.save();
 			Rotate r = new Rotate(currentRotate, x, y);
 			graphics.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
 			
 			Image iTurtle = myTurtleView.getImage();
 			graphics.drawImage(iTurtle, x, y);
-			System.out.println(x);
-			System.out.println(y);
-			uts.setStamp(false);
-			currentStamp=false;
+			addStamp=false;
 			stampList.add(new ImageConfig(iTurtle, x, y));
 			graphics.restore();
 		}
 		
 		//clearstamps
-		System.out.println("StampList: " + stampList);
 		if(clearStamp && stampList.size()>0){
-			System.out.println("BALLS");
 			for(ImageConfig i: stampList){
 				Double iX = i.getImage().getHeight();
 				Double iY = i.getImage().getWidth();
@@ -291,9 +222,9 @@ public class TurtleAnimator extends TurtleViewManager{
 				graphics.clearRect(iTopX, iTopY, iX, iY);
 			}
 			stampList.clear();
-			currentStamp=true; //check
+			currentStampCount=0;
+			clearStamp=false; 
 		}
-		System.out.println("CurrS: " + uts.getStamp());
 	}
 
 

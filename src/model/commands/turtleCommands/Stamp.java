@@ -18,7 +18,7 @@ public class Stamp extends NoParamCommand {
 		Trajectory trajectory = scope.getTrajectory();
 		TurtleState current = trajectory.getLast().getModifiableCopy();
 
-		current.setStamp(true);
+		current.addStamp();
 		trajectory.addLast(current);
 		//current.setStamp(false);
 		return current.getID();

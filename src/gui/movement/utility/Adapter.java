@@ -30,7 +30,7 @@ public static Map<Integer,SingleTurtleTrajectory>getSingleTrajectories(Trajector
 	
 	for(UnmodifiableTurtleComposite group:t){
 	for(Integer i:map.keySet()){
-		map.get(i).addLast(new SingleTurtleState(0,0,0,false,false,-1,false,0,0,0, false));
+		map.get(i).addLast(new SingleTurtleState(0,0,0,false,false,-1,false,0,0,0, 0)); //includes stampcount
 	}
 		for(SingleTurtleState turtle:group){
 			int i=turtle.getID();

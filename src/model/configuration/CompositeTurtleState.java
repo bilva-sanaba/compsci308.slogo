@@ -287,13 +287,18 @@ public class CompositeTurtleState implements TurtleState, UnmodifiableTurtleComp
 	}
 
 	@Override
-	public boolean getStamp() {
-		return getHeadActiveTurtle().getStamp();
+	public int getStampCount(){
+		return getHeadActiveTurtle().getStampCount();
 	}
 
 	@Override
-	public void setStamp(boolean newStamp) {
-		getHeadActiveTurtle().setStamp(newStamp);
+	public void addStamp() {
+		getHeadActiveTurtle().addStamp();
+	}
+
+	@Override
+	public void clearStamps() {
+		getHeadActiveTurtle().clearStamps();
 	}
 
 }

@@ -13,9 +13,10 @@ public class ClearStamps extends NoParamCommand {
 		Trajectory trajectory = scope.getTrajectory();
 		TurtleState current = trajectory.getLast().getModifiableCopy();
 
-		current.setStamp(false);
+		int stamps = current.getStampCount();
+		current.clearStamps();
 		trajectory.addLast(current);
-		return current.getID();
+		return stamps;
 	}
 	
 	@Override

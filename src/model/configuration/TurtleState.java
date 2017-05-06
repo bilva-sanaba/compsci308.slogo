@@ -54,11 +54,6 @@ public interface TurtleState {
 	public boolean isActive();
 	
 	/**
-	 * Returns true if stamp is true
-	 */
-	public boolean getStamp();
-	
-	/**
 	 * Returns turtle's integer ID number
 	 * @return
 	 */
@@ -96,8 +91,9 @@ public interface TurtleState {
 
 	/**
 	 * Sets stamp
+	 * @return 
 	 */
-	public void setStamp(boolean newStamp);
+	public int getStampCount();
 	
 	/**
 	 * Sets heading
@@ -131,5 +127,9 @@ public interface TurtleState {
 	public boolean equals(Object t);
 	
 	public TurtleState getModifiableCopy();
+
+	public void addStamp();
+	
+	public void clearStamps();
 
 }

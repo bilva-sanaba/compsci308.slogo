@@ -26,7 +26,7 @@ public class SingleTurtleState implements TurtleState{
 	private int penSize;
 	private int shape;
 	private int penColor;
-	private boolean isStamp;
+	private int stampCount;
 	
 	/**
 	 * Constructs new turtle state with given parameters
@@ -36,7 +36,7 @@ public class SingleTurtleState implements TurtleState{
 	 * @param penDown
 	 * @param showing
 	 */
-	public SingleTurtleState(double x, double y, double heading, boolean penDown, boolean showing, int id, boolean isActive, int penSize, int shape, int penColor, boolean isStamp){
+	public SingleTurtleState(double x, double y, double heading, boolean penDown, boolean showing, int id, boolean isActive, int penSize, int shape, int penColor, int stampCount){
 		this.x = x;
 		this.y = y;
 		this.heading = heading;
@@ -47,7 +47,7 @@ public class SingleTurtleState implements TurtleState{
 		this.penSize = penSize;
 		this.shape = shape;
 		this.penColor = penColor;
-		this.isStamp = isStamp;
+		this.stampCount = stampCount;
 	}
 	
 	/**
@@ -55,14 +55,14 @@ public class SingleTurtleState implements TurtleState{
 	 * x = 0, y = 0, heading = 0, pen is down, is showing
 	 */
 	public SingleTurtleState(int id){
-		this(0, 0, 0, true, true, id, true, 0, 0, 0, false);
+		this(0, 0, 0, true, true, id, true, 0, 0, 0, 0);
 	}
 	
 	/**
 	 * Copies state
 	 */
 	public SingleTurtleState(SingleTurtleState s){
-		this(s.x, s.y, s.heading, s.penDown, s.showing, s.id, s.isActive, s.penSize, s.shape, s.penColor, s.isStamp);
+		this(s.x, s.y, s.heading, s.penDown, s.showing, s.id, s.isActive, s.penSize, s.shape, s.penColor, s.stampCount);
 	}
 	
 	/**
@@ -264,12 +264,20 @@ public class SingleTurtleState implements TurtleState{
 	}
 
 	@Override
-	public boolean getStamp() {
-		return isStamp;
+	public int getStampCount() {
+		return stampCount;
+		
 	}
 
 	@Override
-	public void setStamp(boolean newStamp) {
-		isStamp = newStamp;
+	public void addStamp() {
+		stampCount++;
+		
+	}
+
+	@Override
+	public void clearStamps() {
+		stampCount=0;
+		
 	}
 }
