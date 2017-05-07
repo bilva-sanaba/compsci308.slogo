@@ -11,7 +11,12 @@ import gui.movement.TurtleViewManager;
 import javafx.beans.property.MapProperty;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-
+/**
+ * Button to be displayed on GUI which when clicked creates a 
+ * ITurtleViewChanger to allow user to change Turtle Images
+ * @author Bilva
+ *
+ */
 public class TurtleImageButton implements IDisplayNode {
 	private ButtonMaker buttonMaker;
 	private ITurtleViewChanger titv;

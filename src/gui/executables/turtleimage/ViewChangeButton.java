@@ -7,7 +7,12 @@ import gui.executables.FireableButton;
 import gui.executables.TextAreaWriter;
 import gui.language.Language;
 import javafx.scene.Node;
-
+/**
+ * Executable button which when clicked, runs slogo command to change
+ * the appropriate turtle's shape
+ * @author Bilva
+ *
+ */
 public class ViewChangeButton extends ExecutableButton implements IDisplayNode{
 	private Integer turtleID;
 	public static final String DEFAULT_RESOURCE_BUNDLE="resources/";

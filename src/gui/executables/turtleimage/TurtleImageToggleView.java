@@ -17,7 +17,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
+/**
+ * Class containing stage to be displayed allowing for user to change
+ * turtle image
+ * @author Bilva
+ *
+ */
 public class TurtleImageToggleView implements ITurtleViewChanger{
 	private MapProperty<Integer, TurtleViewManager> map;
 	private TextAreaWriter t;
@@ -42,9 +47,7 @@ public class TurtleImageToggleView implements ITurtleViewChanger{
 		myStage.setScene(myScene);
 		bindMap();
 	}
-	/* (non-Javadoc)
-	 * @see gui.executables.turtleimage.ITurtleViewChanger#run()
-	 */
+
 	@Override
 	public void run(){
 		populateScreen();
