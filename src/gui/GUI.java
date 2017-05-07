@@ -1,4 +1,6 @@
 package gui;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import java.io.BufferedReader;
@@ -73,7 +75,7 @@ public class GUI {
 	private ButtonMaker buttonMaker = new ButtonMaker();
 	private TextAreaWriter textAreaWriter;
 	BorderPane bottomPanel=new BorderPane();
-	private Map<Integer, TurtleViewManager> existingTurtles;
+	private ObservableMap<Integer, TurtleViewManager> existingTurtles;
 	private UnmodifiableWorld currentWorld;
 	private InputHandler inputHandler = new WASDMover();
 	private Palette myPalette = new Palette();
@@ -141,7 +143,7 @@ public class GUI {
 		return Color.valueOf(myDefault.getBackgroundColor()).invert().toString();
 	}
 	private void createInputPanel(){
-		realInput = new InputPanel(tvm, otherButtons,myDefault,textAreaWriter,runButton,myPalette);
+		realInput = new InputPanel(tvm, otherButtons,myDefault,textAreaWriter,runButton,myPalette,existingTurtles);
 		bottomPanel.setCenter(realInput.getBottomPanel());
 		tvm.addTurtleComboBox(realInput.getTurtleComboBox());
 		myRoot.setBottom(bottomPanel);
@@ -153,7 +155,7 @@ public class GUI {
 
 		tvm = new TurtleAnimator(new TurtleView(myDefault.getImageString().get(0),getPenColorString(myDefault.getBackgroundColor())), gc,myPalette);
 
-		existingTurtles = new HashMap<Integer, TurtleViewManager>();
+		existingTurtles =  FXCollections.observableMap( new HashMap<Integer, TurtleViewManager>());
 		existingTurtles.put(0, tvm);
 		configureStateDisplay(tvm);
 	}

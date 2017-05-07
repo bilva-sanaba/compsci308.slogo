@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-
+import java.util.Map;
 import resources.*;
 import xml.Default;
 import gui.ButtonMaker;
@@ -16,8 +16,10 @@ import gui.executables.FireableButton;
 import gui.executables.TextAreaWriter;
 import gui.executables.background.BackgroundColorChooser;
 import gui.executables.background.BackgroundColorWriteBox;
+import gui.executables.boxes.ImageChangeBox;
 import gui.executables.boxes.Palette;
 import gui.executables.boxes.TurtleComboBox;
+import gui.executables.boxes.TurtleListCell;
 import gui.executables.pencolor.PenColorChooser;
 import gui.executables.pencolor.PenColorPicker;
 import gui.executables.pencolor.RandomPenColorButton;
@@ -30,6 +32,7 @@ import gui.movement.TurtleViewManager;
 import gui.panels.dynamic.CommandScrollPane;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -75,6 +78,7 @@ public class InputPanel {
 	private ButtonMaker buttonMaker= new ButtonMaker();
 	private Palette myPalette;
 	private HBox topButtons;
+	private ObservableMap<Integer,TurtleViewManager>turtles;
 	private TextAreaWriter textAreaWriter;
 	private Button runButton;
 	private FireableButton fireButton;
@@ -87,11 +91,12 @@ public class InputPanel {
 	 * @param rb Runbutton to be added to Input panel display
 	 * @param p Palette of Colors for colobuttons
 	 */
-	public InputPanel(TurtleViewManager TVM, List<Button> otherButtons, Default myDefault,TextAreaWriter t,Button rb, Palette p){
+	public InputPanel(TurtleViewManager TVM, List<Button> otherButtons, Default myDefault,TextAreaWriter t,Button rb, Palette p,ObservableMap<Integer,TurtleViewManager>turtleMap){
 		runButton=rb;
 		fireButton = new FireableButton(runButton);
 		myPalette = p;
 		tvm=TVM;
+		turtles=turtleMap;
 		textAreaWriter=t;
 		returnPanel = initInputPanel(otherButtons);
 		returnPanel.setPrefSize(GUI.GUI_WIDTH,GUI.GUI_HEIGHT/3);
@@ -136,16 +141,22 @@ public class InputPanel {
 		inputPanel.setConstraints(topButtons,0,3);
 		inputPanel.getChildren().add(topButtons);
 	}
+	private void addImageChangeBox(){
+		
+	}
 	private void addOtherBoxes(Default myDefault){
 		//try to use lambdas for this
 		tcb = new TurtleComboBox(textAreaWriter,currentLanguage,fireButton, myDefault);
 		ComboBox<String>turtleChoice=tcb.getTurtleChooser();
+		ImageChangeBox imageChangeBox=new ImageChangeBox(textAreaWriter,currentLanguage,fireButton,turtles);
+		ComboBox<Integer>imageChoice=imageChangeBox.getImageChooser();
 		Pane theBoxes = new HBox(BUTTON_SPACING);
 		inputPanel.setConstraints(theBoxes,0,1);
 		inputPanel.getChildren().add(theBoxes);
 		theBoxes.getChildren().add(turtleChoice);
 		theBoxes.getChildren().add(createLanguageBox());
 		theBoxes.getChildren().add(myPalette.getPalette());
+		theBoxes.getChildren().add(imageChoice);
 	}
 	private void addPenButton(){
 		pb = new PenColorPicker(textAreaWriter,currentLanguage,fireButton,myPalette);
