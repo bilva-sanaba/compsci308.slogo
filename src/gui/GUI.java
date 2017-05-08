@@ -1,15 +1,17 @@
 package gui;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import error.SlogoAlert;
 import gui.executables.FireableButton;
 import gui.executables.TextAreaWriter;
@@ -26,9 +28,11 @@ import gui.panels.LeftPanel;
 import gui.panels.RightPanel;
 import gui.updaters.DisplayUpdater;
 import gui.updaters.TurtleUpdater;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
@@ -38,11 +42,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 import model.UnmodifiableWorld;
 import model.configuration.SingleTurtleState;
 import model.configuration.Trajectory;
+import model.configuration.TurtleState;
 import model.exceptions.CommandException;
 import xml.Default;
 import xml.XML;
@@ -78,6 +83,7 @@ public class GUI {
 	private InputHandler inputHandler = new WASDMover();
 	private Palette myPalette = new Palette();
 	private ClickHandler clickHandler;
+	private Collection<TurtleViewManager> stamps = new ArrayList<>();
 	public static final int GUI_WIDTH = GUI_Configuration.SCENE_WIDTH; 
 	public static final int GUI_HEIGHT = GUI_Configuration.SCENE_HEIGHT-120;
 	public static final double BACKGROUND_WIDTH = GUI_WIDTH*5/8;
@@ -247,6 +253,7 @@ public class GUI {
 					newTurtle.addTurtleComboBox(realInput.getTurtleComboBox());
 					placeTurtle(newTurtle);
 					existingTurtles.put(turtle.getID(), newTurtle);
+						
 					clickHandler.update(existingTurtles);
 					configureStateDisplay(newTurtle);
 				}
@@ -257,10 +264,37 @@ public class GUI {
 		}
 		updateVariables();
 		updateUserCommands();
+		updateStamps(w.getStamps());
 		DisplayUpdater du = new DisplayUpdater();
+		
 		du.updateDisplay(w, myPalette, background, gc, existingTurtles);
 		textArea.clear();
 	}
+
+	private void updateStamps(Collection<? extends TurtleState> turtles) {
+		turtles.stream()
+						.map(turtle -> {
+							try{
+								TurtleView view = new TurtleView(existingTurtles.get(turtle.getID()).getTurtleView());
+								view.setX(background.getBoundsInLocal().getWidth()/2 + turtle.getX());
+								view.setY(background.getBoundsInLocal().getHeight()/2 + - turtle.getY());
+								view.setHeading(turtle.getHeading());
+								Class<?>clazz=Class.forName(existingTurtles.get(0).getClass().getName());
+								return (TurtleViewManager) makeClass(clazz,view,myPalette);
+							}
+							catch (Exception e){
+								e.printStackTrace();
+								return null;
+							}
+							})
+						.filter(view -> view != null)
+						.forEach(view ->{
+							System.out.println("plotting");
+							wrapperPane.getChildren().remove(view.getTurtleView().getImage());
+							wrapperPane.getChildren().add(view.getTurtleView().getImage());
+						});			
+	}
+	
 	private void updateVariables() throws CommandException{
 		lp.updateVariables(currentWorld);
 	}
@@ -282,7 +316,7 @@ public class GUI {
 		Button save=buttonMaker.createButton("Save Preferences",e->handleSave());
 		Button loadCommand=buttonMaker.createButton("Load Command", e->handleLoadCommand());
 		Button newW=newTab;
-		otherButtons = Arrays	.asList(play, clear,newW,load,save,loadCommand);
+		otherButtons = Arrays.asList(play, clear,newW,load,save,loadCommand);
 	}
 	private void handleLoadCommand(){
 		FileChooser fileChooser=new FileChooser();

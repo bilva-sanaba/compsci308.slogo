@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import model.commands.CommandFactory;
 import model.configuration.SingleTurtleState;
 import model.configuration.Trajectory;
 import model.configuration.TurtleManager;
+import model.configuration.TurtleState;
+import model.configuration.UnmodifiableTurtleComposite;
+import model.exceptions.CommandException;
 import model.tokens.VariableContainer;
 
 /**
@@ -27,16 +32,45 @@ public class World implements UnmodifiableWorld{
 	private int backgroundIndex;
 	private boolean shouldClear;
 	private Map<Integer, ArrayList<Integer>> paletteUpdates;
-	
+	private Collection<SingleTurtleState> stamps;
 
 	
 	public World(Trajectory turtleTrajectory, VariableContainer variables, CommandFactory commands){
 		turtles = new TurtleManager(turtleTrajectory);
+		stamps = new ArrayList<>();
 		backgroundIndex = 0;
 		shouldClear = false;
 		paletteUpdates = new HashMap<>();
 		this.variables = variables;
 		this.commands = commands;
+	}
+	
+	/**
+	 * Adds turtle to list of stamped turtles
+	 * @throws CommandException 
+	 */
+	public void stampTurtle(UnmodifiableTurtleComposite turtles) throws CommandException{
+		stamps.addAll(turtles.getAllStates().values());		
+	}
+
+	/**
+	 * Returns a list of states that should be stamped
+	 */
+	public Collection<? extends TurtleState> getStamps(){
+		return stamps;
+	}
+	
+	/**
+	 * Clears stamps
+	 * 
+	 * @return 
+	 * 	1 if cleared
+	 * 	0 if nothing was there
+	 */
+	public int clearStamps(){
+		if(stamps.size() == 0) return 0;
+		stamps.clear();
+		return 1;
 	}
 	
 	/**
@@ -168,4 +202,5 @@ public class World implements UnmodifiableWorld{
 	public Collection<String> getCommandNames() {
 		return commands.getUserDefinedNames();
 	}
+
 }

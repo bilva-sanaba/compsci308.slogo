@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import model.configuration.Trajectory;
+import model.configuration.TurtleState;
 import model.tokens.VariableContainer;
 
 /**
@@ -48,4 +49,10 @@ public interface UnmodifiableWorld {
 	public Collection<String> getCommandNames();
 	public boolean isBackgroundSet();
 	public Collection<Integer> getActiveTurtleIndicies();
+	
+	/**
+	 * Returns stamps
+	 * @return
+	 */
+	public Collection<? extends TurtleState> getStamps();
 }

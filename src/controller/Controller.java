@@ -48,6 +48,7 @@ public class Controller {
 		try {
 			gui.handleRunButton(model.getWorld(text));
 		} catch (Exception e){
+			e.printStackTrace();
 			SlogoAlert alert=new SlogoAlert("Learn to Code: https://www.codeschool.com/",e.getMessage());
 			alert.showAlert();
 		}

@@ -14,11 +14,18 @@ public class TurtleView {
 	private ImageView Turtle_Image;
 	private boolean penDown;
 	private Paint penColor; 
+	private String s,c;
 	public TurtleView(String s,String c){
+		this.s = s;
+		this.c = c;
 		Image image = new Image(getClass().getClassLoader().getResourceAsStream(s));
 		Turtle_Image = new ImageView(image);
 		penDown=true;
 		penColor=Color.valueOf(c);
+	}
+	
+	public TurtleView(TurtleView old){
+		this(old.s, old.c);
 	}
 	public Paint getPenColor(){
 		return penColor;
