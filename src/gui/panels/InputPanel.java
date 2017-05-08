@@ -148,7 +148,7 @@ public class InputPanel {
 		//try to use lambdas for this
 		tcb = new TurtleComboBox(textAreaWriter,currentLanguage,fireButton, myDefault);
 		ComboBox<String>turtleChoice=tcb.getTurtleChooser();
-		ImageChangeBox imageChangeBox=new ImageChangeBox(textAreaWriter,currentLanguage,fireButton,turtles);
+		ImageChangeBox imageChangeBox=new ImageChangeBox(textAreaWriter,currentLanguage,fireButton,turtles,tcb);
 		ComboBox<Integer>imageChoice=imageChangeBox.getImageChooser();
 		Pane theBoxes = new HBox(BUTTON_SPACING);
 		inputPanel.setConstraints(theBoxes,0,1);

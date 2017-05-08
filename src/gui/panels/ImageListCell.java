@@ -18,13 +18,16 @@ public class ImageListCell extends ListCell<Integer> {
 	super.updateItem(item, empty);
     setGraphic(null);
     setText(null);
-    if(item!=null){
-        //ImageView imageView = new ImageView(new Image(item));
-        //Values chosen to match regular button height for asthetic purposes
-        //imageView.setFitWidth(20);
-        //imageView.setFitHeight(20);
-        setGraphic(new ImageView(myTurtles.get(item).getTurtleView().getImage().getImage()));
+    if(item!=null&&!empty){
+    	System.out.println(item+" "+myTurtles.get(this.getIndex()).getImage().getImage());
+    	ImageView imageView = new ImageView(myTurtles.get(this.getIndex()).getImage().getImage());
+    	//Values chosen to match regular button height for asthetic purposes
+        imageView.setFitWidth(20);
+        imageView.setFitHeight(20);
+      
+        setGraphic(imageView);
         setText(Integer.toString(this.getIndex()));
     }
+    
 }
 }
